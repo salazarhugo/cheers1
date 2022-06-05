@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"log"
 	"salazar/cheers/notification/usereventpb"
+	"strings"
 	"sync"
 )
 
@@ -85,27 +86,37 @@ func postNotification(c echo.Context, userEvent *usereventpb.UserEvent) {
 		return
 	}
 	record := result.Record()
-	log.Println(record.Values[0])
 	rMap := record.Values[0].(map[string]interface{})
 	followersWithTokens := rMap["followersWithTokens"].([]interface{})
+	beverage := rMap["beverage"].(string)
+	username := rMap["username"].(string)
 
 	var wg sync.WaitGroup
 	for _, followerWithTokens := range followersWithTokens {
-		wg.Add(1)
 		followerWithTokens := followerWithTokens.([]interface{})
 		followerId := followerWithTokens[0].(string)
-		var tokens []string
+		tokens := make([]string, 0)
 		for _, token := range followerWithTokens[1].([]interface{}) {
 			tokens = append(tokens, token.(string))
+		}
+		if len(tokens) == 0 {
+			continue
+		}
+
+		body := username + " just posted a photo."
+		if beverage != "" && beverage != "NONE" {
+			body = username + " is drinking " + strings.ToLower(beverage)
 		}
 		notification := &Notification{
 			ReceiverId: followerId,
 			Tokens:     tokens,
 			Title:      "Cheers",
-			Body:       rMap["username"].(string) + " just posted a photo.",
+			Body:       body,
 			Avatar:     rMap["avatar"].(string),
+			ChannelId:  "NEW_POST_CHANNEL",
 		}
 
+		wg.Add(1)
 		go SendNotification(notification, &wg)
 	}
 
@@ -147,6 +158,7 @@ func followNotification(c echo.Context, userEvent *usereventpb.UserEvent) error 
 		Title:      "Cheers",
 		Body:       rMap["username"].(string) + " started following you.",
 		Avatar:     rMap["avatar"].(string),
+		ChannelId:  "NEW_FOLLOW_CHANNEL",
 	}
 
 	var wg sync.WaitGroup

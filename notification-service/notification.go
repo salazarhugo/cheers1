@@ -4,12 +4,14 @@ import (
 	"context"
 	"firebase.google.com/go/v4/messaging"
 	"log"
+	"strconv"
 	"sync"
 )
 
 // Notification Single user notification to all of his devices
 type Notification struct {
 	ReceiverId string   `structs:"receiverId,omitempty"`
+	ChannelId  string   `structs:"channelId,omitempty"`
 	Tokens     []string `structs:"tokens,omitempty"`
 	Title      string   `structs:"title,omitempty"`
 	Body       string   `structs:"body,omitempty"`
@@ -27,10 +29,10 @@ func SendNotification(notification *Notification, wg *sync.WaitGroup) {
 
 	br, err := a.SendMulticast(context.Background(), &messaging.MulticastMessage{
 		Data: map[string]string{
-			"type":   "newMessage",
-			"title":  notification.Title,
-			"body":   notification.Body,
-			"avatar": notification.Avatar,
+			"channelId": notification.ChannelId,
+			"title":     notification.Title,
+			"body":      notification.Body,
+			"avatar":    notification.Avatar,
 		},
 		Tokens: notification.Tokens,
 	})
@@ -40,14 +42,12 @@ func SendNotification(notification *Notification, wg *sync.WaitGroup) {
 		return
 	}
 
-	log.Println("Successfully sent notification")
-
+	log.Println("Successfully sent notification. Failure count: " + strconv.Itoa(br.FailureCount))
 	if br.FailureCount == 0 {
 		return
 	}
 
-	var stillRegisteredTokens []string
-	copy(stillRegisteredTokens, notification.Tokens)
+	stillRegisteredTokens := notification.Tokens
 
 	for idx, resp := range br.Responses {
 		if resp.Success {
