@@ -3,58 +3,22 @@ package main
 import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	"log"
 	"os"
+	"rest-api/auth"
+	"rest-api/event"
+	"rest-api/post"
+	"rest-api/story"
+	"rest-api/user"
+	"rest-api/utils"
 )
-
-type Properties struct {
-	PhotoUrl string `json:"PhotoUrl"`
-	Username string `json:"username"`
-}
-
-type Geometry struct {
-	Type        string    `json:"type"`
-	Coordinates []float64 `json:"coordinates"`
-}
-
-type Feature struct {
-	Type       string     `json:"type"`
-	Geometry   Geometry   `json:"geometry"`
-	Properties Properties `json:"properties"`
-}
-
-type FeatureCollection struct {
-	Type     string    `json:"type"`
-	Features []Feature `json:"features"`
-}
-
-type CustomContext struct {
-	echo.Context
-	neo4j.Driver
-}
-
-func getDriver() neo4j.Driver {
-	driver, err := neo4j.NewDriver(
-		"neo4j+s://528a253a.databases.neo4j.io:7687",
-		neo4j.BasicAuth("neo4j", "XRoQ6Lmz9QlFFTcwCWIWwR1o88hLfzV_HnP9mzDJuwc", ""))
-	if err != nil {
-		panic(err)
-	}
-
-	return driver
-}
-
-func getSession(driver neo4j.Driver) neo4j.Session {
-	return driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
-}
 
 func main() {
 	e := echo.New()
 
 	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-			cc := &CustomContext{c, getDriver()}
+			cc := &utils.CustomContext{Context: c, Driver: utils.GetDriver()}
 			return next(cc)
 		}
 	})
@@ -64,7 +28,7 @@ func main() {
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
 	}))
 
-	e.Use(AuthMiddleware)
+	e.Use(auth.AuthMiddleware)
 
 	// Determine port for HTTP service.
 	port := os.Getenv("PORT")
@@ -74,55 +38,57 @@ func main() {
 	}
 
 	// Event
-	e.GET("/events", getEvents)
-	e.GET("/event/feed", getEventFeed)
-	e.POST("/event/create", createEvent)
-	e.POST("/event/invite", inviteEvent)
-	e.POST("/event/delete", deleteEvent)
-	e.POST("/event/interest", interestEvent)
-	e.POST("/event/uninterest", uninterestEvent)
-	e.POST("/event/:eventId/going", goingEvent)
-	e.POST("/event/:eventId/ungoing", ungoingEvent)
-	e.POST("/event/update", updateEvent)
+	e.GET("/events", event.GetEvents)
+	e.GET("/event/feed", event.GetEventFeed)
+	e.POST("/event/create", event.CreateEvent)
+	e.POST("/event/invite", event.InviteEvent)
+	e.POST("/event/delete", event.DeleteEvent)
+	e.POST("/event/interest", event.InterestEvent)
+	e.POST("/event/uninterest", event.UninterestEvent)
+	e.POST("/event/:eventId/going", event.GoingEvent)
+	e.POST("/event/:eventId/ungoing", event.UngoingEvent)
+	e.POST("/event/update", event.UpdateEvent)
+	e.GET("/event/:eventId/going/list", event.GoingList)
+	e.GET("/event/:eventId/interested/list", event.InterestedList)
 
 	// Location
-	e.POST("/updateLocation", updateLocation)
-	e.GET("/locations", getLocations)
+	e.POST("/updateLocation", user.UpdateLocation)
+	e.GET("/locations", user.GetLocations)
 
 	// Post
-	e.GET("/posts", getPosts)
-	e.GET("/mapPosts", getMapPosts)
+	e.GET("/posts", post.GetPosts)
+	e.GET("/mapPosts", post.GetMapPosts)
 	//e.GET("/posts/:postId", postDetails)
-	e.GET("/posts/feed", postFeed)
-	e.POST("/posts/:postId/like", likePost)
-	e.POST("/posts/:postId/unlike", unlikePost)
-	e.POST("/posts/:postId/delete", deletePost)
-	e.POST("/posts/create", createPost)
+	e.GET("/posts/feed", post.PostFeed)
+	e.POST("/posts/:postId/like", post.LikePost)
+	e.POST("/posts/:postId/unlike", post.UnlikePost)
+	e.POST("/posts/:postId/delete", post.DeletePost)
+	e.POST("/posts/create", post.CreatePost)
 
 	// Story
-	e.GET("/mapStories", getMapStories)
-	e.GET("/stories/feed", storyFeed)
-	e.POST("/stories/create", createStory)
-	e.POST("/stories/:storyId/delete", deleteStory)
-	e.POST("/stories/:storyId/seen", seenStory)
+	e.GET("/mapStories", story.GetMapStories)
+	e.GET("/stories/feed", story.StoryFeed)
+	e.POST("/stories/create", story.CreateStory)
+	e.POST("/stories/:storyId/delete", story.DeleteStory)
+	e.POST("/stories/:storyId/seen", story.SeenStory)
 
 	// User
-	e.POST("/users/create", createUser)
-	e.GET("/users/search/:query", searchUsers)
-	e.POST("/follow", followUser)
-	e.POST("/unfollow", unfollowUser)
-	e.POST("/users/:userId/block", blockUser)
-	e.GET("/users/:userIdOrUsername", getUser)
-	e.GET("/users/available/:username", isUsernameAvailable)
-	e.POST("/users/tokens/:token", addRegistrationToken)
+	e.POST("/users/create", user.CreateUser)
+	e.GET("/users/search/:query", user.SearchUsers)
+	e.POST("/follow", user.FollowUser)
+	e.POST("/unfollow", user.UnfollowUser)
+	e.POST("/users/:userId/block", user.BlockUser)
+	e.GET("/users/:userIdOrUsername", user.GetUser)
+	e.GET("/users/available/:username", user.IsUsernameAvailable)
+	e.POST("/users/tokens/:token", user.AddRegistrationToken)
 
-	e.GET("/followers/list", followersList)
-	e.GET("/following/list", followingList)
+	e.GET("/followers/list", user.FollowersList)
+	e.GET("/following/list", user.FollowingList)
 
-	e.GET("/users/activity", getActivity)
+	e.GET("/users/activity", user.GetActivity)
 
 	// Auth
-	e.GET("/token", createCustomToken)
+	e.GET("/token", auth.CreateCustomToken)
 
 	e.Logger.Fatal(e.Start(":" + port))
 }

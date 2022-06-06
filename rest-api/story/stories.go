@@ -1,4 +1,4 @@
-package main
+package story
 
 import (
 	"encoding/json"
@@ -7,12 +7,13 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	"log"
 	"net/http"
+	"rest-api/utils"
 	"strconv"
 )
 
-func getMapStories(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func GetMapStories(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	pageSize, err := strconv.ParseInt(cc.QueryParam("pageSize"), 10, 64)
@@ -30,7 +31,7 @@ func getMapStories(c echo.Context) error {
 			return nil, err
 		}
 
-		features := make([]Feature, 0)
+		features := make([]utils.Feature, 0)
 
 		for result.Next() {
 			res := result.Record().Values[0].([]interface{}) // [45.643, 34.32]
@@ -38,10 +39,10 @@ func getMapStories(c echo.Context) error {
 			var coordinates []float64
 			coordinates = append(coordinates, res[0].(float64))
 			coordinates = append(coordinates, res[1].(float64))
-			features = append(features, Feature{
+			features = append(features, utils.Feature{
 				Type:       "Feature",
-				Geometry:   Geometry{Type: "Point", Coordinates: coordinates},
-				Properties: Properties{PhotoUrl: photoUrl},
+				Geometry:   utils.Geometry{Type: "Point", Coordinates: coordinates},
+				Properties: utils.Properties{PhotoUrl: photoUrl},
 			})
 		}
 
@@ -53,13 +54,13 @@ func getMapStories(c echo.Context) error {
 	}
 	log.Printf("features: %s", features)
 
-	return cc.JSON(http.StatusOK, FeatureCollection{Type: "FeatureCollection", Features: features.([]Feature)})
+	return cc.JSON(http.StatusOK, utils.FeatureCollection{Type: "FeatureCollection", Features: features.([]utils.Feature)})
 }
 
 // POST("/stories/:storyId/seen")
-func seenStory(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func SeenStory(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	storyId := cc.Param("storyId")
@@ -85,9 +86,9 @@ func seenStory(c echo.Context) error {
 	return cc.String(http.StatusOK, "OK!")
 }
 
-func storyFeed(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func StoryFeed(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	pageSize, err := strconv.Atoi(cc.QueryParam("pageSize"))
@@ -130,9 +131,9 @@ func storyFeed(c echo.Context) error {
 }
 
 // POST("/stories/:storyId/delete")
-func deleteStory(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func DeleteStory(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	storyId := cc.Param("storyId")
@@ -168,9 +169,9 @@ type Story struct {
 	Type         string  `json:"type" structs:"type"`
 }
 
-func createStory(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func CreateStory(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	story := Story{}

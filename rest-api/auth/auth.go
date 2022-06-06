@@ -1,4 +1,4 @@
-package main
+package auth
 
 import (
 	"context"
@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"log"
 	"net/http"
+	"rest-api/utils"
 	"strings"
 )
 
@@ -15,8 +16,8 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		if c.Path() == "/users/available/:username" {
 			return next(c)
 		}
-		app := initializeAppDefault()
-		client := initializeAuthClient(app)
+		app := utils.InitializeAppDefault()
+		client := utils.InitializeAuthClient(app)
 		authorizationToken := c.Request().Header.Get("Authorization")
 		idToken := strings.TrimSpace(strings.Replace(authorizationToken, "Bearer", "", 1))
 
@@ -37,11 +38,11 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 }
 
 // GET("/token", createCustomToken)
-func createCustomToken(c echo.Context) error {
-	cc := c.(*CustomContext)
+func CreateCustomToken(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
 
-	app := initializeAppDefault()
-	client := initializeAuthClient(app)
+	app := utils.InitializeAppDefault()
+	client := utils.InitializeAuthClient(app)
 
 	username := cc.QueryParam("username")
 

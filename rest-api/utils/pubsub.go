@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"cloud.google.com/go/pubsub"
@@ -9,7 +9,7 @@ import (
 	"rest-api/usereventpb"
 )
 
-func publishProtoMessages(state *usereventpb.UserEvent) error {
+func PublishProtoMessages(state *usereventpb.UserEvent) error {
 	projectID := "cheers-a275e"
 	topicID := "user-event-topic"
 	ctx := context.Background()

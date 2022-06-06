@@ -1,4 +1,4 @@
-package main
+package post
 
 import (
 	"encoding/json"
@@ -10,13 +10,14 @@ import (
 	"log"
 	"net/http"
 	"rest-api/usereventpb"
+	"rest-api/utils"
 	"strconv"
 	"time"
 )
 
-func getMapPosts(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func GetMapPosts(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	pageSize, err := strconv.Atoi(cc.QueryParam("pageSize"))
@@ -35,7 +36,7 @@ func getMapPosts(c echo.Context) error {
 			return nil, err
 		}
 
-		features := make([]Feature, 0)
+		features := make([]utils.Feature, 0)
 
 		for result.Next() {
 			res := result.Record().Values[0].([]interface{}) // [45.643, 34.32]
@@ -43,10 +44,10 @@ func getMapPosts(c echo.Context) error {
 			var coordinates []float64
 			coordinates = append(coordinates, res[0].(float64))
 			coordinates = append(coordinates, res[1].(float64))
-			features = append(features, Feature{
+			features = append(features, utils.Feature{
 				Type:       "Feature",
-				Geometry:   Geometry{Type: "Point", Coordinates: coordinates},
-				Properties: Properties{PhotoUrl: photoUrl},
+				Geometry:   utils.Geometry{Type: "Point", Coordinates: coordinates},
+				Properties: utils.Properties{PhotoUrl: photoUrl},
 			})
 		}
 
@@ -58,12 +59,12 @@ func getMapPosts(c echo.Context) error {
 	}
 	log.Printf("features: %s", features)
 
-	return cc.JSON(http.StatusOK, FeatureCollection{Type: "FeatureCollection", Features: features.([]Feature)})
+	return cc.JSON(http.StatusOK, utils.FeatureCollection{Type: "FeatureCollection", Features: features.([]utils.Feature)})
 }
 
-func getPosts(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func GetPosts(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	params := map[string]interface{}{
@@ -95,9 +96,9 @@ func getPosts(c echo.Context) error {
 	return cc.JSON(http.StatusOK, post)
 }
 
-func postFeed(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func PostFeed(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	pageSize, err := strconv.Atoi(cc.QueryParam("pageSize"))
@@ -159,9 +160,9 @@ type Post struct {
 }
 
 // POST("/posts/create")
-func createPost(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func CreatePost(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	userId := cc.Get("userId").(string)
@@ -199,7 +200,7 @@ func createPost(c echo.Context) error {
 		PostId: post.Id,
 		Time:   time.Now().Unix(),
 	}
-	err = publishProtoMessages(state)
+	err = utils.PublishProtoMessages(state)
 	if err != nil {
 		return err
 	}
@@ -207,9 +208,9 @@ func createPost(c echo.Context) error {
 }
 
 // POST("/posts/:postId/delete")
-func deletePost(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func DeletePost(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	postId := cc.Param("postId")
@@ -231,9 +232,9 @@ func deletePost(c echo.Context) error {
 }
 
 // POST("/posts/:postId/like")
-func likePost(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func LikePost(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	userId := cc.Get("userId").(string)
@@ -269,15 +270,15 @@ func likePost(c echo.Context) error {
 		PostId:      postId,
 		Time:        time.Now().Unix(),
 	}
-	publishProtoMessages(state)
+	utils.PublishProtoMessages(state)
 
 	return cc.NoContent(http.StatusOK)
 }
 
 // POST("/posts/:postId/unlike")
-func unlikePost(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func UnlikePost(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	cypher := `MATCH (u:User { id: $userId })-[l:LIKED]->(p:Post { id: $postId }) 

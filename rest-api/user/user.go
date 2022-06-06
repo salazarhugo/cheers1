@@ -1,4 +1,4 @@
-package main
+package user
 
 import (
 	"cloud.google.com/go/firestore"
@@ -11,6 +11,7 @@ import (
 	"log"
 	"net/http"
 	"rest-api/usereventpb"
+	"rest-api/utils"
 	"strconv"
 	"strings"
 	"time"
@@ -27,7 +28,7 @@ type Activity struct {
 }
 
 // GET("users/activity")
-func getActivity(c echo.Context) error {
+func GetActivity(c echo.Context) error {
 	ctx := context.Background()
 	client, err := firestore.NewClient(ctx, "cheers-a275e")
 	if err != nil {
@@ -81,8 +82,8 @@ type UserCard struct {
 }
 
 func getUserCard(c echo.Context, userId string) *UserCard {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	cypher := `MATCH (u:User) 
@@ -113,8 +114,8 @@ func getUserCard(c echo.Context, userId string) *UserCard {
 }
 
 func getPost(c echo.Context, postId string) *string {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	cypher := `MATCH (p:Post {id: $postId}) 
@@ -140,9 +141,9 @@ func getPost(c echo.Context, postId string) *string {
 }
 
 // POST("/unfollow")
-func unfollowUser(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func UnfollowUser(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	username := cc.QueryParam("username")
@@ -172,9 +173,9 @@ type Notification struct {
 }
 
 // POST("/users/:userId/block")
-func blockUser(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func BlockUser(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	otherUserId := cc.Param("userId")
@@ -197,9 +198,9 @@ func blockUser(c echo.Context) error {
 }
 
 // POST("/follow")
-func followUser(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func FollowUser(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	username := cc.QueryParam("username")
@@ -234,7 +235,7 @@ func followUser(c echo.Context) error {
 			OtherUserId: notif.OtherUserId,
 			Time:        time.Now().Unix(),
 		}
-		publishProtoMessages(state)
+		utils.PublishProtoMessages(state)
 		return nil, nil
 	})
 
@@ -242,9 +243,9 @@ func followUser(c echo.Context) error {
 }
 
 // GET("users/available/:username")
-func isUsernameAvailable(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func IsUsernameAvailable(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	username := cc.Param("username")
@@ -259,9 +260,9 @@ func isUsernameAvailable(c echo.Context) error {
 }
 
 // GET("users/:userIdOrUsername")
-func getUser(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func GetUser(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	userIdOrUsername := cc.Param("userIdOrUsername")
@@ -302,9 +303,9 @@ func getUser(c echo.Context) error {
 }
 
 // GET("users/search/:query")
-func searchUsers(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func SearchUsers(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	query := strings.ToLower(cc.Param("query"))
@@ -366,7 +367,7 @@ type User struct {
 }
 
 func setRegistrationToken(userId string, registrationTokens []string) error {
-	session := getSession(getDriver())
+	session := utils.GetSession(utils.GetDriver())
 	defer session.Close()
 
 	cypher := `MATCH (u:User {id: $userId})
@@ -383,9 +384,9 @@ func setRegistrationToken(userId string, registrationTokens []string) error {
 }
 
 // POST("/users/tokens/:token")
-func addRegistrationToken(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func AddRegistrationToken(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	token := cc.Param("token")
@@ -405,9 +406,9 @@ func addRegistrationToken(c echo.Context) error {
 }
 
 // POST("/users/create")
-func createUser(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func CreateUser(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	userReq := User{}
@@ -474,9 +475,9 @@ func matchUserNodeTxFunc(userIdOrUsername string) neo4j.TransactionWork {
 	}
 }
 
-func updateLocation(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func UpdateLocation(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	longitude, err := strconv.ParseFloat(c.QueryParam("longitude"), 64)
@@ -510,9 +511,9 @@ func updateLocation(c echo.Context) error {
 	return c.HTML(http.StatusOK, "<html>OK</html>")
 }
 
-func getLocations(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func GetLocations(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	params := map[string]interface{}{
@@ -533,7 +534,7 @@ func getLocations(c echo.Context) error {
 			return nil, err
 		}
 
-		features := make([]Feature, 0)
+		features := make([]utils.Feature, 0)
 
 		for result.Next() {
 			res := result.Record().Values[0].([]interface{}) // [45.643, 34.32]
@@ -541,10 +542,10 @@ func getLocations(c echo.Context) error {
 			var coordinates []float64
 			coordinates = append(coordinates, res[0].(float64))
 			coordinates = append(coordinates, res[1].(float64))
-			features = append(features, Feature{
+			features = append(features, utils.Feature{
 				Type:       "Feature",
-				Geometry:   Geometry{Type: "Point", Coordinates: coordinates},
-				Properties: Properties{Username: username},
+				Geometry:   utils.Geometry{Type: "Point", Coordinates: coordinates},
+				Properties: utils.Properties{Username: username},
 			})
 		}
 
@@ -557,13 +558,13 @@ func getLocations(c echo.Context) error {
 	}
 	log.Printf("features: %s", features)
 
-	return cc.JSON(http.StatusOK, FeatureCollection{Type: "FeatureCollection", Features: features.([]Feature)})
+	return cc.JSON(http.StatusOK, utils.FeatureCollection{Type: "FeatureCollection", Features: features.([]utils.Feature)})
 }
 
 // GET("following/list")
-func followingList(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func FollowingList(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	userId := cc.Get("userId")
@@ -611,9 +612,9 @@ func followingList(c echo.Context) error {
 }
 
 // GET("followers/list")
-func followersList(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func FollowersList(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	userId := cc.Get("userId")

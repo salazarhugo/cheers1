@@ -1,4 +1,4 @@
-package main
+package event
 
 import (
 	"encoding/json"
@@ -6,12 +6,13 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	"log"
 	"net/http"
+	"rest-api/utils"
 	"strconv"
 )
 
-func updateEvent(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func UpdateEvent(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 
 	event := make(map[string]interface{})
 	err := json.NewDecoder(c.Request().Body).Decode(&event)
@@ -40,9 +41,9 @@ func updateEvent(c echo.Context) error {
 	return cc.String(http.StatusOK, "OK!")
 }
 
-func createEvent(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func CreateEvent(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 
 	event := make(map[string]interface{})
 
@@ -71,12 +72,12 @@ func createEvent(c echo.Context) error {
 		return err
 	}
 
-	return cc.String(http.StatusOK, "OK!")
+	return cc.NoContent(http.StatusOK)
 }
 
-func uninterestEvent(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func UninterestEvent(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	eventId := c.QueryParam("eventId")
@@ -101,9 +102,9 @@ func uninterestEvent(c echo.Context) error {
 }
 
 // POST("/event/:eventId/ungoing")
-func ungoingEvent(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func UngoingEvent(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	eventId := c.Param("eventId")
@@ -126,9 +127,9 @@ func ungoingEvent(c echo.Context) error {
 }
 
 // POST("/event/:eventId/going")
-func goingEvent(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func GoingEvent(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	eventId := c.Param("eventId")
@@ -150,9 +151,9 @@ func goingEvent(c echo.Context) error {
 	return c.NoContent(http.StatusOK)
 }
 
-func interestEvent(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func InterestEvent(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	eventId := c.QueryParam("eventId")
@@ -176,9 +177,9 @@ func interestEvent(c echo.Context) error {
 	return c.String(http.StatusOK, "OK!")
 }
 
-func getEvents(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func GetEvents(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	pageSize, err := strconv.Atoi(cc.QueryParam("pageSize"))
@@ -187,7 +188,7 @@ func getEvents(c echo.Context) error {
 
 	events, err := session.ReadTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		result, err := transaction.Run(
-			`MATCH (u:User { userId: $userId })-[:POSTED]->(e:Event)
+			`MATCH (u:User { id: $userId })-[:POSTED]->(e:Event)
                     WITH u, e SKIP $skip LIMIT $pageSize 
                     OPTIONAL MATCH (:User)-[interest:INTERESTED]->(e)
                     OPTIONAL MATCH (:User)-[going:GOING]->(e)
@@ -220,9 +221,9 @@ func getEvents(c echo.Context) error {
 	return cc.JSON(http.StatusOK, events)
 }
 
-func getEventFeed(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func GetEventFeed(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	pageSize, err := strconv.Atoi(cc.QueryParam("pageSize"))
@@ -231,15 +232,16 @@ func getEventFeed(c echo.Context) error {
 
 	events, err := session.ReadTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		result, err := transaction.Run(
-			`MATCH (host:User)-[:POSTED]->(e:Event)
-                    WITH e SKIP $skip LIMIT $pageSize 
-					MATCH (u: User {id: $userId})
-                    OPTIONAL MATCH (:User)-[interest:INTERESTED]->(e)
-                    OPTIONAL MATCH (:User)-[going:GOING]->(e)
-                    WITH e, exists((u)-[:INTERESTED]->(e)) as interested, count(DISTINCT interest) as interestedCount,
-					exists((u)-[:GOING]->(e)) as going, count(DISTINCT going) as goingCount
-					RETURN e { .*, interested: interested, interestedCount: interestedCount, going: going, goingCount: goingCount } 
-					ORDER BY e.startDate DESC`,
+			` MATCH (e1:Event {privacy: "PUBLIC"})
+				OPTIONAL MATCH (u: User{id:$userId})-[:FOLLOWS]->(:User)-[:POSTED]->(e2:Event {privacy: "FRIENDS"})
+				OPTIONAL MATCH (e3:Event)-[:INVITED]->(u)
+				UNWIND [val in [e1, e2, e3] WHERE val is not null] as e
+				OPTIONAL MATCH (:User)-[interest:INTERESTED]->(e)
+				OPTIONAL MATCH (:User)-[going:GOING]->(e)
+				WITH e, exists((u)-[:INTERESTED]->(e)) as interested, count(DISTINCT interest) as interestedCount,
+				exists((u)-[:GOING]->(e)) as going, count(DISTINCT going) as goingCount SKIP $skip LIMIT $pageSize
+				RETURN e { .*, interested: interested, interestedCount: interestedCount, going: going, goingCount: goingCount } 
+				ORDER BY e.startDate DESC`,
 			map[string]interface{}{"userId": cc.Get("userId"), "skip": skip, "pageSize": pageSize})
 		if err != nil {
 			log.Fatalf("Neo4j Error: %s", err)
@@ -261,9 +263,9 @@ func getEventFeed(c echo.Context) error {
 	return cc.JSON(http.StatusOK, events)
 }
 
-func inviteEvent(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func InviteEvent(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	eventId := cc.QueryParam("eventId")
@@ -298,9 +300,9 @@ func inviteEvent(c echo.Context) error {
 	return cc.String(http.StatusOK, "OK!")
 }
 
-func deleteEvent(c echo.Context) error {
-	cc := c.(*CustomContext)
-	session := getSession(cc.Driver)
+func DeleteEvent(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
 	eventId := cc.QueryParam("eventId")
@@ -324,4 +326,100 @@ func deleteEvent(c echo.Context) error {
 	}
 
 	return cc.String(http.StatusOK, "OK!")
+}
+
+// GET /event/:eventId/interested/list
+
+func InterestedList(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
+	defer session.Close()
+
+	userId := cc.Get("userId")
+
+	eventId := cc.Param("eventId")
+
+	cypher := `MATCH (e:Event {id: $eventId})<-[:INTERESTED]-(g:User)
+				MATCH (u: User {id:$userId}) 
+			 	WITH g, exists((u)-[:FOLLOWS]->(g)) as followBack LIMIT 20
+			 	RETURN g { .id, .username, .verified, .profilePictureUrl, .name, isFollowed: followBack}`
+
+	params := map[string]interface{}{
+		"userId":  userId,
+		"eventId": eventId,
+	}
+
+	users, err := session.ReadTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
+		result, err := transaction.Run(cypher, params)
+		if err != nil {
+			log.Fatalf("Neo4j Error: %s", err)
+			return nil, err
+		}
+
+		users := make([]interface{}, 0)
+
+		for result.Next() {
+			users = append(users, result.Record().Values[0])
+		}
+
+		if err = result.Err(); err != nil {
+			panic(err)
+		}
+
+		return users, nil
+	})
+	if err != nil {
+		log.Fatalf("Error: %s", err)
+		return err
+	}
+
+	return cc.JSON(http.StatusOK, users)
+}
+
+// GET /event/:eventId/going/list
+
+func GoingList(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
+	defer session.Close()
+
+	userId := cc.Get("userId")
+
+	eventId := cc.Param("eventId")
+
+	cypher := `MATCH (e:Event {id: $eventId})<-[:GOING]-(g:User)
+				MATCH (u: User {id:$userId}) 
+			 	WITH g, exists((u)-[:FOLLOWS]->(g)) as followBack LIMIT 20
+			 	RETURN g { .id, .username, .verified, .profilePictureUrl, .name, isFollowed: followBack}`
+
+	params := map[string]interface{}{
+		"userId":  userId,
+		"eventId": eventId,
+	}
+
+	users, err := session.ReadTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
+		result, err := transaction.Run(cypher, params)
+		if err != nil {
+			log.Fatalf("Neo4j Error: %s", err)
+			return nil, err
+		}
+
+		users := make([]interface{}, 0)
+
+		for result.Next() {
+			users = append(users, result.Record().Values[0])
+		}
+
+		if err = result.Err(); err != nil {
+			panic(err)
+		}
+
+		return users, nil
+	})
+	if err != nil {
+		log.Fatalf("Error: %s", err)
+		return err
+	}
+
+	return cc.JSON(http.StatusOK, users)
 }
