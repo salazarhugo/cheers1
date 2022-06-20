@@ -232,15 +232,42 @@ func GetEventFeed(c echo.Context) error {
 
 	events, err := session.ReadTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		result, err := transaction.Run(
-			` MATCH (e1:Event {privacy: "PUBLIC"})
-				OPTIONAL MATCH (u: User{id:$userId})-[:FOLLOWS]->(:User)-[:POSTED]->(e2:Event {privacy: "FRIENDS"})
+			`
+				MATCH (u: User{id:$userId})
+				OPTIONAL MATCH (e1:Event {privacy: "PUBLIC"})
+				OPTIONAL MATCH (u)-[:FOLLOWS]->(:User)-[:POSTED]->(e2:Event {privacy: "FRIENDS"})
 				OPTIONAL MATCH (e3:Event)-[:INVITED]->(u)
 				UNWIND [val in [e1, e2, e3] WHERE val is not null] as e
 				OPTIONAL MATCH (:User)-[interest:INTERESTED]->(e)
 				OPTIONAL MATCH (:User)-[going:GOING]->(e)
-				WITH e, exists((u)-[:INTERESTED]->(e)) as interested, count(DISTINCT interest) as interestedCount,
-				exists((u)-[:GOING]->(e)) as going, count(DISTINCT going) as goingCount SKIP $skip LIMIT $pageSize
-				RETURN e { .*, interested: interested, interestedCount: interestedCount, going: going, goingCount: goingCount } 
+				WITH 
+					u, 
+					e,
+					exists((u)-[:INTERESTED]->(e)) as interested,
+					count(DISTINCT interest) as interestedCount,
+					exists((u)-[:GOING]->(e)) as going,
+					count(DISTINCT going) as goingCount
+				SKIP 
+					$skip 
+				LIMIT 
+					$pageSize
+				CALL {
+					WITH u, e
+					OPTIONAL MATCH (u)-[:FOLLOWS]->(mutual:User)-[:GOING]->(e)
+					WITH mutual, count(mutual) as mutualCount LIMIT 2
+					RETURN collect(mutual.profilePictureUrl) as mutualProfilePictureUrls,
+					collect(mutual.username) as mutualUsernames, mutualCount
+				}
+				RETURN e { 
+					.*, 
+					interested: interested,
+					interestedCount: interestedCount,
+					going: going,
+					goingCount: goingCount,
+					mutualCount: mutualCount,
+					mutualUsernames: mutualUsernames,
+					mutualProfilePictureUrls: mutualProfilePictureUrls
+				} 
 				ORDER BY e.startDate DESC`,
 			map[string]interface{}{"userId": cc.Get("userId"), "skip": skip, "pageSize": pageSize})
 		if err != nil {
@@ -342,7 +369,7 @@ func InterestedList(c echo.Context) error {
 	cypher := `MATCH (e:Event {id: $eventId})<-[:INTERESTED]-(g:User)
 				MATCH (u: User {id:$userId}) 
 			 	WITH g, exists((u)-[:FOLLOWS]->(g)) as followBack LIMIT 20
-			 	RETURN g { .id, .username, .verified, .profilePictureUrl, .name, isFollowed: followBack}`
+			 	RETURN g { .id, .username, .verified, .profilePictureUrl, .name, followBack: followBack}`
 
 	params := map[string]interface{}{
 		"userId":  userId,
@@ -390,7 +417,7 @@ func GoingList(c echo.Context) error {
 	cypher := `MATCH (e:Event {id: $eventId})<-[:GOING]-(g:User)
 				MATCH (u: User {id:$userId}) 
 			 	WITH g, exists((u)-[:FOLLOWS]->(g)) as followBack LIMIT 20
-			 	RETURN g { .id, .username, .verified, .profilePictureUrl, .name, isFollowed: followBack}`
+			 	RETURN g { .id, .username, .verified, .profilePictureUrl, .name, followBack: followBack}`
 
 	params := map[string]interface{}{
 		"userId":  userId,

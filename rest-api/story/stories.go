@@ -98,7 +98,13 @@ func StoryFeed(c echo.Context) error {
 	cypher := `MATCH (u:User {id: $userId})-[:FOLLOWS*0..1]->(author:User)-[:POSTED]->(s:Story)
 				WHERE s.created > datetime().epochMillis-24*60*60*1000
 				WITH author, s, exists((u)-[:SEEN]->(s)) as seen SKIP $skip LIMIT $pageSize
-				RETURN s {.*, seen: seen, username: author.username, verified: author.verified, profilePictureUrl: author.profilePictureUrl }
+				RETURN s {
+					.*,
+					seen: seen,
+					username: author.username,
+					verified: author.verified,
+					profilePictureUrl: author.profilePictureUrl
+				}
 				ORDER BY s.created DESC`
 
 	params := map[string]interface{}{

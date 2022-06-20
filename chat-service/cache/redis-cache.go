@@ -36,6 +36,16 @@ type redisCache struct {
 	client  *redis.Client
 }
 
+func (cache *redisCache) IsMember(userId string, roomId string) bool {
+	isMember, err := cache.client.SIsMember(context.Background(), getKeyRoomMembers(roomId), userId).Result()
+
+	if err != nil {
+		panic(err)
+	}
+
+	return isMember
+}
+
 func (cache *redisCache) GetRoomMembers(roomId string) []string {
 	members, err := cache.client.SMembers(context.Background(), getKeyRoomMembers(roomId)).Result()
 	if err != nil {
@@ -51,6 +61,12 @@ func (cache *redisCache) LeaveRoom(userId string, roomId string) {
 
 	client.SRem(ctx, getKeyUserRooms(userId), roomId)
 	client.SRem(ctx, getKeyRoomMembers(roomId), userId)
+
+	memberCount, _ := client.SCard(ctx, getKeyRoomMembers(roomId)).Result()
+
+	if memberCount == 1 {
+		cache.DeleteRoom(roomId)
+	}
 }
 
 func (cache *redisCache) DeleteRoom(roomId string) {
@@ -114,9 +130,20 @@ func (cache *redisCache) GetRoomStatus(roomId string, userId string, otherUserId
 	return status
 }
 
+func (cache *redisCache) DeleteTokens(userId string) int64 {
+	client := cache.client
+	successCount, err := client.Del(context.Background(), GetKeyUserTokens(userId)).Result()
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	return successCount
+}
+
 func (cache *redisCache) GetTokens(userId string) []string {
 	client := cache.client
-	tokens, err := client.SMembers(context.Background(), getKeyUserTokens(userId)).Result()
+	tokens, err := client.SMembers(context.Background(), GetKeyUserTokens(userId)).Result()
 	if err != nil {
 		panic(err)
 	}
@@ -126,7 +153,7 @@ func (cache *redisCache) GetTokens(userId string) []string {
 
 func (cache *redisCache) AddToken(userId string, token string) {
 	client := cache.client
-	client.SAdd(context.Background(), getKeyUserTokens(userId), token)
+	client.SAdd(context.Background(), GetKeyUserTokens(userId), token)
 }
 
 func (cache *redisCache) GetMessages(roomId string) []*chatpb.Message {
@@ -226,6 +253,7 @@ func (cache *redisCache) GetUser(userId string) (interface{}, error) {
 
 		return nil, result.Err()
 	})
+
 	if err != nil {
 		return nil, err
 	}
@@ -237,7 +265,7 @@ func getKeyRoomSeen(roomUUID string) string {
 	return fmt.Sprintf("%s:%s", keyRoomSeen, roomUUID)
 }
 
-func getKeyUserTokens(userUUID string) string {
+func GetKeyUserTokens(userUUID string) string {
 	return fmt.Sprintf("%s:%s", keyUserTokens, userUUID)
 }
 

@@ -11,12 +11,35 @@ service ChatService {
   rpc GetRoomId(GetRoomIdReq) returns (RoomId) {}
   rpc CreateChat(CreateChatReq) returns (Room) {}
   rpc JoinRoom(RoomId) returns (stream Message) {}
+  rpc GetRoomMembers(RoomId) returns (Users) {}
   rpc LeaveRoom(RoomId) returns (Empty) {}
   rpc DeleteRoom(RoomId) returns (Empty) {}
+
   rpc SendMessage(stream Message) returns (MessageAck) {}
+  rpc LikeMessage(LikeMessageReq) returns (Empty) {}
+  rpc UnlikeMessage(LikeMessageReq) returns (Empty) {}
+
   rpc TypingStart(TypingReq) returns (Empty) {}
   rpc TypingEnd(TypingReq) returns (Empty) {}
+
   rpc AddToken(AddTokenReq) returns (Empty) {}
+  rpc DeleteUser(UserIdReq) returns (Empty) {}
+}
+
+message UserCard {
+  string id = 1;
+  string name = 2;
+  string username = 3;
+  bool verified = 4;
+  string avatar = 5;
+}
+
+message Users {
+  repeated UserCard users = 1;
+}
+
+message UserIdReq {
+  string userId = 1;
 }
 
 message Empty {
@@ -82,6 +105,11 @@ enum MessageType {
   VIDEO = 2;
 }
 
+message LikeMessageReq {
+  string room_id = 1;
+  string message_id = 2;
+}
+
 message Message {
   string id = 1;
   string sender = 2;
@@ -93,6 +121,7 @@ message Message {
   google.protobuf.Timestamp created = 8;
   string photo_url = 9;
   MessageType type = 10;
+  int32 like_count = 11;
 }
 
 message MessageAck {

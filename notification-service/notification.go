@@ -87,6 +87,9 @@ func setRegistrationToken(userId string, registrationTokens []string) error {
 }
 
 func remove(s []string, i int) []string {
+	if i >= len(s) {
+		return s
+	}
 	s[i] = s[len(s)-1]
 	return s[:len(s)-1]
 }

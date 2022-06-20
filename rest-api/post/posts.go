@@ -96,6 +96,57 @@ func GetPosts(c echo.Context) error {
 	return cc.JSON(http.StatusOK, post)
 }
 
+func PostMembers(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
+	defer session.Close()
+
+	postId := cc.Param("postId")
+	pageSize, err := strconv.Atoi(cc.QueryParam("pageSize"))
+	page, err := strconv.Atoi(cc.QueryParam("page"))
+	skip := page * pageSize
+
+	cypher := `
+			MATCH (u:User {id: $userId})
+			MATCH (p:Post {id: $postId})-[:WITH]->(w:User)
+			WITH 
+				w,
+				exists((u)-[:FOLLOWS]->(w)) as followBack 
+			SKIP 
+				$skip 
+			LIMIT 
+				$pageSize
+			RETURN w {
+				.id,
+				.name,
+				.username,
+				.verified,
+				.profilePictureUrl,
+				followBack: followBack
+			}`
+
+	params := map[string]interface{}{
+		"userId":   cc.Get("userId"),
+		"postId":   postId,
+		"skip":     skip,
+		"pageSize": pageSize,
+	}
+
+	result, err := session.Run(cypher, params)
+
+	if err != nil {
+		return err
+	}
+
+	users := make([]interface{}, 0)
+
+	for result.Next() {
+		users = append(users, result.Record().Values[0])
+	}
+
+	return cc.JSON(http.StatusOK, users)
+}
+
 func PostFeed(c echo.Context) error {
 	cc := c.(*utils.CustomContext)
 	session := utils.GetSession(cc.Driver)
@@ -108,9 +159,15 @@ func PostFeed(c echo.Context) error {
 	cypher := `MATCH (u:User {id: $userId})-[:FOLLOWS*0..1]->(a:User)-[:POSTED]->(p:Post)
 			WITH u, a, p SKIP $skip LIMIT $pageSize
 			OPTIONAL MATCH (:User)-[r:LIKED]->(p) 
-			OPTIONAL MATCH (p)-[:WITH]->(w:User) 
 			WITH p, a, exists((u)-[:LIKED]->(p)) as liked, count(DISTINCT r) as likes 
-			RETURN p {.*, likes: likes, liked: liked, username: a.username, verified: a.verified, profilePictureUrl: a.profilePictureUrl } 
+			RETURN p {
+				.*,
+				likes: likes,
+				liked: liked,
+				username: a.username,
+				verified: a.verified,
+				profilePictureUrl: a.profilePictureUrl
+			} 
 			ORDER BY p.created DESC`
 
 	params := map[string]interface{}{

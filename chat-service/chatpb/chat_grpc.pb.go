@@ -26,12 +26,16 @@ type ChatServiceClient interface {
 	GetRoomId(ctx context.Context, in *GetRoomIdReq, opts ...grpc.CallOption) (*RoomId, error)
 	CreateChat(ctx context.Context, in *CreateChatReq, opts ...grpc.CallOption) (*Room, error)
 	JoinRoom(ctx context.Context, in *RoomId, opts ...grpc.CallOption) (ChatService_JoinRoomClient, error)
+	GetRoomMembers(ctx context.Context, in *RoomId, opts ...grpc.CallOption) (*Users, error)
 	LeaveRoom(ctx context.Context, in *RoomId, opts ...grpc.CallOption) (*Empty, error)
 	DeleteRoom(ctx context.Context, in *RoomId, opts ...grpc.CallOption) (*Empty, error)
 	SendMessage(ctx context.Context, opts ...grpc.CallOption) (ChatService_SendMessageClient, error)
+	LikeMessage(ctx context.Context, in *LikeMessageReq, opts ...grpc.CallOption) (*Empty, error)
+	UnlikeMessage(ctx context.Context, in *LikeMessageReq, opts ...grpc.CallOption) (*Empty, error)
 	TypingStart(ctx context.Context, in *TypingReq, opts ...grpc.CallOption) (*Empty, error)
 	TypingEnd(ctx context.Context, in *TypingReq, opts ...grpc.CallOption) (*Empty, error)
 	AddToken(ctx context.Context, in *AddTokenReq, opts ...grpc.CallOption) (*Empty, error)
+	DeleteUser(ctx context.Context, in *UserIdReq, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type chatServiceClient struct {
@@ -124,6 +128,15 @@ func (x *chatServiceJoinRoomClient) Recv() (*Message, error) {
 	return m, nil
 }
 
+func (c *chatServiceClient) GetRoomMembers(ctx context.Context, in *RoomId, opts ...grpc.CallOption) (*Users, error) {
+	out := new(Users)
+	err := c.cc.Invoke(ctx, "/chatpb.ChatService/GetRoomMembers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *chatServiceClient) LeaveRoom(ctx context.Context, in *RoomId, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, "/chatpb.ChatService/LeaveRoom", in, out, opts...)
@@ -176,6 +189,24 @@ func (x *chatServiceSendMessageClient) CloseAndRecv() (*MessageAck, error) {
 	return m, nil
 }
 
+func (c *chatServiceClient) LikeMessage(ctx context.Context, in *LikeMessageReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, "/chatpb.ChatService/LikeMessage", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chatServiceClient) UnlikeMessage(ctx context.Context, in *LikeMessageReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, "/chatpb.ChatService/UnlikeMessage", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *chatServiceClient) TypingStart(ctx context.Context, in *TypingReq, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, "/chatpb.ChatService/TypingStart", in, out, opts...)
@@ -203,6 +234,15 @@ func (c *chatServiceClient) AddToken(ctx context.Context, in *AddTokenReq, opts 
 	return out, nil
 }
 
+func (c *chatServiceClient) DeleteUser(ctx context.Context, in *UserIdReq, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, "/chatpb.ChatService/DeleteUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ChatServiceServer is the server API for ChatService service.
 // All implementations should embed UnimplementedChatServiceServer
 // for forward compatibility
@@ -211,12 +251,16 @@ type ChatServiceServer interface {
 	GetRoomId(context.Context, *GetRoomIdReq) (*RoomId, error)
 	CreateChat(context.Context, *CreateChatReq) (*Room, error)
 	JoinRoom(*RoomId, ChatService_JoinRoomServer) error
+	GetRoomMembers(context.Context, *RoomId) (*Users, error)
 	LeaveRoom(context.Context, *RoomId) (*Empty, error)
 	DeleteRoom(context.Context, *RoomId) (*Empty, error)
 	SendMessage(ChatService_SendMessageServer) error
+	LikeMessage(context.Context, *LikeMessageReq) (*Empty, error)
+	UnlikeMessage(context.Context, *LikeMessageReq) (*Empty, error)
 	TypingStart(context.Context, *TypingReq) (*Empty, error)
 	TypingEnd(context.Context, *TypingReq) (*Empty, error)
 	AddToken(context.Context, *AddTokenReq) (*Empty, error)
+	DeleteUser(context.Context, *UserIdReq) (*Empty, error)
 }
 
 // UnimplementedChatServiceServer should be embedded to have forward compatible implementations.
@@ -235,6 +279,9 @@ func (UnimplementedChatServiceServer) CreateChat(context.Context, *CreateChatReq
 func (UnimplementedChatServiceServer) JoinRoom(*RoomId, ChatService_JoinRoomServer) error {
 	return status.Errorf(codes.Unimplemented, "method JoinRoom not implemented")
 }
+func (UnimplementedChatServiceServer) GetRoomMembers(context.Context, *RoomId) (*Users, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRoomMembers not implemented")
+}
 func (UnimplementedChatServiceServer) LeaveRoom(context.Context, *RoomId) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LeaveRoom not implemented")
 }
@@ -244,6 +291,12 @@ func (UnimplementedChatServiceServer) DeleteRoom(context.Context, *RoomId) (*Emp
 func (UnimplementedChatServiceServer) SendMessage(ChatService_SendMessageServer) error {
 	return status.Errorf(codes.Unimplemented, "method SendMessage not implemented")
 }
+func (UnimplementedChatServiceServer) LikeMessage(context.Context, *LikeMessageReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LikeMessage not implemented")
+}
+func (UnimplementedChatServiceServer) UnlikeMessage(context.Context, *LikeMessageReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnlikeMessage not implemented")
+}
 func (UnimplementedChatServiceServer) TypingStart(context.Context, *TypingReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TypingStart not implemented")
 }
@@ -252,6 +305,9 @@ func (UnimplementedChatServiceServer) TypingEnd(context.Context, *TypingReq) (*E
 }
 func (UnimplementedChatServiceServer) AddToken(context.Context, *AddTokenReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddToken not implemented")
+}
+func (UnimplementedChatServiceServer) DeleteUser(context.Context, *UserIdReq) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
 
 // UnsafeChatServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -343,6 +399,24 @@ func (x *chatServiceJoinRoomServer) Send(m *Message) error {
 	return x.ServerStream.SendMsg(m)
 }
 
+func _ChatService_GetRoomMembers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RoomId)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).GetRoomMembers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chatpb.ChatService/GetRoomMembers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).GetRoomMembers(ctx, req.(*RoomId))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ChatService_LeaveRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RoomId)
 	if err := dec(in); err != nil {
@@ -405,6 +479,42 @@ func (x *chatServiceSendMessageServer) Recv() (*Message, error) {
 	return m, nil
 }
 
+func _ChatService_LikeMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LikeMessageReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).LikeMessage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chatpb.ChatService/LikeMessage",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).LikeMessage(ctx, req.(*LikeMessageReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChatService_UnlikeMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LikeMessageReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).UnlikeMessage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chatpb.ChatService/UnlikeMessage",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).UnlikeMessage(ctx, req.(*LikeMessageReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ChatService_TypingStart_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(TypingReq)
 	if err := dec(in); err != nil {
@@ -459,6 +569,24 @@ func _ChatService_AddToken_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ChatService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UserIdReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).DeleteUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/chatpb.ChatService/DeleteUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).DeleteUser(ctx, req.(*UserIdReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ChatService_ServiceDesc is the grpc.ServiceDesc for ChatService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -475,12 +603,24 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ChatService_CreateChat_Handler,
 		},
 		{
+			MethodName: "GetRoomMembers",
+			Handler:    _ChatService_GetRoomMembers_Handler,
+		},
+		{
 			MethodName: "LeaveRoom",
 			Handler:    _ChatService_LeaveRoom_Handler,
 		},
 		{
 			MethodName: "DeleteRoom",
 			Handler:    _ChatService_DeleteRoom_Handler,
+		},
+		{
+			MethodName: "LikeMessage",
+			Handler:    _ChatService_LikeMessage_Handler,
+		},
+		{
+			MethodName: "UnlikeMessage",
+			Handler:    _ChatService_UnlikeMessage_Handler,
 		},
 		{
 			MethodName: "TypingStart",
@@ -493,6 +633,10 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddToken",
 			Handler:    _ChatService_AddToken_Handler,
+		},
+		{
+			MethodName: "DeleteUser",
+			Handler:    _ChatService_DeleteUser_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

@@ -3,12 +3,16 @@ package main
 import (
 	"chat/cache"
 	"chat/chatpb"
+	"chat/neo4j"
 	"context"
 	json2 "encoding/json"
 	"errors"
 	"firebase.google.com/go/v4/messaging"
 	"fmt"
 	"github.com/go-redis/redis/v8"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
 	"io"
 	"log"
 	"sync"
@@ -17,7 +21,6 @@ import (
 
 var (
 	roomCache cache.RoomCache
-	userCache cache.UserCache
 )
 
 func newServer() *chatServiceServer {
@@ -90,6 +93,7 @@ func (s *chatServiceServer) CreateChat(ctx context.Context, request *chatpb.Crea
 	userId := md.Get("userId")[0]
 
 	UUIDs := append([]string{userId}, request.UserIds...)
+	UUIDs = unique(UUIDs)
 
 	if len(UUIDs) < 2 {
 		return nil, errors.New("chats must have at least 2 users")
@@ -116,6 +120,21 @@ func (s *chatServiceServer) LeaveRoom(ctx context.Context, request *chatpb.RoomI
 	roomCache.LeaveRoom(userId, request.GetRoomId())
 
 	return &chatpb.Empty{}, nil
+}
+
+func (s *chatServiceServer) GetRoomMembers(ctx context.Context, request *chatpb.RoomId) (*chatpb.Users, error) {
+	_, err := authorize(ctx)
+	if err != nil {
+		panic(err)
+	}
+
+	membersId := roomCache.GetRoomMembers(request.RoomId)
+	users, err := neo4j.GetUsers(membersId)
+	if err != nil {
+		return nil, err
+	}
+
+	return &chatpb.Users{Users: users}, nil
 }
 
 func (s *chatServiceServer) DeleteRoom(ctx context.Context, request *chatpb.RoomId) (*chatpb.Empty, error) {
@@ -149,6 +168,13 @@ func (s *chatServiceServer) JoinRoom(request *chatpb.RoomId, msgStream chatpb.Ch
 	userId := md.Get("userId")[0]
 
 	var ctx = context.Background()
+
+	isMember := roomCache.IsMember(userId, request.RoomId)
+
+	if isMember == false {
+		log.Println("Can't access rooms you are not member of")
+		return errors.New("you are not member of this group chat")
+	}
 
 	go roomCache.SetSeen(request.GetRoomId(), userId)
 
@@ -200,6 +226,12 @@ func (s *chatServiceServer) SendMessage(msgStream chatpb.ChatService_SendMessage
 
 	msg, err := msgStream.Recv()
 
+	isMember := roomCache.IsMember(userId, msg.Room.Id)
+	if isMember == false {
+		log.Println("Can't access rooms you are not member of")
+		return errors.New("you are not member of this group chat")
+	}
+
 	go SendMessageNotification(userId, msg.Room.Id, msg.SenderName, msg.SenderProfilePictureUrl)
 	go roomCache.SetSeen(msg.Room.Id, userId)
 
@@ -235,6 +267,23 @@ func (s *chatServiceServer) SendMessage(msgStream chatpb.ChatService_SendMessage
 	}()
 
 	return nil
+}
+
+func (s *chatServiceServer) DeleteUser(ctx context.Context, req *chatpb.UserIdReq) (*chatpb.Empty, error) {
+	DeleteUser(req.GetUserId())
+	return &chatpb.Empty{}, nil
+}
+
+func (s *chatServiceServer) LikeMessage(ctx context.Context, req *chatpb.LikeMessageReq) (*chatpb.Empty, error) {
+	_, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return nil, status.Errorf(codes.InvalidArgument, "Failed retrieving metadata")
+	}
+	//userId := md.Get("userId")[0]
+
+	roomCache.LikeMessage(req.RoomId, req.MessageId)
+
+	return &chatpb.Empty{}, nil
 }
 
 func (s *chatServiceServer) AddToken(ctx context.Context, req *chatpb.AddTokenReq) (*chatpb.Empty, error) {
@@ -281,7 +330,8 @@ func SendMessageNotification(userId string, roomId string, name string, avatar s
 			"title":     name,
 			"body":      "sent a Chat",
 			"avatar":    avatar,
-			"channelId": roomId,
+			"roomId":    roomId,
+			"channelId": "CHAT_CHANNEL",
 		},
 		Tokens: tokens,
 	})
@@ -313,7 +363,8 @@ func SendNotification(userId string, roomId string, name string, avatar string) 
 			"title":     name,
 			"body":      "is typing...",
 			"avatar":    avatar,
-			"channelId": roomId,
+			"roomId":    roomId,
+			"channelId": "CHAT_CHANNEL",
 		},
 		Tokens: tokens,
 	})
@@ -321,4 +372,16 @@ func SendNotification(userId string, roomId string, name string, avatar string) 
 	if err != nil {
 		log.Println(err)
 	}
+}
+
+func unique(s []string) []string {
+	inResult := make(map[string]bool)
+	var result []string
+	for _, str := range s {
+		if _, ok := inResult[str]; !ok {
+			inResult[str] = true
+			result = append(result, str)
+		}
+	}
+	return result
 }

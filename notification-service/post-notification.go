@@ -16,8 +16,13 @@ func likePostNotification(c echo.Context, userEvent *usereventpb.UserEvent) {
 
 	cypher := `MATCH (p:Post {id: $postId})<-[:POSTED]-(author:User)
 				MATCH (u: User { id: $userId}) 
-			    RETURN { authorId: author.id, tokens: author.registrationTokens, username: u.username, 
-				avatar: u.profilePictureUrl }`
+			    RETURN { 
+					authorId: author.id,
+					tokens: author.registrationTokens,
+					username: u.username,
+					name: u.name,
+					avatar: u.profilePictureUrl
+				}`
 
 	params := map[string]interface{}{
 		"userId": userEvent.UserId,
@@ -37,6 +42,7 @@ func likePostNotification(c echo.Context, userEvent *usereventpb.UserEvent) {
 	rMap := record.Values[0].(map[string]interface{})
 
 	authorId := rMap["authorId"].(string)
+	name := rMap["name"].(string)
 	rTokens := rMap["tokens"].([]interface{})
 	var tokens []string
 	for _, token := range rTokens {
@@ -46,10 +52,14 @@ func likePostNotification(c echo.Context, userEvent *usereventpb.UserEvent) {
 	var wg sync.WaitGroup
 	wg.Add(1)
 
+	title := name
+	if title == "" {
+		title = rMap["username"].(string)
+	}
 	notification := &Notification{
 		ReceiverId: authorId,
 		Tokens:     tokens,
-		Title:      "Cheers",
+		Title:      title,
 		Body:       rMap["username"].(string) + " liked your post.",
 		Avatar:     rMap["avatar"].(string),
 	}
@@ -68,8 +78,16 @@ func postNotification(c echo.Context, userEvent *usereventpb.UserEvent) {
 	cypher := `MATCH (p:Post {id: $postId})<-[:POSTED]-(author:User)
 				MATCH (f:User)-[:FOLLOWS]->(author)
 				WITH p, author, collect(DISTINCT [f.id, f.registrationTokens]) as tok
-			    RETURN { followersWithTokens: tok, username: author.username, locationName: p.locationName,
-				avatar: author.profilePictureUrl, beverage: p.beverage, caption: p.caption, type: p.type }`
+			    RETURN { 
+					followersWithTokens: tok,
+					name: author.name,
+					avatar: author.profilePictureUrl,
+					username: author.username,
+					locationName: p.locationName,
+					beverage: p.beverage,
+					caption: p.caption,
+					type: p.type 
+				}`
 
 	params := map[string]interface{}{
 		"userId": userEvent.UserId,
@@ -90,6 +108,9 @@ func postNotification(c echo.Context, userEvent *usereventpb.UserEvent) {
 	followersWithTokens := rMap["followersWithTokens"].([]interface{})
 	beverage := rMap["beverage"].(string)
 	username := rMap["username"].(string)
+	postType := rMap["type"].(string)
+	caption := rMap["caption"].(string)
+	name := rMap["name"].(string)
 
 	var wg sync.WaitGroup
 	for _, followerWithTokens := range followersWithTokens {
@@ -103,14 +124,26 @@ func postNotification(c echo.Context, userEvent *usereventpb.UserEvent) {
 			continue
 		}
 
-		body := username + " just posted a photo."
+		body := caption
+
+		if postType == "IMAGE" {
+			body = username + " just posted a photo."
+		}
+
 		if beverage != "" && beverage != "NONE" {
 			body = username + " is drinking " + strings.ToLower(beverage)
 		}
+
+		title := name
+
+		if name == "" {
+			title = username
+		}
+
 		notification := &Notification{
 			ReceiverId: followerId,
 			Tokens:     tokens,
-			Title:      "Cheers",
+			Title:      title,
 			Body:       body,
 			Avatar:     rMap["avatar"].(string),
 			ChannelId:  "NEW_POST_CHANNEL",
@@ -130,7 +163,13 @@ func followNotification(c echo.Context, userEvent *usereventpb.UserEvent) error 
 	defer session.Close()
 
 	cypher := `MATCH (u: User {id: $userId})-[:FOLLOWS]->(f: User {id: $otherUserId}) 
-                 RETURN { avatar: u.profilePictureUrl, username: u.username, tokens: f.registrationTokens, otherUserId: f.id }`
+			   RETURN { 
+					avatar: u.profilePictureUrl,
+					name: u.name,
+					username: u.username,
+					tokens: f.registrationTokens,
+					otherUserId: f.id 
+				}`
 
 	params := map[string]interface{}{
 		"userId":      userEvent.UserId,
@@ -152,11 +191,20 @@ func followNotification(c echo.Context, userEvent *usereventpb.UserEvent) error 
 	for _, token := range rMap["tokens"].([]interface{}) {
 		tokens = append(tokens, token.(string))
 	}
+
+	name := rMap["name"].(string)
+	username := rMap["username"].(string)
+
+	title := name
+	if name == "" {
+		title = username
+	}
+
 	notification := &Notification{
 		ReceiverId: rMap["otherUserId"].(string),
 		Tokens:     tokens,
-		Title:      "Cheers",
-		Body:       rMap["username"].(string) + " started following you.",
+		Title:      title,
+		Body:       username + " started following you.",
 		Avatar:     rMap["avatar"].(string),
 		ChannelId:  "NEW_FOLLOW_CHANNEL",
 	}

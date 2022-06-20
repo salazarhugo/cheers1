@@ -1,69 +1,16 @@
 package main
 
 import (
-	"chat/chatpb"
 	"context"
 	"firebase.google.com/go/v4/auth"
-	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
-	glog "google.golang.org/grpc/grpclog"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"log"
-	"net"
-	"net/http"
-	"os"
 	"strings"
 	"time"
 )
-
-var grpcLog glog.LoggerV2
-
-func init() {
-	//cors.j
-	grpcLog = glog.NewLoggerV2(os.Stdout, os.Stdout, os.Stdout)
-}
-
-func main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-		log.Printf("defaulting to port %s", port)
-	}
-	grpcLog.Info("-- SERVER APP --")
-
-	listen, err := net.Listen("tcp", ":"+port)
-	if err != nil {
-		log.Fatalf("Could not listen @ %v :: %v", port, err)
-	}
-	log.Printf("Listening @%v:%s", port, listen.Addr())
-
-	grpcServer := grpc.NewServer(
-		grpc.UnaryInterceptor(unaryInterceptor),
-		grpc.StreamInterceptor(streamInterceptor),
-	)
-
-	chatpb.RegisterChatServiceServer(grpcServer, newServer())
-	go func() {
-		log.Fatalf("failed to serve: %v", grpcServer.Serve(listen))
-	}()
-
-	grpcWebServer := grpcweb.WrapServer(
-		grpcServer,
-		grpcweb.WithOriginFunc(func(origin string) bool { return true }),
-	)
-
-	srv := &http.Server{
-		Handler: grpcWebServer,
-		Addr:    ":8081",
-	}
-
-	log.Printf("http server listening at %v", srv.Addr)
-	if err := srv.ListenAndServe(); err != nil {
-		log.Fatalf("failed to serve: %v", err)
-	}
-}
 
 func streamInterceptor(
 	srv interface{},
@@ -95,11 +42,18 @@ func unaryInterceptor(
 	handler grpc.UnaryHandler,
 ) (interface{}, error) {
 
+	if info.FullMethod == "/chatpb.ChatService/DeleteUser" {
+		log.Println("Skipped authentification")
+		h, err := handler(ctx, req)
+		return h, err
+	}
+
 	start := time.Now()
 
 	md, err := authorize(ctx)
 	if err != nil {
-		return req, err
+		log.Println(err)
+		return nil, err
 	}
 
 	err = grpc.SetHeader(ctx, md)
@@ -147,7 +101,7 @@ func validateToken(idToken string) (*auth.Token, error) {
 
 	idToken = strings.Split(idToken, "Bearer ")[1]
 
-	token, err := client.VerifyIDToken(context.Background(), idToken)
+	token, err := client.VerifyIDTokenAndCheckRevoked(context.Background(), idToken)
 	if err != nil {
 		log.Println("Invalid Authorization Token", idToken)
 		return nil, err

@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"rest-api/auth"
+	"rest-api/comment"
 	"rest-api/event"
 	"rest-api/post"
 	"rest-api/story"
@@ -15,6 +16,12 @@ import (
 
 func main() {
 	e := echo.New()
+
+	log.SetFlags(0)
+	//client, err := logging.NewClient(context.Background(), projectID)
+	//if err != nil {
+	//	log.Fatalf("Failed to create client: %v", err)
+	//}
 
 	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
@@ -42,7 +49,7 @@ func main() {
 	e.GET("/event/feed", event.GetEventFeed)
 	e.POST("/event/create", event.CreateEvent)
 	e.POST("/event/invite", event.InviteEvent)
-	e.POST("/event/delete", event.DeleteEvent)
+	e.DELETE("/events/:eventId", event.DeleteEvent)
 	e.POST("/event/interest", event.InterestEvent)
 	e.POST("/event/uninterest", event.UninterestEvent)
 	e.POST("/event/:eventId/going", event.GoingEvent)
@@ -58,21 +65,25 @@ func main() {
 	// Post
 	e.GET("/posts", post.GetPosts)
 	e.GET("/mapPosts", post.GetMapPosts)
-	//e.GET("/posts/:postId", postDetails)
 	e.GET("/posts/feed", post.PostFeed)
+	e.GET("/posts/:postId/members", post.PostMembers)
 	e.POST("/posts/:postId/like", post.LikePost)
 	e.POST("/posts/:postId/unlike", post.UnlikePost)
-	e.POST("/posts/:postId/delete", post.DeletePost)
+	e.DELETE("/posts/:postId", post.DeletePost)
 	e.POST("/posts/create", post.CreatePost)
+
+	// Comments
+	e.POST("/comment", comment.CreateComment)
 
 	// Story
 	e.GET("/mapStories", story.GetMapStories)
 	e.GET("/stories/feed", story.StoryFeed)
 	e.POST("/stories/create", story.CreateStory)
-	e.POST("/stories/:storyId/delete", story.DeleteStory)
+	e.DELETE("/stories/:storyId", story.DeleteStory)
 	e.POST("/stories/:storyId/seen", story.SeenStory)
 
 	// User
+	e.PATCH("/users", user.UpdateUser)
 	e.POST("/users/create", user.CreateUser)
 	e.GET("/users/search/:query", user.SearchUsers)
 	e.POST("/follow", user.FollowUser)
@@ -80,6 +91,7 @@ func main() {
 	e.POST("/users/:userId/block", user.BlockUser)
 	e.GET("/users/:userIdOrUsername", user.GetUser)
 	e.GET("/users/available/:username", user.IsUsernameAvailable)
+	e.GET("/users/suggestions", user.UserSuggestions)
 	e.POST("/users/tokens/:token", user.AddRegistrationToken)
 
 	e.GET("/followers/list", user.FollowersList)

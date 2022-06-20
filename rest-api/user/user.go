@@ -88,9 +88,16 @@ func getUserCard(c echo.Context, userId string) *UserCard {
 
 	cypher := `MATCH (u:User) 
                 WHERE u.id = $userIdOrUsername OR u.username = $userIdOrUsername 
-                OPTIONAL MATCH (:User)-[followers:FOLLOWS]->(u)
+                OPTIONAL MATCH (:User)-[:FOLLOWS]->(u)
                 WITH u, exists((:User { id: $userId })-[:FOLLOWS]->(u)) as followBack
-                RETURN u { .username, .verified, avatar: u.profilePictureUrl, followBack: followBack}`
+                RETURN u {
+					.id,
+					.name,
+					.username,
+					.verified,
+					avatar: u.profilePictureUrl,
+					followBack: followBack
+				}`
 
 	params := map[string]interface{}{
 		"userId":           cc.Get("userId"),
@@ -267,14 +274,29 @@ func GetUser(c echo.Context) error {
 
 	userIdOrUsername := cc.Param("userIdOrUsername")
 
-	cypher := `MATCH (u:User) 
+	cypher := `
+				MATCH (me:User {id: $userId}) 
+				MATCH (u:User) 
                 WHERE u.id = $userIdOrUsername OR u.username = $userIdOrUsername 
                 OPTIONAL MATCH (u)-[authorPosts:POSTED]->(:Post) 
                 OPTIONAL MATCH (u)-[following:FOLLOWS]->(:User) 
                 OPTIONAL MATCH (:User)-[followers:FOLLOWS]->(u)
-                WITH u, count(DISTINCT authorPosts) as postCount, count(DISTINCT following) as following, 
-                count(DISTINCT followers) as followers, exists((:User { id:$userId })-[:FOLLOWS]->(u)) as isFollowed 
-                RETURN u { .*, postCount: postCount, isFollowed: isFollowed, following: following, followers: followers} as users`
+                OPTIONAL MATCH (u)-[:POSTED]->(s:Story)
+                WITH 
+					u,
+					count(DISTINCT authorPosts) as postCount,
+					count(DISTINCT following) as following, 
+                	count(DISTINCT followers) as followers,
+					exists((me)-[:FOLLOWS]->(u)) as followBack,
+					count(s) > 0 as hasStory
+                RETURN u { 
+					.*,
+					postCount: postCount,
+					followBack: followBack,
+					following: following,
+					followers: followers,
+					hasStory: hasStory
+				} as users`
 
 	params := map[string]interface{}{
 		"userId":           cc.Get("userId"),
@@ -302,6 +324,44 @@ func GetUser(c echo.Context) error {
 	return cc.JSON(http.StatusOK, user)
 }
 
+// GET("users/suggestions")
+func UserSuggestions(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
+	defer session.Close()
+
+	cypher := ` MATCH (u:User { id: $userId})-[:FOLLOWS]->(f:User)-[:FOLLOWS]->(suggestion:User)
+				WHERE suggestion.id <> $userId
+				AND NOT (u)-[:FOLLOWS]->(suggestion)
+				WITH suggestion SKIP 0 LIMIT 10
+                RETURN suggestion {
+					.id,
+					.name,
+					.username,
+					.verified,
+					avatar: suggestion.profilePictureUrl
+				}`
+
+	params := map[string]interface{}{
+		"userId": cc.Get("userId"),
+	}
+
+	result, err := session.Run(cypher, params)
+
+	users := make([]interface{}, 0)
+
+	for result.Next() {
+		users = append(users, result.Record().Values[0])
+	}
+
+	if err = result.Err(); err != nil {
+		log.Fatalf("Error: %s", err)
+		return err
+	}
+
+	return cc.JSON(http.StatusOK, users)
+}
+
 // GET("users/search/:query")
 func SearchUsers(c echo.Context) error {
 	cc := c.(*utils.CustomContext)
@@ -320,8 +380,8 @@ func SearchUsers(c echo.Context) error {
                 OPTIONAL MATCH (u)-[posts:POSTED]->(:Post)
                 OPTIONAL MATCH (u)-[following:FOLLOWS]->(:User)
                 OPTIONAL MATCH (:User)-[followers:FOLLOWS]->(u)
-                WITH u, count(DISTINCT posts) as posts, count(DISTINCT following) as following, count(DISTINCT followers) as followers, exists((:User {id: $userId})-[:FOLLOWS]->(u)) as isFollowed
-                RETURN u {.*, postCount: posts, isFollowed: isFollowed, following: following, followers: followers} as users`
+                WITH u, count(DISTINCT posts) as posts, count(DISTINCT following) as following, count(DISTINCT followers) as followers, exists((:User {id: $userId})-[:FOLLOWS]->(u)) as followBack
+                RETURN u {.*, postCount: posts, followBack: followBack, following: following, followers: followers} as users`
 
 	params := map[string]interface{}{
 		"userId": cc.Get("userId"),
@@ -405,6 +465,48 @@ func AddRegistrationToken(c echo.Context) error {
 	return err
 }
 
+// UpdateUser PATCH /users
+func UpdateUser(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
+	defer session.Close()
+
+	userId := cc.Get("userId").(string)
+
+	type UpdateUser struct {
+		Email             string `json:"email" structs:"email,omitempty"`
+		Name              string `json:"name" structs:"name,omitempty"`
+		ProfilePictureUrl string `json:"profilePictureUrl" structs:"profilePictureUrl,omitempty"`
+		Bio               string `json:"bio" structs:"bio,omitempty"`
+		Website           string `json:"website" structs:"website,omitempty"`
+		PhoneNumber       string `json:"phoneNumber" structs:"phoneNumber,omitempty"`
+	}
+	user := &UpdateUser{}
+
+	err := json.NewDecoder(cc.Request().Body).Decode(&user)
+	if err != nil {
+		log.Println("Error decoding request body.")
+		return cc.NoContent(http.StatusBadRequest)
+	}
+
+	cypher := ` MATCH (u: User {id: $userId})
+                SET u += $user`
+
+	params := map[string]interface{}{
+		"userId": userId,
+		"user":   structs.Map(user),
+	}
+
+	_, err = session.Run(cypher, params)
+
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	return cc.NoContent(http.StatusOK)
+}
+
 // POST("/users/create")
 func CreateUser(c echo.Context) error {
 	cc := c.(*utils.CustomContext)
@@ -414,6 +516,7 @@ func CreateUser(c echo.Context) error {
 	userReq := User{}
 	userId := cc.Get("userId").(string)
 	err := json.NewDecoder(cc.Request().Body).Decode(&userReq)
+
 	if err != nil {
 		return err
 	}
@@ -578,7 +681,14 @@ func FollowingList(c echo.Context) error {
 	cypher := `MATCH (u:User)-[:FOLLOWS]->(following:User)
 				WHERE u.id = $userIdOrUsername OR u.username = $userIdOrUsername 
 			 	WITH following LIMIT 20
-                RETURN following { .id, .username, .verified, .profilePictureUrl, .name }`
+                RETURN following { 
+					.id,
+					.name,
+					.username,
+					.verified,
+					.profilePictureUrl,
+					followBack: true
+				}`
 
 	params := map[string]interface{}{
 		"userIdOrUsername": userId,
@@ -625,10 +735,17 @@ func FollowersList(c echo.Context) error {
 		userId = userIdParam
 	}
 
-	cypher := `MATCH (u:User)<-[:FOLLOWS]-(follower:User)
+	cypher := ` MATCH (u:User)<-[:FOLLOWS]-(follower:User)
 				WHERE u.id = $userIdOrUsername OR u.username = $userIdOrUsername 
-                 WITH follower, exists((u)-[:FOLLOWS]->(follower)) as followBack LIMIT 20
-                 RETURN follower { .id, .username, .verified, .profilePictureUrl, .name, isFollowed: followBack}`
+                WITH follower, exists((u)-[:FOLLOWS]->(follower)) as followBack LIMIT 20
+                RETURN follower {
+					.id,
+					.name,
+					.username,
+					.verified,
+					.profilePictureUrl,
+					followBack: followBack
+				}`
 
 	params := map[string]interface{}{
 		"userIdOrUsername": userId,
