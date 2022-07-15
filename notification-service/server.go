@@ -94,6 +94,8 @@ func HelloPubSub(c echo.Context) error {
 		postNotification(c, userevent)
 	case usereventpb.UserEventType_FOLLOW:
 		followNotification(c, userevent)
+	case usereventpb.UserEventType_COMMENT:
+		commentNotification(c, userevent)
 	default:
 	}
 

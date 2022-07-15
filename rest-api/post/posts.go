@@ -15,6 +15,50 @@ import (
 	"time"
 )
 
+//func GetHistoryPosts(c echo.Context) error {
+//cc := c.(*utils.CustomContext)
+//session := utils.GetSession(cc.Driver)
+//defer session.Close()
+//
+//pageSize, err := strconv.Atoi(cc.QueryParam("pageSize"))
+//page, err := strconv.Atoi(cc.QueryParam("page"))
+//skip := page * pageSize
+//
+//cypher := ` MATCH (u:User {id: $userId})-[:FOLLOWS*0..1]->(:User)-[:POSTED]->(p:Post)
+//			WHERE p.created > datetime().epochMillis-24*60*60*1000 AND p.type = 'IMAGE'
+//			WITH p SKIP $skip LIMIT $pageSize
+//			RETURN [p.locationLongitude, p.locationLatitude], p.photos[0] as photoUrl`
+//
+//params := map[string]interface{}{
+//	"userId": cc.Get("userId"),
+//	"skip":   skip, "pageSize": pageSize,
+//}
+//
+//result, err := session.Run(cypher, params)
+//
+//if err != nil {
+//	log.Fatalf("Neo4j Error: %s", err)
+//	return err
+//}
+//
+//features := make([]utils.Feature, 0)
+//
+//for result.Next() {
+//	res := result.Record().Values[0].([]interface{}) // [45.643, 34.32]
+//	photoUrl := result.Record().Values[1].(string)
+//	var coordinates []float64
+//	coordinates = append(coordinates, res[0].(float64))
+//	coordinates = append(coordinates, res[1].(float64))
+//	features = append(features, utils.Feature{
+//		Type:       "Feature",
+//		Geometry:   utils.Geometry{Type: "Point", Coordinates: coordinates},
+//		Properties: utils.Properties{PhotoUrl: photoUrl},
+//	})
+//}
+//
+//return cc.JSON(http.StatusOK, utils.FeatureCollection{Type: "FeatureCollection", Features: features.([]utils.Feature)})
+//}
+
 func GetMapPosts(c echo.Context) error {
 	cc := c.(*utils.CustomContext)
 	session := utils.GetSession(cc.Driver)
@@ -145,6 +189,62 @@ func PostMembers(c echo.Context) error {
 	}
 
 	return cc.JSON(http.StatusOK, users)
+}
+
+// GET /posts/:userId
+func GetUserPosts(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
+	defer session.Close()
+
+	otherUserId := cc.Param("userId")
+	pageSize, err := strconv.Atoi(cc.QueryParam("pageSize"))
+	page, err := strconv.Atoi(cc.QueryParam("page"))
+	skip := page * pageSize
+
+	cypher := `
+			MATCH (u:User {id: $userId})
+			MATCH (a:User)-[:POSTED]->(p:Post)
+			WHERE a.id = $otherUserId OR a.username = $otherUserId
+			OPTIONAL MATCH (:User)-[l:LIKED]->(p) 
+			WITH 
+				p,
+				a,
+				exists((u)-[:LIKED]->(p)) as liked,
+				count(DISTINCT l) as likes 
+			SKIP 
+				$skip 
+			LIMIT 
+				$pageSize
+			RETURN p {
+				.*,
+				likes: likes,
+				liked: liked,
+				username: a.username,
+				verified: a.verified,
+				profilePictureUrl: a.profilePictureUrl
+			}`
+
+	params := map[string]interface{}{
+		"userId":      cc.Get("userId"),
+		"otherUserId": otherUserId,
+		"skip":        skip,
+		"pageSize":    pageSize,
+	}
+
+	result, err := session.Run(cypher, params)
+
+	if err != nil {
+		return err
+	}
+
+	posts := make([]interface{}, 0)
+
+	for result.Next() {
+		posts = append(posts, result.Record().Values[0])
+	}
+
+	return cc.JSON(http.StatusOK, posts)
 }
 
 func PostFeed(c echo.Context) error {

@@ -86,6 +86,47 @@ func SeenStory(c echo.Context) error {
 	return cc.String(http.StatusOK, "OK!")
 }
 
+func GetUserStory(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
+	defer session.Close()
+
+	username := cc.Param("username")
+
+	cypher := `
+				MATCH (u: User {id: $userId})
+				MATCH (author:User {username: $username})-[:POSTED]->(s:Story)
+				WHERE s.created > datetime().epochMillis-24*60*60*1000
+				WITH author, s, exists((u)-[:SEEN]->(s)) as seen LIMIT 50
+				RETURN s {
+					.*,
+					seen: seen,
+					username: author.username,
+					verified: author.verified,
+					profilePictureUrl: author.profilePictureUrl
+				}
+				ORDER BY s.created DESC`
+
+	params := map[string]interface{}{
+		"userId":   cc.Get("userId"),
+		"username": username,
+	}
+
+	result, err := session.Run(cypher, params)
+
+	if err != nil {
+		return err
+	}
+
+	stories := make([]interface{}, 0)
+
+	for result.Next() {
+		stories = append(stories, result.Record().Values[0])
+	}
+
+	return cc.JSON(http.StatusOK, stories)
+}
+
 func StoryFeed(c echo.Context) error {
 	cc := c.(*utils.CustomContext)
 	session := utils.GetSession(cc.Driver)
@@ -136,7 +177,7 @@ func StoryFeed(c echo.Context) error {
 	return cc.JSON(http.StatusOK, stories)
 }
 
-// POST("/stories/:storyId/delete")
+// DELETE("/stories/:storyId")
 func DeleteStory(c echo.Context) error {
 	cc := c.(*utils.CustomContext)
 	session := utils.GetSession(cc.Driver)
@@ -144,24 +185,25 @@ func DeleteStory(c echo.Context) error {
 
 	storyId := cc.Param("storyId")
 
-	cypher := `MATCH (p:Story { id: $storyId }) 
-                DETACH DELETE p`
+	cypher := `MATCH (s:Story { id: $storyId }) DETACH DELETE s`
+	log.Println(storyId)
 
 	params := map[string]interface{}{
 		"userId":  cc.Get("userId"),
 		"storyId": storyId,
 	}
 
-	session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
-		transaction.Run(
-			cypher,
-			params,
-		)
+	result, err := session.Run(cypher, params)
 
-		return nil, nil
-	})
+	log.Println(result)
 
-	return cc.String(http.StatusOK, "OK!")
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	log.Println("OK HAH")
+	return cc.NoContent(http.StatusOK)
 }
 
 type Story struct {

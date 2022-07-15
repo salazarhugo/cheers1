@@ -64,6 +64,8 @@ func main() {
 
 	// Post
 	e.GET("/posts", post.GetPosts)
+	e.GET("/posts/:userId", post.GetUserPosts)
+	//e.GET("/posts/history", user.GetHistoryPosts)
 	e.GET("/mapPosts", post.GetMapPosts)
 	e.GET("/posts/feed", post.PostFeed)
 	e.GET("/posts/:postId/members", post.PostMembers)
@@ -76,10 +78,11 @@ func main() {
 	e.POST("/comment", comment.CreateComment)
 
 	// Story
+	e.GET("/stories/:username", story.GetUserStory)
 	e.GET("/mapStories", story.GetMapStories)
 	e.GET("/stories/feed", story.StoryFeed)
 	e.POST("/stories/create", story.CreateStory)
-	e.DELETE("/stories/:storyId", story.DeleteStory)
+	e.POST("/stories/:storyId", story.DeleteStory)
 	e.POST("/stories/:storyId/seen", story.SeenStory)
 
 	// User

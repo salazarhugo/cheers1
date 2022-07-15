@@ -108,6 +108,7 @@ func postNotification(c echo.Context, userEvent *usereventpb.UserEvent) {
 	followersWithTokens := rMap["followersWithTokens"].([]interface{})
 	beverage := rMap["beverage"].(string)
 	username := rMap["username"].(string)
+	locationName := rMap["locationName"].(string)
 	postType := rMap["type"].(string)
 	caption := rMap["caption"].(string)
 	name := rMap["name"].(string)
@@ -124,20 +125,23 @@ func postNotification(c echo.Context, userEvent *usereventpb.UserEvent) {
 			continue
 		}
 
+		title := ""
+
+		if name == "" {
+			name = username
+		}
+
 		body := caption
 
 		if postType == "IMAGE" {
-			body = username + " just posted a photo."
+			title = name + " just posted a photo."
 		}
 
 		if beverage != "" && beverage != "NONE" {
-			body = username + " is drinking " + strings.ToLower(beverage)
-		}
-
-		title := name
-
-		if name == "" {
-			title = username
+			title = name + " is drinking " + strings.ToLower(beverage)
+			if locationName != "" {
+				body = "📍 " + locationName
+			}
 		}
 
 		notification := &Notification{
@@ -205,6 +209,74 @@ func followNotification(c echo.Context, userEvent *usereventpb.UserEvent) error 
 		Tokens:     tokens,
 		Title:      title,
 		Body:       username + " started following you.",
+		Avatar:     rMap["avatar"].(string),
+		ChannelId:  "NEW_FOLLOW_CHANNEL",
+	}
+
+	var wg sync.WaitGroup
+	wg.Add(1)
+	SendNotification(notification, &wg)
+
+	if err != nil {
+		return err
+	}
+
+	wg.Wait()
+	return nil
+}
+
+func commentNotification(c echo.Context, userEvent *usereventpb.UserEvent) error {
+	cc := c.(*CustomContext)
+	session := getSession(cc.Driver)
+	defer session.Close()
+
+	cypher := `
+				MATCH (u:User {id: $userId})
+				MATCH (:Post {id: $postId})<-[:POSTED]-(author:User)
+				WITH u, author
+			    RETURN { 
+					tokens: author.registrationTokens,
+					authorId: author.id,
+					name: u.name,
+					username: u.username,
+					verified: u.verified,
+					avatar: u.profilePictureUrl
+				}`
+
+	params := map[string]interface{}{
+		"userId": userEvent.UserId,
+		"postId": userEvent.PostId,
+	}
+
+	result, err := session.Run(cypher, params)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	if !result.Next() {
+		return errors.New("expected one record was 0 or greater than 1")
+	}
+	rMap := result.Record().Values[0].(map[string]interface{})
+
+	var tokens []string
+	for _, token := range rMap["tokens"].([]interface{}) {
+		tokens = append(tokens, token.(string))
+	}
+
+	name := rMap["name"].(string)
+	username := rMap["username"].(string)
+
+	title := name
+	if name == "" {
+		title = username
+	}
+
+	notification := &Notification{
+		ReceiverId: rMap["authorId"].(string),
+		Tokens:     tokens,
+		Title:      title,
+		Body:       username + " commented on your post.",
 		Avatar:     rMap["avatar"].(string),
 		ChannelId:  "NEW_FOLLOW_CHANNEL",
 	}

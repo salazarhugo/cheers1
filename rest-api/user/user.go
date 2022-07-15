@@ -48,7 +48,7 @@ func GetActivity(c echo.Context) error {
 		Type := data["type"].(string)
 		time := data["time"].(int64)
 
-		userCard := getUserCard(c, userId)
+		userCard := GetUserCard(c, userId)
 
 		photoUrl := ""
 		if postId != "" {
@@ -81,7 +81,7 @@ type UserCard struct {
 	FollowBack bool   `structs:"followBack,omitempty"`
 }
 
-func getUserCard(c echo.Context, userId string) *UserCard {
+func GetUserCard(c echo.Context, userId string) *UserCard {
 	cc := c.(*utils.CustomContext)
 	session := utils.GetSession(cc.Driver)
 	defer session.Close()
@@ -281,21 +281,24 @@ func GetUser(c echo.Context) error {
                 OPTIONAL MATCH (u)-[authorPosts:POSTED]->(:Post) 
                 OPTIONAL MATCH (u)-[following:FOLLOWS]->(:User) 
                 OPTIONAL MATCH (:User)-[followers:FOLLOWS]->(u)
-                OPTIONAL MATCH (u)-[:POSTED]->(s:Story)
+                OPTIONAL MATCH (u)-[:POSTED]->(s:Story) WHERE s.created > datetime().epochMillis-24*60*60*1000
+                OPTIONAL MATCH (me)-[seen:SEEN]->(s)
                 WITH 
 					u,
 					count(DISTINCT authorPosts) as postCount,
 					count(DISTINCT following) as following, 
                 	count(DISTINCT followers) as followers,
 					exists((me)-[:FOLLOWS]->(u)) as followBack,
-					count(s) > 0 as hasStory
+					count(s) > 0 as hasStory,
+					count(seen) = count(s) as seenStory
                 RETURN u { 
 					.*,
 					postCount: postCount,
 					followBack: followBack,
 					following: following,
 					followers: followers,
-					hasStory: hasStory
+					hasStory: hasStory,
+					seenStory: seenStory
 				} as users`
 
 	params := map[string]interface{}{
@@ -474,12 +477,12 @@ func UpdateUser(c echo.Context) error {
 	userId := cc.Get("userId").(string)
 
 	type UpdateUser struct {
-		Email             string `json:"email" structs:"email,omitempty"`
-		Name              string `json:"name" structs:"name,omitempty"`
-		ProfilePictureUrl string `json:"profilePictureUrl" structs:"profilePictureUrl,omitempty"`
-		Bio               string `json:"bio" structs:"bio,omitempty"`
-		Website           string `json:"website" structs:"website,omitempty"`
-		PhoneNumber       string `json:"phoneNumber" structs:"phoneNumber,omitempty"`
+		Email             *string `json:"email" structs:"email,omitempty"`
+		Name              *string `json:"name" structs:"name,omitempty"`
+		ProfilePictureUrl *string `json:"profilePictureUrl" structs:"profilePictureUrl,omitempty"`
+		Bio               *string `json:"bio" structs:"bio,omitempty"`
+		Website           *string `json:"website" structs:"website,omitempty"`
+		PhoneNumber       *string `json:"phoneNumber" structs:"phoneNumber,omitempty"`
 	}
 	user := &UpdateUser{}
 
