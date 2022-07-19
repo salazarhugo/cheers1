@@ -64,6 +64,7 @@ func main() {
 
 	// Post
 	e.GET("/posts", post.GetPosts)
+	e.DELETE("/posts/:id", post.DeletePost)
 	e.GET("/posts/:userId", post.GetUserPosts)
 	//e.GET("/posts/history", user.GetHistoryPosts)
 	e.GET("/mapPosts", post.GetMapPosts)
@@ -71,7 +72,6 @@ func main() {
 	e.GET("/posts/:postId/members", post.PostMembers)
 	e.POST("/posts/:postId/like", post.LikePost)
 	e.POST("/posts/:postId/unlike", post.UnlikePost)
-	e.DELETE("/posts/:postId", post.DeletePost)
 	e.POST("/posts/create", post.CreatePost)
 
 	// Comments

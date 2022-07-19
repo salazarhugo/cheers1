@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"log"
 	"salazar/cheers/notification/usereventpb"
+	"strconv"
 	"strings"
 	"sync"
 )
@@ -105,6 +106,13 @@ func postNotification(c echo.Context, userEvent *usereventpb.UserEvent) {
 	}
 	record := result.Record()
 	rMap := record.Values[0].(map[string]interface{})
+
+	notify, err := strconv.ParseBool(rMap["notify"].(string))
+
+	if err == nil && notify == false {
+		return
+	}
+
 	followersWithTokens := rMap["followersWithTokens"].([]interface{})
 	beverage := rMap["beverage"].(string)
 	username := rMap["username"].(string)

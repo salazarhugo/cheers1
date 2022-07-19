@@ -313,6 +313,7 @@ type Post struct {
 	Altitude          float64  `json:"altitude" structs:"altitude"`
 	LocationName      string   `json:"locationName" structs:"locationName"`
 	Type              string   `json:"type" structs:"type"`
+	Notify            bool     `json:"notify" structs:"notify"`
 	TagUsersId        []string `json:"tagUsersId" structs:"tagUsersId"`
 }
 
@@ -364,13 +365,15 @@ func CreatePost(c echo.Context) error {
 	return cc.NoContent(http.StatusOK)
 }
 
-// POST("/posts/:postId/delete")
+// DeletePost POST("/posts/:postId")
 func DeletePost(c echo.Context) error {
 	cc := c.(*utils.CustomContext)
 	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
-	postId := cc.Param("postId")
+	postId := cc.Param("id")
+	log.Println(cc.ParamNames())
+	log.Println(cc.ParamValues())
 
 	cypher := `MATCH (p:Post { id: $postId }) 
                 DETACH DELETE p`
