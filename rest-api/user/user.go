@@ -297,8 +297,12 @@ func GetUser(c echo.Context) error {
 					followBack: followBack,
 					following: following,
 					followers: followers,
-					hasStory: hasStory,
-					seenStory: seenStory
+					storyState:
+						CASE 
+							WHEN hasStory AND NOT seenStory THEN "NOT_SEEN"
+							WHEN hasStory AND seenStory THEN "SEEN"
+							ELSE "EMPTY"
+						END
 				} as users`
 
 	params := map[string]interface{}{
@@ -674,27 +678,38 @@ func FollowingList(c echo.Context) error {
 	defer session.Close()
 
 	userId := cc.Get("userId")
-
 	userIdParam := cc.QueryParam("userIdOrUsername")
 
-	if userIdParam != "" {
-		userId = userIdParam
-	}
-
-	cypher := `MATCH (u:User)-[:FOLLOWS]->(following:User)
+	cypher := `
+				MATCH (me: User {id: $userId})
+				MATCH (u:User)-[:FOLLOWS]->(following:User)
 				WHERE u.id = $userIdOrUsername OR u.username = $userIdOrUsername 
-			 	WITH following LIMIT 20
+                OPTIONAL MATCH (following)-[:POSTED]->(s:Story) WHERE s.created > datetime().epochMillis-24*60*60*1000
+                OPTIONAL MATCH (me)-[seen:SEEN]->(s)
+                WITH 
+					following,
+					exists((me)-[:FOLLOWS]->(following)) as followBack,
+					count(s) > 0 as hasStory,
+					count(seen) = count(s) as seenStory
+				LIMIT 20
                 RETURN following { 
 					.id,
 					.name,
 					.username,
 					.verified,
 					.profilePictureUrl,
-					followBack: true
+					followBack: followBack,
+					storyState:
+						CASE 
+							WHEN hasStory AND NOT seenStory THEN "NOT_SEEN"
+							WHEN hasStory AND seenStory THEN "SEEN"
+							ELSE "EMPTY"
+						END
 				}`
 
 	params := map[string]interface{}{
-		"userIdOrUsername": userId,
+		"userId":           userId,
+		"userIdOrUsername": userIdParam,
 	}
 
 	users, err := session.ReadTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
@@ -731,27 +746,39 @@ func FollowersList(c echo.Context) error {
 	defer session.Close()
 
 	userId := cc.Get("userId")
-
 	userIdParam := cc.QueryParam("userIdOrUsername")
 
-	if userIdParam != "" {
-		userId = userIdParam
-	}
-
-	cypher := ` MATCH (u:User)<-[:FOLLOWS]-(follower:User)
+	cypher := ` 
+				MATCH (me:User {id: $userId})
+				MATCH (u:User)<-[:FOLLOWS]-(follower:User)
 				WHERE u.id = $userIdOrUsername OR u.username = $userIdOrUsername 
-                WITH follower, exists((u)-[:FOLLOWS]->(follower)) as followBack LIMIT 20
-                RETURN follower {
-					.id,
-					.name,
-					.username,
-					.verified,
-					.profilePictureUrl,
-					followBack: followBack
-				}`
+                OPTIONAL MATCH (follower)-[:POSTED]->(s:Story) WHERE s.created > datetime().epochMillis-24*60*60*1000
+                OPTIONAL MATCH (me)-[seen:SEEN]->(s)
+                WITH 
+					follower,
+					exists((u)-[:FOLLOWS]->(follower)) as followBack,
+					count(s) > 0 as hasStory,
+					count(seen) = count(s) as seenStory
+				LIMIT 20
+                RETURN 
+					follower {
+						.id,
+						.name,
+						.username,
+						.verified,
+						.profilePictureUrl,
+						followBack: followBack,
+						storyState:
+							CASE 
+								WHEN hasStory AND NOT seenStory THEN "NOT_SEEN"
+								WHEN hasStory AND seenStory THEN "SEEN"
+								ELSE "EMPTY"
+							END
+					}`
 
 	params := map[string]interface{}{
-		"userIdOrUsername": userId,
+		"userId":           userId,
+		"userIdOrUsername": userIdParam,
 	}
 
 	users, err := session.ReadTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
