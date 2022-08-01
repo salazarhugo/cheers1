@@ -50,6 +50,7 @@ func main() {
 	e.POST("/event/create", event.CreateEvent)
 	e.POST("/event/invite", event.InviteEvent)
 	e.DELETE("/events/:eventId", event.DeleteEvent)
+	e.GET("/party/:partyId", event.GetParty)
 	e.POST("/event/interest", event.InterestEvent)
 	e.POST("/event/uninterest", event.UninterestEvent)
 	e.POST("/event/:eventId/going", event.GoingEvent)

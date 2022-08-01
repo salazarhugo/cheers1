@@ -126,6 +126,52 @@ func UngoingEvent(c echo.Context) error {
 	return c.NoContent(http.StatusOK)
 }
 
+func GetParty(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
+	defer session.Close()
+
+	partyId := cc.Param("partyId")
+
+	cypher := `
+			MATCH (u:User {id: $userId})
+			MATCH (author:User)-[:POSTED]->(party: Event {id: $partyId})
+			OPTIONAL MATCH (:User)-[interest:INTERESTED]->(party)
+			OPTIONAL MATCH (:User)-[going:GOING]->(party)
+			WITH 
+				party, 
+				exists((u)-[:INTERESTED]->(party)) as interested,
+				exists((u)-[:GOING]->(party)) as going,
+				count(DISTINCT interest) as interestedCount,
+				count(DISTINCT going) as goingCount
+			RETURN 
+				party {
+					.*,
+					interested: interested,
+					interestedCount: interestedCount,
+					going: going,
+					goingCount: goingCount
+				}`
+
+	params := map[string]interface{}{
+		"userId":  cc.Get("userId"),
+		"partyId": partyId,
+	}
+
+	result, err := session.Run(cypher, params)
+
+	if err != nil {
+		return err
+	}
+
+	if result.Next() {
+		party := result.Record().Values[0]
+		return cc.JSON(http.StatusOK, party)
+	}
+
+	return cc.NoContent(http.StatusOK)
+}
+
 // POST("/event/:eventId/going")
 func GoingEvent(c echo.Context) error {
 	cc := c.(*utils.CustomContext)
