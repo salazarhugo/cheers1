@@ -1,1 +1,1 @@
-# cheerscloud
+# cheers-cloud
