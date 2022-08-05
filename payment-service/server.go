@@ -5,7 +5,6 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"log"
 	"os"
-	"salazar/cheers/payment/auth"
 	"salazar/cheers/payment/endpoints"
 	"salazar/cheers/payment/utils"
 )
@@ -27,7 +26,7 @@ func main() {
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
 	}))
 
-	e.Use(auth.AuthMiddleware)
+	//e.Use(auth.AuthMiddleware)
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -35,7 +34,8 @@ func main() {
 		log.Printf("defaulting to port %s", port)
 	}
 
-	e.POST("/create-payment-intent", endpoints.CreatePaymentIntent)
+	e.POST("/createPaymentIntent", endpoints.CreatePaymentIntent)
+	e.POST("/handleStripeEvents", endpoints.HandleStripeEvent)
 
 	e.Logger.Fatal(e.Start(":" + port))
 }

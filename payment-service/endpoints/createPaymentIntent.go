@@ -7,6 +7,7 @@ import (
 	"github.com/stripe/stripe-go/v72"
 	"github.com/stripe/stripe-go/v72/paymentintent"
 	"net/http"
+	"os"
 	"salazar/cheers/payment/utils"
 )
 
@@ -19,7 +20,8 @@ func CreatePaymentIntent(c echo.Context) error {
 	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
-	stripe.Key = "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"
+	secret := os.Getenv("STRIPE_SK")
+	stripe.Key = secret
 
 	ctx := context.Background()
 	client, err := firestore.NewClient(ctx, "cheers-a275e")
