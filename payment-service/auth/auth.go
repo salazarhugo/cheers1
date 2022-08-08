@@ -12,7 +12,7 @@ import (
 
 func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		if c.Path() == "/users/available/:username" {
+		if c.Path() == "/handleStripeEvents" {
 			return next(c)
 		}
 		app := utils.InitializeAppDefault()

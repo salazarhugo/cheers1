@@ -3,8 +3,9 @@ module salazar/cheers/payment
 go 1.18
 
 require (
+	cloud.google.com/go/firestore v1.6.1
 	firebase.google.com/go/v4 v4.8.0
-	github.com/googleapis/enterprise-certificate-proxy v0.1.0
+	github.com/fatih/structs v1.1.0
 	github.com/labstack/echo/v4 v4.7.2
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
 	github.com/stripe/stripe-go/v72 v72.122.0
@@ -14,7 +15,6 @@ require (
 require (
 	cloud.google.com/go v0.102.0 // indirect
 	cloud.google.com/go/compute v1.7.0 // indirect
-	cloud.google.com/go/firestore v1.6.1 // indirect
 	cloud.google.com/go/iam v0.3.0 // indirect
 	cloud.google.com/go/storage v1.22.1 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
@@ -22,6 +22,7 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.8 // indirect
 	github.com/google/uuid v1.3.0 // indirect
+	github.com/googleapis/enterprise-certificate-proxy v0.1.0 // indirect
 	github.com/googleapis/gax-go/v2 v2.4.0 // indirect
 	github.com/googleapis/go-type-adapters v1.0.0 // indirect
 	github.com/labstack/gommon v0.3.1 // indirect

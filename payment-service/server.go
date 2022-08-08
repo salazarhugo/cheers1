@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"log"
 	"os"
+	"salazar/cheers/payment/auth"
 	"salazar/cheers/payment/endpoints"
 	"salazar/cheers/payment/utils"
 )
@@ -26,7 +27,7 @@ func main() {
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
 	}))
 
-	//e.Use(auth.AuthMiddleware)
+	e.Use(auth.AuthMiddleware)
 
 	port := os.Getenv("PORT")
 	if port == "" {

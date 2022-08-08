@@ -1,6 +1,8 @@
 package endpoints
 
 import (
+	"cloud.google.com/go/firestore"
+	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/labstack/echo/v4"
@@ -52,6 +54,8 @@ func HandleStripeEvent(c echo.Context) error {
 			return cc.NoContent(http.StatusBadRequest)
 		}
 		log.Printf("Successful payment for %d.", paymentIntent.Amount)
+		handleSuccess(paymentIntent)
+
 	case "payment_method.attached":
 		var paymentMethod stripe.PaymentMethod
 		err := json.Unmarshal(event.Data.Raw, &paymentMethod)
@@ -64,4 +68,31 @@ func HandleStripeEvent(c echo.Context) error {
 	}
 
 	return cc.NoContent(http.StatusOK)
+}
+
+func handleSuccess(paymentIntent stripe.PaymentIntent) {
+	ctx := context.Background()
+	client, err := firestore.NewClient(ctx, "cheers-a275e")
+	if err != nil {
+		return
+	}
+
+	customerId := paymentIntent.Customer.ID
+	snapshot := client.Collection("stripe_customers").Where("customer_id", "==", customerId).Snapshots(ctx)
+
+	docs, err := snapshot.Next()
+	customerDoc, err := docs.Documents.Next()
+	customerRef := customerDoc.Ref
+
+	_, _, err = customerRef.Collection("payments").Add(ctx, map[string]interface{}{
+		"id":         paymentIntent.ID,
+		"amount":     paymentIntent.Amount,
+		"created":    paymentIntent.Created,
+		"customerId": paymentIntent.Customer.ID,
+		"status":     paymentIntent.Status,
+	})
+	if err != nil {
+		log.Println(err)
+		return
+	}
 }
