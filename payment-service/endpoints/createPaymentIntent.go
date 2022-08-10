@@ -3,6 +3,7 @@ package endpoints
 import (
 	"cloud.google.com/go/firestore"
 	"context"
+	"encoding/json"
 	"github.com/labstack/echo/v4"
 	"github.com/stripe/stripe-go/v72"
 	"github.com/stripe/stripe-go/v72/paymentintent"
@@ -13,6 +14,10 @@ import (
 
 type StripeCustomer struct {
 	Id string `firestore:"customer_id"`
+}
+
+type PaymentIntentReq struct {
+	Amount int64 `json:"amount" structs:"amount"`
 }
 
 func CreatePaymentIntent(c echo.Context) error {
@@ -33,6 +38,14 @@ func CreatePaymentIntent(c echo.Context) error {
 
 	userId := cc.Get("userId").(string)
 
+	paymentIntentReq := PaymentIntentReq{}
+	err = json.NewDecoder(cc.Request().Body).Decode(&paymentIntentReq)
+	if err != nil {
+		return err
+	}
+
+	amount := paymentIntentReq.Amount
+
 	userDoc, err := client.Collection("stripe_customers").Doc(userId).Get(ctx)
 	if err != nil {
 	}
@@ -43,7 +56,7 @@ func CreatePaymentIntent(c echo.Context) error {
 	}
 
 	params := &stripe.PaymentIntentParams{
-		Amount:   stripe.Int64(2000),
+		Amount:   stripe.Int64(amount),
 		Currency: stripe.String(string(stripe.CurrencyEUR)),
 		PaymentMethodTypes: []*string{
 			stripe.String("card"),
