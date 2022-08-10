@@ -2,6 +2,7 @@ package event
 
 import (
 	"encoding/json"
+	"github.com/fatih/structs"
 	"github.com/labstack/echo/v4"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	"log"
@@ -41,34 +42,43 @@ func UpdateEvent(c echo.Context) error {
 	return cc.String(http.StatusOK, "OK!")
 }
 
-func CreateEvent(c echo.Context) error {
+type Party struct {
+	Id          string `json:"id" structs:"id"`
+	Name        string `json:"name" structs:"name"`
+	Description string `json:"description" structs:"description"`
+	Address     string `json:"address" structs:"address"`
+	Privacy     string `json:"privacy" structs:"privacy"`
+	BannerUrl   string `json:"bannerUrl" structs:"bannerUrl"`
+	StartDate   int64  `json:"startDate" structs:"startDate"`
+	EndDate     int64  `json:"endDate" structs:"endDate"`
+	HostId      string `json:"hostId" structs:"hostId"`
+}
+
+func CreateParty(c echo.Context) error {
 	cc := c.(*utils.CustomContext)
 	session := utils.GetSession(cc.Driver)
 
-	event := make(map[string]interface{})
+	party := Party{}
 
-	err := json.NewDecoder(c.Request().Body).Decode(&event)
+	err := json.NewDecoder(c.Request().Body).Decode(&party)
 	if err != nil {
+		log.Println(err)
 		return err
 	}
 
-	_, err = session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
-		result, err := transaction.Run(
-			`MATCH (u:User { id: $userId}) 
-				CREATE (e: Event $event)
+	cypher := `MATCH (u:User { id: $userId}) 
+				CREATE (e: Party $party)
 		   		SET e += { created: datetime().epochMillis } 
-				CREATE (u)-[:POSTED]->(e)`,
-			map[string]interface{}{"userId": cc.Get("userId"), "event": event})
-		if err != nil {
-			log.Fatalf("Neo4j Error: %s", err)
-			return nil, err
-		}
+				CREATE (u)-[:POSTED]->(e)`
 
-		return nil, result.Err()
-	})
+	params := map[string]interface{}{
+		"userId": cc.Get("userId"),
+		"party":  structs.Map(party),
+	}
 
+	_, err = session.Run(cypher, params)
 	if err != nil {
-		log.Fatalf("Error: %s", err)
+		log.Println(err)
 		return err
 	}
 
@@ -267,7 +277,7 @@ func GetEvents(c echo.Context) error {
 	return cc.JSON(http.StatusOK, events)
 }
 
-func GetEventFeed(c echo.Context) error {
+func GetPartyFeed(c echo.Context) error {
 	cc := c.(*utils.CustomContext)
 	session := utils.GetSession(cc.Driver)
 	defer session.Close()
@@ -280,9 +290,9 @@ func GetEventFeed(c echo.Context) error {
 		result, err := transaction.Run(
 			`
 				MATCH (u: User{id:$userId})
-				OPTIONAL MATCH (e1:Event {privacy: "PUBLIC"})
-				OPTIONAL MATCH (u)-[:FOLLOWS]->(:User)-[:POSTED]->(e2:Event {privacy: "FRIENDS"})
-				OPTIONAL MATCH (e3:Event)-[:INVITED]->(u)
+				OPTIONAL MATCH (e1:Party {privacy: "PUBLIC"})
+				OPTIONAL MATCH (u)-[:FOLLOWS]->(:User)-[:POSTED]->(e2:Party {privacy: "FRIENDS"})
+				OPTIONAL MATCH (e3:Party)-[:INVITED]->(u)
 				UNWIND [val in [e1, e2, e3] WHERE val is not null] as e
 				OPTIONAL MATCH (:User)-[interest:INTERESTED]->(e)
 				OPTIONAL MATCH (:User)-[going:GOING]->(e)
@@ -321,13 +331,13 @@ func GetEventFeed(c echo.Context) error {
 			return nil, err
 		}
 
-		events := make([]interface{}, 0)
+		parties := make([]interface{}, 0)
 
 		for result.Next() {
-			events = append(events, result.Record().Values[0])
+			parties = append(parties, result.Record().Values[0])
 		}
 
-		return events, nil
+		return parties, nil
 	})
 	if err != nil {
 		panic(err)

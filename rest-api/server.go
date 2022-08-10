@@ -46,8 +46,8 @@ func main() {
 
 	// Event
 	e.GET("/events", event.GetEvents)
-	e.GET("/event/feed", event.GetEventFeed)
-	e.POST("/event/create", event.CreateEvent)
+	e.GET("/party/feed", event.GetPartyFeed)
+	e.POST("/party/create", event.CreateParty)
 	e.POST("/event/invite", event.InviteEvent)
 	e.DELETE("/events/:eventId", event.DeleteEvent)
 	e.GET("/party/:partyId", event.GetParty)
