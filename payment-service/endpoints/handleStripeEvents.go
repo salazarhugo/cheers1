@@ -91,6 +91,19 @@ func handleSuccess(paymentIntent stripe.PaymentIntent) {
 		"customerId": paymentIntent.Customer.ID,
 		"status":     paymentIntent.Status,
 	})
+
+	docsnap, err := customerRef.Collection("paymentIntents").Doc(paymentIntent.ID).Get(ctx)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	docMap := docsnap.Data()
+	partyId := docMap["partyId"]
+	_, err = customerRef.Collection("private").Doc(customerId).Update(ctx, []firestore.Update{
+		{Path: "population", Value: firestore.Increment(paymentIntent.Amount)},
+	})
+
+	log.Println(partyId)
 	if err != nil {
 		log.Println(err)
 		return

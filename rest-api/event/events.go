@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/fatih/structs"
 	"github.com/labstack/echo/v4"
+	"github.com/lithammer/shortuuid/v4"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	"log"
 	"net/http"
@@ -66,10 +67,13 @@ func CreateParty(c echo.Context) error {
 		return err
 	}
 
+	party.Id = shortuuid.New()
+
 	cypher := `MATCH (u:User { id: $userId}) 
 				CREATE (e: Party $party)
 		   		SET e += { created: datetime().epochMillis } 
-				CREATE (u)-[:POSTED]->(e)`
+				CREATE (u)-[:POSTED]->(e)
+				CREATE (u)-[:GOING]->(e)`
 
 	params := map[string]interface{}{
 		"userId": cc.Get("userId"),
@@ -82,7 +86,32 @@ func CreateParty(c echo.Context) error {
 		return err
 	}
 
-	return cc.NoContent(http.StatusOK)
+	cypher = `
+			MATCH (u:User {id: $userId})
+			MATCH (u)-[:POSTED]->(party: Party {id: $partyId})
+			RETURN 
+			party {
+				.*
+			}`
+
+	params = map[string]interface{}{
+		"userId":  cc.Get("userId"),
+		"partyId": party.Id,
+	}
+
+	result, err := session.Run(cypher, params)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	var response interface{}
+
+	if result.Next() {
+		response = result.Record().Values[0]
+	}
+
+	return cc.JSON(http.StatusOK, response)
 }
 
 func UninterestEvent(c echo.Context) error {
@@ -145,10 +174,11 @@ func GetParty(c echo.Context) error {
 
 	cypher := `
 			MATCH (u:User {id: $userId})
-			MATCH (author:User)-[:POSTED]->(party: Event {id: $partyId})
+			MATCH (host:User)-[:POSTED]->(party: Party {id: $partyId})
 			OPTIONAL MATCH (:User)-[interest:INTERESTED]->(party)
 			OPTIONAL MATCH (:User)-[going:GOING]->(party)
 			WITH 
+				host,
 				party, 
 				exists((u)-[:INTERESTED]->(party)) as interested,
 				exists((u)-[:GOING]->(party)) as going,
@@ -157,6 +187,8 @@ func GetParty(c echo.Context) error {
 			RETURN 
 				party {
 					.*,
+					hostId: host.id,
+					hostName: host.name,
 					interested: interested,
 					interestedCount: interestedCount,
 					going: going,
@@ -291,7 +323,7 @@ func GetPartyFeed(c echo.Context) error {
 			`
 				MATCH (u: User{id:$userId})
 				OPTIONAL MATCH (e1:Party {privacy: "PUBLIC"})
-				OPTIONAL MATCH (u)-[:FOLLOWS]->(:User)-[:POSTED]->(e2:Party {privacy: "FRIENDS"})
+				OPTIONAL MATCH (u)-[:FOLLOWS]->(author:User)-[:POSTED]->(e2:Party {privacy: "FRIENDS"})
 				OPTIONAL MATCH (e3:Party)-[:INVITED]->(u)
 				UNWIND [val in [e1, e2, e3] WHERE val is not null] as e
 				OPTIONAL MATCH (:User)-[interest:INTERESTED]->(e)
@@ -299,6 +331,7 @@ func GetPartyFeed(c echo.Context) error {
 				WITH 
 					u, 
 					e,
+					author,
 					exists((u)-[:INTERESTED]->(e)) as interested,
 					count(DISTINCT interest) as interestedCount,
 					exists((u)-[:GOING]->(e)) as going,
@@ -308,7 +341,7 @@ func GetPartyFeed(c echo.Context) error {
 				LIMIT 
 					$pageSize
 				CALL {
-					WITH u, e
+					WITH u, e, author
 					OPTIONAL MATCH (u)-[:FOLLOWS]->(mutual:User)-[:GOING]->(e)
 					WITH mutual, count(mutual) as mutualCount LIMIT 2
 					RETURN collect(mutual.profilePictureUrl) as mutualProfilePictureUrls,
@@ -316,6 +349,8 @@ func GetPartyFeed(c echo.Context) error {
 				}
 				RETURN e { 
 					.*, 
+					hostId: author.id,
+					hostName: author.name,
 					interested: interested,
 					interestedCount: interestedCount,
 					going: going,
@@ -383,18 +418,18 @@ func InviteEvent(c echo.Context) error {
 	return cc.String(http.StatusOK, "OK!")
 }
 
-func DeleteEvent(c echo.Context) error {
+func DeleteParty(c echo.Context) error {
 	cc := c.(*utils.CustomContext)
 	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
-	eventId := cc.QueryParam("eventId")
+	partyId := cc.QueryParam("partyId")
 
 	_, err := session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		result, err := transaction.Run(
-			`MATCH (e: Event { id: $eventId}) 
+			`MATCH (e: Party { id: $partyId}) 
 					DETACH DELETE e`,
-			map[string]interface{}{"userId": cc.Get("userId"), "eventId": eventId})
+			map[string]interface{}{"userId": cc.Get("userId"), "partyId": partyId})
 		if err != nil {
 			log.Fatalf("Neo4j Error: %s", err)
 			return nil, err
@@ -408,7 +443,7 @@ func DeleteEvent(c echo.Context) error {
 		return err
 	}
 
-	return cc.String(http.StatusOK, "OK!")
+	return cc.NoContent(http.StatusOK)
 }
 
 // GET /event/:eventId/interested/list

@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/stripe/stripe-go/v72"
 	"github.com/stripe/stripe-go/v72/paymentintent"
+	"log"
 	"net/http"
 	"os"
 	"salazar/cheers/payment/utils"
@@ -37,17 +38,31 @@ func CreatePaymentIntent(c echo.Context) error {
 	}
 
 	userId := cc.Get("userId").(string)
+	partyId := cc.QueryParam("partyId")
+	var amount int64 = 0
 
-	paymentIntentReq := PaymentIntentReq{}
+	paymentIntentReq := make(map[string]int64)
+
 	err = json.NewDecoder(cc.Request().Body).Decode(&paymentIntentReq)
 	if err != nil {
 		return err
 	}
 
-	amount := paymentIntentReq.Amount
+	log.Println(paymentIntentReq)
+	for ticketId, quantity := range paymentIntentReq {
+		log.Println(ticketId, quantity)
+		docsnap, err := client.Collection("ticketing").Doc(partyId).Collection("tickets").Doc(ticketId).Get(ctx)
+		if err != nil {
+			log.Println(err)
+			return err
+		}
+		ticketMap := docsnap.Data()
+		amount += ticketMap["price"].(int64) * quantity
+	}
 
 	userDoc, err := client.Collection("stripe_customers").Doc(userId).Get(ctx)
 	if err != nil {
+		return err
 	}
 
 	var customer StripeCustomer
@@ -71,6 +86,16 @@ func CreatePaymentIntent(c echo.Context) error {
 			"error": err.Error(),
 		})
 	}
+
+	ref := client.Collection("stripe_customers").Doc(customer.Id).Collection("paymentIntents")
+	_, _, err = ref.Add(ctx, map[string]interface{}{
+		"id":         paymentIntent.ID,
+		"amount":     paymentIntent.Amount,
+		"created":    paymentIntent.Created,
+		"customerId": paymentIntent.Customer.ID,
+		"status":     paymentIntent.Status,
+		"partyId":    partyId,
+	})
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"clientSecret": paymentIntent.ClientSecret,

@@ -49,7 +49,7 @@ func main() {
 	e.GET("/party/feed", event.GetPartyFeed)
 	e.POST("/party/create", event.CreateParty)
 	e.POST("/event/invite", event.InviteEvent)
-	e.DELETE("/events/:eventId", event.DeleteEvent)
+	e.DELETE("/party/:partyId", event.DeleteParty)
 	e.GET("/party/:partyId", event.GetParty)
 	e.POST("/event/interest", event.InterestEvent)
 	e.POST("/event/uninterest", event.UninterestEvent)
