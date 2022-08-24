@@ -44,15 +44,18 @@ func UpdateEvent(c echo.Context) error {
 }
 
 type Party struct {
-	Id          string `json:"id" structs:"id"`
-	Name        string `json:"name" structs:"name"`
-	Description string `json:"description" structs:"description"`
-	Address     string `json:"address" structs:"address"`
-	Privacy     string `json:"privacy" structs:"privacy"`
-	BannerUrl   string `json:"bannerUrl" structs:"bannerUrl"`
-	StartDate   int64  `json:"startDate" structs:"startDate"`
-	EndDate     int64  `json:"endDate" structs:"endDate"`
-	HostId      string `json:"hostId" structs:"hostId"`
+	Id           string `json:"id" structs:"id"`
+	Name         string `json:"name" structs:"name"`
+	Description  string `json:"description" structs:"description"`
+	Address      string `json:"address" structs:"address"`
+	Privacy      string `json:"privacy" structs:"privacy"`
+	BannerUrl    string `json:"bannerUrl" structs:"bannerUrl"`
+	StartDate    int64  `json:"startDate" structs:"startDate"`
+	EndDate      int64  `json:"endDate" structs:"endDate"`
+	HostId       string `json:"hostId" structs:"hostId"`
+	Longitude    int64  `json:"longitude" structs:"longitude"`
+	Latitude     int64  `json:"latitude" structs:"latitude"`
+	LocationName string `json:"locationName" structs:"locationName"`
 }
 
 func CreateParty(c echo.Context) error {
