@@ -312,6 +312,74 @@ func GetEvents(c echo.Context) error {
 	return cc.JSON(http.StatusOK, events)
 }
 
+func GetMyParties(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	session := utils.GetSession(cc.Driver)
+	defer session.Close()
+
+	pageSize, err := strconv.Atoi(cc.QueryParam("pageSize"))
+	page, err := strconv.Atoi(cc.QueryParam("page"))
+	skip := page * pageSize
+
+	parties, err := session.ReadTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
+		result, err := transaction.Run(
+			`
+				MATCH (u: User{id:$userId})
+				OPTIONAL MATCH (u)-[:POSTED]->(p:Party)
+				OPTIONAL MATCH (:User)-[interest:INTERESTED]->(p)
+				OPTIONAL MATCH (:User)-[going:GOING]->(p)
+				WITH 
+					u, 
+					p,
+					exists((u)-[:INTERESTED]->(p)) as interested,
+					count(DISTINCT interest) as interestedCount,
+					exists((u)-[:GOING]->(p)) as going,
+					count(DISTINCT going) as goingCount
+				SKIP 
+					$skip 
+				LIMIT 
+					$pageSize
+				CALL {
+					WITH u, p
+					OPTIONAL MATCH (u)-[:FOLLOWS]->(mutual:User)-[:GOING]->(p)
+					WITH mutual, count(mutual) as mutualCount LIMIT 2
+					RETURN collect(mutual.profilePictureUrl) as mutualProfilePictureUrls,
+					collect(mutual.username) as mutualUsernames, mutualCount
+				}
+				RETURN p { 
+					.*, 
+					hostId: u.id,
+					hostName: u.name,
+					interested: interested,
+					interestedCount: interestedCount,
+					going: going,
+					goingCount: goingCount,
+					mutualCount: mutualCount,
+					mutualUsernames: mutualUsernames,
+					mutualProfilePictureUrls: mutualProfilePictureUrls
+				} 
+				ORDER BY p.startDate DESC`,
+			map[string]interface{}{"userId": cc.Get("userId"), "skip": skip, "pageSize": pageSize})
+		if err != nil {
+			log.Fatalf("Neo4j Error: %s", err)
+			return nil, err
+		}
+
+		parties := make([]interface{}, 0)
+
+		for result.Next() {
+			parties = append(parties, result.Record().Values[0])
+		}
+
+		return parties, nil
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	return cc.JSON(http.StatusOK, parties)
+}
+
 func GetPartyFeed(c echo.Context) error {
 	cc := c.(*utils.CustomContext)
 	session := utils.GetSession(cc.Driver)

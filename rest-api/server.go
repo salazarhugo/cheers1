@@ -44,9 +44,10 @@ func main() {
 		log.Printf("defaulting to port %s", port)
 	}
 
-	// Event
+	// Party
 	e.GET("/events", event.GetEvents)
 	e.GET("/party/feed", event.GetPartyFeed)
+	e.GET("/party/my", event.GetMyParties)
 	e.POST("/party/create", event.CreateParty)
 	e.POST("/event/invite", event.InviteEvent)
 	e.DELETE("/party/:partyId", event.DeleteParty)
