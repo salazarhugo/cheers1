@@ -117,18 +117,18 @@ func CreateParty(c echo.Context) error {
 	return cc.JSON(http.StatusOK, response)
 }
 
-func UninterestEvent(c echo.Context) error {
+func UninterestParty(c echo.Context) error {
 	cc := c.(*utils.CustomContext)
 	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
-	eventId := c.QueryParam("eventId")
+	partyId := c.QueryParam("partyId")
 
 	_, err := session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		result, err := transaction.Run(
-			`MATCH (u:User { id: $userId })-[l:INTERESTED]->(e:Event { id: $eventId }) 
+			`MATCH (u:User { id: $userId })-[l:INTERESTED]->(p:Party { id: $partyId }) 
                     DELETE l`,
-			map[string]interface{}{"userId": c.Get("userId"), "eventId": eventId})
+			map[string]interface{}{"userId": c.Get("userId"), "partyId": partyId})
 		if err != nil {
 			return nil, err
 		}
@@ -140,7 +140,7 @@ func UninterestEvent(c echo.Context) error {
 		return err
 	}
 
-	return c.String(http.StatusOK, "OK!")
+	return c.NoContent(http.StatusOK)
 }
 
 // POST("/event/:eventId/ungoing")
@@ -242,18 +242,18 @@ func GoingEvent(c echo.Context) error {
 	return c.NoContent(http.StatusOK)
 }
 
-func InterestEvent(c echo.Context) error {
+func InterestParty(c echo.Context) error {
 	cc := c.(*utils.CustomContext)
 	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
-	eventId := c.QueryParam("eventId")
+	partyId := c.QueryParam("partyId")
 
 	_, err := session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		result, err := transaction.Run(
-			`MATCH (e:Event { id: $eventId}), (u:User {id: $userId}) 
-                MERGE (u)-[:INTERESTED]->(e)`,
-			map[string]interface{}{"userId": c.Get("userId"), "eventId": eventId})
+			`MATCH (p:Party { id: $partyId}), (u:User {id: $userId}) 
+                MERGE (u)-[:INTERESTED]->(p)`,
+			map[string]interface{}{"userId": c.Get("userId"), "partyId": partyId})
 		if err != nil {
 			return nil, err
 		}
@@ -265,7 +265,7 @@ func InterestEvent(c echo.Context) error {
 		return err
 	}
 
-	return c.String(http.StatusOK, "OK!")
+	return c.JSON(http.StatusOK, "")
 }
 
 func GetEvents(c echo.Context) error {
