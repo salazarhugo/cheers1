@@ -186,10 +186,12 @@ func GetParty(c echo.Context) error {
 				exists((u)-[:INTERESTED]->(party)) as interested,
 				exists((u)-[:GOING]->(party)) as going,
 				count(DISTINCT interest) as interestedCount,
-				count(DISTINCT going) as goingCount
+				count(DISTINCT going) as goingCount,
+				host.id = u.id as isHost
 			RETURN 
 				party {
 					.*,
+					isHost: isHost,
 					hostId: host.id,
 					hostName: host.name,
 					interested: interested,
