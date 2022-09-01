@@ -92,13 +92,32 @@ func handleSuccess(paymentIntent stripe.PaymentIntent) {
 		"status":     paymentIntent.Status,
 	})
 
-	docsnap, err := customerRef.Collection("paymentIntents").Doc(paymentIntent.ID).Get(ctx)
+	orderDoc, err := client.Collection("orders").Doc(paymentIntent.ID).Get(ctx)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	docMap := docsnap.Data()
-	partyId := docMap["partyId"]
+	orderDocMap := orderDoc.Data()
+	partyId := orderDocMap["partyId"].(string)
+	tickets := orderDocMap["tickets"].([]interface{})
+
+	for _, ticket := range tickets {
+		ticketMap := ticket.(map[string]interface{})
+		doc := client.Collection("tickets").NewDoc()
+
+		ticketData := map[string]interface{}{
+			"id":              doc.ID,
+			"name":            ticketMap["name"],
+			"description":     ticketMap["description"],
+			"price":           ticketMap["price"],
+			"partyId":         ticketMap["partyId"],
+			"paymentIntentId": paymentIntent.ID,
+		}
+
+		_, err = doc.Set(ctx, ticketData)
+		_, err = customerRef.Collection("tickets").Doc(doc.ID).Set(ctx, ticketData)
+	}
+
 	_, err = customerRef.Collection("private").Doc(customerId).Update(ctx, []firestore.Update{
 		{Path: "population", Value: firestore.Increment(paymentIntent.Amount)},
 	})

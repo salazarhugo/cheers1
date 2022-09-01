@@ -90,6 +90,7 @@ func main() {
 	// User
 	e.PATCH("/users", user.UpdateUser)
 	e.POST("/users/create", user.CreateUser)
+	e.GET("/users/tickets", user.GetUserTickets)
 	e.GET("/users/search/:query", user.SearchUsers)
 	e.POST("/follow", user.FollowUser)
 	e.POST("/unfollow", user.UnfollowUser)

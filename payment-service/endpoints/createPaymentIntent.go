@@ -17,10 +17,6 @@ type StripeCustomer struct {
 	Id string `firestore:"customer_id"`
 }
 
-type PaymentIntentReq struct {
-	Amount int64 `json:"amount" structs:"amount"`
-}
-
 func CreatePaymentIntent(c echo.Context) error {
 	cc := c.(*utils.CustomContext)
 	session := utils.GetSession(cc.Driver)
@@ -48,7 +44,8 @@ func CreatePaymentIntent(c echo.Context) error {
 		return err
 	}
 
-	log.Println(paymentIntentReq)
+	tickets := make([]map[string]interface{}, 0, 0)
+
 	for ticketId, quantity := range paymentIntentReq {
 		log.Println(ticketId, quantity)
 		docsnap, err := client.Collection("ticketing").Doc(partyId).Collection("tickets").Doc(ticketId).Get(ctx)
@@ -57,6 +54,10 @@ func CreatePaymentIntent(c echo.Context) error {
 			return err
 		}
 		ticketMap := docsnap.Data()
+		var i int64
+		for i = 0; i < quantity; i++ {
+			tickets = append(tickets, ticketMap)
+		}
 		amount += ticketMap["price"].(int64) * quantity
 	}
 
@@ -87,15 +88,22 @@ func CreatePaymentIntent(c echo.Context) error {
 		})
 	}
 
-	ref := client.Collection("stripe_customers").Doc(customer.Id).Collection("paymentIntents")
-	_, _, err = ref.Add(ctx, map[string]interface{}{
+	ref := client.Collection("orders").Doc(paymentIntent.ID)
+	_, err = ref.Set(ctx, map[string]interface{}{
 		"id":         paymentIntent.ID,
 		"amount":     paymentIntent.Amount,
 		"created":    paymentIntent.Created,
 		"customerId": paymentIntent.Customer.ID,
 		"status":     paymentIntent.Status,
 		"partyId":    partyId,
+		"tickets":    tickets,
 	})
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"error": err.Error(),
+		})
+	}
 
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"clientSecret": paymentIntent.ClientSecret,

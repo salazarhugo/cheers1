@@ -369,7 +369,32 @@ func UserSuggestions(c echo.Context) error {
 	return cc.JSON(http.StatusOK, users)
 }
 
-// GET("users/search/:query")
+// GetUserTickets GET("users/tickets")
+func GetUserTickets(c echo.Context) error {
+	cc := c.(*utils.CustomContext)
+	userId := cc.Get("userId").(string)
+	ctx := context.Background()
+	client, err := firestore.NewClient(ctx, "cheers-a275e")
+	if err != nil {
+		return cc.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	docs, err := client.Collection("stripe_customers").Doc(userId).Collection("tickets").Documents(ctx).GetAll()
+
+	if err != nil {
+		return cc.JSON(http.StatusInternalServerError, err.Error())
+	}
+
+	tickets := make([]interface{}, 0, 0)
+
+	for _, doc := range docs {
+		tickets = append(tickets, doc.Data())
+	}
+
+	return cc.JSON(http.StatusOK, tickets)
+}
+
+// SearchUsers GET("users/search/:query")
 func SearchUsers(c echo.Context) error {
 	cc := c.(*utils.CustomContext)
 	session := utils.GetSession(cc.Driver)
