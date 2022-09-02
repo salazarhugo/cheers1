@@ -4,7 +4,6 @@ go 1.18
 
 require (
 	cloud.google.com/go/firestore v1.6.1
-	cloud.google.com/go/logging v1.4.2
 	cloud.google.com/go/pubsub v1.21.1
 	firebase.google.com/go/v4 v4.8.0
 	github.com/fatih/structs v1.1.0

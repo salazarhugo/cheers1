@@ -5,7 +5,6 @@ go 1.18
 require (
 	cloud.google.com/go/firestore v1.6.1
 	firebase.google.com/go/v4 v4.8.0
-	github.com/fatih/structs v1.1.0
 	github.com/labstack/echo/v4 v4.7.2
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
 	github.com/stripe/stripe-go/v72 v72.122.0
