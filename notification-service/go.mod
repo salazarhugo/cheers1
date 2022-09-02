@@ -5,7 +5,6 @@ go 1.18
 require (
 	firebase.google.com/go/v4 v4.8.0
 	github.com/labstack/echo/v4 v4.7.2
-	github.com/mitchellh/mapstructure v1.5.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.3
 	google.golang.org/protobuf v1.27.1
 )
