@@ -112,6 +112,7 @@ func handleSuccess(paymentIntent stripe.PaymentIntent) {
 			"price":           ticketMap["price"],
 			"partyId":         ticketMap["partyId"],
 			"paymentIntentId": paymentIntent.ID,
+			"userId":          customerRef.ID,
 		}
 
 		_, err = doc.Set(ctx, ticketData)

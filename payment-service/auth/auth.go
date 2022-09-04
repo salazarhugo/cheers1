@@ -15,6 +15,9 @@ func AuthMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 		if c.Path() == "/handleStripeEvents" {
 			return next(c)
 		}
+		if c.Path() == "/ticket/validate" {
+			return next(c)
+		}
 		app := utils.InitializeAppDefault()
 		client := utils.InitializeAuthClient(app)
 		authorizationToken := c.Request().Header.Get("Authorization")

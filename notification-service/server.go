@@ -55,7 +55,7 @@ func main() {
 		log.Printf("defaulting to port %s", port)
 	}
 
-	e.POST("/", HelloPubSub)
+	e.POST("/", UserEventPubSub)
 	e.Logger.Fatal(e.Start(":" + port))
 }
 
@@ -68,7 +68,7 @@ type PubSubMessage struct {
 }
 
 // HelloPubSub receives and processes a Pub/Sub push message.
-func HelloPubSub(c echo.Context) error {
+func UserEventPubSub(c echo.Context) error {
 	var m PubSubMessage
 	body, err := ioutil.ReadAll(c.Request().Body)
 	if err != nil {

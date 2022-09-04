@@ -37,7 +37,7 @@ func main() {
 
 	e.POST("/createPaymentIntent", endpoints.CreatePaymentIntent)
 	e.POST("/handleStripeEvents", endpoints.HandleStripeEvent)
-	e.GET("/ticket/validate", endpoints.HandleStripeEvent)
+	e.GET("/ticket/validate", endpoints.ValidateTicket)
 
 	e.Logger.Fatal(e.Start(":" + port))
 }
