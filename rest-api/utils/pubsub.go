@@ -15,7 +15,7 @@ func PublishProtoMessages(state *usereventpb.UserEvent) error {
 	ctx := context.Background()
 	client, err := pubsub.NewClient(ctx, projectID)
 	if err != nil {
-		log.Printf("pubsub.NewClient: %v", err)
+		log.Printf("subscriptions.NewClient: %v", err)
 		return err
 	}
 

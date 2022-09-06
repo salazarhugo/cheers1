@@ -81,10 +81,10 @@ func handleSuccess(paymentIntent stripe.PaymentIntent) {
 	snapshot := client.Collection("stripe_customers").Where("customer_id", "==", customerId).Snapshots(ctx)
 
 	docs, err := snapshot.Next()
-	customerDoc, err := docs.Documents.Next()
-	customerRef := customerDoc.Ref
+	stripeCustomerDoc, err := docs.Documents.Next()
+	stripeCustomerRef := stripeCustomerDoc.Ref
 
-	_, _, err = customerRef.Collection("payments").Add(ctx, map[string]interface{}{
+	_, _, err = stripeCustomerRef.Collection("payments").Add(ctx, map[string]interface{}{
 		"id":         paymentIntent.ID,
 		"amount":     paymentIntent.Amount,
 		"created":    paymentIntent.Created,
@@ -98,7 +98,7 @@ func handleSuccess(paymentIntent stripe.PaymentIntent) {
 		return
 	}
 	orderDocMap := orderDoc.Data()
-	partyId := orderDocMap["partyId"].(string)
+	//partyId := orderDocMap["partyId"].(string)
 	tickets := orderDocMap["tickets"].([]interface{})
 
 	for _, ticket := range tickets {
@@ -112,18 +112,23 @@ func handleSuccess(paymentIntent stripe.PaymentIntent) {
 			"price":           ticketMap["price"],
 			"partyId":         ticketMap["partyId"],
 			"paymentIntentId": paymentIntent.ID,
-			"userId":          customerRef.ID,
+			"userId":          stripeCustomerRef.ID,
 		}
 
 		_, err = doc.Set(ctx, ticketData)
-		_, err = customerRef.Collection("tickets").Doc(doc.ID).Set(ctx, ticketData)
+		_, err = stripeCustomerRef.Collection("tickets").Doc(doc.ID).Set(ctx, ticketData)
 	}
 
-	_, err = customerRef.Collection("private").Doc(customerId).Update(ctx, []firestore.Update{
+	_, err = stripeCustomerRef.Collection("private").Doc(customerId).Update(ctx, []firestore.Update{
 		{Path: "population", Value: firestore.Increment(paymentIntent.Amount)},
 	})
 
-	log.Println(partyId)
+	userDoc, err := client.Collection("users").Doc(stripeCustomerRef.ID).Get(ctx)
+	userMap := userDoc.Data()
+	userEmail := userMap["email"].(string)
+
+	err = utils.PublishPayment(userEmail)
+
 	if err != nil {
 		log.Println(err)
 		return

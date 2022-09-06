@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	cloud.google.com/go/firestore v1.6.1
+	cloud.google.com/go/pubsub v1.3.1
 	firebase.google.com/go/v4 v4.8.0
 	github.com/labstack/echo/v4 v4.7.2
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
@@ -15,6 +16,7 @@ require (
 	cloud.google.com/go v0.102.0 // indirect
 	cloud.google.com/go/compute v1.7.0 // indirect
 	cloud.google.com/go/iam v0.3.0 // indirect
+	cloud.google.com/go/kms v1.4.0 // indirect
 	cloud.google.com/go/storage v1.22.1 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
@@ -33,6 +35,7 @@ require (
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect
 	golang.org/x/net v0.0.0-20220624214902-1bab6f366d9e // indirect
 	golang.org/x/oauth2 v0.0.0-20220622183110-fd043fe589d2 // indirect
+	golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f // indirect
 	golang.org/x/sys v0.0.0-20220624220833-87e55d714810 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/time v0.0.0-20201208040808-7e3f01d25324 // indirect

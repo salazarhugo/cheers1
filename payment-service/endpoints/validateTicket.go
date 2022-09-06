@@ -32,16 +32,34 @@ func ValidateTicket(c echo.Context) error {
 		})
 	}
 
-	doc, err := client.Collection("tickets").Doc(ticketReq.ID).Get(ctx)
+	ticketDoc, err := client.Collection("tickets").Doc(ticketReq.ID).Get(ctx)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, "Ticket not found")
 	}
-	ticket := doc.Data()
+
+	ticketMap := ticketDoc.Data()
+	userId := ticketMap["userId"].(string)
+
+	userDoc, err := client.Collection("users").Doc(userId).Get(ctx)
+	userMap := userDoc.Data()
+	userEmail := userMap["email"].(string)
+	userName, ok := userMap["name"].(string)
+	if !ok {
+		userName = ""
+	}
+
+	err = utils.PublishPayment(userEmail)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
 
 	return cc.JSON(http.StatusOK, map[string]interface{}{
-		"valid":       true,
-		"name":        ticket["name"],
-		"description": ticket["description"],
-		"message":     ticket["name"],
+		"valid":           true,
+		"name":            ticketMap["name"],
+		"description":     ticketMap["description"],
+		"message":         ticketMap["name"],
+		"price":           ticketMap["price"],
+		"reservationName": userName,
+		"provider":        "Summer Breeze",
 	})
 }
