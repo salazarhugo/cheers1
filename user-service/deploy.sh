@@ -1,0 +1,1 @@
+gcloud run deploy user-service --source . --region=europe-west2
