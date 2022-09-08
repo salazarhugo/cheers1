@@ -38,19 +38,20 @@ func GetUser(c echo.Context) error {
 					exists((me)-[:FOLLOWS]->(u)) as followBack,
 					count(s) > 0 as hasStory,
 					count(seen) = count(s) as seenStory
-                RETURN u { 
-					.*,
-					postCount: postCount,
-					followBack: followBack,
-					following: following,
-					followers: followers,
-					storyState:
-						CASE 
-							WHEN hasStory AND NOT seenStory THEN "NOT_SEEN"
-							WHEN hasStory AND seenStory THEN "SEEN"
-							ELSE "EMPTY"
-						END
-				}`
+                RETURN 
+					{
+						user: PROPERTIES(u),
+						postCount: postCount,
+						followBack: followBack,
+						following: following,
+						followers: followers,
+						storyState:
+							CASE 
+								WHEN hasStory AND NOT seenStory THEN "NOT_SEEN"
+								WHEN hasStory AND seenStory THEN "SEEN"
+								ELSE "EMPTY"
+							END
+					}`
 
 	params := map[string]interface{}{
 		"userId":           cc.Get("userId"),
@@ -59,7 +60,7 @@ func GetUser(c echo.Context) error {
 
 	result, err := session.Run(cypher, params)
 
-	var user *userpb.User
+	var user *userpb.GetUserResponse
 	if result.Next() {
 		userMap := result.Record().Values[0].(map[string]interface{})
 		user, err = MapToUser(userMap)
@@ -78,12 +79,12 @@ func GetUser(c echo.Context) error {
 	return cc.JSON(http.StatusOK, user)
 }
 
-func MapToUser(m map[string]interface{}) (*userpb.User, error) {
+func MapToUser(m map[string]interface{}) (*userpb.GetUserResponse, error) {
 	b, err := json.Marshal(m)
 	if err != nil {
 		return nil, err
 	}
-	s := &userpb.User{}
+	s := &userpb.GetUserResponse{}
 	err = protojson.Unmarshal(b, s)
 	if err != nil {
 		return nil, err
