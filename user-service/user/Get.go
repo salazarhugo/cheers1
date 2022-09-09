@@ -32,23 +32,23 @@ func GetUser(c echo.Context) error {
                 OPTIONAL MATCH (me)-[seen:SEEN]->(s)
                 WITH 
 					u,
-					count(DISTINCT authorPosts) as postCount,
-					count(DISTINCT following) as following, 
-                	count(DISTINCT followers) as followers,
-					exists((me)-[:FOLLOWS]->(u)) as followBack,
-					count(s) > 0 as hasStory,
-					count(seen) = count(s) as seenStory
+					count(DISTINCT authorPosts) as post_count,
+					count(DISTINCT following) as following_count, 
+                	count(DISTINCT followers) as followers_count,
+					exists((me)-[:FOLLOWS]->(u)) as follow_back,
+					count(s) > 0 as has_story,
+					count(seen) = count(s) as seen_story
                 RETURN 
 					{
 						user: PROPERTIES(u),
-						postCount: postCount,
-						followBack: followBack,
-						following: following,
-						followers: followers,
-						storyState:
+						post_count: post_count,
+						follow_back: follow_back,
+						following_count: following_count,
+						followers_count: followers_count,
+						story_state:
 							CASE 
-								WHEN hasStory AND NOT seenStory THEN "NOT_SEEN"
-								WHEN hasStory AND seenStory THEN "SEEN"
+								WHEN has_story AND NOT seen_story THEN "NOT_SEEN"
+								WHEN has_story AND seen_story THEN "SEEN"
 								ELSE "EMPTY"
 							END
 					}`

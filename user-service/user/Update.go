@@ -6,6 +6,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"log"
 	"net/http"
+	"salazar/cheers/user/userpb"
 	"salazar/cheers/user/utils"
 )
 
@@ -17,15 +18,7 @@ func UpdateUser(c echo.Context) error {
 
 	userId := cc.Get("userId").(string)
 
-	type UpdateUser struct {
-		Email             *string `json:"email" structs:"email,omitempty"`
-		Name              *string `json:"name" structs:"name,omitempty"`
-		ProfilePictureUrl *string `json:"profilePictureUrl" structs:"profilePictureUrl,omitempty"`
-		Bio               *string `json:"bio" structs:"bio,omitempty"`
-		Website           *string `json:"website" structs:"website,omitempty"`
-		PhoneNumber       *string `json:"phoneNumber" structs:"phoneNumber,omitempty"`
-	}
-	user := &UpdateUser{}
+	user := userpb.UpdateUserRequest{}
 
 	err := json.NewDecoder(cc.Request().Body).Decode(&user)
 	if err != nil {
