@@ -22,7 +22,7 @@ func likePostNotification(c echo.Context, userEvent *usereventpb.UserEvent) {
 					tokens: author.registrationTokens,
 					username: u.username,
 					name: u.name,
-					avatar: u.profilePictureUrl
+					avatar: u.picture
 				}`
 
 	params := map[string]interface{}{
@@ -82,7 +82,7 @@ func postNotification(c echo.Context, userEvent *usereventpb.UserEvent) {
 			    RETURN { 
 					followersWithTokens: tok,
 					name: author.name,
-					avatar: author.profilePictureUrl,
+					avatar: author.picture,
 					username: author.username,
 					locationName: p.locationName,
 					beverage: p.beverage,
@@ -176,7 +176,7 @@ func followNotification(c echo.Context, userEvent *usereventpb.UserEvent) error 
 
 	cypher := `MATCH (u: User {id: $userId})-[:FOLLOWS]->(f: User {id: $otherUserId}) 
 			   RETURN { 
-					avatar: u.profilePictureUrl,
+					avatar: u.picture,
 					name: u.name,
 					username: u.username,
 					tokens: f.registrationTokens,
@@ -248,7 +248,7 @@ func commentNotification(c echo.Context, userEvent *usereventpb.UserEvent) error
 					name: u.name,
 					username: u.username,
 					verified: u.verified,
-					avatar: u.profilePictureUrl
+					avatar: u.picture
 				}`
 
 	params := map[string]interface{}{

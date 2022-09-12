@@ -646,21 +646,21 @@ type Room struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id                string               `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name              string               `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Typing            bool                 `protobuf:"varint,3,opt,name=typing,proto3" json:"typing,omitempty"`
-	Verified          bool                 `protobuf:"varint,4,opt,name=verified,proto3" json:"verified,omitempty"`
-	Owner             string               `protobuf:"bytes,5,opt,name=owner,proto3" json:"owner,omitempty"`
-	Type              RoomType             `protobuf:"varint,6,opt,name=type,proto3,enum=chatpb.RoomType" json:"type,omitempty"`
-	Username          string               `protobuf:"bytes,7,opt,name=username,proto3" json:"username,omitempty"`
-	Status            RoomStatus           `protobuf:"varint,8,opt,name=status,proto3,enum=chatpb.RoomStatus" json:"status,omitempty"`
-	Admins            []string             `protobuf:"bytes,9,rep,name=admins,proto3" json:"admins,omitempty"`
-	Members           []string             `protobuf:"bytes,10,rep,name=members,proto3" json:"members,omitempty"`
-	LastMessageText   string               `protobuf:"bytes,11,opt,name=last_message_text,json=lastMessageText,proto3" json:"last_message_text,omitempty"`
-	ProfilePictureUrl string               `protobuf:"bytes,12,opt,name=profile_picture_url,json=profilePictureUrl,proto3" json:"profile_picture_url,omitempty"`
-	LastMessageType   MessageType          `protobuf:"varint,13,opt,name=last_message_type,json=lastMessageType,proto3,enum=chatpb.MessageType" json:"last_message_type,omitempty"`
-	Created           *timestamp.Timestamp `protobuf:"bytes,14,opt,name=created,proto3" json:"created,omitempty"`
-	LastMessageTime   *timestamp.Timestamp `protobuf:"bytes,15,opt,name=last_message_time,json=lastMessageTime,proto3" json:"last_message_time,omitempty"`
+	Id              string               `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Name            string               `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Typing          bool                 `protobuf:"varint,3,opt,name=typing,proto3" json:"typing,omitempty"`
+	Verified        bool                 `protobuf:"varint,4,opt,name=verified,proto3" json:"verified,omitempty"`
+	Owner           string               `protobuf:"bytes,5,opt,name=owner,proto3" json:"owner,omitempty"`
+	Type            RoomType             `protobuf:"varint,6,opt,name=type,proto3,enum=chatpb.RoomType" json:"type,omitempty"`
+	Username        string               `protobuf:"bytes,7,opt,name=username,proto3" json:"username,omitempty"`
+	Status          RoomStatus           `protobuf:"varint,8,opt,name=status,proto3,enum=chatpb.RoomStatus" json:"status,omitempty"`
+	Admins          []string             `protobuf:"bytes,9,rep,name=admins,proto3" json:"admins,omitempty"`
+	Members         []string             `protobuf:"bytes,10,rep,name=members,proto3" json:"members,omitempty"`
+	LastMessageText string               `protobuf:"bytes,11,opt,name=last_message_text,json=lastMessageText,proto3" json:"last_message_text,omitempty"`
+	picture         string               `protobuf:"bytes,12,opt,name=profile_picture_url,json=picture,proto3" json:"profile_picture_url,omitempty"`
+	LastMessageType MessageType          `protobuf:"varint,13,opt,name=last_message_type,json=lastMessageType,proto3,enum=chatpb.MessageType" json:"last_message_type,omitempty"`
+	Created         *timestamp.Timestamp `protobuf:"bytes,14,opt,name=created,proto3" json:"created,omitempty"`
+	LastMessageTime *timestamp.Timestamp `protobuf:"bytes,15,opt,name=last_message_time,json=lastMessageTime,proto3" json:"last_message_time,omitempty"`
 }
 
 func (x *Room) Reset() {
@@ -772,9 +772,9 @@ func (x *Room) GetLastMessageText() string {
 	return ""
 }
 
-func (x *Room) GetProfilePictureUrl() string {
+func (x *Room) Getpicture() string {
 	if x != nil {
-		return x.ProfilePictureUrl
+		return x.picture
 	}
 	return ""
 }
@@ -860,17 +860,17 @@ type Message struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id                      string               `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Sender                  string               `protobuf:"bytes,2,opt,name=sender,proto3" json:"sender,omitempty"`
-	Room                    *Room                `protobuf:"bytes,3,opt,name=room,proto3" json:"room,omitempty"`
-	Message                 string               `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
-	SenderProfilePictureUrl string               `protobuf:"bytes,5,opt,name=senderProfilePictureUrl,proto3" json:"senderProfilePictureUrl,omitempty"`
-	SenderName              string               `protobuf:"bytes,6,opt,name=senderName,proto3" json:"senderName,omitempty"`
-	SenderUsername          string               `protobuf:"bytes,7,opt,name=senderUsername,proto3" json:"senderUsername,omitempty"`
-	Created                 *timestamp.Timestamp `protobuf:"bytes,8,opt,name=created,proto3" json:"created,omitempty"`
-	PhotoUrl                string               `protobuf:"bytes,9,opt,name=photo_url,json=photoUrl,proto3" json:"photo_url,omitempty"`
-	Type                    MessageType          `protobuf:"varint,10,opt,name=type,proto3,enum=chatpb.MessageType" json:"type,omitempty"`
-	LikeCount               int32                `protobuf:"varint,11,opt,name=like_count,json=likeCount,proto3" json:"like_count,omitempty"`
+	Id             string               `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Sender         string               `protobuf:"bytes,2,opt,name=sender,proto3" json:"sender,omitempty"`
+	Room           *Room                `protobuf:"bytes,3,opt,name=room,proto3" json:"room,omitempty"`
+	Message        string               `protobuf:"bytes,4,opt,name=message,proto3" json:"message,omitempty"`
+	Senderpicture  string               `protobuf:"bytes,5,opt,name=senderpicture,proto3" json:"senderpicture,omitempty"`
+	SenderName     string               `protobuf:"bytes,6,opt,name=senderName,proto3" json:"senderName,omitempty"`
+	SenderUsername string               `protobuf:"bytes,7,opt,name=senderUsername,proto3" json:"senderUsername,omitempty"`
+	Created        *timestamp.Timestamp `protobuf:"bytes,8,opt,name=created,proto3" json:"created,omitempty"`
+	PhotoUrl       string               `protobuf:"bytes,9,opt,name=photo_url,json=photoUrl,proto3" json:"photo_url,omitempty"`
+	Type           MessageType          `protobuf:"varint,10,opt,name=type,proto3,enum=chatpb.MessageType" json:"type,omitempty"`
+	LikeCount      int32                `protobuf:"varint,11,opt,name=like_count,json=likeCount,proto3" json:"like_count,omitempty"`
 }
 
 func (x *Message) Reset() {
@@ -933,9 +933,9 @@ func (x *Message) GetMessage() string {
 	return ""
 }
 
-func (x *Message) GetSenderProfilePictureUrl() string {
+func (x *Message) GetSenderpicture() string {
 	if x != nil {
-		return x.SenderProfilePictureUrl
+		return x.Senderpicture
 	}
 	return ""
 }

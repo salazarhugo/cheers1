@@ -345,7 +345,7 @@ func GetMyParties(c echo.Context) error {
 					WITH u, p
 					OPTIONAL MATCH (u)-[:FOLLOWS]->(mutual:User)-[:GOING]->(p)
 					WITH mutual, count(mutual) as mutualCount LIMIT 2
-					RETURN collect(mutual.profilePictureUrl) as mutualProfilePictureUrls,
+					RETURN collect(mutual.picture) as mutualpictures,
 					collect(mutual.username) as mutualUsernames, mutualCount
 				}
 				RETURN p { 
@@ -358,7 +358,7 @@ func GetMyParties(c echo.Context) error {
 					goingCount: goingCount,
 					mutualCount: mutualCount,
 					mutualUsernames: mutualUsernames,
-					mutualProfilePictureUrls: mutualProfilePictureUrls
+					mutualpictures: mutualpictures
 				} 
 				ORDER BY p.startDate DESC`,
 			map[string]interface{}{"userId": cc.Get("userId"), "skip": skip, "pageSize": pageSize})
@@ -417,7 +417,7 @@ func GetPartyFeed(c echo.Context) error {
 					WITH u, e, author
 					OPTIONAL MATCH (u)-[:FOLLOWS]->(mutual:User)-[:GOING]->(e)
 					WITH mutual, count(mutual) as mutualCount LIMIT 2
-					RETURN collect(mutual.profilePictureUrl) as mutualProfilePictureUrls,
+					RETURN collect(mutual.picture) as mutualpictures,
 					collect(mutual.username) as mutualUsernames, mutualCount
 				}
 				RETURN e { 
@@ -430,7 +430,7 @@ func GetPartyFeed(c echo.Context) error {
 					goingCount: goingCount,
 					mutualCount: mutualCount,
 					mutualUsernames: mutualUsernames,
-					mutualProfilePictureUrls: mutualProfilePictureUrls
+					mutualpictures: mutualpictures
 				} 
 				ORDER BY e.startDate DESC`,
 			map[string]interface{}{"userId": cc.Get("userId"), "skip": skip, "pageSize": pageSize})
@@ -533,7 +533,7 @@ func InterestedList(c echo.Context) error {
 	cypher := `MATCH (e:Event {id: $eventId})<-[:INTERESTED]-(g:User)
 				MATCH (u: User {id:$userId}) 
 			 	WITH g, exists((u)-[:FOLLOWS]->(g)) as followBack LIMIT 20
-			 	RETURN g { .id, .username, .verified, .profilePictureUrl, .name, followBack: followBack}`
+			 	RETURN g { .id, .username, .verified, .picture, .name, followBack: followBack}`
 
 	params := map[string]interface{}{
 		"userId":  userId,
@@ -581,7 +581,7 @@ func GoingList(c echo.Context) error {
 	cypher := `MATCH (e:Event {id: $eventId})<-[:GOING]-(g:User)
 				MATCH (u: User {id:$userId}) 
 			 	WITH g, exists((u)-[:FOLLOWS]->(g)) as followBack LIMIT 20
-			 	RETURN g { .id, .username, .verified, .profilePictureUrl, .name, followBack: followBack}`
+			 	RETURN g { .id, .username, .verified, .picture, .name, followBack: followBack}`
 
 	params := map[string]interface{}{
 		"userId":  userId,

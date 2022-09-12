@@ -9,7 +9,6 @@ import (
 	"errors"
 	"firebase.google.com/go/v4/messaging"
 	"fmt"
-	"github.com/go-redis/redis/v8"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
@@ -232,7 +231,7 @@ func (s *chatServiceServer) SendMessage(msgStream chatpb.ChatService_SendMessage
 		return errors.New("you are not member of this group chat")
 	}
 
-	go SendMessageNotification(userId, msg.Room.Id, msg.SenderName, msg.SenderProfilePictureUrl)
+	go SendMessageNotification(userId, msg.Room.Id, msg.SenderName, msg.Senderpicture)
 	go roomCache.SetSeen(msg.Room.Id, userId)
 
 	roomCache.SetMessage(msg)
