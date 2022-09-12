@@ -39,7 +39,12 @@ func ValidateTicket(c echo.Context) error {
 	}
 
 	ticketMap := ticketDoc.Data()
-	userId := ticketMap["userId"].(string)
+	ticket, err := utils.MapToTicket(ticketMap)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, "Failed to Unmarshal ticket")
+	}
+
+	userId := ticket.UserId
 
 	userDoc, err := client.Collection("users").Doc(userId).Get(ctx)
 	userMap := userDoc.Data()
@@ -52,13 +57,14 @@ func ValidateTicket(c echo.Context) error {
 	// Check if ticket was already validated
 	if ticketMap["validated"] == true {
 		return cc.JSON(http.StatusOK, map[string]interface{}{
-			"valid":           false,
-			"name":            ticketMap["name"],
-			"description":     ticketMap["description"],
-			"message":         "Ticket already validated",
-			"price":           ticketMap["price"],
-			"reservationName": userName,
-			"provider":        "Summer Breeze",
+			"valid":            false,
+			"name":             ticket.Name,
+			"description":      ticket.Description,
+			"message":          "Ticket already validated",
+			"price":            ticket.Price,
+			"reservation_name": userName,
+			"party_name":       "Summer Breeze",
+			"party_banner":     "Summer Breeze",
 		})
 	}
 
