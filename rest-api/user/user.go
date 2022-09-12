@@ -379,7 +379,7 @@ func GetUserTickets(c echo.Context) error {
 		return cc.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	docs, err := client.Collection("stripe_customers").Doc(userId).Collection("tickets").Documents(ctx).GetAll()
+	docs, err := client.Collection("users").Doc(userId).Collection("tickets").Documents(ctx).GetAll()
 
 	if err != nil {
 		return cc.JSON(http.StatusInternalServerError, err.Error())

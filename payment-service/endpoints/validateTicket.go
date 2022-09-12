@@ -4,6 +4,7 @@ import (
 	"cloud.google.com/go/firestore"
 	"context"
 	"github.com/labstack/echo/v4"
+	"log"
 	"net/http"
 	"salazar/cheers/payment/utils"
 )
@@ -48,8 +49,37 @@ func ValidateTicket(c echo.Context) error {
 		userName = ""
 	}
 
+	// Check if ticket was already validated
+	if ticketMap["validated"] == true {
+		return cc.JSON(http.StatusOK, map[string]interface{}{
+			"valid":           false,
+			"name":            ticketMap["name"],
+			"description":     ticketMap["description"],
+			"message":         "Ticket already validated",
+			"price":           ticketMap["price"],
+			"reservationName": userName,
+			"provider":        "Summer Breeze",
+		})
+	}
+
+	batch := client.Batch()
+
+	batch.Update(ticketDoc.Ref, []firestore.Update{
+		{Path: "validated", Value: true},
+	})
+	batch.Update(userDoc.Ref.Collection("tickets").Doc(ticketReq.ID), []firestore.Update{
+		{Path: "validated", Value: true},
+	})
+
+	_, err = batch.Commit(ctx)
+	if err != nil {
+		log.Println(err)
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+
 	err = utils.PublishPayment(userEmail)
 	if err != nil {
+		log.Println(err)
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 

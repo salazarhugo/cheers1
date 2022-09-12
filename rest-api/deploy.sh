@@ -1,0 +1,1 @@
+gcloud run deploy rest-api --source . --region=europe-west2

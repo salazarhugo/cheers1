@@ -113,10 +113,11 @@ func handleSuccess(paymentIntent stripe.PaymentIntent) {
 			"partyId":         ticketMap["partyId"],
 			"paymentIntentId": paymentIntent.ID,
 			"userId":          stripeCustomerRef.ID,
+			"validated":       false,
 		}
 
 		_, err = doc.Set(ctx, ticketData)
-		_, err = stripeCustomerRef.Collection("tickets").Doc(doc.ID).Set(ctx, ticketData)
+		_, err = client.Collection("users").Doc(stripeCustomerRef.ID).Collection("tickets").Doc(doc.ID).Set(ctx, ticketData)
 	}
 
 	_, err = stripeCustomerRef.Collection("private").Doc(customerId).Update(ctx, []firestore.Update{
