@@ -26,7 +26,7 @@ func GetUsers(userIds []string) ([]*chatpb.UserCard, error) {
 					.name,
 					.username,
 					.verified,
-					avatar: u.profilePictureUrl
+					avatar: u.picture
 				}`
 
 	params := map[string]interface{}{

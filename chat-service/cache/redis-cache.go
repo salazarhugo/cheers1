@@ -6,7 +6,6 @@ import (
 	"context"
 	json2 "encoding/json"
 	"fmt"
-	"github.com/go-redis/redis/v8"
 	"github.com/google/uuid"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -27,8 +26,8 @@ const (
 )
 
 type User struct {
-	ProfilePictureUrl string `json:"profilePictureUrl"`
-	Username          string `json:"username"`
+	Picture  string `json:"picture"`
+	Username string `json:"username"`
 }
 
 type redisCache struct {
@@ -425,9 +424,9 @@ func (cache *redisCache) GetRoomWithId(userId string, roomId string) *chatpb.Roo
 			if ok {
 				room.Username = username
 			}
-			pp, ok := userMap["profilePictureUrl"].(string)
+			pp, ok := userMap["picture"].(string)
 			if ok {
-				room.ProfilePictureUrl = pp
+				room.picture = pp
 			}
 			verified, ok := userMap["verified"].(bool)
 			if ok {

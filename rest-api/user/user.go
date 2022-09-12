@@ -95,7 +95,7 @@ func GetUserCard(c echo.Context, userId string) *UserCard {
 					.name,
 					.username,
 					.verified,
-					avatar: u.profilePictureUrl,
+					avatar: u.picture,
 					followBack: followBack
 				}`
 
@@ -215,7 +215,7 @@ func FollowUser(c echo.Context) error {
 	cypher := `MATCH (u:User), (f:User) 
                  WHERE u.id = $userId AND f.username = $username 
                  MERGE (u)-[:FOLLOWS]->(f) 
-                 RETURN { avatar: u.profilePictureUrl, username: u.username, tokens: f.registrationTokens, otherUserId: f.id }`
+                 RETURN { avatar: u.picture, username: u.username, tokens: f.registrationTokens, otherUserId: f.id }`
 
 	params := map[string]interface{}{
 		"userId":   cc.Get("userId"),
@@ -346,7 +346,7 @@ func UserSuggestions(c echo.Context) error {
 					.name,
 					.username,
 					.verified,
-					avatar: suggestion.profilePictureUrl
+					avatar: suggestion.picture
 				}`
 
 	params := map[string]interface{}{
@@ -448,14 +448,14 @@ func SearchUsers(c echo.Context) error {
 }
 
 type User struct {
-	Id                string `json:"id" structs:"id"`
-	Username          string `json:"username" structs:"username"`
-	Email             string `json:"email" structs:"email"`
-	Name              string `json:"name" structs:"name"`
-	ProfilePictureUrl string `json:"profilePictureUrl" structs:"profilePictureUrl"`
-	Bio               string `json:"bio" structs:"bio"`
-	Website           string `json:"website" structs:"website"`
-	PhoneNumber       string `json:"phoneNumber" structs:"phoneNumber"`
+	Id          string `json:"id" structs:"id"`
+	Username    string `json:"username" structs:"username"`
+	Email       string `json:"email" structs:"email"`
+	Name        string `json:"name" structs:"name"`
+	picture     string `json:"picture" structs:"picture"`
+	Bio         string `json:"bio" structs:"bio"`
+	Website     string `json:"website" structs:"website"`
+	PhoneNumber string `json:"phoneNumber" structs:"phoneNumber"`
 }
 
 func setRegistrationToken(userId string, registrationTokens []string) error {
@@ -506,12 +506,12 @@ func UpdateUser(c echo.Context) error {
 	userId := cc.Get("userId").(string)
 
 	type UpdateUser struct {
-		Email             *string `json:"email" structs:"email,omitempty"`
-		Name              *string `json:"name" structs:"name,omitempty"`
-		ProfilePictureUrl *string `json:"profilePictureUrl" structs:"profilePictureUrl,omitempty"`
-		Bio               *string `json:"bio" structs:"bio,omitempty"`
-		Website           *string `json:"website" structs:"website,omitempty"`
-		PhoneNumber       *string `json:"phoneNumber" structs:"phoneNumber,omitempty"`
+		Email       *string `json:"email" structs:"email,omitempty"`
+		Name        *string `json:"name" structs:"name,omitempty"`
+		picture     *string `json:"picture" structs:"picture,omitempty"`
+		Bio         *string `json:"bio" structs:"bio,omitempty"`
+		Website     *string `json:"website" structs:"website,omitempty"`
+		PhoneNumber *string `json:"phoneNumber" structs:"phoneNumber,omitempty"`
 	}
 	user := &UpdateUser{}
 
@@ -722,7 +722,7 @@ func FollowingList(c echo.Context) error {
 					.name,
 					.username,
 					.verified,
-					.profilePictureUrl,
+					.picture,
 					followBack: followBack,
 					storyState:
 						CASE 
@@ -791,7 +791,7 @@ func FollowersList(c echo.Context) error {
 						.name,
 						.username,
 						.verified,
-						.profilePictureUrl,
+						.picture,
 						followBack: followBack,
 						storyState:
 							CASE 

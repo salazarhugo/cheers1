@@ -118,7 +118,7 @@ func GetPosts(c echo.Context) error {
 	post, err := session.ReadTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		result, err := transaction.Run(
 			`MATCH (u:User { id: $userId })-[:POSTED]->(p:Post)
-			RETURN p { .*, username: u.username, verified: u.verified, profilePictureUrl: u.profilePictureUrl }
+			RETURN p { .*, username: u.username, verified: u.verified, picture: u.picture }
 			ORDER BY p.created DESC`,
 			params,
 		)
@@ -165,7 +165,7 @@ func PostMembers(c echo.Context) error {
 				.name,
 				.username,
 				.verified,
-				.profilePictureUrl,
+				.picture,
 				followBack: followBack
 			}`
 
@@ -222,7 +222,7 @@ func GetUserPosts(c echo.Context) error {
 				liked: liked,
 				username: a.username,
 				verified: a.verified,
-				profilePictureUrl: a.profilePictureUrl
+				picture: a.picture
 			}`
 
 	params := map[string]interface{}{
@@ -266,7 +266,7 @@ func PostFeed(c echo.Context) error {
 				liked: liked,
 				username: a.username,
 				verified: a.verified,
-				profilePictureUrl: a.profilePictureUrl
+				picture: a.picture
 			} 
 			ORDER BY p.created DESC`
 
@@ -403,7 +403,7 @@ func LikePost(c echo.Context) error {
 	cypher := `MATCH (author:User)-[:POSTED]->(p:Post { id: $postId})
 				MATCH (u:User {id: $userId}) 
                 MERGE (u)-[:LIKED]->(p)
-                RETURN { photoUrl: u.profilePictureUrl, username: u.username, name: u.name, 
+                RETURN { photoUrl: u.picture, username: u.username, name: u.name, 
                 tokens: author.registrationTokens, authorId: author.id, beverage: p.beverage }`
 
 	params := map[string]interface{}{

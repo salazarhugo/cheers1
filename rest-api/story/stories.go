@@ -103,7 +103,7 @@ func GetUserStory(c echo.Context) error {
 					seen: seen,
 					username: author.username,
 					verified: author.verified,
-					profilePictureUrl: author.profilePictureUrl
+					picture: author.picture
 				}
 				ORDER BY s.created DESC`
 
@@ -144,7 +144,7 @@ func StoryFeed(c echo.Context) error {
 					seen: seen,
 					username: author.username,
 					verified: author.verified,
-					profilePictureUrl: author.profilePictureUrl
+					picture: author.picture
 				}
 				ORDER BY s.created DESC`
 

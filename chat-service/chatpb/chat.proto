@@ -115,7 +115,7 @@ message Message {
   string sender = 2;
   Room room = 3;
   string message = 4;
-  string senderProfilePictureUrl = 5;
+  string senderpicture = 5;
   string senderName = 6;
   string senderUsername = 7;
   google.protobuf.Timestamp created = 8;
