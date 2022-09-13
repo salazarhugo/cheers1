@@ -2,7 +2,12 @@ syntax = "proto3";
 
 package userpb;
 
-option go_package = "./user-service/userpb";
+option go_package = "./userpb";
+
+
+service UserService {
+  rpc GetUser (GetUserRequest) returns (GetUserResponse);
+}
 
 message User {
   string id = 1;
@@ -18,13 +23,17 @@ message User {
   repeated string registration_tokens = 11;
 }
 
-message UpdateUserRequest {
-  optional string name = 1;
-  optional string email = 2;
-  optional string picture = 3;
-  optional string bio = 7;
-  optional string website = 8;
-  optional string phone_number = 9;
+//message UpdateUserRequest {
+//  optional string name = 1;
+//  optional string email = 2;
+//  optional string picture = 3;
+//  optional string bio = 7;
+//  optional string website = 8;
+//  optional string phone_number = 9;
+//}
+
+message GetUserRequest {
+  string username = 1;
 }
 
 message GetUserResponse {

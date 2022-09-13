@@ -6,6 +6,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"log"
 	"net/http"
+	"os"
 	"salazar/cheers/payment/utils"
 )
 
@@ -46,6 +47,18 @@ func ValidateTicket(c echo.Context) error {
 
 	userId := ticket.UserId
 
+	resp, err := http.Get(os.Getenv("GATEWAY_URL") + "/users/" + userId)
+	if err != nil {
+		log.Println(err)
+		return c.JSON(http.StatusInternalServerError, err.Error())
+	}
+	user := &userpb.User{}
+	user, err := utils.MapToProto(user, resp.Body.)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, "Failed to Unmarshal ticket")
+	}
+
+	////////////////////////////////////////////////////////////////
 	userDoc, err := client.Collection("users").Doc(userId).Get(ctx)
 	userMap := userDoc.Data()
 	userEmail := userMap["email"].(string)

@@ -3,6 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/proto"
 	"salazar/cheers/payment/proto/ticketpb"
 )
 
@@ -17,4 +18,17 @@ func MapToTicket(m map[string]interface{}) (*ticketpb.Ticket, error) {
 		return nil, err
 	}
 	return s, nil
+}
+
+func MapToProto(proto proto.Message, m map[string]interface{}) error {
+	b, err := json.Marshal(m)
+	if err != nil {
+		return err
+	}
+	err = protojson.Unmarshal(b, proto)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
