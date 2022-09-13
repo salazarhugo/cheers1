@@ -23,12 +23,34 @@ func (s *userServiceServer) GetUser(
 	request *userpb.GetUserRequest,
 ) (*userpb.GetUserResponse, error) {
 
+	switch identification := request.Identification.(type) {
+	case *userpb.GetUserRequest_UserId:
+		fmt.Printf("Get user with userId: %s\n", identification.UserId)
+	case *userpb.GetUserRequest_Username:
+		fmt.Printf("Get user with username: %s\n", identification.Username)
+	default:
+		fmt.Println("No matching operations")
+	}
+
+	//user2.GetUser()
 	user := &userpb.GetUserResponse{
-		User:           nil,
-		PostCount:      0,
+		User: &userpb.User{
+			Id:                 "demo",
+			Name:               "Hugo Salazar",
+			Email:              "hugobrock74@gmail.com",
+			Verified:           false,
+			Username:           "demo",
+			Picture:            "",
+			Bio:                "Haha",
+			Website:            "",
+			PhoneNumber:        "",
+			Created:            0,
+			RegistrationTokens: nil,
+		},
+		PostCount:      69,
 		FollowBack:     false,
-		FollowingCount: 0,
-		FollowersCount: 0,
+		FollowingCount: 69,
+		FollowersCount: 69,
 		StoryState:     "",
 	}
 

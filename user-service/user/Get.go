@@ -2,23 +2,23 @@ package user
 
 import (
 	"encoding/json"
-	"github.com/labstack/echo/v4"
 	"google.golang.org/protobuf/encoding/protojson"
 	"log"
-	"net/http"
-	"salazar/cheers/user/userpb"
+	"salazar/cheers/user/proto/userpb"
 	"salazar/cheers/user/utils"
 )
 
 // GetUser GET /?username={username}
-func GetUser(c echo.Context) error {
-	cc := c.(*utils.CustomContext)
-	session := utils.GetSession(cc.Driver)
+func GetUser(
+	currentUserId string,
+	userIdOrUsername string,
+) error {
+	driver := utils.GetDriver()
+	session := utils.GetSession(driver)
 	defer session.Close()
 
-	userIdOrUsername := cc.QueryParam("username")
 	if userIdOrUsername == "" {
-		return cc.JSON(http.StatusBadRequest, "Missing parameter: username")
+		return nil
 	}
 
 	cypher := `
@@ -54,29 +54,30 @@ func GetUser(c echo.Context) error {
 					}`
 
 	params := map[string]interface{}{
-		"userId":           cc.Get("userId"),
+		"userId":           currentUserId,
 		"userIdOrUsername": userIdOrUsername,
 	}
 
-	result, err := session.Run(cypher, params)
+	_, err := session.Run(cypher, params)
 
-	var user *userpb.GetUserResponse
-	if result.Next() {
-		userMap := result.Record().Values[0].(map[string]interface{})
-		user, err = MapToUser(userMap)
-	} else {
-		return cc.JSON(http.StatusNoContent, map[string]interface{}{
-			"username": userIdOrUsername,
-			"userId":   cc.Get("userId"),
-		})
-	}
+	//var user *userpb.GetUserResponse
+	//if result.Next() {
+	//	userMap := result.Record().Values[0].(map[string]interface{})
+	//	user, err = MapToUser(userMap)
+	//} else {
+	//return cc.JSON(http.StatusNoContent, map[string]interface{}{
+	//	"username": userIdOrUsername,
+	//	"userId":   cc.Get("userId"),
+	//})
+	//}
 
 	if err != nil {
 		log.Fatalf("Error: %s", err)
 		return err
 	}
 
-	return cc.JSON(http.StatusOK, user)
+	//return cc.JSON(http.StatusOK, user)
+	return nil
 }
 
 func MapToUser(m map[string]interface{}) (*userpb.GetUserResponse, error) {

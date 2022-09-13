@@ -33,7 +33,10 @@ message User {
 //}
 
 message GetUserRequest {
-  string username = 1;
+  oneof identification {
+    string user_id = 1;
+    string username = 2;
+  }
 }
 
 message GetUserResponse {

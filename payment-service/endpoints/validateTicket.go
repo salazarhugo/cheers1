@@ -4,9 +4,11 @@ import (
 	"cloud.google.com/go/firestore"
 	"context"
 	"github.com/labstack/echo/v4"
+	"google.golang.org/grpc"
 	"log"
 	"net/http"
 	"os"
+	"salazar/cheers/payment/proto/userpb"
 	"salazar/cheers/payment/utils"
 )
 
@@ -47,25 +49,21 @@ func ValidateTicket(c echo.Context) error {
 
 	userId := ticket.UserId
 
-	resp, err := http.Get(os.Getenv("GATEWAY_URL") + "/users/" + userId)
+	var opts []grpc.DialOption
+	conn, err := grpc.Dial(os.Getenv("GATEWAY_URL"), opts...)
+	if err != nil {
+	}
+	defer conn.Close()
+	userClient := userpb.NewUserServiceClient(conn)
+	resp, err := userClient.GetUser(ctx, &userpb.GetUserRequest{
+		Username: userId,
+	})
 	if err != nil {
 		log.Println(err)
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
-	user := &userpb.User{}
-	user, err := utils.MapToProto(user, resp.Body.)
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, "Failed to Unmarshal ticket")
-	}
 
-	////////////////////////////////////////////////////////////////
-	userDoc, err := client.Collection("users").Doc(userId).Get(ctx)
-	userMap := userDoc.Data()
-	userEmail := userMap["email"].(string)
-	userName, ok := userMap["name"].(string)
-	if !ok {
-		userName = ""
-	}
+	user := resp.GetUser()
 
 	// Check if ticket was already validated
 	if ticketMap["validated"] == true {
@@ -75,7 +73,7 @@ func ValidateTicket(c echo.Context) error {
 			"description":      ticket.Description,
 			"message":          "Ticket already validated",
 			"price":            ticket.Price,
-			"reservation_name": userName,
+			"reservation_name": user.Name,
 			"party_name":       "Summer Breeze",
 			"party_banner":     "Summer Breeze",
 		})
@@ -86,9 +84,9 @@ func ValidateTicket(c echo.Context) error {
 	batch.Update(ticketDoc.Ref, []firestore.Update{
 		{Path: "validated", Value: true},
 	})
-	batch.Update(userDoc.Ref.Collection("tickets").Doc(ticketReq.ID), []firestore.Update{
-		{Path: "validated", Value: true},
-	})
+	//batch.Update(userDoc.Ref.Collection("tickets").Doc(ticketReq.ID), []firestore.Update{
+	//	{Path: "validated", Value: true},
+	//})
 
 	_, err = batch.Commit(ctx)
 	if err != nil {
@@ -96,7 +94,7 @@ func ValidateTicket(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	err = utils.PublishPayment(userEmail)
+	err = utils.PublishPayment(user.Email)
 	if err != nil {
 		log.Println(err)
 		return c.JSON(http.StatusInternalServerError, err.Error())
@@ -108,7 +106,7 @@ func ValidateTicket(c echo.Context) error {
 		"description":     ticketMap["description"],
 		"message":         ticketMap["name"],
 		"price":           ticketMap["price"],
-		"reservationName": userName,
+		"reservationName": user.Name,
 		"provider":        "Summer Breeze",
 	})
 }

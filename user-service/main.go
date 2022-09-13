@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 	"os"
+	"salazar/cheers/user/auth"
 	"salazar/cheers/user/proto/userpb"
 )
 
@@ -24,7 +25,9 @@ func main() {
 		log.Fatalf("net.Listen: %v", err)
 	}
 
-	grpcServer := grpc.NewServer()
+	grpcServer := grpc.NewServer(
+		grpc.UnaryInterceptor(auth.UnaryInterceptor),
+	)
 
 	userpb.RegisterUserServiceServer(grpcServer, newServer())
 	if err = grpcServer.Serve(listener); err != nil {

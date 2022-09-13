@@ -1,1 +1,3 @@
-protoc --go-grpc_out=require_unimplemented_servers=false:./proto/ --go_out=./proto/ proto/ticket.proto --experimental_allow_proto3_optional
+protoc --go_out=./proto/ proto/ticket.proto  \
+      --go-grpc_out=require_unimplemented_servers=false:./proto/ \
+      --experimental_allow_proto3_optional
