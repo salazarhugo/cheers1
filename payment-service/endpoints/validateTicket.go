@@ -5,6 +5,7 @@ import (
 	"context"
 	"github.com/labstack/echo/v4"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"log"
 	"net/http"
 	"os"
@@ -49,9 +50,14 @@ func ValidateTicket(c echo.Context) error {
 
 	userId := ticket.UserId
 
-	var opts []grpc.DialOption
-	conn, err := grpc.Dial(os.Getenv("GATEWAY_URL"), opts...)
+	opts := []grpc.DialOption{
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	}
+
+	conn, err := grpc.Dial(os.Getenv("GATEWAY_DOMAIN")+":443", opts...)
 	if err != nil {
+		log.Println(err)
+		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 	defer conn.Close()
 	userClient := userpb.NewUserServiceClient(conn)

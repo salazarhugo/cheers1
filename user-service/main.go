@@ -24,7 +24,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("net.Listen: %v", err)
 	}
-
 	grpcServer := grpc.NewServer(
 		grpc.UnaryInterceptor(auth.UnaryInterceptor),
 	)
