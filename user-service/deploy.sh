@@ -1,5 +1,5 @@
 REGION=europe-west2
-GATEWAY_URL=https://waf-clzdlli7.nw.gateway.dev
+GATEWAY_URL=https://android-gateway-clzdlli7.nw.gateway.dev
 
 gcloud run deploy user-service \
     --source .  \

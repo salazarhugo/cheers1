@@ -56,7 +56,7 @@ func ValidateTicket(c echo.Context) error {
 	defer conn.Close()
 	userClient := userpb.NewUserServiceClient(conn)
 	resp, err := userClient.GetUser(ctx, &userpb.GetUserRequest{
-		Username: userId,
+		Identification: &userpb.GetUserRequest_UserId{UserId: userId},
 	})
 	if err != nil {
 		log.Println(err)
