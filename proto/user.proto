@@ -22,15 +22,6 @@ message User {
   repeated string registration_tokens = 11;
 }
 
-//message UpdateUserRequest {
-//  optional string name = 1;
-//  optional string email = 2;
-//  optional string picture = 3;
-//  optional string bio = 7;
-//  optional string website = 8;
-//  optional string phone_number = 9;
-//}
-
 message GetUserRequest {
   oneof identification {
     string user_id = 1;

@@ -5,7 +5,7 @@ import (
 	"context"
 	"github.com/labstack/echo/v4"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
+	grpcMetadata "google.golang.org/grpc/metadata"
 	"log"
 	"net/http"
 	"os"
@@ -48,22 +48,19 @@ func ValidateTicket(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, "Failed to Unmarshal ticket")
 	}
 
-	userId := ticket.UserId
+	//userId := ticket.UserId
 
-	opts := []grpc.DialOption{
-		grpc.WithTransportCredentials(insecure.NewCredentials()),
-	}
-
-	conn, err := grpc.Dial(os.Getenv("GATEWAY_DOMAIN")+":443", opts...)
+	conn, err := grpc.Dial(os.Getenv("GATEWAY_DOMAIN")+":443", grpc.WithInsecure())
+	log.Println(conn.Target())
 	if err != nil {
+		log.Println("DIal")
 		log.Println(err)
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
-	defer conn.Close()
+
+	ctx = grpcMetadata.AppendToOutgoingContext(ctx, "authorization", "Bearer "+os.Getenv("TOKEN"))
 	userClient := userpb.NewUserServiceClient(conn)
-	resp, err := userClient.GetUser(ctx, &userpb.GetUserRequest{
-		Identification: &userpb.GetUserRequest_UserId{UserId: userId},
-	})
+	resp, err := userClient.GetUser(ctx, &userpb.GetUserRequest{})
 	if err != nil {
 		log.Println(err)
 		return c.JSON(http.StatusInternalServerError, err.Error())
@@ -90,9 +87,6 @@ func ValidateTicket(c echo.Context) error {
 	batch.Update(ticketDoc.Ref, []firestore.Update{
 		{Path: "validated", Value: true},
 	})
-	//batch.Update(userDoc.Ref.Collection("tickets").Doc(ticketReq.ID), []firestore.Update{
-	//	{Path: "validated", Value: true},
-	//})
 
 	_, err = batch.Commit(ctx)
 	if err != nil {

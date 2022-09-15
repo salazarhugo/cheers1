@@ -32,7 +32,6 @@ func (s *userServiceServer) GetUser(
 		fmt.Println("No matching operations")
 	}
 
-	//user2.GetUser()
 	user := &userpb.GetUserResponse{
 		User: &userpb.User{
 			Id:                 "demo",
