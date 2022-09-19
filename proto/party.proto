@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package partypb;
-
-option go_package = "./partypb";
-
-message Party {
-}

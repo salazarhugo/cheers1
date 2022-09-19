@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package cheers.api.v1;
+
+import "cheers/user.proto";
+import "cheers/ticket.proto";
+//import "cheers/party.proto";
+import "google/protobuf/empty.proto";
+
+option java_multiple_files = true;
+
+service Main {
+  rpc GetUser (GetUserRequest) returns (GetUserResponse);
+  rpc ListTickets (google.protobuf.Empty) returns (ListTicketsResponse);
+//  rpc ListParties (google.protobuf.Empty) returns (ListPartiesResponse);
+}
+
+//message ListPartiesResponse {
+//  repeated cheers.Party parties = 1;
+//}
+
+message ListTicketsResponse {
+  repeated cheers.Ticket tickets = 1;
+}
+
+message GetUserRequest {
+  oneof identification {
+    string user_id = 1;
+    string username = 2;
+  }
+}
+
+message GetUserResponse {
+  cheers.User user = 1;
+  int64 post_count = 2;
+  bool follow_back = 3;
+  int64 following_count = 4;
+  int64 followers_count = 5;
+  string story_state = 6;
+}

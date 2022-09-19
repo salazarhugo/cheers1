@@ -1,0 +1,27 @@
+type: google.api.Service
+config_version: 3
+name: android.apigateway.cheers-a275e.cloud.goog
+title: Cheers API
+apis:
+  - name: cheers.api.v1.Main
+usage:
+  rules:
+    # All methods can be called without an API Key.
+    - selector: "*"
+      allow_unregistered_calls: true
+authentication:
+  providers:
+    - id: firebase
+      jwks_uri: https://www.googleapis.com/service_accounts/v1/metadata/x509/securetoken@system.gserviceaccount.com
+      issuer: https://securetoken.google.com/cheers-a275e
+      audiences: "cheers-a275e"
+  rules:
+    - selector: "*"
+      requirements:
+        - provider_id: firebase
+backend:
+  rules:
+    - selector: cheers.api.v1.Main.GetUser
+      address: grpcs://user-service-r3a2dr4u4a-nw.a.run.app
+    - selector: cheers.api.v1.Main.ListTickets
+      address: grpcs://payment-service-r3a2dr4u4a-nw.a.run.app

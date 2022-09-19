@@ -1,0 +1,17 @@
+# HTTP rules for User
+
+type: google.api.Service
+config_version: 3
+
+# Name of the service configuration.
+name: android.apigateway.cheers-a275e.cloud.goog
+
+
+# HTTP rules define translation from HTTP/REST/JSON to gRPC. With these rules
+# HTTP/REST/JSON clients will be able to call the User service.
+http:
+  rules:
+    - selector: cheers.api.v1.Main.GetUser
+      get: /users/{username}
+    - selector: cheers.api.v1.Main.ListTickets
+      get: /tickets

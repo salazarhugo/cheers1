@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package cheers;
+
+message User {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+  bool verified = 4;
+  string username = 5;
+  string picture = 6;
+  string bio = 7;
+  string website = 8;
+  string phone_number = 9;
+  float created = 10;
+  repeated string registration_tokens = 11;
+}
