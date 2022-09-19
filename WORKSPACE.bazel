@@ -12,7 +12,6 @@ http_archive(
 )
 
 load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
-
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
@@ -29,7 +28,6 @@ load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 
 protobuf_deps()
 
-
 http_archive(
     name = "bazel_gazelle",
     sha256 = "5982e5463f171da99e3bdaeff8c0f48283a7a5f396ec5282910b9e8a49c0dd7e",
@@ -45,4 +43,4 @@ go_rules_dependencies()
 
 go_register_toolchains(version = "1.18.3")
 
-gazelle_dependencies(go_repository_default_config="//:WORKSPACE.bazel")
+gazelle_dependencies(go_repository_default_config = "//:WORKSPACE.bazel")

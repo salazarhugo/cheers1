@@ -508,7 +508,7 @@ func UpdateUser(c echo.Context) error {
 	type UpdateUser struct {
 		Email       *string `json:"email" structs:"email,omitempty"`
 		Name        *string `json:"name" structs:"name,omitempty"`
-		picture     *string `json:"picture" structs:"picture,omitempty"`
+		Picture     *string `json:"picture" structs:"picture,omitempty"`
 		Bio         *string `json:"bio" structs:"bio,omitempty"`
 		Website     *string `json:"website" structs:"website,omitempty"`
 		PhoneNumber *string `json:"phoneNumber" structs:"phoneNumber,omitempty"`
