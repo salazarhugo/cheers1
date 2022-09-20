@@ -1,0 +1,12 @@
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+proto_library(
+    name = "main_proto",
+    srcs = ["main.proto"],
+    deps = [
+#        "//proto/cheers:user_proto",
+#        "//proto/cheers:party_proto",
+#        "//proto/cheers:ticket_proto",
+         "@com_google_protobuf//:any_proto"
+    ],
+)

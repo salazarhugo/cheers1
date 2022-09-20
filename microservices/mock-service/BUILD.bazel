@@ -1,0 +1,18 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
+
+go_binary(
+    name="mock_binary",
+    srcs=["main.go", "hello.go"],
+#    deps=[":cheers_proto"]
+)
+
+#go_library(
+#    name="mock_library",
+#    importpath="cheers/user",
+#    srcs=["main.go"],
+#)
+#
+go_test(
+    name="hello_test",
+    srcs=["hello_test.go", "hello.go"],
+)
