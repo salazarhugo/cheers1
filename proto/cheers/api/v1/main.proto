@@ -2,25 +2,35 @@ syntax = "proto3";
 
 package cheers.api.v1;
 
-import "cheers/user.proto";
-import "cheers/ticket.proto";
-//import "cheers/party.proto";
+//import "cheers/user.proto";
+//import "cheers/ticket.proto";
+import "cheers/party.proto";
 import "google/protobuf/empty.proto";
 
 option java_multiple_files = true;
+option go_package = "cheers.com/genproto/cheers/api/v1";
 
 service Main {
   rpc GetUser (GetUserRequest) returns (GetUserResponse);
-  rpc ListTickets (google.protobuf.Empty) returns (ListTicketsResponse);
-//  rpc ListParties (google.protobuf.Empty) returns (ListPartiesResponse);
+  rpc CreateParty (CreatePartyRequest) returns (CreatePartyResponse);
+  rpc UpdateParty (UpdatePartyRequest) returns (Party);
+  rpc DeleteParty (DeletePartyRequest) returns (google.protobuf.Empty);
 }
 
-//message ListPartiesResponse {
-//  repeated cheers.Party parties = 1;
-//}
+message DeletePartyRequest {
+  string id = 1;
+}
 
-message ListTicketsResponse {
-  repeated cheers.Ticket tickets = 1;
+message UpdatePartyRequest {
+}
+
+message UpdatePartyResponse {
+}
+
+message CreatePartyRequest {
+}
+
+message CreatePartyResponse {
 }
 
 message GetUserRequest {
@@ -31,7 +41,7 @@ message GetUserRequest {
 }
 
 message GetUserResponse {
-  cheers.User user = 1;
+//  cheers.User user = 1;
   int64 post_count = 2;
   bool follow_back = 3;
   int64 following_count = 4;

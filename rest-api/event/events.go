@@ -496,7 +496,7 @@ func DeleteParty(c echo.Context) error {
 	session := utils.GetSession(cc.Driver)
 	defer session.Close()
 
-	partyId := cc.QueryParam("partyId")
+	partyId := cc.Param("partyId")
 
 	_, err := session.WriteTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
 		result, err := transaction.Run(
