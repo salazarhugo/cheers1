@@ -13,5 +13,9 @@ http:
   rules:
     - selector: cheers.api.v1.Main.GetUser
       get: /users/{username}
-    - selector: cheers.api.v1.Main.ListTickets
-      get: /tickets
+    - selector: cheers.api.v1.Main.CreateParty
+      post: /parties
+    - selector: cheers.api.v1.Main.UpdateParty
+      patch: /parties
+    - selector: cheers.api.v1.Main.DeleteParty
+      delete: /parties
