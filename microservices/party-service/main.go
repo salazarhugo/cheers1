@@ -1,12 +1,13 @@
 package main
 
 import (
-	"cheers.com/proto"
-	v1 "cheers.com/proto/cheers/api/v1"
+	out "cheers.com/shared"
+	v1 "cheers.com/shared/cheers/api/v1"
 	"google.golang.org/grpc"
 	"log"
 	"net"
 	"os"
+	"salazar/cheers/user/auth"
 )
 
 func main() {
