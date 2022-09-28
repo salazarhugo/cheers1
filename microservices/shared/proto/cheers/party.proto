@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package cheers;
-
-message Party {
-  string id = 1;
-  string name = 2;
-}
