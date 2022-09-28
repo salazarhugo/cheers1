@@ -1,7 +1,0 @@
-[
-  {
-    "origin": ["https://web-cheers.web.app"],
-    "method": ["GET"],
-    "maxAgeSeconds": 3600
-  }
-]
