@@ -4,3 +4,6 @@ load("@rules_proto_grpc//go:defs.bzl", "go_grpc_compile")
 #    name = "thing_go_grpc",
 #    protos = ["cheers/user.proto"],
 #)
+#go_proto_library(
+#    name = "cheers_proto_lib",
+#)
