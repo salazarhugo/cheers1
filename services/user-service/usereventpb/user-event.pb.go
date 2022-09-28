@@ -89,8 +89,8 @@ type UserEvent struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Type   UserEventType `protobuf:"varint,1,opt,name=type,proto3,enum=usereventpb.UserEventType" json:"type,omitempty"`
-	UserId string        `protobuf:"bytes,2,opt,name=userId,proto3" json:"userId,omitempty"`
+	Type        UserEventType `protobuf:"varint,1,opt,name=type,proto3,enum=usereventpb.UserEventType" json:"type,omitempty"`
+	UserId      string        `protobuf:"bytes,2,opt,name=userId,proto3" json:"userId,omitempty"`
 	Time        int64         `protobuf:"varint,3,opt,name=time,proto3" json:"time,omitempty"`
 	OtherUserId string        `protobuf:"bytes,4,opt,name=otherUserId,proto3" json:"otherUserId,omitempty"`
 	PostId      string        `protobuf:"bytes,5,opt,name=postId,proto3" json:"postId,omitempty"`

@@ -1,19 +1,15 @@
 package main
 
 import (
-	out "cheers.com/shared"
-	v1 "cheers.com/shared/cheers/api/v1"
+	"github.com/salazarhugo/cheers1/libs/auth"
 	"google.golang.org/grpc"
 	"log"
 	"net"
 	"os"
-	"salazar/cheers/user/auth"
 )
 
 func main() {
-	out.Hello("")
 	log.SetFlags(0)
-
 	log.Printf("grpc-user: starting server...")
 
 	port := os.Getenv("PORT")
@@ -30,7 +26,7 @@ func main() {
 		grpc.UnaryInterceptor(auth.UnaryInterceptor),
 	)
 
-	v1.RegisterMainServer(grpcServer, newServer())
+	//v1.RegisterMainServer(grpcServer, newServer())
 	if err = grpcServer.Serve(listener); err != nil {
 		log.Fatal(err)
 	}
