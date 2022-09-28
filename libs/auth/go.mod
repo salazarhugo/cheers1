@@ -4,7 +4,6 @@ go 1.19
 
 require (
 	github.com/labstack/echo/v4 v4.9.0
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-00010101000000-000000000000
 )
 
 require (
@@ -41,5 +40,3 @@ require (
 	google.golang.org/grpc v1.47.0 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 )
-
-replace github.com/salazarhugo/cheers1/libs/utils => ../utils
