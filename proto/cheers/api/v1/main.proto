@@ -2,9 +2,6 @@ syntax = "proto3";
 
 package cheers.api.v1;
 
-//import "cheers/user.proto";
-//import "cheers/ticket.proto";
-import "cheers/party.proto";
 import "google/protobuf/empty.proto";
 
 option java_multiple_files = true;
@@ -13,7 +10,6 @@ option go_package = "cheers.com/genproto/cheers/api/v1";
 service Main {
   rpc GetUser (GetUserRequest) returns (GetUserResponse);
   rpc CreateParty (CreatePartyRequest) returns (CreatePartyResponse);
-  rpc UpdateParty (UpdatePartyRequest) returns (Party);
   rpc DeleteParty (DeletePartyRequest) returns (google.protobuf.Empty);
 }
 

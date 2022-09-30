@@ -3,7 +3,7 @@ module github.com/salazarhugo/cheers1/microservices/party-service
 go 1.19
 
 require (
-	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20220928155205-8596f5490f44
+	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20220928190406-5c91008cacd8
 	google.golang.org/grpc v1.47.0
 )
 

@@ -7,7 +7,6 @@
 package v1
 
 import (
-	cheers "cheers.com/genproto/cheers"
 	context "context"
 	empty "github.com/golang/protobuf/ptypes/empty"
 	grpc "google.golang.org/grpc"
@@ -26,7 +25,6 @@ const _ = grpc.SupportPackageIsVersion7
 type MainClient interface {
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 	CreateParty(ctx context.Context, in *CreatePartyRequest, opts ...grpc.CallOption) (*CreatePartyResponse, error)
-	UpdateParty(ctx context.Context, in *UpdatePartyRequest, opts ...grpc.CallOption) (*cheers.Party, error)
 	DeleteParty(ctx context.Context, in *DeletePartyRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 }
 
@@ -56,15 +54,6 @@ func (c *mainClient) CreateParty(ctx context.Context, in *CreatePartyRequest, op
 	return out, nil
 }
 
-func (c *mainClient) UpdateParty(ctx context.Context, in *UpdatePartyRequest, opts ...grpc.CallOption) (*cheers.Party, error) {
-	out := new(cheers.Party)
-	err := c.cc.Invoke(ctx, "/cheers.api.v1.Main/UpdateParty", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *mainClient) DeleteParty(ctx context.Context, in *DeletePartyRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
 	out := new(empty.Empty)
 	err := c.cc.Invoke(ctx, "/cheers.api.v1.Main/DeleteParty", in, out, opts...)
@@ -80,7 +69,6 @@ func (c *mainClient) DeleteParty(ctx context.Context, in *DeletePartyRequest, op
 type MainServer interface {
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
 	CreateParty(context.Context, *CreatePartyRequest) (*CreatePartyResponse, error)
-	UpdateParty(context.Context, *UpdatePartyRequest) (*cheers.Party, error)
 	DeleteParty(context.Context, *DeletePartyRequest) (*empty.Empty, error)
 	mustEmbedUnimplementedMainServer()
 }
@@ -94,9 +82,6 @@ func (UnimplementedMainServer) GetUser(context.Context, *GetUserRequest) (*GetUs
 }
 func (UnimplementedMainServer) CreateParty(context.Context, *CreatePartyRequest) (*CreatePartyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateParty not implemented")
-}
-func (UnimplementedMainServer) UpdateParty(context.Context, *UpdatePartyRequest) (*cheers.Party, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateParty not implemented")
 }
 func (UnimplementedMainServer) DeleteParty(context.Context, *DeletePartyRequest) (*empty.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteParty not implemented")
@@ -150,24 +135,6 @@ func _Main_CreateParty_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Main_UpdateParty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdatePartyRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MainServer).UpdateParty(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/cheers.api.v1.Main/UpdateParty",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MainServer).UpdateParty(ctx, req.(*UpdatePartyRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Main_DeleteParty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeletePartyRequest)
 	if err := dec(in); err != nil {
@@ -200,10 +167,6 @@ var Main_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateParty",
 			Handler:    _Main_CreateParty_Handler,
-		},
-		{
-			MethodName: "UpdateParty",
-			Handler:    _Main_UpdateParty_Handler,
 		},
 		{
 			MethodName: "DeleteParty",
