@@ -8,10 +8,11 @@ package v1
 
 import (
 	context "context"
-	empty "github.com/golang/protobuf/ptypes/empty"
+	cheers "github.com/salazarhugo/cheers1/proto/cheers"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -24,8 +25,8 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MainClient interface {
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
-	CreateParty(ctx context.Context, in *CreatePartyRequest, opts ...grpc.CallOption) (*CreatePartyResponse, error)
-	DeleteParty(ctx context.Context, in *DeletePartyRequest, opts ...grpc.CallOption) (*empty.Empty, error)
+	CreateParty(ctx context.Context, in *CreatePartyRequest, opts ...grpc.CallOption) (*cheers.Party, error)
+	DeleteParty(ctx context.Context, in *DeletePartyRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type mainClient struct {
@@ -45,8 +46,8 @@ func (c *mainClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...gr
 	return out, nil
 }
 
-func (c *mainClient) CreateParty(ctx context.Context, in *CreatePartyRequest, opts ...grpc.CallOption) (*CreatePartyResponse, error) {
-	out := new(CreatePartyResponse)
+func (c *mainClient) CreateParty(ctx context.Context, in *CreatePartyRequest, opts ...grpc.CallOption) (*cheers.Party, error) {
+	out := new(cheers.Party)
 	err := c.cc.Invoke(ctx, "/cheers.api.v1.Main/CreateParty", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -54,8 +55,8 @@ func (c *mainClient) CreateParty(ctx context.Context, in *CreatePartyRequest, op
 	return out, nil
 }
 
-func (c *mainClient) DeleteParty(ctx context.Context, in *DeletePartyRequest, opts ...grpc.CallOption) (*empty.Empty, error) {
-	out := new(empty.Empty)
+func (c *mainClient) DeleteParty(ctx context.Context, in *DeletePartyRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/cheers.api.v1.Main/DeleteParty", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -68,8 +69,8 @@ func (c *mainClient) DeleteParty(ctx context.Context, in *DeletePartyRequest, op
 // for forward compatibility
 type MainServer interface {
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
-	CreateParty(context.Context, *CreatePartyRequest) (*CreatePartyResponse, error)
-	DeleteParty(context.Context, *DeletePartyRequest) (*empty.Empty, error)
+	CreateParty(context.Context, *CreatePartyRequest) (*cheers.Party, error)
+	DeleteParty(context.Context, *DeletePartyRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedMainServer()
 }
 
@@ -80,10 +81,10 @@ type UnimplementedMainServer struct {
 func (UnimplementedMainServer) GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
 }
-func (UnimplementedMainServer) CreateParty(context.Context, *CreatePartyRequest) (*CreatePartyResponse, error) {
+func (UnimplementedMainServer) CreateParty(context.Context, *CreatePartyRequest) (*cheers.Party, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateParty not implemented")
 }
-func (UnimplementedMainServer) DeleteParty(context.Context, *DeletePartyRequest) (*empty.Empty, error) {
+func (UnimplementedMainServer) DeleteParty(context.Context, *DeletePartyRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteParty not implemented")
 }
 func (UnimplementedMainServer) mustEmbedUnimplementedMainServer() {}

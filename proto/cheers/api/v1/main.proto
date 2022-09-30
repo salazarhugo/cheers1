@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package cheers.api.v1;
 
+import "cheers/party.proto";
 import "google/protobuf/empty.proto";
 
 option java_multiple_files = true;
@@ -9,7 +10,7 @@ option go_package = "github.com/salazarhugo/cheers1/proto/cheers/api/v1";
 
 service Main {
   rpc GetUser (GetUserRequest) returns (GetUserResponse);
-  rpc CreateParty (CreatePartyRequest) returns (CreatePartyResponse);
+  rpc CreateParty (CreatePartyRequest) returns (Party);
   rpc DeleteParty (DeletePartyRequest) returns (google.protobuf.Empty);
 }
 
@@ -24,6 +25,7 @@ message UpdatePartyResponse {
 }
 
 message CreatePartyRequest {
+  Party party = 1;
 }
 
 message CreatePartyResponse {
