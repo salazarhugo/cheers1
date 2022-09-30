@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package cheers;
 
-option go_package = "cheers.com/genproto/cheers";
+option go_package = "github.com/salazarhugo/cheers1/proto/cheers";
 
 message User {
   string id = 1;

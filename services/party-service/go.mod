@@ -3,8 +3,8 @@ module github.com/salazarhugo/cheers1/microservices/party-service
 go 1.19
 
 require (
-	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20220928190406-5c91008cacd8
-	github.com/salazarhugo/cheers1/proto/out latest
+	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20220930090630-21da9dfb35b5
+	github.com/salazarhugo/cheers1/proto/out v0.0.0-20220930100944-534b8b2bd36f
 	google.golang.org/grpc v1.49.0
 )
 

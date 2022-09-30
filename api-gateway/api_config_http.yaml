@@ -15,7 +15,5 @@ http:
       get: /users/{username}
     - selector: cheers.api.v1.Main.CreateParty
       post: /parties
-    - selector: cheers.api.v1.Main.UpdateParty
-      patch: /parties
     - selector: cheers.api.v1.Main.DeleteParty
       delete: /parties
