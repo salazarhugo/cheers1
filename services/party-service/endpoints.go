@@ -25,6 +25,7 @@ func (s *MainApiServiceServer) CreateParty(
 	request *v1.CreatePartyRequest,
 ) (*v1.CreatePartyResponse, error) {
 	log.Println(request)
+	request.
 	return &v1.CreatePartyResponse{}, nil
 }
 

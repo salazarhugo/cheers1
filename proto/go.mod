@@ -1,4 +1,4 @@
-module github.com/salazarhugo/cheers1/proto/out
+module github.com/salazarhugo/cheers1/proto
 
 go 1.19
 

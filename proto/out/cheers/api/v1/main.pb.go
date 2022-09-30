@@ -7,7 +7,6 @@
 package v1
 
 import (
-	cheers "github.com/salazarhugo/cheers1/proto/cheers"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
