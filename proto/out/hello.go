@@ -6,20 +6,13 @@ import (
 	"sync"
 )
 
-// Hello returns a greeting for the named person.
-func Hello(name string) string {
-	// Return a greeting that embeds the name in a message.
-	message := fmt.Sprintf("Hi, %v. Welcome!", name)
-	return message
-}
-
-func newServer() *mainApiServiceServer {
-	s := &mainApiServiceServer{}
+func NewServer() *MainApiServiceServer {
+	s := &MainApiServiceServer{}
 	fmt.Println(s)
 	return s
 }
 
-type mainApiServiceServer struct {
+type MainApiServiceServer struct {
 	v1.UnimplementedMainServer
 	mu sync.Mutex
 }

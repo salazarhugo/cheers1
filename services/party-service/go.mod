@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20220928190406-5c91008cacd8
-	github.com/salazarhugo/cheers1/proto/out v0.0.0-20220930090226-1fd00d9bd175
+	github.com/salazarhugo/cheers1/proto/out latest
 	google.golang.org/grpc v1.49.0
 )
 
