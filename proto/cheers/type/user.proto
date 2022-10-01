@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package cheers;
+package cheers.type;
 
-option go_package = "github.com/salazarhugo/cheers1/proto/cheers";
+option go_package = "github.com/salazarhugo/cheers1/genproto";
 
 message User {
   string id = 1;

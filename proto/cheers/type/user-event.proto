@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package cheers;
+package cheers.type;
 
 enum UserEventType {
   FOLLOW = 0;
