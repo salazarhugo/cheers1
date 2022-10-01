@@ -7,7 +7,7 @@ require (
 	github.com/golang/protobuf v1.5.2
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
 	github.com/salazarhugo/cheers1/genproto v0.0.0-20221001161720-b727e9f581ca
-	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221001122940-2d2180021f89
+	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221001161720-b727e9f581ca
 	google.golang.org/grpc v1.49.0
 )
 

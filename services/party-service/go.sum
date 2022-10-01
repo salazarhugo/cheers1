@@ -243,8 +243,8 @@ github.com/rogpeppe/fastuuid v1.2.0/go.mod h1:jVj6XXZzXRy/MSR5jhDC/2q6DgLz+nrA6L
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
 github.com/salazarhugo/cheers1/genproto v0.0.0-20221001161720-b727e9f581ca h1:UE/cGWtstgix4IogUkvD1WBXzww275KAcTO+KKZIqvs=
 github.com/salazarhugo/cheers1/genproto v0.0.0-20221001161720-b727e9f581ca/go.mod h1:9gYKRAx7WlFlJmBrdnLY4cklAtuF0nBAcwi8RE7WB9Q=
-github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221001122940-2d2180021f89 h1:I1aouNmS2qFIo3baApnCcgvAMwEMQBbkqaCDCWSdKVY=
-github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221001122940-2d2180021f89/go.mod h1:ATnqIqULUdldwN1+jj6yVvwyUPhBXpv+eigyiYucp4A=
+github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221001161720-b727e9f581ca h1:NbfrwAhYquQyyHnpESUYGJq20+A8lsWMLccVEudOq2M=
+github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221001161720-b727e9f581ca/go.mod h1:ATnqIqULUdldwN1+jj6yVvwyUPhBXpv+eigyiYucp4A=
 github.com/spaolacci/murmur3 v0.0.0-20180118202830-f09979ecbc72/go.mod h1:JwIasOWyU6f++ZhiEuf87xNszmSA2myDM2Kzu9HwQUA=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=

@@ -1,7 +1,6 @@
 package main
 
 import (
-	proto "github.com/salazarhugo/cheers1/genproto"
 	"github.com/salazarhugo/cheers1/libs/auth"
 	"google.golang.org/grpc"
 	"log"
@@ -26,9 +25,9 @@ func main() {
 	grpcServer := grpc.NewServer(
 		grpc.UnaryInterceptor(auth.UnaryInterceptor),
 	)
-	proto.NewServer()
+	api.NewServer()
 
-	proto.RegisterMainServer(grpcServer, NewServer())
+	api.RegisterMainServer(grpcServer, NewServer())
 	if err = grpcServer.Serve(listener); err != nil {
 		log.Fatal(err)
 	}
