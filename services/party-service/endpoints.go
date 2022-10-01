@@ -6,15 +6,15 @@ import (
 	"github.com/fatih/structs"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
+	proto "github.com/salazarhugo/cheers1/genproto"
 	"github.com/salazarhugo/cheers1/libs/auth/utils"
-	v1 "github.com/salazarhugo/cheers1/proto/out/cheers/api/v1"
 	"log"
 	"sync"
 )
 
 func NewServer() *MainApiServiceServer {
 	s := &MainApiServiceServer{
-		v1.UnimplementedMainServer{},
+		proto.UnimplementedMainServer{},
 		sync.Mutex{},
 		utils.GetSession(utils.GetDriver()),
 	}
@@ -23,7 +23,7 @@ func NewServer() *MainApiServiceServer {
 }
 
 type MainApiServiceServer struct {
-	v1.UnimplementedMainServer
+	proto.UnimplementedMainServer
 	mu sync.Mutex
 	neo4j.Session
 }
@@ -45,8 +45,8 @@ type Party struct {
 
 func (s *MainApiServiceServer) CreateParty(
 	ctx context.Context,
-	request *v1.CreatePartyRequest,
-) (*v1.CreatePartyResponse, error) {
+	request *proto.CreatePartyRequest,
+) (*proto.CreatePartyResponse, error) {
 	log.Println(request)
 
 	cypher := `MATCH (u:User { username: $username}) 
@@ -78,12 +78,12 @@ func (s *MainApiServiceServer) CreateParty(
 		log.Println(err)
 	}
 
-	return &v1.CreatePartyResponse{}, nil
+	return &proto.CreatePartyResponse{}, nil
 }
 
 func (s *MainApiServiceServer) DeleteParty(
 	ctx context.Context,
-	request *v1.DeletePartyRequest,
+	request *proto.DeletePartyRequest,
 ) (*empty.Empty, error) {
 	log.Println(request)
 	return &empty.Empty{}, nil

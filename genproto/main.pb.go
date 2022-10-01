@@ -7,7 +7,6 @@
 package proto
 
 import (
-	proto "github.com/salazarhugo/cheers1/genproto/cheers"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
@@ -150,7 +149,7 @@ type CreatePartyRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Party *proto.Party `protobuf:"bytes,1,opt,name=party,proto3" json:"party,omitempty"`
+	Party *Party `protobuf:"bytes,1,opt,name=party,proto3" json:"party,omitempty"`
 }
 
 func (x *CreatePartyRequest) Reset() {
@@ -185,7 +184,7 @@ func (*CreatePartyRequest) Descriptor() ([]byte, []int) {
 	return file_cheers_api_v1_main_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *CreatePartyRequest) GetParty() *proto.Party {
+func (x *CreatePartyRequest) GetParty() *Party {
 	if x != nil {
 		return x.Party
 	}
@@ -468,7 +467,7 @@ var file_cheers_api_v1_main_proto_goTypes = []interface{}{
 	(*CreatePartyResponse)(nil), // 4: cheers.api.v1.CreatePartyResponse
 	(*GetUserRequest)(nil),      // 5: cheers.api.v1.GetUserRequest
 	(*GetUserResponse)(nil),     // 6: cheers.api.v1.GetUserResponse
-	(*proto.Party)(nil),         // 7: cheers.Party
+	(*Party)(nil),               // 7: cheers.Party
 	(*emptypb.Empty)(nil),       // 8: google.protobuf.Empty
 }
 var file_cheers_api_v1_main_proto_depIdxs = []int32{
@@ -491,7 +490,7 @@ func file_cheers_api_v1_main_proto_init() {
 	if File_cheers_api_v1_main_proto != nil {
 		return
 	}
-	proto.File_cheers_party_proto_init()
+	File_cheers_party_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_cheers_api_v1_main_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeletePartyRequest); i {
