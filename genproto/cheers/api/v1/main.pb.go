@@ -4,7 +4,7 @@
 // 	protoc        v3.12.4
 // source: cheers/api/v1/main.proto
 
-package api
+package v1
 
 import (
 	party "github.com/salazarhugo/cheers1/genproto/cheers/type"

@@ -6,7 +6,7 @@ require (
 	github.com/fatih/structs v1.1.0
 	github.com/golang/protobuf v1.5.2
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
-	github.com/salazarhugo/cheers1/genproto v0.0.0-20221001161720-b727e9f581ca
+	github.com/salazarhugo/cheers1/genproto latest
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221001161720-b727e9f581ca
 	google.golang.org/grpc v1.49.0
 )
@@ -27,6 +27,7 @@ require (
 	github.com/labstack/gommon v0.3.1 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
+	github.com/salazarhugo/cheers1/genproto v0.0.0-20221001164444-bb0e4b18f2ea // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.1 // indirect
 	go.opencensus.io v0.23.0 // indirect

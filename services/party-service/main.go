@@ -25,7 +25,6 @@ func main() {
 	grpcServer := grpc.NewServer(
 		grpc.UnaryInterceptor(auth.UnaryInterceptor),
 	)
-	api.NewServer()
 
 	api.RegisterMainServer(grpcServer, NewServer())
 	if err = grpcServer.Serve(listener); err != nil {
