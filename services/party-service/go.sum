@@ -56,6 +56,8 @@ github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:
 github.com/rogpeppe/fastuuid v1.2.0/go.mod h1:jVj6XXZzXRy/MSR5jhDC/2q6DgLz+nrA6LYCDYWNEvQ=
 github.com/salazarhugo/cheers1/libs/auth v0.0.0-20220930103802-98305ab6231a h1:A8ZgcV7rkPU7OyP3a8X7RVsg3EXEMEbEhwCx91HZvN8=
 github.com/salazarhugo/cheers1/libs/auth v0.0.0-20220930103802-98305ab6231a/go.mod h1:ATnqIqULUdldwN1+jj6yVvwyUPhBXpv+eigyiYucp4A=
+github.com/salazarhugo/cheers1/libs/auth v0.0.0-20220930145422-29114c0f69fc h1:mZ/sO/xPBdtHgc+yWkCSgA/m54cxmauQBDNl48D/5OA=
+github.com/salazarhugo/cheers1/libs/auth v0.0.0-20220930145422-29114c0f69fc/go.mod h1:ATnqIqULUdldwN1+jj6yVvwyUPhBXpv+eigyiYucp4A=
 github.com/salazarhugo/cheers1/proto v0.0.0-20220930145422-29114c0f69fc h1:vp+d3L3DdPaC1qAIpjL33PpM9Jm5+FonPMh+6pZS1SI=
 github.com/salazarhugo/cheers1/proto v0.0.0-20220930145422-29114c0f69fc/go.mod h1:RJjJY/x472rhifNeR4+CbcJNoOn8XD8TKE1w+Y3dDqo=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=

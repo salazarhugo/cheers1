@@ -2,7 +2,7 @@ package proto
 
 import (
 	"fmt"
-	v1 "github.com/salazarhugo/cheers1/proto/out/cheers/api/v1"
+	proto "github.com/salazarhugo/cheers1/protogen/cheers/api/v1"
 	"sync"
 )
 
@@ -13,6 +13,6 @@ func NewServer() *MainApiServiceServer {
 }
 
 type MainApiServiceServer struct {
-	v1.UnimplementedMainServer
+	proto.UnimplementedMainServer
 	mu sync.Mutex
 }
