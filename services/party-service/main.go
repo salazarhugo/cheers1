@@ -26,6 +26,7 @@ func main() {
 	grpcServer := grpc.NewServer(
 		grpc.UnaryInterceptor(auth.UnaryInterceptor),
 	)
+	proto.NewServer()
 
 	proto.RegisterMainServer(grpcServer, NewServer())
 	if err = grpcServer.Serve(listener); err != nil {
