@@ -4,7 +4,7 @@
 // - protoc             v3.12.4
 // source: cheers/api/v1/main.proto
 
-package proto
+package genproto
 
 import (
 	context "context"

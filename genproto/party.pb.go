@@ -4,7 +4,7 @@
 // 	protoc        v3.12.4
 // source: cheers/party.proto
 
-package proto
+package genproto
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
