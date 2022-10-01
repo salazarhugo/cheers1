@@ -7,7 +7,7 @@
 package proto
 
 import (
-	proto "github.com/salazarhugo/cheers1/protogen/cheers"
+	proto "github.com/salazarhugo/cheers1/genproto/cheers"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"
