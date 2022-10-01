@@ -6,7 +6,7 @@ require (
 	github.com/fatih/structs v1.1.0
 	github.com/golang/protobuf v1.5.2
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
-	github.com/salazarhugo/cheers1/genproto latest
+	github.com/salazarhugo/cheers1/genproto v0.0.0-20221001122940-2d2180021f89
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221001122940-2d2180021f89
 	google.golang.org/grpc v1.49.0
 )
