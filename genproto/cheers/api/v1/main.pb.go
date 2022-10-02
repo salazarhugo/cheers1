@@ -4,10 +4,10 @@
 // 	protoc        v3.12.4
 // source: cheers/api/v1/main.proto
 
-package v1
+package api
 
 import (
-	party "github.com/salazarhugo/cheers1/genproto/cheers/type"
+	party "github.com/salazarhugo/cheers1/genproto/cheers/type/party"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	emptypb "google.golang.org/protobuf/types/known/emptypb"

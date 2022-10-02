@@ -4,11 +4,11 @@
 // - protoc             v3.12.4
 // source: cheers/api/v1/main.proto
 
-package v1
+package api
 
 import (
 	context "context"
-	party "github.com/salazarhugo/cheers1/genproto/cheers/type"
+	party "github.com/salazarhugo/cheers1/genproto/cheers/type/party"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
