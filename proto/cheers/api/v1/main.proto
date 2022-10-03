@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package cheers.api.v1;
 
-import "cheers/type/party.proto";
+import "cheers/type/party/party.proto";
 import "google/protobuf/empty.proto";
 
 option java_multiple_files = true;
