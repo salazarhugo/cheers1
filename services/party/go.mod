@@ -9,6 +9,7 @@ require (
 	github.com/salazarhugo/cheers1/genproto v0.0.0-20221003095620-2ac988fc2895
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221001161720-b727e9f581ca
 	google.golang.org/grpc v1.49.0
+	google.golang.org/protobuf v1.28.1
 )
 
 require (
@@ -40,7 +41,6 @@ require (
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/appengine/v2 v2.0.2 // indirect
 	google.golang.org/genproto v0.0.0-20220930163606-c98284e70a91 // indirect
-	google.golang.org/protobuf v1.28.1 // indirect
 )
 
 //replace github.com/salazarhugo/cheers1/libs/hello => ../../libs/hello
