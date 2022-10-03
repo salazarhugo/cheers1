@@ -8,7 +8,24 @@ curl --request GET \
 curl --request POST \
   --header "Authorization: Bearer $TOKEN" \
   --http2 \
-  -d '{"id": "android", "name": "Partyy", "description": "Fw", "address": "", "latlng": { "latitude": 0, "longitude": 0 }, "privacy": "FRIENDS", "banner_url": "", "start_date": { "seconds": 0, "nanos": 0 }, "end_date":  { "seconds": 0, "nanos": 0 }, "host_id": "", "location_name": "", "create_time": { "seconds": 0, "nanos": 0 }  }' \
+  -d '
+  {
+    "party": {
+      "id": "android",
+      "name": "Partyy",
+      "description": "Fw",
+      "address": "",
+      "latlng": { "latitude": 0, "longitude": 0 },
+       "privacy": "FRIENDS",
+      "banner_url": "",
+       "start_date": { "seconds": 0, "nanos": 0 },
+      "end_date":  { "seconds": 0, "nanos": 0 },
+      "host_id": "",
+      "location_name": "",
+      "create_time": { "seconds": 0, "nanos": 0 }  }
+    }
+  }
+  ' \
   "$GATEWAY_URL/parties"
 
 
