@@ -70,10 +70,10 @@ func UnaryInterceptor(
 		return nil, status.Errorf(codes.Unauthenticated, "Invalid User Info")
 	}
 
-	log.Println(userInfo.UserID)
-	ctx = metadata.AppendToOutgoingContext(ctx, "userId", userInfo.UserID)
+	md.Append("user-id", userInfo.UserID)
+	newCtx := metadata.NewIncomingContext(ctx, md)
 
-	h, err := handler(ctx, req)
+	h, err := handler(newCtx, req)
 
 	log.Printf("Request - Method:%s\tDuration:%s\tError:%v\n",
 		info.FullMethod,
