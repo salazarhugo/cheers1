@@ -7,7 +7,7 @@ import (
 	"log"
 )
 
-func (s *MainApiServiceServer) UpdateParty(
+func (m *MicroserviceServer) UpdateParty(
 	ctx context.Context,
 	request *v1.CreatePartyRequest,
 ) (*empty.Empty, error) {

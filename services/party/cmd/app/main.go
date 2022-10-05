@@ -1,12 +1,14 @@
 package main
 
 import (
+	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	v1 "github.com/salazarhugo/cheers1/genproto/cheers/api/v1"
 	"github.com/salazarhugo/cheers1/libs/auth"
 	"github.com/salazarhugo/cheers1/services/party-service/internal/app"
 	"google.golang.org/grpc"
 	"log"
 	"net"
+	"net/http"
 	"os"
 )
 
@@ -28,8 +30,25 @@ func main() {
 		grpc.UnaryInterceptor(auth.UnaryInterceptor),
 	)
 
-	v1.RegisterMainServer(grpcServer, app.NewServer())
-	if err = grpcServer.Serve(listener); err != nil {
-		log.Fatal(err)
+	v1.RegisterMainServer(grpcServer, app.NewMicroserviceServer())
+	go func() {
+		if err = grpcServer.Serve(listener); err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	grpcWebServer := grpcweb.WrapServer(
+		grpcServer,
+		grpcweb.WithOriginFunc(func(origin string) bool { return true }),
+	)
+
+	srv := &http.Server{
+		Handler: grpcWebServer,
+		Addr:    ":8081",
+	}
+
+	log.Printf("http server listening at %v", srv.Addr)
+	if err := srv.ListenAndServe(); err != nil {
+		log.Fatalf("failed to serve: %v", err)
 	}
 }
