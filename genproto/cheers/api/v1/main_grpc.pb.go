@@ -9,6 +9,7 @@ package api
 import (
 	context "context"
 	party "github.com/salazarhugo/cheers1/genproto/cheers/type/party"
+	post "github.com/salazarhugo/cheers1/genproto/cheers/type/post"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -24,9 +25,14 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MainClient interface {
-	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 	CreateParty(ctx context.Context, in *CreatePartyRequest, opts ...grpc.CallOption) (*party.Party, error)
+	ListParty(ctx context.Context, in *ListPartyRequest, opts ...grpc.CallOption) (*ListPartyResponse, error)
+	UpdateParty(ctx context.Context, in *UpdatePartyRequest, opts ...grpc.CallOption) (*party.Party, error)
 	DeleteParty(ctx context.Context, in *DeletePartyRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*post.Post, error)
+	ListPost(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListPostResponse, error)
+	UpdatePost(ctx context.Context, in *UpdatePostRequest, opts ...grpc.CallOption) (*post.Post, error)
+	DeletePost(ctx context.Context, in *DeletePostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type mainClient struct {
@@ -37,18 +43,27 @@ func NewMainClient(cc grpc.ClientConnInterface) MainClient {
 	return &mainClient{cc}
 }
 
-func (c *mainClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error) {
-	out := new(GetUserResponse)
-	err := c.cc.Invoke(ctx, "/cheers.api.v1.Main/GetUser", in, out, opts...)
+func (c *mainClient) CreateParty(ctx context.Context, in *CreatePartyRequest, opts ...grpc.CallOption) (*party.Party, error) {
+	out := new(party.Party)
+	err := c.cc.Invoke(ctx, "/cheers.api.v1.Main/CreateParty", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *mainClient) CreateParty(ctx context.Context, in *CreatePartyRequest, opts ...grpc.CallOption) (*party.Party, error) {
+func (c *mainClient) ListParty(ctx context.Context, in *ListPartyRequest, opts ...grpc.CallOption) (*ListPartyResponse, error) {
+	out := new(ListPartyResponse)
+	err := c.cc.Invoke(ctx, "/cheers.api.v1.Main/ListParty", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mainClient) UpdateParty(ctx context.Context, in *UpdatePartyRequest, opts ...grpc.CallOption) (*party.Party, error) {
 	out := new(party.Party)
-	err := c.cc.Invoke(ctx, "/cheers.api.v1.Main/CreateParty", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/cheers.api.v1.Main/UpdateParty", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -64,13 +79,54 @@ func (c *mainClient) DeleteParty(ctx context.Context, in *DeletePartyRequest, op
 	return out, nil
 }
 
+func (c *mainClient) CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*post.Post, error) {
+	out := new(post.Post)
+	err := c.cc.Invoke(ctx, "/cheers.api.v1.Main/CreatePost", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mainClient) ListPost(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*ListPostResponse, error) {
+	out := new(ListPostResponse)
+	err := c.cc.Invoke(ctx, "/cheers.api.v1.Main/ListPost", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mainClient) UpdatePost(ctx context.Context, in *UpdatePostRequest, opts ...grpc.CallOption) (*post.Post, error) {
+	out := new(post.Post)
+	err := c.cc.Invoke(ctx, "/cheers.api.v1.Main/UpdatePost", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *mainClient) DeletePost(ctx context.Context, in *DeletePostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/cheers.api.v1.Main/DeletePost", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MainServer is the server API for Main service.
 // All implementations must embed UnimplementedMainServer
 // for forward compatibility
 type MainServer interface {
-	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
 	CreateParty(context.Context, *CreatePartyRequest) (*party.Party, error)
+	ListParty(context.Context, *ListPartyRequest) (*ListPartyResponse, error)
+	UpdateParty(context.Context, *UpdatePartyRequest) (*party.Party, error)
 	DeleteParty(context.Context, *DeletePartyRequest) (*emptypb.Empty, error)
+	CreatePost(context.Context, *CreatePostRequest) (*post.Post, error)
+	ListPost(context.Context, *emptypb.Empty) (*ListPostResponse, error)
+	UpdatePost(context.Context, *UpdatePostRequest) (*post.Post, error)
+	DeletePost(context.Context, *DeletePostRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedMainServer()
 }
 
@@ -78,14 +134,29 @@ type MainServer interface {
 type UnimplementedMainServer struct {
 }
 
-func (UnimplementedMainServer) GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
-}
 func (UnimplementedMainServer) CreateParty(context.Context, *CreatePartyRequest) (*party.Party, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateParty not implemented")
 }
+func (UnimplementedMainServer) ListParty(context.Context, *ListPartyRequest) (*ListPartyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListParty not implemented")
+}
+func (UnimplementedMainServer) UpdateParty(context.Context, *UpdatePartyRequest) (*party.Party, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateParty not implemented")
+}
 func (UnimplementedMainServer) DeleteParty(context.Context, *DeletePartyRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteParty not implemented")
+}
+func (UnimplementedMainServer) CreatePost(context.Context, *CreatePostRequest) (*post.Post, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreatePost not implemented")
+}
+func (UnimplementedMainServer) ListPost(context.Context, *emptypb.Empty) (*ListPostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListPost not implemented")
+}
+func (UnimplementedMainServer) UpdatePost(context.Context, *UpdatePostRequest) (*post.Post, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdatePost not implemented")
+}
+func (UnimplementedMainServer) DeletePost(context.Context, *DeletePostRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeletePost not implemented")
 }
 func (UnimplementedMainServer) mustEmbedUnimplementedMainServer() {}
 
@@ -98,24 +169,6 @@ type UnsafeMainServer interface {
 
 func RegisterMainServer(s grpc.ServiceRegistrar, srv MainServer) {
 	s.RegisterService(&Main_ServiceDesc, srv)
-}
-
-func _Main_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetUserRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MainServer).GetUser(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/cheers.api.v1.Main/GetUser",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MainServer).GetUser(ctx, req.(*GetUserRequest))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _Main_CreateParty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -132,6 +185,42 @@ func _Main_CreateParty_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MainServer).CreateParty(ctx, req.(*CreatePartyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Main_ListParty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPartyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MainServer).ListParty(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.api.v1.Main/ListParty",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MainServer).ListParty(ctx, req.(*ListPartyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Main_UpdateParty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdatePartyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MainServer).UpdateParty(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.api.v1.Main/UpdateParty",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MainServer).UpdateParty(ctx, req.(*UpdatePartyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -154,6 +243,78 @@ func _Main_DeleteParty_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Main_CreatePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreatePostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MainServer).CreatePost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.api.v1.Main/CreatePost",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MainServer).CreatePost(ctx, req.(*CreatePostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Main_ListPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MainServer).ListPost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.api.v1.Main/ListPost",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MainServer).ListPost(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Main_UpdatePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdatePostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MainServer).UpdatePost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.api.v1.Main/UpdatePost",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MainServer).UpdatePost(ctx, req.(*UpdatePostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Main_DeletePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeletePostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MainServer).DeletePost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.api.v1.Main/DeletePost",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MainServer).DeletePost(ctx, req.(*DeletePostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Main_ServiceDesc is the grpc.ServiceDesc for Main service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -162,16 +323,36 @@ var Main_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*MainServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetUser",
-			Handler:    _Main_GetUser_Handler,
-		},
-		{
 			MethodName: "CreateParty",
 			Handler:    _Main_CreateParty_Handler,
 		},
 		{
+			MethodName: "ListParty",
+			Handler:    _Main_ListParty_Handler,
+		},
+		{
+			MethodName: "UpdateParty",
+			Handler:    _Main_UpdateParty_Handler,
+		},
+		{
 			MethodName: "DeleteParty",
 			Handler:    _Main_DeleteParty_Handler,
+		},
+		{
+			MethodName: "CreatePost",
+			Handler:    _Main_CreatePost_Handler,
+		},
+		{
+			MethodName: "ListPost",
+			Handler:    _Main_ListPost_Handler,
+		},
+		{
+			MethodName: "UpdatePost",
+			Handler:    _Main_UpdatePost_Handler,
+		},
+		{
+			MethodName: "DeletePost",
+			Handler:    _Main_DeletePost_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

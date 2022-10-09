@@ -21,9 +21,19 @@ authentication:
         - provider_id: firebase
 backend:
   rules:
-    - selector: cheers.api.v1.Main.GetUser
-      address: grpcs://user-service-r3a2dr4u4a-nw.a.run.app
     - selector: cheers.api.v1.Main.CreateParty
       address: grpcs://party-service-r3a2dr4u4a-nw.a.run.app
+    - selector: cheers.api.v1.Main.ListParty
+      address: grpcs://party-service-r3a2dr4u4a-nw.a.run.app
+    - selector: cheers.api.v1.Main.UpdateParty
+      address: grpcs://party-service-r3a2dr4u4a-nw.a.run.app
     - selector: cheers.api.v1.Main.DeleteParty
+      address: grpcs://party-service-r3a2dr4u4a-nw.a.run.app
+    - selector: cheers.api.v1.Main.CreatePost
+      address: grpcs://party-service-r3a2dr4u4a-nw.a.run.app
+    - selector: cheers.api.v1.Main.ListPost
+      address: grpcs://party-service-r3a2dr4u4a-nw.a.run.app
+    - selector: cheers.api.v1.Main.UpdatePost
+      address: grpcs://party-service-r3a2dr4u4a-nw.a.run.app
+    - selector: cheers.api.v1.Main.DeletePost
       address: grpcs://party-service-r3a2dr4u4a-nw.a.run.app
