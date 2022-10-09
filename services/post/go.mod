@@ -7,7 +7,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/improbable-eng/grpc-web v0.15.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
-	github.com/salazarhugo/cheers1/genproto v0.0.0-20221003095620-2ac988fc2895
+	github.com/salazarhugo/cheers1/genproto v0.0.0-20221009144927-fc1844fe8933
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221004084225-130de449e1a1
 	google.golang.org/grpc v1.49.0
 	google.golang.org/protobuf v1.28.1

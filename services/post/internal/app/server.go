@@ -4,7 +4,7 @@ import (
 	"context"
 	v1 "github.com/salazarhugo/cheers1/genproto/cheers/api/v1"
 	"github.com/salazarhugo/cheers1/libs/auth/utils"
-	"github.com/salazarhugo/cheers1/services/party-service/internal/repository"
+	"github.com/salazarhugo/cheers1/services/post/internal/repository"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
@@ -14,14 +14,14 @@ import (
 type MicroserviceServer struct {
 	v1.UnimplementedMainServer
 	mu              sync.Mutex
-	partyRepository repository.PartyRepository
+	partyRepository repository.PostRepository
 }
 
 func NewMicroserviceServer() *MicroserviceServer {
 	return &MicroserviceServer{
 		v1.UnimplementedMainServer{},
 		sync.Mutex{},
-		repository.NewPartyRepository(utils.GetSession(utils.GetDriver())),
+		repository.NewPostRepository(utils.GetSession(utils.GetDriver())),
 	}
 }
 
