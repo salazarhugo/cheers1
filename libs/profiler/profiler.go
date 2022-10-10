@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func initProfiling(service, version string) {
+func InitProfiling(service, version string) {
 	for i := 1; i <= 3; i++ {
 		if err := profiler.Start(profiler.Config{
 			Service:        service,
