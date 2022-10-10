@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
-	v1 "github.com/salazarhugo/cheers1/genproto/cheers/api/v1"
 	"github.com/salazarhugo/cheers1/libs/auth"
-	"github.com/salazarhugo/cheers1/services/post/internal/app"
+	pb "github.com/salazarhugo/cheers1/services/postservice/genproto/cheers/post/v1"
+	"github.com/salazarhugo/cheers1/services/postservice/internal/app"
 	"google.golang.org/grpc"
 	"log"
 	"net"
@@ -30,7 +30,7 @@ func main() {
 		grpc.UnaryInterceptor(auth.UnaryInterceptor),
 	)
 
-	v1.RegisterMainServer(grpcServer, app.NewMicroserviceServer())
+	pb.RegisterPostServiceServer(grpcServer, app.NewMicroserviceServer())
 	go func() {
 		if err = grpcServer.Serve(listener); err != nil {
 			log.Fatal(err)

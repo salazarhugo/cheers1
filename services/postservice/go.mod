@@ -1,14 +1,14 @@
-module github.com/salazarhugo/cheers1/services/post
+module github.com/salazarhugo/cheers1/services/postservice
 
 go 1.19
 
 require (
 	github.com/golang/protobuf v1.5.2
-	github.com/google/uuid v1.3.0
 	github.com/improbable-eng/grpc-web v0.15.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
 	github.com/salazarhugo/cheers1/genproto v0.0.0-20221009144927-fc1844fe8933
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221004084225-130de449e1a1
+	github.com/salazarhugo/cheers1/services/post v0.0.0-20221009194026-f512aa3d0928
 	google.golang.org/grpc v1.49.0
 	google.golang.org/protobuf v1.28.1
 )
@@ -24,6 +24,7 @@ require (
 	github.com/desertbit/timer v0.0.0-20180107155436-c41aec40b27f // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
 	github.com/googleapis/gax-go/v2 v2.5.1 // indirect
 	github.com/klauspost/compress v1.11.7 // indirect
