@@ -2,14 +2,14 @@ package repository
 
 import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
-	v1 "github.com/salazarhugo/cheers1/genproto/cheers/api/v1"
 	"github.com/salazarhugo/cheers1/genproto/cheers/type/post"
+	pb "github.com/salazarhugo/cheers1/services/postservice/genproto/cheers/post/v1"
 )
 
 type PostRepository interface {
 	CreatePost(post post.Post) error
 	GetPost(id string) (*post.Post, error)
-	ListPost(userID string, pageToken string) (*v1.ListPostResponse, error)
+	ListPost(userID string, pageToken string) (*pb.ListPostResponse, error)
 	UpdatePost(post post.Post) error
 	DeletePost(id string) error
 }
@@ -38,8 +38,8 @@ func (p *postRepository) DeletePost(id string) error {
 	return nil
 }
 
-func (p *postRepository) ListPost(userID string, pageToken string) (*v1.ListPostResponse, error) {
-	return &v1.ListPostResponse{
+func (p *postRepository) ListPost(userID string, pageToken string) (*pb.ListPostResponse, error) {
+	return &pb.ListPostResponse{
 		Posts:         nil,
 		NextPageToken: "",
 	}, nil

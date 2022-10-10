@@ -2,7 +2,9 @@ package main
 
 import (
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
+	"github.com/salazarhugo/cheers1/genproto/grpc/health/v1"
 	"github.com/salazarhugo/cheers1/libs/auth"
+	"github.com/salazarhugo/cheers1/libs/profiler"
 	pb "github.com/salazarhugo/cheers1/services/postservice/genproto/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/services/postservice/internal/app"
 	"google.golang.org/grpc"
@@ -12,9 +14,17 @@ import (
 	"os"
 )
 
-func main() {
+func init() {
 	log.SetFlags(0)
-	log.Printf("grpc-user: starting server...")
+}
+
+func main() {
+	if os.Getenv("DISABLE_PROFILER") == "" {
+		log.Print("Profiling enabled.")
+		go profiler.InitProfiling("postservice", "1.0.0")
+	} else {
+		log.Print("Profiling disabled.")
+	}
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -30,7 +40,11 @@ func main() {
 		grpc.UnaryInterceptor(auth.UnaryInterceptor),
 	)
 
-	pb.RegisterPostServiceServer(grpcServer, app.NewMicroserviceServer())
+	server := app.NewServer()
+
+	pb.RegisterPostServiceServer(grpcServer, server)
+	health.RegisterHealthServer(grpcServer, server)
+
 	go func() {
 		if err = grpcServer.Serve(listener); err != nil {
 			log.Fatal(err)

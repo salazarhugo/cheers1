@@ -2,16 +2,13 @@ package app
 
 import (
 	"context"
-	v1 "github.com/salazarhugo/cheers1/genproto/cheers/api/v1"
 	"github.com/salazarhugo/cheers1/genproto/cheers/type/post"
+	pb "github.com/salazarhugo/cheers1/services/postservice/genproto/cheers/post/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-func (m *MicroserviceServer) CreatePost(
-	ctx context.Context,
-	request *v1.CreatePostRequest,
-) (*post.Post, error) {
+func (s *Server) CreatePost(ctx context.Context, request *pb.CreatePostRequest) (*post.Post, error) {
 	_, err := GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")
@@ -22,7 +19,7 @@ func (m *MicroserviceServer) CreatePost(
 		return nil, status.Error(codes.InvalidArgument, "post parameter can't be nil")
 	}
 
-	err = m.partyRepository.CreatePost(*partyReq)
+	err = s.partyRepository.CreatePost(*partyReq)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to create party")
 	}

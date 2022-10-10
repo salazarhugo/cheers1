@@ -2,24 +2,27 @@ package app
 
 import (
 	"context"
-	v1 "github.com/salazarhugo/cheers1/genproto/cheers/api/v1"
+	"github.com/salazarhugo/cheers1/genproto/grpc/health/v1"
 	"github.com/salazarhugo/cheers1/libs/auth/utils"
-	"github.com/salazarhugo/cheers1/services/post/internal/repository"
+	"github.com/salazarhugo/cheers1/services/postservice/genproto/cheers/post/v1"
+	"github.com/salazarhugo/cheers1/services/postservice/internal/repository"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"sync"
 )
 
-type MicroserviceServer struct {
-	v1.UnimplementedMainServer
+type Server struct {
+	post.UnimplementedPostServiceServer
+	health.UnimplementedHealthServer
 	mu              sync.Mutex
 	partyRepository repository.PostRepository
 }
 
-func NewMicroserviceServer() *MicroserviceServer {
-	return &MicroserviceServer{
-		v1.UnimplementedMainServer{},
+func NewServer() *Server {
+	return &Server{
+		post.UnimplementedPostServiceServer{},
+		health.UnimplementedHealthServer{},
 		sync.Mutex{},
 		repository.NewPostRepository(utils.GetSession(utils.GetDriver())),
 	}
