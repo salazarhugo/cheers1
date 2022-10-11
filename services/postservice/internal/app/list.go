@@ -15,7 +15,7 @@ func (s *Server) ListPost(ctx context.Context, request *pb.ListPostRequest) (*pb
 
 	posts, err := s.partyRepository.ListPost(userID, request)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to create party")
+		return nil, status.Error(codes.Internal, "failed to list party")
 	}
 
 	return posts, nil

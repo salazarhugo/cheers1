@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.12.4
-// source: cheers/post/v1/post.proto
+// source: cheers/post/v1/post_service.proto
 
 package post
 
@@ -40,7 +40,7 @@ func NewPostServiceClient(cc grpc.ClientConnInterface) PostServiceClient {
 
 func (c *postServiceClient) CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*post.Post, error) {
 	out := new(post.Post)
-	err := c.cc.Invoke(ctx, "/cheers.api.v1.PostService/CreatePost", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/cheers.post.v1.PostService/CreatePost", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +49,7 @@ func (c *postServiceClient) CreatePost(ctx context.Context, in *CreatePostReques
 
 func (c *postServiceClient) ListPost(ctx context.Context, in *ListPostRequest, opts ...grpc.CallOption) (*ListPostResponse, error) {
 	out := new(ListPostResponse)
-	err := c.cc.Invoke(ctx, "/cheers.api.v1.PostService/ListPost", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/cheers.post.v1.PostService/ListPost", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -58,7 +58,7 @@ func (c *postServiceClient) ListPost(ctx context.Context, in *ListPostRequest, o
 
 func (c *postServiceClient) UpdatePost(ctx context.Context, in *UpdatePostRequest, opts ...grpc.CallOption) (*post.Post, error) {
 	out := new(post.Post)
-	err := c.cc.Invoke(ctx, "/cheers.api.v1.PostService/UpdatePost", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/cheers.post.v1.PostService/UpdatePost", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -67,7 +67,7 @@ func (c *postServiceClient) UpdatePost(ctx context.Context, in *UpdatePostReques
 
 func (c *postServiceClient) DeletePost(ctx context.Context, in *DeletePostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
-	err := c.cc.Invoke(ctx, "/cheers.api.v1.PostService/DeletePost", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/cheers.post.v1.PostService/DeletePost", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -124,7 +124,7 @@ func _PostService_CreatePost_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/cheers.api.v1.PostService/CreatePost",
+		FullMethod: "/cheers.post.v1.PostService/CreatePost",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServiceServer).CreatePost(ctx, req.(*CreatePostRequest))
@@ -142,7 +142,7 @@ func _PostService_ListPost_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/cheers.api.v1.PostService/ListPost",
+		FullMethod: "/cheers.post.v1.PostService/ListPost",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServiceServer).ListPost(ctx, req.(*ListPostRequest))
@@ -160,7 +160,7 @@ func _PostService_UpdatePost_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/cheers.api.v1.PostService/UpdatePost",
+		FullMethod: "/cheers.post.v1.PostService/UpdatePost",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServiceServer).UpdatePost(ctx, req.(*UpdatePostRequest))
@@ -178,7 +178,7 @@ func _PostService_DeletePost_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/cheers.api.v1.PostService/DeletePost",
+		FullMethod: "/cheers.post.v1.PostService/DeletePost",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServiceServer).DeletePost(ctx, req.(*DeletePostRequest))
@@ -190,7 +190,7 @@ func _PostService_DeletePost_Handler(srv interface{}, ctx context.Context, dec f
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var PostService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "cheers.api.v1.PostService",
+	ServiceName: "cheers.post.v1.PostService",
 	HandlerType: (*PostServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -211,5 +211,5 @@ var PostService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "cheers/post/v1/post.proto",
+	Metadata: "cheers/post/v1/post_service.proto",
 }

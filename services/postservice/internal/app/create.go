@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *Server) CreatePost(ctx context.Context, request *pb.CreatePostRequest) (*post.Post, error) {
+func (s *Server) CreatePost(ctx context.Context, request *pb.CreatePostRequest) (*postpb.Post, error) {
 	_, err := GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")

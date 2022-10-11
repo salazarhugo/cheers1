@@ -1,17 +1,20 @@
 package repository
 
 import (
+	"github.com/labstack/gommon/log"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	"github.com/salazarhugo/cheers1/genproto/cheers/type/post"
 	pb "github.com/salazarhugo/cheers1/services/postservice/genproto/cheers/post/v1"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"os"
 )
 
 type PostRepository interface {
-	CreatePost(post post.Post) error
-	GetPost(id string) (*post.Post, error)
+	CreatePost(post postpb.Post) error
+	GetPost(id string) (*postpb.Post, error)
 	ListPost(userID string, request *pb.ListPostRequest) (*pb.ListPostResponse, error)
-	UpdatePost(post post.Post) error
+	UpdatePost(post postpb.Post) error
 	DeletePost(id string) error
 }
 
@@ -23,15 +26,15 @@ func NewPostRepository(driver neo4j.Driver) PostRepository {
 	return &postRepository{driver: driver}
 }
 
-func (p *postRepository) CreatePost(post post.Post) error {
+func (p *postRepository) CreatePost(post postpb.Post) error {
 	return nil
 }
 
-func (p *postRepository) GetPost(id string) (*post.Post, error) {
-	return &post.Post{}, nil
+func (p *postRepository) GetPost(id string) (*postpb.Post, error) {
+	return &postpb.Post{}, nil
 }
 
-func (p *postRepository) UpdatePost(post post.Post) error {
+func (p *postRepository) UpdatePost(post postpb.Post) error {
 	return nil
 }
 
@@ -52,7 +55,7 @@ func (p *postRepository) ListPost(
 
 	bytes, err := os.ReadFile("../cql/ListPost.cql")
 	if err != nil {
-		return nil, err
+		return nil, status.Error(codes.Internal, "failed reading cql file")
 	}
 	cypher := string(bytes)
 
@@ -64,10 +67,12 @@ func (p *postRepository) ListPost(
 
 	result, err := session.Run(cypher, params)
 
+	// Empty list
 	posts := make([]*pb.PostResponse, 0)
 
 	for result.Next() {
-		posts = append(posts, result.Record().Values[0].(*pb.PostResponse))
+		log.Info(result.Record())
+		//posts = append(posts, result.Record().Values[0].(*pb.PostResponse))
 	}
 
 	nextPageToken := ""

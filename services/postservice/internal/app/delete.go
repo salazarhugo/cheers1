@@ -17,7 +17,7 @@ func (s *Server) DeletePost(ctx context.Context, request *pb.DeletePostRequest) 
 
 	partyID := request.GetId()
 	if partyID == "" {
-		return nil, status.Error(codes.InvalidArgument, "partyID parameter can't be empty")
+		return nil, status.Error(codes.InvalidArgument, "id parameter can't be empty")
 	}
 
 	err = s.partyRepository.DeletePost(partyID)
