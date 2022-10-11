@@ -12,5 +12,5 @@ protoc \
   cheers/type/privacy/privacy.proto \
   cheers/type/user/user.proto \
   cheers/type/post/post.proto \
-  cheers/post/v1/post.proto \
-  cheers/party/v1/party.proto \
+  cheers/party/v1/party_service.proto \
+  cheers/post/v1/post_service.proto

@@ -1,0 +1,10 @@
+GRPC post-service-r3a2dr4u4a-nw.a.run.app/Cheers.Api.v1.PostService/ListPost
+
+###
+GRPC localhost/cheers.api.v1.PostService/ListPost
+
+{
+  "parent": "yes",
+  "page_size": 20,
+  "page_token": "token"
+}
