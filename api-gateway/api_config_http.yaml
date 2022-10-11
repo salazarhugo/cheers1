@@ -6,24 +6,11 @@ config_version: 3
 # Name of the service configuration.
 name: android.apigateway.cheers-a275e.cloud.goog
 
-
 # HTTP rules define translation from HTTP/REST/JSON to gRPC. With these rules
 # HTTP/REST/JSON clients will be able to call the User service.
 http:
   rules:
-    - selector: cheers.api.v1.Main.CreateParty
+    - selector: cheers.party.v1.*
       post: /v1/parties
-    - selector: cheers.api.v1.Main.ListParty
-      get: /v1/parties
-    - selector: cheers.api.v1.Main.UpdateParty
-      patch: /v1/parties
-    - selector: cheers.api.v1.Main.DeleteParty
-      delete: /v1/parties
-    - selector: cheers.api.v1.Main.CreatePost
+    - selector: cheers.post.v1.*
       post: /v1/posts
-    - selector: cheers.api.v1.Main.ListPost
-      get: /v1/posts
-    - selector: cheers.api.v1.Main.UpdatePost
-      patch: /v1/posts
-    - selector: cheers.api.v1.Main.DeletePost
-      delete: /v1/posts
