@@ -9,6 +9,7 @@ require (
 	github.com/salazarhugo/cheers1/genproto v0.0.0-20221010143133-76db1f76784b
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221004084225-130de449e1a1
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
+	github.com/sirupsen/logrus v1.7.0
 	google.golang.org/grpc v1.49.0
 	google.golang.org/protobuf v1.28.1
 )

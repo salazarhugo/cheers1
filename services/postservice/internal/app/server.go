@@ -2,11 +2,11 @@ package app
 
 import (
 	"context"
-	"github.com/salazarhugo/cheers1/genproto/grpc/health/v1"
 	"github.com/salazarhugo/cheers1/libs/auth/utils"
 	"github.com/salazarhugo/cheers1/services/postservice/genproto/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/services/postservice/internal/repository"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"sync"
@@ -14,7 +14,7 @@ import (
 
 type Server struct {
 	post.UnimplementedPostServiceServer
-	health.UnimplementedHealthServer
+	grpc_health_v1.UnimplementedHealthServer
 	mu              sync.Mutex
 	partyRepository repository.PostRepository
 }
@@ -22,7 +22,7 @@ type Server struct {
 func NewServer() *Server {
 	return &Server{
 		post.UnimplementedPostServiceServer{},
-		health.UnimplementedHealthServer{},
+		grpc_health_v1.UnimplementedHealthServer{},
 		sync.Mutex{},
 		repository.NewPostRepository(utils.GetDriver()),
 	}

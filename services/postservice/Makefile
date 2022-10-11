@@ -10,6 +10,9 @@ deploy:
 		--use-http2 \
 		--set-env-vars GATEWAY_URL=$GATEWAY_URL
 
+gen:
+	./genproto
+
 clean:
 	rm -rf pkg
 

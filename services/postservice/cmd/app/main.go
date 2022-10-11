@@ -2,34 +2,47 @@ package main
 
 import (
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
-	"github.com/salazarhugo/cheers1/genproto/grpc/health/v1"
 	"github.com/salazarhugo/cheers1/libs/auth"
 	"github.com/salazarhugo/cheers1/libs/profiler"
 	pb "github.com/salazarhugo/cheers1/services/postservice/genproto/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/services/postservice/internal/app"
+	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
-	"log"
+	"google.golang.org/grpc/health/grpc_health_v1"
 	"net"
 	"net/http"
 	"os"
+	"time"
 )
 
+var log *logrus.Logger
+
 func init() {
-	log.SetFlags(0)
+	log = logrus.New()
+	log.Level = logrus.DebugLevel
+	log.Formatter = &logrus.JSONFormatter{
+		FieldMap: logrus.FieldMap{
+			logrus.FieldKeyTime:  "timestamp",
+			logrus.FieldKeyLevel: "severity",
+			logrus.FieldKeyMsg:   "message",
+		},
+		TimestampFormat: time.RFC3339Nano,
+	}
+	log.Out = os.Stdout
 }
 
 func main() {
 	if os.Getenv("DISABLE_PROFILER") == "" {
-		log.Print("Profiling enabled.")
-		go profiler.InitProfiling("postservice", "1.0.0")
+		log.Info("Profiling enabled.")
+		go profiler.InitProfiling("post-service", "1.0.0")
 	} else {
-		log.Print("Profiling disabled.")
+		log.Info("Profiling disabled.")
 	}
 
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
-		log.Printf("Defaulting to port %s", port)
+		log.Info("Defaulting to port %s", port)
 	}
 
 	listener, err := net.Listen("tcp", ":"+port)
@@ -43,7 +56,7 @@ func main() {
 	server := app.NewServer()
 
 	pb.RegisterPostServiceServer(grpcServer, server)
-	health.RegisterHealthServer(grpcServer, server)
+	grpc_health_v1.RegisterHealthServer(grpcServer, server)
 
 	go func() {
 		if err = grpcServer.Serve(listener); err != nil {
@@ -61,7 +74,8 @@ func main() {
 		Addr:    ":8081",
 	}
 
-	log.Printf("http server listening at %v", srv.Addr)
+	log.Infof("Post Service listening on port %s", port)
+
 	if err := srv.ListenAndServe(); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
