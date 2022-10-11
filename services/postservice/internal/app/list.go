@@ -13,7 +13,7 @@ func (s *Server) ListPost(ctx context.Context, request *pb.ListPostRequest) (*pb
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")
 	}
 
-	posts, err := s.partyRepository.ListPost(userID, request.GetPageToken())
+	posts, err := s.partyRepository.ListPost(userID, request)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to create party")
 	}

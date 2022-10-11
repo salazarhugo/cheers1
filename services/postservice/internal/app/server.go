@@ -24,7 +24,7 @@ func NewServer() *Server {
 		post.UnimplementedPostServiceServer{},
 		health.UnimplementedHealthServer{},
 		sync.Mutex{},
-		repository.NewPostRepository(utils.GetSession(utils.GetDriver())),
+		repository.NewPostRepository(utils.GetDriver()),
 	}
 }
 
