@@ -20,6 +20,8 @@ message Post {
   PostType type = 11;
   // The time when the post was created.
   google.protobuf.Timestamp create_time = 12;
+  bool comments_enabled = 13;
+  bool share_enabled = 14;
 }
 
 enum PostType {
