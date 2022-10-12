@@ -2,7 +2,7 @@ package app
 
 import (
 	"context"
-	pb "github.com/salazarhugo/cheers1/services/postservice/genproto/cheers/post/v1"
+	pb "github.com/salazarhugo/cheers1/genproto/cheers/post/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -15,7 +15,7 @@ func (s *Server) ListPost(ctx context.Context, request *pb.ListPostRequest) (*pb
 
 	posts, err := s.partyRepository.ListPost(userID, request)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to list party")
+		return nil, err
 	}
 
 	return posts, nil

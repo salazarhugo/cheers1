@@ -29,3 +29,9 @@ http:
       patch: /v1/posts
     - selector: cheers.post.v1.PostService.DeletePost
       delete: /v1/posts
+    #- selector: cheers.post.v1.PostService.GetPost
+    #  get: /v1/posts
+    #- selector: cheers.post.v1.PostService.GetMePost
+    #  get: /v1/posts/me
+    #- selector: cheers.post.v1.PostService.GetPostFeed
+    #  get: /v1/posts/feed

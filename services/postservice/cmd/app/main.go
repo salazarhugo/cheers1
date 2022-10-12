@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
+	pb "github.com/salazarhugo/cheers1/genproto/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/libs/auth"
 	"github.com/salazarhugo/cheers1/libs/profiler"
-	pb "github.com/salazarhugo/cheers1/services/postservice/genproto/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/services/postservice/internal/app"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"

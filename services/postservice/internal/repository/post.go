@@ -3,8 +3,8 @@ package repository
 import (
 	"github.com/labstack/gommon/log"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
+	pb "github.com/salazarhugo/cheers1/genproto/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/genproto/cheers/type/post"
-	pb "github.com/salazarhugo/cheers1/services/postservice/genproto/cheers/post/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"os"
@@ -53,7 +53,7 @@ func (p *postRepository) ListPost(
 	//page := request.GetPageToken()
 	//skip := page * pageSize
 
-	bytes, err := os.ReadFile("../cql/ListPost.cql")
+	bytes, err := os.ReadFile("internal/cql/ListPost.cql")
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed reading cql file")
 	}
@@ -66,6 +66,9 @@ func (p *postRepository) ListPost(
 	}
 
 	result, err := session.Run(cypher, params)
+	if err != nil {
+		return nil, err
+	}
 
 	// Empty list
 	posts := make([]*pb.PostResponse, 0)
