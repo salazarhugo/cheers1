@@ -14,8 +14,8 @@ WITH
     exists((u)-[:LIKED]->(post)) as has_liked,
     count(DISTINCT r) as like_count
 RETURN {
-    post: post,
-    user: author,
+    post: properties(post),
+    user: properties(author),
     like_count: like_count,
     comment_count : 1,
     has_liked: has_liked

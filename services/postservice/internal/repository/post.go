@@ -1,12 +1,14 @@
 package repository
 
 import (
+	"encoding/json"
 	"github.com/labstack/gommon/log"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	pb "github.com/salazarhugo/cheers1/genproto/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/genproto/cheers/type/post"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/encoding/prototext"
 	"os"
 )
 
@@ -74,8 +76,20 @@ func (p *postRepository) ListPost(
 	posts := make([]*pb.PostResponse, 0)
 
 	for result.Next() {
-		log.Info(result.Record())
-		//posts = append(posts, result.Record().Values[0].(*pb.PostResponse))
+		m := result.Record().Values[0]
+		log.Info(m)
+		bytes, err := json.Marshal(m)
+		if err != nil {
+			return nil, err
+		}
+		post := &pb.PostResponse{}
+		log.Info(string(bytes))
+		err = (prototext.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(bytes, post)
+		if err != nil {
+			log.Info("Error unmarshal")
+			return nil, err
+		}
+		posts = append(posts, post)
 	}
 
 	nextPageToken := ""
