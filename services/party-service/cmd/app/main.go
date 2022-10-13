@@ -2,19 +2,32 @@ package main
 
 import (
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
-	v1 "github.com/salazarhugo/cheers1/genproto/cheers/api/v1"
+	pb "github.com/salazarhugo/cheers1/genproto/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/libs/auth"
+	"github.com/salazarhugo/cheers1/libs/auth/utils"
+	"github.com/salazarhugo/cheers1/libs/profiler"
 	"github.com/salazarhugo/cheers1/services/party-service/internal/app"
+	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
-	"log"
+	"google.golang.org/grpc/health/grpc_health_v1"
 	"net"
 	"net/http"
 	"os"
 )
 
+var log *logrus.Logger
+
+func init() {
+	utils.InitLogrus()
+}
+
 func main() {
-	log.SetFlags(0)
-	log.Printf("grpc-user: starting server...")
+	if os.Getenv("DISABLE_PROFILER") == "" {
+		log.Info("Profiling enabled.")
+		go profiler.InitProfiling("post-service", "1.0.0")
+	} else {
+		log.Info("Profiling disabled.")
+	}
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -26,11 +39,16 @@ func main() {
 	if err != nil {
 		log.Fatalf("net.Listen: %v", err)
 	}
+
 	grpcServer := grpc.NewServer(
 		grpc.UnaryInterceptor(auth.UnaryInterceptor),
 	)
 
-	v1.RegisterMainServer(grpcServer, app.NewMicroserviceServer())
+	server := app.NewServer()
+
+	pb.RegisterPostServiceServer(grpcServer, server)
+	grpc_health_v1.RegisterHealthServer(grpcServer, server)
+
 	go func() {
 		if err = grpcServer.Serve(listener); err != nil {
 			log.Fatal(err)
@@ -47,7 +65,8 @@ func main() {
 		Addr:    ":8081",
 	}
 
-	log.Printf("http server listening at %v", srv.Addr)
+	log.Infof("Post Service listening on port %s", port)
+
 	if err := srv.ListenAndServe(); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
