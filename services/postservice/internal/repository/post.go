@@ -2,21 +2,18 @@ package repository
 
 import (
 	"encoding/json"
-	"github.com/labstack/gommon/log"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	pb "github.com/salazarhugo/cheers1/genproto/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/genproto/cheers/type/post"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/encoding/prototext"
-	"os"
+	"google.golang.org/protobuf/encoding/protojson"
+	"log"
 )
 
 type PostRepository interface {
-	CreatePost(post postpb.Post) error
+	CreatePost(userID string, post *postpb.Post) error
 	GetPost(id string) (*postpb.Post, error)
 	ListPost(userID string, request *pb.ListPostRequest) (*pb.ListPostResponse, error)
-	UpdatePost(post postpb.Post) error
+	UpdatePost(post *postpb.Post) error
 	DeletePost(id string) error
 }
 
@@ -28,7 +25,38 @@ func NewPostRepository(driver neo4j.Driver) PostRepository {
 	return &postRepository{driver: driver}
 }
 
-func (p *postRepository) CreatePost(post postpb.Post) error {
+func (p *postRepository) CreatePost(userID string, post *postpb.Post) error {
+	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
+	defer session.Close()
+
+	cypher, err := utils.GetCypher("internal/cql/CreatePost.cql")
+	if err != nil {
+		return err
+	}
+
+	bytes, err := protojson.Marshal(post)
+	if err != nil {
+		return err
+	}
+
+	var m = make(map[string]interface{}, 0)
+
+	err = json.Unmarshal(bytes, &m)
+	if err != nil {
+		return err
+	}
+
+	params := map[string]interface{}{
+		"userID": userID,
+		"post":   m,
+	}
+
+	_, err = session.Run(*cypher, params)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
 	return nil
 }
 
@@ -36,7 +64,7 @@ func (p *postRepository) GetPost(id string) (*postpb.Post, error) {
 	return &postpb.Post{}, nil
 }
 
-func (p *postRepository) UpdatePost(post postpb.Post) error {
+func (p *postRepository) UpdatePost(post *postpb.Post) error {
 	return nil
 }
 
@@ -52,22 +80,19 @@ func (p *postRepository) ListPost(
 	defer session.Close()
 
 	pageSize := request.GetPageSize()
-	//page := request.GetPageToken()
-	//skip := page * pageSize
 
-	bytes, err := os.ReadFile("internal/cql/ListPost.cql")
+	cypher, err := GetCypher("internal/cql/ListPost.cql")
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed reading cql file")
+		return nil, err
 	}
-	cypher := string(bytes)
 
 	params := map[string]interface{}{
-		"userId":   userID,
+		"userID":   userID,
 		"skip":     0,
 		"pageSize": pageSize,
 	}
 
-	result, err := session.Run(cypher, params)
+	result, err := session.Run(*cypher, params)
 	if err != nil {
 		return nil, err
 	}
@@ -77,16 +102,13 @@ func (p *postRepository) ListPost(
 
 	for result.Next() {
 		m := result.Record().Values[0]
-		log.Info(m)
 		bytes, err := json.Marshal(m)
 		if err != nil {
 			return nil, err
 		}
 		post := &pb.PostResponse{}
-		log.Info(string(bytes))
-		err = (prototext.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(bytes, post)
+		err = protojson.Unmarshal(bytes, post)
 		if err != nil {
-			log.Info("Error unmarshal")
 			return nil, err
 		}
 		posts = append(posts, post)

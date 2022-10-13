@@ -1,23 +1,26 @@
-MATCH (u:User {id: $userId})-[:FOLLOWS*0..1]->(author:User)-[:POSTED]->(post:Post)
+MATCH
+  (u:User {id: $userID})-[:FOLLOWS*0..1]->(creator:User)-[:POSTED]->(post:Post)
 WITH
-    u,
-    author,
-    post
+  u,
+  creator,
+  post
 SKIP
-    $skip
+  $skip
 LIMIT
-    $pageSize
-OPTIONAL MATCH (:User)-[r:LIKED]->(post)
+  $pageSize
+OPTIONAL MATCH
+  (:User)-[r:LIKED]->(post)
 WITH
-    post,
-    author,
-    exists((u)-[:LIKED]->(post)) as has_liked,
-    count(DISTINCT r) as like_count
-RETURN {
-    post: properties(post),
-    user: properties(author),
-    like_count: like_count,
-    comment_count : 1,
-    has_liked: has_liked
-}
+  post,
+  creator,
+  EXISTS((u)-[:LIKED]->(post)) AS has_liked,
+  COUNT(DISTINCT r) AS like_count
+RETURN
+  {
+     post:          PROPERTIES(post),
+     user:          PROPERTIES(creator),
+     like_count:    like_count,
+     comment_count: 1,
+     has_liked:     has_liked
+   }
 ORDER BY post.created DESC

@@ -9,7 +9,7 @@ import (
 )
 
 func (s *Server) CreatePost(ctx context.Context, request *pb.CreatePostRequest) (*postpb.Post, error) {
-	_, err := GetUserId(ctx)
+	userID, err := GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")
 	}
@@ -19,7 +19,7 @@ func (s *Server) CreatePost(ctx context.Context, request *pb.CreatePostRequest) 
 		return nil, status.Error(codes.InvalidArgument, "post parameter can't be nil")
 	}
 
-	err = s.partyRepository.CreatePost(*partyReq)
+	err = s.partyRepository.CreatePost(userID, partyReq)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to create party")
 	}
