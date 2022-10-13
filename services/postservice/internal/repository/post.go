@@ -82,7 +82,7 @@ func (p *postRepository) ListPost(
 
 	pageSize := request.GetPageSize()
 
-	cypher, err := GetCypher("internal/cql/ListPost.cql")
+	cypher, err := utils.GetCypher("internal/cql/ListPost.cql")
 	if err != nil {
 		return nil, err
 	}

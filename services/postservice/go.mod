@@ -9,9 +9,9 @@ require (
 	github.com/salazarhugo/cheers1/genproto v0.0.0-20221012154836-99fd0ec86323
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221004084225-130de449e1a1
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20220928155205-8596f5490f44
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221013151512-d9ca544d0c33
 	github.com/sirupsen/logrus v1.7.0
-	google.golang.org/grpc v1.49.0
+	google.golang.org/grpc v1.50.0
 	google.golang.org/protobuf v1.28.1
 )
 
@@ -22,7 +22,7 @@ require (
 	cloud.google.com/go/iam v0.5.0 // indirect
 	cloud.google.com/go/profiler v0.3.0 // indirect
 	cloud.google.com/go/storage v1.27.0 // indirect
-	firebase.google.com/go/v4 v4.8.0 // indirect
+	firebase.google.com/go/v4 v4.9.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.1 // indirect
 	github.com/desertbit/timer v0.0.0-20180107155436-c41aec40b27f // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
@@ -32,7 +32,7 @@ require (
 	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
 	github.com/googleapis/gax-go/v2 v2.5.1 // indirect
 	github.com/klauspost/compress v1.11.7 // indirect
-	github.com/labstack/echo/v4 v4.9.0 // indirect
+	github.com/labstack/echo/v4 v4.9.1 // indirect
 	github.com/labstack/gommon v0.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
