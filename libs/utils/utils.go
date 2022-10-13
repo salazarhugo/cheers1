@@ -10,10 +10,19 @@ import (
 	"github.com/sirupsen/logrus"
 	"google.golang.org/api/option"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"os"
 	"time"
 )
+
+func GetUserId(ctx context.Context) (string, error) {
+	md, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return "", status.Error(codes.InvalidArgument, "Failed retrieving metadata")
+	}
+	return md["user-id"][0], nil
+}
 
 func InitLogrus() *logrus.Logger {
 	log := logrus.New()

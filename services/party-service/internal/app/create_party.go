@@ -2,17 +2,18 @@ package app
 
 import (
 	"context"
-	v1 "github.com/salazarhugo/cheers1/genproto/cheers/api/v1"
+	pb "github.com/salazarhugo/cheers1/genproto/cheers/party/v1"
 	party "github.com/salazarhugo/cheers1/genproto/cheers/type/party"
+	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-func (m *MicroserviceServer) CreateParty(
+func (s *Server) CreateParty(
 	ctx context.Context,
-	request *v1.CreatePartyRequest,
+	request *pb.CreatePartyRequest,
 ) (*party.Party, error) {
-	userID, err := GetUserId(ctx)
+	userID, err := utils.GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")
 	}
@@ -24,10 +25,10 @@ func (m *MicroserviceServer) CreateParty(
 
 	partyReq.HostId = userID
 
-	err = m.partyRepository.CreateParty(*partyReq)
+	response, err := s.partyRepository.CreateParty(userID, partyReq)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to create party")
 	}
 
-	return partyReq, nil
+	return response, nil
 }

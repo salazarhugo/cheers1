@@ -25,9 +25,10 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PartyServiceClient interface {
 	CreateParty(ctx context.Context, in *CreatePartyRequest, opts ...grpc.CallOption) (*party.Party, error)
-	ListParty(ctx context.Context, in *ListPartyRequest, opts ...grpc.CallOption) (*ListPartyResponse, error)
+	GetParty(ctx context.Context, in *GetPartyRequest, opts ...grpc.CallOption) (*PartyResponse, error)
 	UpdateParty(ctx context.Context, in *UpdatePartyRequest, opts ...grpc.CallOption) (*party.Party, error)
 	DeleteParty(ctx context.Context, in *DeletePartyRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	FeedParty(ctx context.Context, in *FeedPartyRequest, opts ...grpc.CallOption) (*FeedPartyResponse, error)
 }
 
 type partyServiceClient struct {
@@ -47,9 +48,9 @@ func (c *partyServiceClient) CreateParty(ctx context.Context, in *CreatePartyReq
 	return out, nil
 }
 
-func (c *partyServiceClient) ListParty(ctx context.Context, in *ListPartyRequest, opts ...grpc.CallOption) (*ListPartyResponse, error) {
-	out := new(ListPartyResponse)
-	err := c.cc.Invoke(ctx, "/cheers.party.v1.PartyService/ListParty", in, out, opts...)
+func (c *partyServiceClient) GetParty(ctx context.Context, in *GetPartyRequest, opts ...grpc.CallOption) (*PartyResponse, error) {
+	out := new(PartyResponse)
+	err := c.cc.Invoke(ctx, "/cheers.party.v1.PartyService/GetParty", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -74,14 +75,24 @@ func (c *partyServiceClient) DeleteParty(ctx context.Context, in *DeletePartyReq
 	return out, nil
 }
 
+func (c *partyServiceClient) FeedParty(ctx context.Context, in *FeedPartyRequest, opts ...grpc.CallOption) (*FeedPartyResponse, error) {
+	out := new(FeedPartyResponse)
+	err := c.cc.Invoke(ctx, "/cheers.party.v1.PartyService/FeedParty", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PartyServiceServer is the server API for PartyService service.
 // All implementations must embed UnimplementedPartyServiceServer
 // for forward compatibility
 type PartyServiceServer interface {
 	CreateParty(context.Context, *CreatePartyRequest) (*party.Party, error)
-	ListParty(context.Context, *ListPartyRequest) (*ListPartyResponse, error)
+	GetParty(context.Context, *GetPartyRequest) (*PartyResponse, error)
 	UpdateParty(context.Context, *UpdatePartyRequest) (*party.Party, error)
 	DeleteParty(context.Context, *DeletePartyRequest) (*emptypb.Empty, error)
+	FeedParty(context.Context, *FeedPartyRequest) (*FeedPartyResponse, error)
 	mustEmbedUnimplementedPartyServiceServer()
 }
 
@@ -92,14 +103,17 @@ type UnimplementedPartyServiceServer struct {
 func (UnimplementedPartyServiceServer) CreateParty(context.Context, *CreatePartyRequest) (*party.Party, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateParty not implemented")
 }
-func (UnimplementedPartyServiceServer) ListParty(context.Context, *ListPartyRequest) (*ListPartyResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListParty not implemented")
+func (UnimplementedPartyServiceServer) GetParty(context.Context, *GetPartyRequest) (*PartyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetParty not implemented")
 }
 func (UnimplementedPartyServiceServer) UpdateParty(context.Context, *UpdatePartyRequest) (*party.Party, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateParty not implemented")
 }
 func (UnimplementedPartyServiceServer) DeleteParty(context.Context, *DeletePartyRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteParty not implemented")
+}
+func (UnimplementedPartyServiceServer) FeedParty(context.Context, *FeedPartyRequest) (*FeedPartyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FeedParty not implemented")
 }
 func (UnimplementedPartyServiceServer) mustEmbedUnimplementedPartyServiceServer() {}
 
@@ -132,20 +146,20 @@ func _PartyService_CreateParty_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _PartyService_ListParty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListPartyRequest)
+func _PartyService_GetParty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPartyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PartyServiceServer).ListParty(ctx, in)
+		return srv.(PartyServiceServer).GetParty(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/cheers.party.v1.PartyService/ListParty",
+		FullMethod: "/cheers.party.v1.PartyService/GetParty",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PartyServiceServer).ListParty(ctx, req.(*ListPartyRequest))
+		return srv.(PartyServiceServer).GetParty(ctx, req.(*GetPartyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -186,6 +200,24 @@ func _PartyService_DeleteParty_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PartyService_FeedParty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FeedPartyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PartyServiceServer).FeedParty(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.party.v1.PartyService/FeedParty",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PartyServiceServer).FeedParty(ctx, req.(*FeedPartyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PartyService_ServiceDesc is the grpc.ServiceDesc for PartyService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -198,8 +230,8 @@ var PartyService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _PartyService_CreateParty_Handler,
 		},
 		{
-			MethodName: "ListParty",
-			Handler:    _PartyService_ListParty_Handler,
+			MethodName: "GetParty",
+			Handler:    _PartyService_GetParty_Handler,
 		},
 		{
 			MethodName: "UpdateParty",
@@ -208,6 +240,10 @@ var PartyService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteParty",
 			Handler:    _PartyService_DeleteParty_Handler,
+		},
+		{
+			MethodName: "FeedParty",
+			Handler:    _PartyService_FeedParty_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -2,10 +2,10 @@ package main
 
 import (
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
-	pb "github.com/salazarhugo/cheers1/genproto/cheers/post/v1"
+	pb "github.com/salazarhugo/cheers1/genproto/cheers/party/v1"
 	"github.com/salazarhugo/cheers1/libs/auth"
-	"github.com/salazarhugo/cheers1/libs/auth/utils"
 	"github.com/salazarhugo/cheers1/libs/profiler"
+	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/services/party-service/internal/app"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
@@ -18,7 +18,7 @@ import (
 var log *logrus.Logger
 
 func init() {
-	utils.InitLogrus()
+	log = utils.InitLogrus()
 }
 
 func main() {
@@ -46,7 +46,7 @@ func main() {
 
 	server := app.NewServer()
 
-	pb.RegisterPostServiceServer(grpcServer, server)
+	pb.RegisterPartyServiceServer(grpcServer, server)
 	grpc_health_v1.RegisterHealthServer(grpcServer, server)
 
 	go func() {
@@ -65,7 +65,7 @@ func main() {
 		Addr:    ":8081",
 	}
 
-	log.Infof("Post Service listening on port %s", port)
+	log.Infof("Party Service listening on port %s", port)
 
 	if err := srv.ListenAndServe(); err != nil {
 		log.Fatalf("failed to serve: %v", err)

@@ -26,6 +26,9 @@ const _ = grpc.SupportPackageIsVersion7
 type PostServiceClient interface {
 	CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*post.Post, error)
 	ListPost(ctx context.Context, in *ListPostRequest, opts ...grpc.CallOption) (*ListPostResponse, error)
+	// TODO  rpc GetPostFeed () returns ();
+	// TODO  rpc GetUserPost () returns ();
+	// TODO  rpc GetPost () returns ();
 	UpdatePost(ctx context.Context, in *UpdatePostRequest, opts ...grpc.CallOption) (*post.Post, error)
 	DeletePost(ctx context.Context, in *DeletePostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
@@ -80,6 +83,9 @@ func (c *postServiceClient) DeletePost(ctx context.Context, in *DeletePostReques
 type PostServiceServer interface {
 	CreatePost(context.Context, *CreatePostRequest) (*post.Post, error)
 	ListPost(context.Context, *ListPostRequest) (*ListPostResponse, error)
+	// TODO  rpc GetPostFeed () returns ();
+	// TODO  rpc GetUserPost () returns ();
+	// TODO  rpc GetPost () returns ();
 	UpdatePost(context.Context, *UpdatePostRequest) (*post.Post, error)
 	DeletePost(context.Context, *DeletePostRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedPostServiceServer()

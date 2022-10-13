@@ -2,17 +2,13 @@ package app
 
 import (
 	"context"
-	"github.com/golang/protobuf/ptypes/empty"
-	v1 "github.com/salazarhugo/cheers1/genproto/cheers/api/v1"
-	"log"
+	pb "github.com/salazarhugo/cheers1/genproto/cheers/party/v1"
+	party "github.com/salazarhugo/cheers1/genproto/cheers/type/party"
 )
 
-func (m *MicroserviceServer) UpdateParty(
+func (s *Server) UpdateParty(
 	ctx context.Context,
-	request *v1.CreatePartyRequest,
-) (*empty.Empty, error) {
-	log.Println(request)
-	log.Println("UpdateParty!")
-
-	return &empty.Empty{}, nil
+	request *pb.UpdatePartyRequest,
+) (*party.Party, error) {
+	return &party.Party{}, nil
 }

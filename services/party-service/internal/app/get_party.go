@@ -1,6 +1,6 @@
 package app
 
-//func (m *MicroserviceServer) GetParty(
+//func (s *Server) GetParty(
 //	ctx context.Context,
 //	request *v1.CreatePartyRequest,
 //) (*party.Party, error) {
