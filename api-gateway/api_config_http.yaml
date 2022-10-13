@@ -13,12 +13,14 @@ http:
     # Party Service
     - selector: cheers.party.v1.PartyService.CreateParty
       post: /v1/parties
-    - selector: cheers.party.v1.PartyService.ListParty
+    - selector: cheers.party.v1.PartyService.GetParty
       get: /v1/parties
     - selector: cheers.party.v1.PartyService.UpdateParty
       patch: /v1/parties
     - selector: cheers.party.v1.PartyService.DeleteParty
       delete: /v1/parties
+    - selector: cheers.party.v1.PartyService.FeedParty
+      get: /v1/parties/feed
 
     # Post Service
     - selector: cheers.post.v1.PostService.CreatePost
