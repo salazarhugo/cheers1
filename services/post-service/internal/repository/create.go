@@ -4,48 +4,50 @@ import (
 	"encoding/json"
 	"github.com/google/uuid"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
-	party "github.com/salazarhugo/cheers1/genproto/cheers/type/party"
-	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/genproto/cheers/type/post"
+	utils "github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"log"
 )
 
-func (p *partyRepository) CreateParty(
+func (p *postRepository) CreatePost(
 	userID string,
-	party *party.Party,
-) (*party.Party, error) {
+	post *postpb.Post,
+) (string, error) {
 	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close()
 
-	cypher, err := utils.GetCypher("internal/queries/CreateParty.cql")
+	cypher, err := utils.GetCypher("internal/queries/CreatePost.cql")
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
-	party.Id = uuid.NewString()
-	party.CreateTime = timestamppb.Now()
+	post.Id = uuid.NewString()
+	post.CreateTime = timestamppb.Now()
 
-	bytes, err := protojson.Marshal(party)
-
-	// convert proto to map[string]interface{}
+	bytes, err := protojson.Marshal(post)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
+
 	var m = make(map[string]interface{}, 0)
+
 	err = json.Unmarshal(bytes, &m)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	params := map[string]interface{}{
 		"userID": userID,
-		"party":  m,
+		"post":   m,
 	}
 
 	_, err = session.Run(*cypher, params)
 	if err != nil {
-		return nil, err
+		log.Println(err)
+		return "", err
 	}
 
-	return party, nil
+	return post.Id, nil
 }

@@ -47,7 +47,7 @@ func main() {
 
 	listener, err := net.Listen("tcp", ":"+port)
 	if err != nil {
-		log.Fatalf("net.Listen: %v", err)
+		log.Fatalf("net.Feeden: %v", err)
 	}
 
 	grpcServer := grpc.NewServer(
@@ -75,7 +75,7 @@ func main() {
 		Addr:    ":8081",
 	}
 
-	log.Infof("Post Service listening on port %s", port)
+	log.Infof("Post Service Feedening on port %s", port)
 
 	if err := srv.ListenAndServe(); err != nil {
 		log.Fatalf("failed to serve: %v", err)

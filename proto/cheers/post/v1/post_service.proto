@@ -10,17 +10,19 @@ option java_multiple_files = true;
 option go_package = "github.com/salazarhugo/cheers1/genproto/cheers/post/v1;post";
 
 service PostService {
-  rpc CreatePost (CreatePostRequest) returns (cheers.type.Post);
-  rpc ListPost (ListPostRequest) returns (ListPostResponse);
-// TODO  rpc GetPostFeed () returns ();
-// TODO  rpc GetUserPost () returns ();
-// TODO  rpc GetPost () returns ();
-  rpc UpdatePost (UpdatePostRequest) returns (cheers.type.Post);
+  rpc CreatePost (CreatePostRequest) returns (PostResponse);
+  rpc GetParty (GetPostRequest) returns (PostResponse);
+  rpc UpdatePost (UpdatePostRequest) returns (PostResponse);
   rpc DeletePost (DeletePostRequest) returns (google.protobuf.Empty);
+  rpc FeedPost (FeedPostRequest) returns (FeedPostResponse);
 }
 
 message CreatePostRequest {
   cheers.type.Post post = 1;
+}
+
+message GetPostRequest {
+  string id = 1;
 }
 
 message UpdatePostRequest {
@@ -31,13 +33,13 @@ message DeletePostRequest {
   string id = 1;
 }
 
-message ListPostRequest {
+message FeedPostRequest {
   string parent = 1;
   int32 page_size = 2;
   string page_token = 3;
 }
 
-message ListPostResponse {
+message FeedPostResponse {
   repeated PostResponse posts = 1;
   string next_page_token = 2;
 }

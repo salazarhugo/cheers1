@@ -53,7 +53,7 @@ require (
 	nhooyr.io/websocket v1.8.6 // indirect
 )
 
-//replace github.com/salazarhugo/cheers1/genproto => ../../genproto
+replace github.com/salazarhugo/cheers1/genproto => ../../genproto
 
 //replace github.com/salazarhugo/cheers1/libs/profiler => ../../libs/profiler
 

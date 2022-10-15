@@ -8,7 +8,6 @@ package post
 
 import (
 	context "context"
-	post "github.com/salazarhugo/cheers1/genproto/cheers/type/post"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -24,13 +23,11 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PostServiceClient interface {
-	CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*post.Post, error)
-	ListPost(ctx context.Context, in *ListPostRequest, opts ...grpc.CallOption) (*ListPostResponse, error)
-	// TODO  rpc GetPostFeed () returns ();
-	// TODO  rpc GetUserPost () returns ();
-	// TODO  rpc GetPost () returns ();
-	UpdatePost(ctx context.Context, in *UpdatePostRequest, opts ...grpc.CallOption) (*post.Post, error)
+	CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*PostResponse, error)
+	GetParty(ctx context.Context, in *GetPostRequest, opts ...grpc.CallOption) (*PostResponse, error)
+	UpdatePost(ctx context.Context, in *UpdatePostRequest, opts ...grpc.CallOption) (*PostResponse, error)
 	DeletePost(ctx context.Context, in *DeletePostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	FeedPost(ctx context.Context, in *FeedPostRequest, opts ...grpc.CallOption) (*FeedPostResponse, error)
 }
 
 type postServiceClient struct {
@@ -41,8 +38,8 @@ func NewPostServiceClient(cc grpc.ClientConnInterface) PostServiceClient {
 	return &postServiceClient{cc}
 }
 
-func (c *postServiceClient) CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*post.Post, error) {
-	out := new(post.Post)
+func (c *postServiceClient) CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*PostResponse, error) {
+	out := new(PostResponse)
 	err := c.cc.Invoke(ctx, "/cheers.post.v1.PostService/CreatePost", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -50,17 +47,17 @@ func (c *postServiceClient) CreatePost(ctx context.Context, in *CreatePostReques
 	return out, nil
 }
 
-func (c *postServiceClient) ListPost(ctx context.Context, in *ListPostRequest, opts ...grpc.CallOption) (*ListPostResponse, error) {
-	out := new(ListPostResponse)
-	err := c.cc.Invoke(ctx, "/cheers.post.v1.PostService/ListPost", in, out, opts...)
+func (c *postServiceClient) GetParty(ctx context.Context, in *GetPostRequest, opts ...grpc.CallOption) (*PostResponse, error) {
+	out := new(PostResponse)
+	err := c.cc.Invoke(ctx, "/cheers.post.v1.PostService/GetParty", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *postServiceClient) UpdatePost(ctx context.Context, in *UpdatePostRequest, opts ...grpc.CallOption) (*post.Post, error) {
-	out := new(post.Post)
+func (c *postServiceClient) UpdatePost(ctx context.Context, in *UpdatePostRequest, opts ...grpc.CallOption) (*PostResponse, error) {
+	out := new(PostResponse)
 	err := c.cc.Invoke(ctx, "/cheers.post.v1.PostService/UpdatePost", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -77,17 +74,24 @@ func (c *postServiceClient) DeletePost(ctx context.Context, in *DeletePostReques
 	return out, nil
 }
 
+func (c *postServiceClient) FeedPost(ctx context.Context, in *FeedPostRequest, opts ...grpc.CallOption) (*FeedPostResponse, error) {
+	out := new(FeedPostResponse)
+	err := c.cc.Invoke(ctx, "/cheers.post.v1.PostService/FeedPost", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PostServiceServer is the server API for PostService service.
 // All implementations must embed UnimplementedPostServiceServer
 // for forward compatibility
 type PostServiceServer interface {
-	CreatePost(context.Context, *CreatePostRequest) (*post.Post, error)
-	ListPost(context.Context, *ListPostRequest) (*ListPostResponse, error)
-	// TODO  rpc GetPostFeed () returns ();
-	// TODO  rpc GetUserPost () returns ();
-	// TODO  rpc GetPost () returns ();
-	UpdatePost(context.Context, *UpdatePostRequest) (*post.Post, error)
+	CreatePost(context.Context, *CreatePostRequest) (*PostResponse, error)
+	GetParty(context.Context, *GetPostRequest) (*PostResponse, error)
+	UpdatePost(context.Context, *UpdatePostRequest) (*PostResponse, error)
 	DeletePost(context.Context, *DeletePostRequest) (*emptypb.Empty, error)
+	FeedPost(context.Context, *FeedPostRequest) (*FeedPostResponse, error)
 	mustEmbedUnimplementedPostServiceServer()
 }
 
@@ -95,17 +99,20 @@ type PostServiceServer interface {
 type UnimplementedPostServiceServer struct {
 }
 
-func (UnimplementedPostServiceServer) CreatePost(context.Context, *CreatePostRequest) (*post.Post, error) {
+func (UnimplementedPostServiceServer) CreatePost(context.Context, *CreatePostRequest) (*PostResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePost not implemented")
 }
-func (UnimplementedPostServiceServer) ListPost(context.Context, *ListPostRequest) (*ListPostResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListPost not implemented")
+func (UnimplementedPostServiceServer) GetParty(context.Context, *GetPostRequest) (*PostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetParty not implemented")
 }
-func (UnimplementedPostServiceServer) UpdatePost(context.Context, *UpdatePostRequest) (*post.Post, error) {
+func (UnimplementedPostServiceServer) UpdatePost(context.Context, *UpdatePostRequest) (*PostResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdatePost not implemented")
 }
 func (UnimplementedPostServiceServer) DeletePost(context.Context, *DeletePostRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeletePost not implemented")
+}
+func (UnimplementedPostServiceServer) FeedPost(context.Context, *FeedPostRequest) (*FeedPostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FeedPost not implemented")
 }
 func (UnimplementedPostServiceServer) mustEmbedUnimplementedPostServiceServer() {}
 
@@ -138,20 +145,20 @@ func _PostService_CreatePost_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _PostService_ListPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListPostRequest)
+func _PostService_GetParty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPostRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PostServiceServer).ListPost(ctx, in)
+		return srv.(PostServiceServer).GetParty(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/cheers.post.v1.PostService/ListPost",
+		FullMethod: "/cheers.post.v1.PostService/GetParty",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PostServiceServer).ListPost(ctx, req.(*ListPostRequest))
+		return srv.(PostServiceServer).GetParty(ctx, req.(*GetPostRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -192,6 +199,24 @@ func _PostService_DeletePost_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PostService_FeedPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FeedPostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).FeedPost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.post.v1.PostService/FeedPost",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).FeedPost(ctx, req.(*FeedPostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PostService_ServiceDesc is the grpc.ServiceDesc for PostService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -204,8 +229,8 @@ var PostService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _PostService_CreatePost_Handler,
 		},
 		{
-			MethodName: "ListPost",
-			Handler:    _PostService_ListPost_Handler,
+			MethodName: "GetParty",
+			Handler:    _PostService_GetParty_Handler,
 		},
 		{
 			MethodName: "UpdatePost",
@@ -214,6 +239,10 @@ var PostService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeletePost",
 			Handler:    _PostService_DeletePost_Handler,
+		},
+		{
+			MethodName: "FeedPost",
+			Handler:    _PostService_FeedPost_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

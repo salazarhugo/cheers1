@@ -7,13 +7,13 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *Server) ListPost(ctx context.Context, request *pb.ListPostRequest) (*pb.ListPostResponse, error) {
+func (s *Server) FeedPost(ctx context.Context, request *pb.FeedPostRequest) (*pb.FeedPostResponse, error) {
 	userID, err := GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")
 	}
 
-	posts, err := s.partyRepository.ListPost(userID, request)
+	posts, err := s.partyRepository.FeedPost(userID, request)
 	if err != nil {
 		return nil, err
 	}

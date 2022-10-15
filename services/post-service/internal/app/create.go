@@ -3,12 +3,14 @@ package app
 import (
 	"context"
 	pb "github.com/salazarhugo/cheers1/genproto/cheers/post/v1"
-	"github.com/salazarhugo/cheers1/genproto/cheers/type/post"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-func (s *Server) CreatePost(ctx context.Context, request *pb.CreatePostRequest) (*postpb.Post, error) {
+func (s *Server) CreatePost(
+	ctx context.Context,
+	request *pb.CreatePostRequest,
+) (*pb.PostResponse, error) {
 	userID, err := GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")
@@ -19,10 +21,15 @@ func (s *Server) CreatePost(ctx context.Context, request *pb.CreatePostRequest) 
 		return nil, status.Error(codes.InvalidArgument, "post parameter can't be nil")
 	}
 
-	err = s.partyRepository.CreatePost(userID, partyReq)
+	postID, err := s.partyRepository.CreatePost(userID, partyReq)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to create party")
+		return nil, status.Error(codes.Internal, "failed to create post")
 	}
 
-	return partyReq, nil
+	post, err := s.partyRepository.GetPost(userID, postID)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "failed to get post")
+	}
+
+	return post, nil
 }
