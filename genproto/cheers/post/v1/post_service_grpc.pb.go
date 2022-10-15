@@ -28,6 +28,10 @@ type PostServiceClient interface {
 	UpdatePost(ctx context.Context, in *UpdatePostRequest, opts ...grpc.CallOption) (*PostResponse, error)
 	DeletePost(ctx context.Context, in *DeletePostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	FeedPost(ctx context.Context, in *FeedPostRequest, opts ...grpc.CallOption) (*FeedPostResponse, error)
+	LikePost(ctx context.Context, in *LikePostRequest, opts ...grpc.CallOption) (*LikePostResponse, error)
+	UnlikePost(ctx context.Context, in *UnlikePostRequest, opts ...grpc.CallOption) (*UnlikePostResponse, error)
+	SavePost(ctx context.Context, in *SavePostRequest, opts ...grpc.CallOption) (*SavePostResponse, error)
+	UnsavePost(ctx context.Context, in *UnsavePostRequest, opts ...grpc.CallOption) (*UnsavePostResponse, error)
 }
 
 type postServiceClient struct {
@@ -83,6 +87,42 @@ func (c *postServiceClient) FeedPost(ctx context.Context, in *FeedPostRequest, o
 	return out, nil
 }
 
+func (c *postServiceClient) LikePost(ctx context.Context, in *LikePostRequest, opts ...grpc.CallOption) (*LikePostResponse, error) {
+	out := new(LikePostResponse)
+	err := c.cc.Invoke(ctx, "/cheers.post.v1.PostService/LikePost", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *postServiceClient) UnlikePost(ctx context.Context, in *UnlikePostRequest, opts ...grpc.CallOption) (*UnlikePostResponse, error) {
+	out := new(UnlikePostResponse)
+	err := c.cc.Invoke(ctx, "/cheers.post.v1.PostService/UnlikePost", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *postServiceClient) SavePost(ctx context.Context, in *SavePostRequest, opts ...grpc.CallOption) (*SavePostResponse, error) {
+	out := new(SavePostResponse)
+	err := c.cc.Invoke(ctx, "/cheers.post.v1.PostService/SavePost", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *postServiceClient) UnsavePost(ctx context.Context, in *UnsavePostRequest, opts ...grpc.CallOption) (*UnsavePostResponse, error) {
+	out := new(UnsavePostResponse)
+	err := c.cc.Invoke(ctx, "/cheers.post.v1.PostService/UnsavePost", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PostServiceServer is the server API for PostService service.
 // All implementations must embed UnimplementedPostServiceServer
 // for forward compatibility
@@ -92,6 +132,10 @@ type PostServiceServer interface {
 	UpdatePost(context.Context, *UpdatePostRequest) (*PostResponse, error)
 	DeletePost(context.Context, *DeletePostRequest) (*emptypb.Empty, error)
 	FeedPost(context.Context, *FeedPostRequest) (*FeedPostResponse, error)
+	LikePost(context.Context, *LikePostRequest) (*LikePostResponse, error)
+	UnlikePost(context.Context, *UnlikePostRequest) (*UnlikePostResponse, error)
+	SavePost(context.Context, *SavePostRequest) (*SavePostResponse, error)
+	UnsavePost(context.Context, *UnsavePostRequest) (*UnsavePostResponse, error)
 	mustEmbedUnimplementedPostServiceServer()
 }
 
@@ -113,6 +157,18 @@ func (UnimplementedPostServiceServer) DeletePost(context.Context, *DeletePostReq
 }
 func (UnimplementedPostServiceServer) FeedPost(context.Context, *FeedPostRequest) (*FeedPostResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FeedPost not implemented")
+}
+func (UnimplementedPostServiceServer) LikePost(context.Context, *LikePostRequest) (*LikePostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method LikePost not implemented")
+}
+func (UnimplementedPostServiceServer) UnlikePost(context.Context, *UnlikePostRequest) (*UnlikePostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnlikePost not implemented")
+}
+func (UnimplementedPostServiceServer) SavePost(context.Context, *SavePostRequest) (*SavePostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SavePost not implemented")
+}
+func (UnimplementedPostServiceServer) UnsavePost(context.Context, *UnsavePostRequest) (*UnsavePostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnsavePost not implemented")
 }
 func (UnimplementedPostServiceServer) mustEmbedUnimplementedPostServiceServer() {}
 
@@ -217,6 +273,78 @@ func _PostService_FeedPost_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PostService_LikePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LikePostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).LikePost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.post.v1.PostService/LikePost",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).LikePost(ctx, req.(*LikePostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PostService_UnlikePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UnlikePostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).UnlikePost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.post.v1.PostService/UnlikePost",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).UnlikePost(ctx, req.(*UnlikePostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PostService_SavePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SavePostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).SavePost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.post.v1.PostService/SavePost",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).SavePost(ctx, req.(*SavePostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PostService_UnsavePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UnsavePostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).UnsavePost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.post.v1.PostService/UnsavePost",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).UnsavePost(ctx, req.(*UnsavePostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PostService_ServiceDesc is the grpc.ServiceDesc for PostService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -243,6 +371,22 @@ var PostService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FeedPost",
 			Handler:    _PostService_FeedPost_Handler,
+		},
+		{
+			MethodName: "LikePost",
+			Handler:    _PostService_LikePost_Handler,
+		},
+		{
+			MethodName: "UnlikePost",
+			Handler:    _PostService_UnlikePost_Handler,
+		},
+		{
+			MethodName: "SavePost",
+			Handler:    _PostService_SavePost_Handler,
+		},
+		{
+			MethodName: "UnsavePost",
+			Handler:    _PostService_UnsavePost_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

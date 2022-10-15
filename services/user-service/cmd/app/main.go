@@ -2,10 +2,10 @@ package main
 
 import (
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
-	pb "github.com/salazarhugo/cheers1/genproto/cheers/post/v1"
+	pb "github.com/salazarhugo/cheers1/genproto/cheers/user/v1"
 	"github.com/salazarhugo/cheers1/libs/auth"
 	"github.com/salazarhugo/cheers1/libs/profiler"
-	"github.com/salazarhugo/cheers1/services/post-service/internal/app"
+	"github.com/salazarhugo/cheers1/services/user-service/internal/app"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health/grpc_health_v1"
@@ -56,7 +56,7 @@ func main() {
 
 	server := app.NewServer()
 
-	pb.RegisterPostServiceServer(grpcServer, server)
+	pb.RegisterUserServiceServer(grpcServer, server)
 	grpc_health_v1.RegisterHealthServer(grpcServer, server)
 
 	go func() {

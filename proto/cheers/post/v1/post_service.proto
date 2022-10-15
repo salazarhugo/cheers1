@@ -14,8 +14,14 @@ service PostService {
   rpc GetParty (GetPostRequest) returns (PostResponse);
   rpc UpdatePost (UpdatePostRequest) returns (PostResponse);
   rpc DeletePost (DeletePostRequest) returns (google.protobuf.Empty);
+
   rpc FeedPost (FeedPostRequest) returns (FeedPostResponse);
+  rpc LikePost (LikePostRequest) returns (LikePostResponse);
+  rpc UnlikePost (UnlikePostRequest) returns (UnlikePostResponse);
+  rpc SavePost (SavePostRequest) returns (SavePostResponse);
+  rpc UnsavePost (UnsavePostRequest) returns (UnsavePostResponse);
 }
+
 
 message CreatePostRequest {
   cheers.type.Post post = 1;
@@ -42,6 +48,38 @@ message FeedPostRequest {
 message FeedPostResponse {
   repeated PostResponse posts = 1;
   string next_page_token = 2;
+}
+
+message LikePostRequest {
+  string id = 1;
+}
+
+message LikePostResponse {
+  bool success = 1;
+}
+
+message UnlikePostRequest {
+  string id = 1;
+}
+
+message UnlikePostResponse {
+  bool success = 1;
+}
+
+message SavePostRequest {
+  string id = 1;
+}
+
+message SavePostResponse {
+  bool success = 1;
+}
+
+message UnsavePostRequest {
+  string id = 1;
+}
+
+message UnsavePostResponse {
+  bool success = 1;
 }
 
 message PostResponse {

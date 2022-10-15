@@ -9,9 +9,12 @@ import (
 type PostRepository interface {
 	CreatePost(userID string, post *postpb.Post) (string, error)
 	GetPost(userID string, postID string) (*pb.PostResponse, error)
-	FeedPost(userID string, request *pb.FeedPostRequest) (*pb.FeedPostResponse, error)
 	UpdatePost(post *postpb.Post) (*pb.PostResponse, error)
 	DeletePost(id string) error
+
+	FeedPost(userID string, request *pb.FeedPostRequest) (*pb.FeedPostResponse, error)
+	LikePost(userID string, postID string) (*pb.LikePostResponse, error)
+	UnlikePost(userID string, postID string) (*pb.UnlikePostResponse, error)
 }
 
 type postRepository struct {

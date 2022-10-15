@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package cheers.user.v1;
+
+import "cheers/type/user/user.proto";
+import "google/protobuf/empty.proto";
+
+option java_multiple_files = true;
+option go_package = "github.com/salazarhugo/cheers1/genproto/cheers/user/v1;user";
+
+service UserService {
+  rpc CreateUser (CreateUserRequest) returns (cheers.type.User);
+  rpc GetUser (GetUserRequest) returns (GetUserResponse);
+  rpc UpdateUser (UpdateUserRequest) returns (cheers.type.User);
+  rpc DeleteUser (DeleteUserRequest) returns (google.protobuf.Empty);
+
+  rpc SearchUser (SearchUserRequest) returns (SearchUserResponse);
+  rpc FollowUser (FollowUserRequest) returns (google.protobuf.Empty);
+  rpc UnfollowUser (UnfollowUserRequest) returns (google.protobuf.Empty);
+  rpc BlockUser (BlockUserRequest) returns (google.protobuf.Empty);
+  rpc UnblockUser (UnblockUserRequest) returns (google.protobuf.Empty);
+}
+
+message GetUserResponse {
+  cheers.type.User user = 1;
+  int64 post_count = 2;
+  int64 followers_count = 3;
+  int64 following_count = 4;
+  bool has_followed = 5;
+  StoryState story_state = 6;
+}
+
+enum StoryState {
+  EMPTY = 0;
+  SEEN = 1;
+  NOT_SEEN = 2;
+}
+
+message BlockUserRequest {
+  string id = 1;
+}
+
+message UnblockUserRequest {
+  string id = 1;
+}
+
+message UnfollowUserRequest {
+  string id = 1;
+}
+
+message FollowUserRequest {
+  string id = 1;
+}
+
+message SearchUserRequest {
+  string query = 1;
+}
+
+message SearchUserResponse {
+  repeated cheers.type.User users = 1;
+}
+
+message CreateUserRequest {
+  cheers.type.User user = 1;
+}
+
+message GetUserRequest {
+  string id = 1;
+}
+
+message UpdateUserRequest {
+  cheers.type.User user = 1;
+}
+
+message DeleteUserRequest {
+  string id = 1;
+}
