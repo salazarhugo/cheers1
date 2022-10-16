@@ -5,25 +5,30 @@ import (
 	"github.com/labstack/gommon/log"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	"github.com/salazarhugo/cheers1/genproto/cheers/type/user"
+	pb "github.com/salazarhugo/cheers1/genproto/cheers/user/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-func (p *postRepository) SearchUser(
+func (p *postRepository) ListFollowers(
 	userID string,
-	query string,
+	request *pb.ListFollowersRequest,
 ) ([]*user.UserItem, error) {
 	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close()
 
-	cypher, err := utils.GetCypher("internal/queries/SearchUser.cql")
+	cypher, err := utils.GetCypher("internal/queries/ListFollowers.cql")
 	if err != nil {
 		return nil, err
 	}
 
+	skip := request.GetPageSize() * request.GetPage()
+
 	params := map[string]interface{}{
-		"userID": userID,
-		"query":  query,
+		"userID":      userID,
+		"otherUserID": request.GetUserId(),
+		"skip":        skip,
+		"pageSize":    request.GetPageSize(),
 	}
 
 	results, err := session.Run(*cypher, params)

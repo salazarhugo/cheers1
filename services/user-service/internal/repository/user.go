@@ -8,8 +8,8 @@ import (
 
 type UserRepository interface {
 	CreateUser(userID string, post *user.User) (string, error)
-	GetUser(userID string, postID string) (*pb.GetUserResponse, error)
-	UpdateUser(user *user.User) (*user.User, error)
+	GetUser(userID string, otherUserID string) (*pb.GetUserResponse, error)
+	UpdateUser(userID string, user *pb.UpdateUserRequest) error
 	DeleteUser(id string) error
 
 	FollowUser(userID string, otherUserID string) error
@@ -18,7 +18,9 @@ type UserRepository interface {
 	BlockUser(userID string, otherUserID string) error
 	UnblockUser(userID string, otherUserID string) error
 
-	SearchUser(userID string, query string) ([]*user.User, error)
+	SearchUser(userID string, query string) ([]*user.UserItem, error)
+	ListFollowers(userID string, request *pb.ListFollowersRequest) ([]*user.UserItem, error)
+	ListFollowing(userID string, request *pb.ListFollowingRequest) ([]*user.UserItem, error)
 }
 
 type postRepository struct {

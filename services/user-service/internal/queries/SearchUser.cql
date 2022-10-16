@@ -11,8 +11,27 @@ OPTIONAL MATCH
   (u)-[following:FOLLOWS]->(:User)
 OPTIONAL MATCH
   (:User)-[followers:FOLLOWS]->(u)
+OPTIONAL MATCH
+  (u)-[:POSTED]->(s:Story) WHERE s.created > datetime().epochMillis-24*60*60*1000
+OPTIONAL MATCH
+  (me)-[seen:SEEN]->(s)
 WITH
   u,
-  EXISTS((:User {id: $userID})-[:FOLLOWS]->(u)) as followBack
-RETURN
-  PROPERTIES(u)
+  EXISTS((:User {id: $userID})-[:FOLLOWS]->(u)) as has_followed,
+  COUNT(s) > 0 as has_story,
+  COUNT(seen) = count(s) as seen_story
+RETURN DISTINCT
+  {
+    id: u.id,
+    name: u.name,
+    username: u.username,
+    verified: u.verified,
+    picture: u.picture,
+    has_followed: has_followed,
+    story_state:
+      CASE
+        WHEN has_story AND NOT seen_story THEN "NOT_SEEN"
+        WHEN has_story AND seen_story THEN "SEEN"
+        ELSE "EMPTY"
+      END
+  }

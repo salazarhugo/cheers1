@@ -10,6 +10,26 @@ name: android.apigateway.cheers-a275e.cloud.goog
 # HTTP/REST/JSON clients will be able to call the User service.
 http:
   rules:
+    # User Service
+    - selector: cheers.user.v1.UserService.CreateUser
+      post: /v1/users
+    - selector: cheers.user.v1.UserService.GetUser
+      get: /v1/users
+    - selector: cheers.user.v1.UserService.UpdateUser
+      patch: /v1/users
+    - selector: cheers.user.v1.UserService.DeleteUser
+      delete: /v1/users
+    - selector: cheers.user.v1.UserService.SearchUser
+      get: /v1/users/search
+    - selector: cheers.user.v1.UserService.FollowUser
+      post: /v1/users/friendship
+    - selector: cheers.user.v1.UserService.UnfollowUser
+      delete: /v1/users/friendship
+    - selector: cheers.user.v1.UserService.BlockUser
+      post: /v1/users/block
+    - selector: cheers.user.v1.UserService.UnblockUser
+      delete: /v1/users/block
+
     # Party Service
     - selector: cheers.party.v1.PartyService.CreateParty
       post: /v1/parties

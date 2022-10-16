@@ -3,6 +3,7 @@ config_version: 3
 name: android.apigateway.cheers-a275e.cloud.goog
 title: Cheers API
 apis:
+  - name: cheers.user.v1.UserService
   - name: cheers.post.v1.PostService
   - name: cheers.party.v1.PartyService
 usage:
@@ -22,6 +23,10 @@ authentication:
         - provider_id: firebase
 backend:
   rules:
+    # User Service methods
+    - selector: cheers.user.v1.*
+      address: grpcs://user-service-r3a2dr4u4a-nw.a.run.app
+
     # Party Service methods
     - selector: cheers.party.v1.*
       address: grpcs://party-service-r3a2dr4u4a-nw.a.run.app

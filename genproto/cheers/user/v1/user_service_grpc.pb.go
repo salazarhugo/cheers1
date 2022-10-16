@@ -33,6 +33,8 @@ type UserServiceClient interface {
 	UnfollowUser(ctx context.Context, in *UnfollowUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	BlockUser(ctx context.Context, in *BlockUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	UnblockUser(ctx context.Context, in *UnblockUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	ListFollowers(ctx context.Context, in *ListFollowersRequest, opts ...grpc.CallOption) (*ListFollowersResponse, error)
+	ListFollowing(ctx context.Context, in *ListFollowingRequest, opts ...grpc.CallOption) (*ListFollowingResponse, error)
 }
 
 type userServiceClient struct {
@@ -124,6 +126,24 @@ func (c *userServiceClient) UnblockUser(ctx context.Context, in *UnblockUserRequ
 	return out, nil
 }
 
+func (c *userServiceClient) ListFollowers(ctx context.Context, in *ListFollowersRequest, opts ...grpc.CallOption) (*ListFollowersResponse, error) {
+	out := new(ListFollowersResponse)
+	err := c.cc.Invoke(ctx, "/cheers.user.v1.UserService/ListFollowers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) ListFollowing(ctx context.Context, in *ListFollowingRequest, opts ...grpc.CallOption) (*ListFollowingResponse, error) {
+	out := new(ListFollowingResponse)
+	err := c.cc.Invoke(ctx, "/cheers.user.v1.UserService/ListFollowing", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -137,6 +157,8 @@ type UserServiceServer interface {
 	UnfollowUser(context.Context, *UnfollowUserRequest) (*emptypb.Empty, error)
 	BlockUser(context.Context, *BlockUserRequest) (*emptypb.Empty, error)
 	UnblockUser(context.Context, *UnblockUserRequest) (*emptypb.Empty, error)
+	ListFollowers(context.Context, *ListFollowersRequest) (*ListFollowersResponse, error)
+	ListFollowing(context.Context, *ListFollowingRequest) (*ListFollowingResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -170,6 +192,12 @@ func (UnimplementedUserServiceServer) BlockUser(context.Context, *BlockUserReque
 }
 func (UnimplementedUserServiceServer) UnblockUser(context.Context, *UnblockUserRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UnblockUser not implemented")
+}
+func (UnimplementedUserServiceServer) ListFollowers(context.Context, *ListFollowersRequest) (*ListFollowersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListFollowers not implemented")
+}
+func (UnimplementedUserServiceServer) ListFollowing(context.Context, *ListFollowingRequest) (*ListFollowingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListFollowing not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -346,6 +374,42 @@ func _UserService_UnblockUser_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_ListFollowers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListFollowersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).ListFollowers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.user.v1.UserService/ListFollowers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).ListFollowers(ctx, req.(*ListFollowersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_ListFollowing_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListFollowingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).ListFollowing(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.user.v1.UserService/ListFollowing",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).ListFollowing(ctx, req.(*ListFollowingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -388,6 +452,14 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UnblockUser",
 			Handler:    _UserService_UnblockUser_Handler,
+		},
+		{
+			MethodName: "ListFollowers",
+			Handler:    _UserService_ListFollowers_Handler,
+		},
+		{
+			MethodName: "ListFollowing",
+			Handler:    _UserService_ListFollowing_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
