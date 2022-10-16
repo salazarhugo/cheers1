@@ -27,8 +27,8 @@ func (p *postRepository) FeedPost(
 
 	params := map[string]interface{}{
 		"userID":   userID,
-		"skip":     skip,
-		"pageSize": pageSize,
+		"skip":     int(skip),
+		"pageSize": int(pageSize),
 	}
 
 	result, err := session.Run(*cypher, params)
