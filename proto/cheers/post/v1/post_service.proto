@@ -42,7 +42,7 @@ message DeletePostRequest {
 message FeedPostRequest {
   string parent = 1;
   int32 page_size = 2;
-  string page_token = 3;
+  int32 page = 3;
 }
 
 message FeedPostResponse {

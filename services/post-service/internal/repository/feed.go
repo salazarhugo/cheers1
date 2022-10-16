@@ -16,6 +16,9 @@ func (p *postRepository) FeedPost(
 	defer session.Close()
 
 	pageSize := request.GetPageSize()
+	page := request.GetPage()
+
+	skip := page * pageSize
 
 	cypher, err := utils.GetCypher("internal/queries/FeedPost.cql")
 	if err != nil {
@@ -24,7 +27,7 @@ func (p *postRepository) FeedPost(
 
 	params := map[string]interface{}{
 		"userID":   userID,
-		"skip":     0,
+		"skip":     skip,
 		"pageSize": pageSize,
 	}
 

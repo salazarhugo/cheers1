@@ -28,7 +28,3 @@ func (p *postRepository) UpdatePost(post *postpb.Post) (*pb.PostResponse, error)
 func NewPostRepository(driver neo4j.Driver) PostRepository {
 	return &postRepository{driver: driver}
 }
-
-func (p *postRepository) DeletePost(id string) error {
-	return nil
-}

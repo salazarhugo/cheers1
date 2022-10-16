@@ -14,7 +14,7 @@ func (s *Server) GetUser(
 ) (*pb.GetUserResponse, error) {
 	userID, err := GetUserId(ctx)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "Failed retrieving userID")
+		return nil, status.Error(codes.Internal, "failed retrieving userID")
 	}
 
 	otherUserID := request.GetId()

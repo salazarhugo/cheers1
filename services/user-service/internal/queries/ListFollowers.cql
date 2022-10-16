@@ -1,5 +1,5 @@
 MATCH
-  (me:User {id: $userId})
+  (me:User {id: $userID})
 MATCH
   (u:User { id: $otherUserID})<-[:FOLLOWS]-(f:User)
 OPTIONAL MATCH

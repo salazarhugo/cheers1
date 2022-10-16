@@ -45,9 +45,9 @@ message ListFollowingResponse {
 
 message GetUserResponse {
   cheers.type.User user = 1;
-  int64 post_count = 2;
-  int64 followers_count = 3;
-  int64 following_count = 4;
+  int32 post_count = 2;
+  int32 followers_count = 3;
+  int32 following_count = 4;
   bool has_followed = 5;
   cheers.type.StoryState story_state = 6;
 }

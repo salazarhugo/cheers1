@@ -22,7 +22,7 @@ WITH
   EXISTS((me)-[:FOLLOWS]->(u)) as has_followed
 RETURN
    {
-      user: u,
+      user: PROPERTIES(u),
       post_count: post_count,
       followers_count: followers_count,
       following_count: following_count,
@@ -32,5 +32,5 @@ RETURN
          WHEN hasStory AND NOT seenStory THEN "NOT_SEEN"
          WHEN hasStory AND seenStory THEN "SEEN"
          ELSE "EMPTY"
-         END
+       END
    }

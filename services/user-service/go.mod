@@ -3,13 +3,11 @@ module github.com/salazarhugo/cheers1/services/user-service
 go 1.19
 
 require (
-	github.com/fatih/structs v1.1.0
 	github.com/golang/protobuf v1.5.2
 	github.com/improbable-eng/grpc-web v0.15.0
-	github.com/labstack/echo/v4 v4.9.1
 	github.com/labstack/gommon v0.4.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
-	github.com/salazarhugo/cheers1/genproto v0.0.0-20221015204654-bcf24c8d7553
+	github.com/salazarhugo/cheers1/genproto v0.0.0-20221016133953-26cc3fd3af79
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221004084225-130de449e1a1
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221015161842-0aeae4025b17
@@ -35,6 +33,7 @@ require (
 	github.com/googleapis/enterprise-certificate-proxy v0.1.0 // indirect
 	github.com/googleapis/gax-go/v2 v2.4.0 // indirect
 	github.com/klauspost/compress v1.11.7 // indirect
+	github.com/labstack/echo/v4 v4.9.1 // indirect
 	github.com/mattn/go-colorable v0.1.11 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/rs/cors v1.7.0 // indirect
@@ -54,4 +53,4 @@ require (
 	nhooyr.io/websocket v1.8.6 // indirect
 )
 
-replace github.com/salazarhugo/cheers1/genproto => ../../genproto
+//replace github.com/salazarhugo/cheers1/genproto => ../../genproto

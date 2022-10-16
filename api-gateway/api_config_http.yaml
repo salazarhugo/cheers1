@@ -29,6 +29,10 @@ http:
       post: /v1/users/block
     - selector: cheers.user.v1.UserService.UnblockUser
       delete: /v1/users/block
+    - selector: cheers.user.v1.UserService.ListFollowers
+      get: /v1/users/followers
+    - selector: cheers.user.v1.UserService.ListFollowing
+      get: /v1/users/following
 
     # Party Service
     - selector: cheers.party.v1.PartyService.CreateParty

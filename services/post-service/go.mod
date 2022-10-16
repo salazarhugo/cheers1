@@ -7,11 +7,11 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/improbable-eng/grpc-web v0.15.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
-	github.com/salazarhugo/cheers1/genproto v0.0.0-20221015161842-0aeae4025b17
+	github.com/salazarhugo/cheers1/genproto v0.0.0-20221016133953-26cc3fd3af79
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221004084225-130de449e1a1
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221013151512-d9ca544d0c33
-	github.com/sirupsen/logrus v1.7.0
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221016133953-26cc3fd3af79
+	github.com/sirupsen/logrus v1.9.0
 	google.golang.org/grpc v1.50.0
 	google.golang.org/protobuf v1.28.1
 )
@@ -53,7 +53,7 @@ require (
 	nhooyr.io/websocket v1.8.6 // indirect
 )
 
-replace github.com/salazarhugo/cheers1/genproto => ../../genproto
+//replace github.com/salazarhugo/cheers1/genproto => ../../genproto
 
 //replace github.com/salazarhugo/cheers1/libs/profiler => ../../libs/profiler
 
