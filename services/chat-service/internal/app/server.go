@@ -39,52 +39,7 @@ func (s *Server) GetRoomId(ctx context.Context, req *pb.GetRoomIdReq) (*pb.RoomI
 	panic("implement me")
 }
 
-func (s *Server) CreateChat(ctx context.Context, req *pb.CreateChatReq) (*pb.Room, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (s *Server) JoinRoom(id *pb.RoomId, server pb.ChatService_JoinRoomServer) error {
-	//TODO implement me
-	panic("implement me")
-}
-
 func (s *Server) GetRoomMembers(ctx context.Context, id *pb.RoomId) (*pb.Users, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (s *Server) LeaveRoom(ctx context.Context, id *pb.RoomId) (*pb.Empty, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (s *Server) DeleteRoom(ctx context.Context, id *pb.RoomId) (*pb.Empty, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (s *Server) SendMessage(server pb.ChatService_SendMessageServer) error {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (s *Server) LikeMessage(ctx context.Context, req *pb.LikeMessageReq) (*pb.Empty, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (s *Server) UnlikeMessage(ctx context.Context, req *pb.LikeMessageReq) (*pb.Empty, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (s *Server) TypingStart(ctx context.Context, req *pb.TypingReq) (*pb.Empty, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (s *Server) TypingEnd(ctx context.Context, req *pb.TypingReq) (*pb.Empty, error) {
 	//TODO implement me
 	panic("implement me")
 }
