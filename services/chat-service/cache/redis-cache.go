@@ -2,12 +2,13 @@ package cache
 
 import (
 	"bytes"
-	"chat/chatpb"
 	"context"
 	json2 "encoding/json"
 	"fmt"
+	"github.com/go-redis/redis/v9"
 	"github.com/google/uuid"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
+	pb "github.com/salazarhugo/cheers1/genproto/cheers/chat/v1"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"log"
 	"strings"
@@ -96,7 +97,7 @@ func (cache *redisCache) SetSeen(roomId string, userId string) {
 	cache.client.HSet(context.Background(), getKeyRoomSeen(roomId), m)
 }
 
-func (cache *redisCache) GetRoomStatus(roomId string, userId string, otherUserId string) chatpb.RoomStatus {
+func (cache *redisCache) GetRoomStatus(roomId string, userId string, otherUserId string) pb.RoomStatus {
 
 	lastSeenMsg, err := cache.client.HMGet(context.Background(), getKeyRoomSeen(roomId), userId, otherUserId).Result()
 	if err != nil {
@@ -105,25 +106,25 @@ func (cache *redisCache) GetRoomStatus(roomId string, userId string, otherUserId
 
 	lastMsg := getLatestMessage(cache.client, roomId)
 	if lastMsg == nil {
-		return chatpb.RoomStatus_EMPTY
+		return pb.RoomStatus_EMPTY
 	}
 	isLastMessageMe := lastMsg.Sender == userId
 	seenByMe := lastMsg.Id == lastSeenMsg[0]
 	seenByOther := lastMsg.Id == lastSeenMsg[1]
 
-	status := chatpb.RoomStatus_EMPTY
+	status := pb.RoomStatus_EMPTY
 
 	if isLastMessageMe {
 		if seenByOther {
-			status = chatpb.RoomStatus_OPENED
+			status = pb.RoomStatus_OPENED
 		} else {
-			status = chatpb.RoomStatus_SENT
+			status = pb.RoomStatus_SENT
 		}
 	} else {
 		if seenByMe {
-			status = chatpb.RoomStatus_RECEIVED
+			status = pb.RoomStatus_RECEIVED
 		} else {
-			status = chatpb.RoomStatus_NEW
+			status = pb.RoomStatus_NEW
 		}
 	}
 	return status
@@ -155,17 +156,17 @@ func (cache *redisCache) AddToken(userId string, token string) {
 	client.SAdd(context.Background(), GetKeyUserTokens(userId), token)
 }
 
-func (cache *redisCache) GetMessages(roomId string) []*chatpb.Message {
+func (cache *redisCache) GetMessages(roomId string) []*pb.Message {
 	client := cache.client
 
 	values, err := client.ZRevRange(context.Background(), getKeyRoomMessages(roomId), 0, 50).Result()
 	if err != nil {
 		panic(err)
 	}
-	var messages []*chatpb.Message
+	var messages []*pb.Message
 
 	for i := range values {
-		message := &chatpb.Message{}
+		message := &pb.Message{}
 		dec := json2.NewDecoder(strings.NewReader(values[i]))
 		err := dec.Decode(message)
 		if err != nil {
@@ -177,7 +178,7 @@ func (cache *redisCache) GetMessages(roomId string) []*chatpb.Message {
 	return messages
 }
 
-func (cache *redisCache) SetMessage(msg *chatpb.Message) {
+func (cache *redisCache) SetMessage(msg *pb.Message) {
 	client := cache.client
 
 	buff := bytes.NewBufferString("")
@@ -187,14 +188,14 @@ func (cache *redisCache) SetMessage(msg *chatpb.Message) {
 		panic(err)
 	}
 
-	client.ZAdd(context.Background(), getKeyRoomMessages(msg.GetRoom().GetId()), &redis.Z{
-		Score:  float64(msg.GetCreated().Seconds),
-		Member: buff.String(),
-	})
+	//client.ZAdd(context.Background(), getKeyRoomMessages(msg.GetRoom().GetId()), &redis.Z{
+	//	Score:  float64(msg.GetCreated().Seconds),
+	//	Member: buff.String(),
+	//})
 	client.Expire(context.Background(), getKeyRoomMessages(msg.GetRoom().GetId()), 24*time.Hour)
 }
 
-func (cache *redisCache) GetRooms(userId string) []*chatpb.Room {
+func (cache *redisCache) GetRooms(userId string) []*pb.Room {
 	client := cache.client
 	values, err := client.SMembers(context.Background(), getKeyUserRooms(userId)).Result()
 
@@ -202,7 +203,7 @@ func (cache *redisCache) GetRooms(userId string) []*chatpb.Room {
 		panic(err)
 	}
 
-	var rooms []*chatpb.Room
+	var rooms []*pb.Room
 	for _, roomId := range values {
 		room := cache.GetRoomWithId(userId, roomId)
 		rooms = append(rooms, room)
@@ -296,17 +297,17 @@ func getDirectRoomId(userId1 string, userId2 string) string {
 	return fmt.Sprintf("%s:%s", minUserId, maxUserId)
 }
 
-func (cache *redisCache) CreateGroup(name string, UUIDs []string) *chatpb.Room {
+func (cache *redisCache) CreateGroup(name string, UUIDs []string) *pb.Room {
 	client := cache.client
 
 	ctx := context.Background()
 
-	room := &chatpb.Room{
+	room := &pb.Room{
 		Id:              uuid.New().String(),
 		LastMessageTime: timestamppb.Now(),
 		Name:            name,
-		Status:          chatpb.RoomStatus_EMPTY,
-		Type:            chatpb.RoomType_GROUP,
+		Status:          pb.RoomStatus_EMPTY,
+		Type:            pb.RoomType_GROUP,
 		Owner:           UUIDs[0],
 	}
 
@@ -320,7 +321,7 @@ func (cache *redisCache) CreateGroup(name string, UUIDs []string) *chatpb.Room {
 	return room
 }
 
-func (cache *redisCache) GetOrCreateDirectRoom(userId string, otherUserId string) *chatpb.Room {
+func (cache *redisCache) GetOrCreateDirectRoom(userId string, otherUserId string) *pb.Room {
 	client := cache.client
 
 	ctx := context.Background()
@@ -336,11 +337,11 @@ func (cache *redisCache) GetOrCreateDirectRoom(userId string, otherUserId string
 		return room
 	}
 	if exists == 0 {
-		room := chatpb.Room{
+		room := pb.Room{
 			Id:              roomId,
 			LastMessageTime: timestamppb.Now(),
-			Status:          chatpb.RoomStatus_EMPTY,
-			Type:            chatpb.RoomType_DIRECT,
+			Status:          pb.RoomStatus_EMPTY,
+			Type:            pb.RoomType_DIRECT,
 		}
 		cache.CreateRoom(roomId, &room)
 		client.SAdd(ctx, getKeyUserRooms(userId), roomId)
@@ -354,7 +355,7 @@ func (cache *redisCache) GetOrCreateDirectRoom(userId string, otherUserId string
 	return nil
 }
 
-func getLatestMessage(client *redis.Client, roomId string) *chatpb.Message {
+func getLatestMessage(client *redis.Client, roomId string) *pb.Message {
 	lastMessage, err := client.ZRevRangeByScore(context.Background(), getKeyRoomMessages(roomId), &redis.ZRangeBy{
 		Min:    "-inf",
 		Max:    "+inf",
@@ -366,7 +367,7 @@ func getLatestMessage(client *redis.Client, roomId string) *chatpb.Message {
 		return nil
 	}
 
-	message := &chatpb.Message{}
+	message := &pb.Message{}
 	dec := json2.NewDecoder(strings.NewReader(lastMessage[0]))
 	err = dec.Decode(message)
 	if err != nil {
@@ -376,7 +377,7 @@ func getLatestMessage(client *redis.Client, roomId string) *chatpb.Message {
 	return message
 }
 
-func (cache *redisCache) CreateRoom(roomId string, room *chatpb.Room) {
+func (cache *redisCache) CreateRoom(roomId string, room *pb.Room) {
 	client := cache.client
 
 	json, err := json2.Marshal(room)
@@ -387,7 +388,7 @@ func (cache *redisCache) CreateRoom(roomId string, room *chatpb.Room) {
 	client.Set(context.Background(), getKeyRoom(roomId), json, cache.expires*time.Second)
 }
 
-func (cache *redisCache) GetRoomWithId(userId string, roomId string) *chatpb.Room {
+func (cache *redisCache) GetRoomWithId(userId string, roomId string) *pb.Room {
 	client := cache.client
 
 	val, err := client.Get(context.Background(), getKeyRoom(roomId)).Result()
@@ -395,7 +396,7 @@ func (cache *redisCache) GetRoomWithId(userId string, roomId string) *chatpb.Roo
 		return nil
 	}
 
-	room := chatpb.Room{}
+	room := pb.Room{}
 	err = json2.Unmarshal([]byte(val), &room)
 	if err != nil {
 		panic(err)
@@ -404,7 +405,7 @@ func (cache *redisCache) GetRoomWithId(userId string, roomId string) *chatpb.Roo
 	otherUserId, err := cache.GetOtherUserId(roomId, userId)
 	log.Println(otherUserId)
 
-	if room.Type == chatpb.RoomType_DIRECT {
+	if room.Type == pb.RoomType_DIRECT {
 		user, err := cache.GetUser(otherUserId)
 
 		if err != nil {
@@ -426,7 +427,7 @@ func (cache *redisCache) GetRoomWithId(userId string, roomId string) *chatpb.Roo
 			}
 			pp, ok := userMap["picture"].(string)
 			if ok {
-				room.picture = pp
+				room.ProfilePictureUrl = pp
 			}
 			verified, ok := userMap["verified"].(bool)
 			if ok {
@@ -447,15 +448,4 @@ func (cache *redisCache) GetRoomWithId(userId string, roomId string) *chatpb.Roo
 	room.Members = cache.GetRoomMembers(roomId)
 
 	return &room
-}
-
-func NewRedisCache(addr string, password string, db int, exp time.Duration) RoomCache {
-	return &redisCache{
-		expires: exp,
-		client: redis.NewClient(&redis.Options{
-			Addr:     addr,
-			Password: password,
-			DB:       db,
-		}),
-	}
 }

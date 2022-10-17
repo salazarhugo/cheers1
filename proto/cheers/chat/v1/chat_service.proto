@@ -1,10 +1,14 @@
 syntax = "proto3";
 
-package chatpb;
-
-option go_package = "./chatpb";
+package cheers.chat.v1;
 
 import "google/protobuf/timestamp.proto";
+import "cheers/type/user/user.proto";
+import "google/protobuf/empty.proto";
+
+option java_multiple_files = true;
+option go_package = "github.com/salazarhugo/cheers1/genproto/cheers/party/v1;party";
+
 
 service ChatService {
   rpc GetRooms(Empty) returns (stream Room) {}

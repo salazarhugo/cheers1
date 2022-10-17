@@ -15,5 +15,6 @@ protoc --proto_path=. \
   cheers/type/post/post.proto \
   cheers/party/v1/party_service.proto \
   cheers/post/v1/post_service.proto \
-  cheers/user/v1/user_service.proto
+  cheers/user/v1/user_service.proto \
+  cheers/chat/v1/chat_service.proto
 
