@@ -31,11 +31,6 @@ type User struct {
 	Username string `json:"username"`
 }
 
-type redisCache struct {
-	expires time.Duration
-	client  *redis.Client
-}
-
 func (cache *redisCache) IsMember(userId string, roomId string) bool {
 	isMember, err := cache.client.SIsMember(context.Background(), getKeyRoomMembers(roomId), userId).Result()
 
@@ -421,13 +416,9 @@ func (cache *redisCache) GetRoomWithId(userId string, roomId string) *pb.Room {
 			if ok {
 				room.Name = name
 			}
-			username, ok := userMap["username"].(string)
-			if ok {
-				room.Username = username
-			}
 			pp, ok := userMap["picture"].(string)
 			if ok {
-				room.ProfilePictureUrl = pp
+				room.Picture = pp
 			}
 			verified, ok := userMap["verified"].(bool)
 			if ok {

@@ -20,5 +20,7 @@ type partyRepository struct {
 }
 
 func NewPartyRepository(driver neo4j.Driver) PartyRepository {
-	return &partyRepository{driver: driver}
+	return &partyRepository{
+		driver: driver,
+	}
 }

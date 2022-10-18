@@ -1,21 +1,21 @@
 package repository
 
 import (
-	"github.com/go-redis/redis/v9"
-	"time"
+	pb "github.com/salazarhugo/cheers1/genproto/cheers/chat/v1"
+	"github.com/salazarhugo/cheers1/services/chat-service/cache"
 )
 
 type ChatRepository interface {
+	SendMessage(msg *pb.Message, server pb.ChatService_SendMessageServer) error
+	JoinRoom(request *pb.JoinRoomRequest, server pb.ChatService_JoinRoomServer) error
 }
 
-type partyRepository struct {
-	expires time.Duration
-	client  *redis.Client
+type chatRepository struct {
+	cache cache.RoomCache
 }
 
-func NewChatRepository(expires time.Duration, client *redis.Client) ChatRepository {
-	return &partyRepository{
-		expires: expires,
-		client:  client,
+func NewChatRepository(cache cache.RoomCache) ChatRepository {
+	return &chatRepository{
+		cache: cache,
 	}
 }
