@@ -166,7 +166,7 @@ func (c *chatServiceClient) SendMessage(ctx context.Context, opts ...grpc.CallOp
 
 type ChatService_SendMessageClient interface {
 	Send(*Message) error
-	CloseAndRecv() (*MessageAck, error)
+	CloseAndRecv() (*SendMessageResponse, error)
 	grpc.ClientStream
 }
 
@@ -178,11 +178,11 @@ func (x *chatServiceSendMessageClient) Send(m *Message) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *chatServiceSendMessageClient) CloseAndRecv() (*MessageAck, error) {
+func (x *chatServiceSendMessageClient) CloseAndRecv() (*SendMessageResponse, error) {
 	if err := x.ClientStream.CloseSend(); err != nil {
 		return nil, err
 	}
-	m := new(MessageAck)
+	m := new(SendMessageResponse)
 	if err := x.ClientStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -460,7 +460,7 @@ func _ChatService_SendMessage_Handler(srv interface{}, stream grpc.ServerStream)
 }
 
 type ChatService_SendMessageServer interface {
-	SendAndClose(*MessageAck) error
+	SendAndClose(*SendMessageResponse) error
 	Recv() (*Message, error)
 	grpc.ServerStream
 }
@@ -469,7 +469,7 @@ type chatServiceSendMessageServer struct {
 	grpc.ServerStream
 }
 
-func (x *chatServiceSendMessageServer) SendAndClose(m *MessageAck) error {
+func (x *chatServiceSendMessageServer) SendAndClose(m *SendMessageResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 

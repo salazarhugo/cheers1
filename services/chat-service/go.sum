@@ -466,8 +466,8 @@ github.com/russross/blackfriday/v2 v2.0.1/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQD
 github.com/ryanuber/columnize v0.0.0-20160712163229-9b3edd62028f/go.mod h1:sm1tb6uqfes/u+d4ooFouqFdy9/2g9QGwK3SQygK0Ts=
 github.com/salazarhugo/cheers1/genproto v0.0.0-20221018125631-b97627f00814 h1:H2m5SAvEbGUoLsIFfANXb2stxgEeQdoHVddKQUFOFio=
 github.com/salazarhugo/cheers1/genproto v0.0.0-20221018125631-b97627f00814/go.mod h1:9inVm//wFHquJ//lv6RYxEmqJJIcW4qN9jDbFB5zBKM=
-github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221004084225-130de449e1a1 h1:0WO/D5B3WnCCVuUFU7AlLLLMpDYmPwztGoDuezZHaYo=
-github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221004084225-130de449e1a1/go.mod h1:ATnqIqULUdldwN1+jj6yVvwyUPhBXpv+eigyiYucp4A=
+github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221018182022-91ddac90c15e h1:7IHYjfg4070iHY5fjy2wBH0JlhlbBThY2Ks8ahySvTM=
+github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221018182022-91ddac90c15e/go.mod h1:ATnqIqULUdldwN1+jj6yVvwyUPhBXpv+eigyiYucp4A=
 github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8 h1:h7xy7Td8H9Iubde5mKJPZqZXTCZs+ttug8gZZ0vqKLk=
 github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8/go.mod h1:r9VVw/Y+1GW5JrqrRZLxVctRHwXEqB6DZEWHCgnx//k=
 github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221013185914-f468203a7c71 h1:GoJulBhziO9+ZK256Dxp6kKq0z51uTl00eb4To0Iflo=

@@ -3,13 +3,12 @@ module github.com/salazarhugo/cheers1/services/chat-service
 go 1.19
 
 require (
-	firebase.google.com/go/v4 v4.9.0
 	github.com/go-redis/redis/v9 v9.0.0-rc.1
 	github.com/google/uuid v1.3.0
 	github.com/improbable-eng/grpc-web v0.15.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
 	github.com/salazarhugo/cheers1/genproto v0.0.0-20221018125631-b97627f00814
-	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221018162752-7ab9bde21969
+	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221018182022-91ddac90c15e
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221013185914-f468203a7c71
 	github.com/sirupsen/logrus v1.9.0
@@ -25,6 +24,7 @@ require (
 	cloud.google.com/go/iam v0.3.0 // indirect
 	cloud.google.com/go/profiler v0.3.0 // indirect
 	cloud.google.com/go/storage v1.26.0 // indirect
+	firebase.google.com/go/v4 v4.9.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/desertbit/timer v0.0.0-20180107155436-c41aec40b27f // indirect

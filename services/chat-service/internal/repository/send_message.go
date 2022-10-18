@@ -24,7 +24,7 @@ func (c chatRepository) SendMessage(
 		log.Println("could not publish to channel", err)
 	}
 
-	ack := pb.MessageAck{Status: "SENT"}
+	ack := pb.SendMessageResponse{Status: pb.Message_SENT}
 	server.SendAndClose(&ack)
 
 	return nil
