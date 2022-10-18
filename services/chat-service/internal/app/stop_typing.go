@@ -7,5 +7,5 @@ import (
 
 func (s *Server) TypingEnd(ctx context.Context, req *pb.TypingReq) (*pb.Empty, error) {
 	//TODO implement me
-	panic("implement me")
+	return &pb.Empty{}, nil
 }

@@ -1,6 +1,6 @@
 module github.com/salazarhugo/cheers1/services/chat-service
 
-go 1.18
+go 1.19
 
 require (
 	firebase.google.com/go/v4 v4.9.0
@@ -8,7 +8,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/improbable-eng/grpc-web v0.15.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
-	github.com/salazarhugo/cheers1/genproto v0.0.0-20221013185914-f468203a7c71
+	github.com/salazarhugo/cheers1/genproto v0.0.0-20221018125631-b97627f00814
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221004084225-130de449e1a1
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221013185914-f468203a7c71

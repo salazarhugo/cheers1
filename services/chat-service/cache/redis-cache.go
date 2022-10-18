@@ -9,6 +9,8 @@ import (
 	"github.com/google/uuid"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	pb "github.com/salazarhugo/cheers1/genproto/cheers/chat/v1"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"log"
 	"strings"
@@ -200,7 +202,7 @@ func (cache *redisCache) GetRooms(userId string) []*pb.Room {
 
 	var rooms []*pb.Room
 	for _, roomId := range values {
-		room := cache.GetRoomWithId(userId, roomId)
+		room, _ := cache.GetRoomWithId(userId, roomId)
 		rooms = append(rooms, room)
 	}
 	return rooms
@@ -328,7 +330,7 @@ func (cache *redisCache) GetOrCreateDirectRoom(userId string, otherUserId string
 	}
 
 	if exists == 1 {
-		room := cache.GetRoomWithId(userId, roomId)
+		room, _ := cache.GetRoomWithId(userId, roomId)
 		return room
 	}
 	if exists == 0 {
@@ -343,7 +345,7 @@ func (cache *redisCache) GetOrCreateDirectRoom(userId string, otherUserId string
 		client.SAdd(ctx, getKeyUserRooms(otherUserId), roomId)
 		client.SAdd(ctx, getKeyRoomMembers(room.Id), userId, otherUserId)
 
-		room_ := cache.GetRoomWithId(userId, roomId)
+		room_, _ := cache.GetRoomWithId(userId, roomId)
 		return room_
 	}
 
@@ -383,12 +385,16 @@ func (cache *redisCache) CreateRoom(roomId string, room *pb.Room) {
 	client.Set(context.Background(), getKeyRoom(roomId), json, cache.expires*time.Second)
 }
 
-func (cache *redisCache) GetRoomWithId(userId string, roomId string) *pb.Room {
+func (cache *redisCache) GetRoomWithId(userId string, roomId string) (*pb.Room, error) {
 	client := cache.client
 
 	val, err := client.Get(context.Background(), getKeyRoom(roomId)).Result()
+	if err == redis.Nil {
+		return nil, status.Error(codes.NotFound, fmt.Sprintf("Room %s not found", roomId))
+	}
+
 	if err != nil {
-		return nil
+		return nil, err
 	}
 
 	room := pb.Room{}
@@ -438,5 +444,5 @@ func (cache *redisCache) GetRoomWithId(userId string, roomId string) *pb.Room {
 	room.Status = cache.GetRoomStatus(roomId, userId, otherUserId)
 	room.Members = cache.GetRoomMembers(roomId)
 
-	return &room
+	return &room, nil
 }

@@ -57,3 +57,9 @@ http:
       delete: /v1/posts
     - selector: cheers.post.v1.PostService.FeedParty
       get: /v1/posts/feed
+
+    # Chat Service
+    - selector: cheers.chat.v1.ChatService.JoinRoom
+      get: /v1/chat/join
+    - selector: cheers.chat.v1.ChatService.SendMessage
+      post: /v1/chat/send

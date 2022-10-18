@@ -1,4 +1,4 @@
-package neo4j
+package archived
 
 //func GetUsers(userIds []string) ([]*chatpb.UserCard, error) {
 //	driver, err := neo4j.NewDriver(

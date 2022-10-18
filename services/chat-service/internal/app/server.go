@@ -40,25 +40,20 @@ func NewServer() *Server {
 
 func (s *Server) GetRoomId(ctx context.Context, req *pb.GetRoomIdReq) (*pb.RoomId, error) {
 	//TODO implement me
-	panic("implement me")
+	return &pb.RoomId{}, nil
 }
 
 func (s *Server) GetRoomMembers(ctx context.Context, id *pb.RoomId) (*pb.Users, error) {
 	//TODO implement me
-	panic("implement me")
+	return &pb.Users{}, nil
 }
 
 func (s *Server) AddToken(ctx context.Context, req *pb.AddTokenReq) (*pb.Empty, error) {
 	//TODO implement me
-	panic("implement me")
+	return &pb.Empty{}, nil
 }
 
 func (s *Server) DeleteUser(ctx context.Context, req *pb.UserIdReq) (*pb.Empty, error) {
 	//TODO implement me
-	panic("implement me")
-}
-
-func (s *Server) mustEmbedUnimplementedChatServiceServer() {
-	//TODO implement me
-	panic("implement me")
+	return &pb.Empty{}, nil
 }
