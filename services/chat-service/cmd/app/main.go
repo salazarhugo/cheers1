@@ -42,6 +42,7 @@ func main() {
 
 	grpcServer := grpc.NewServer(
 		grpc.UnaryInterceptor(auth.UnaryInterceptor),
+		grpc.StreamInterceptor(auth.StreamInterceptor),
 	)
 
 	server := app.NewServer()

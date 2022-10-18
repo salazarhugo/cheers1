@@ -61,6 +61,22 @@ func UnaryInterceptor(
 	return h, err
 }
 
+type wrappedStream struct {
+	grpc.ServerStream
+}
+
+func newWrappedStream(s grpc.ServerStream) grpc.ServerStream {
+	return &wrappedStream{s}
+}
+
+func (w *wrappedStream) Context() context.Context {
+	newCtx, err := authenticateUser(w.ServerStream.Context())
+	if err != nil {
+		panic("failed to authenticate user")
+	}
+	return newCtx
+}
+
 func StreamInterceptor(
 	srv interface{},
 	ss grpc.ServerStream,
@@ -68,19 +84,11 @@ func StreamInterceptor(
 	handler grpc.StreamHandler,
 ) error {
 	start := time.Now()
-
-	newCtx, err := authenticateUser(ss.Context())
-	if err != nil {
-		return err
-	}
-
-	err = handler(newCtx, ss)
-
+	err := handler(srv, newWrappedStream(ss))
 	log.Printf("Request - Method:%s\tDuration:%s\tError:%v\n",
 		info.FullMethod,
 		time.Since(start),
 		err)
-
 	return err
 }
 

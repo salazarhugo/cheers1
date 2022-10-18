@@ -15,18 +15,18 @@ func (s *Server) CreateChat(ctx context.Context, request *pb.CreateChatReq) (*pb
 	}
 
 	UUIDs := append([]string{userID}, request.UserIds...)
-	UUIDs = unique(UUIDs)
+	//UUIDs = unique(UUIDs)
 
 	if len(UUIDs) < 2 {
 		return nil, status.Error(codes.InvalidArgument, "chats must have at least 2 users")
 	}
 
 	// Direct Chat
-	if len(UUIDs) == 2 {
-		room := roomCache.GetOrCreateDirectRoom(UUIDs[0], UUIDs[1])
-		return room, nil
-	}
-
-	room := roomCache.CreateGroup(request.GroupName, UUIDs)
-	return room, nil
+	//if len(UUIDs) == 2 {
+	//	room := roomCache.GetOrCreateDirectRoom(UUIDs[0], UUIDs[1])
+	//	return room, nil
+	//}
+	//
+	//room := roomCache.CreateGroup(request.GroupName, UUIDs)
+	return nil, nil
 }

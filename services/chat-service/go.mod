@@ -9,7 +9,7 @@ require (
 	github.com/improbable-eng/grpc-web v0.15.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
 	github.com/salazarhugo/cheers1/genproto v0.0.0-20221018125631-b97627f00814
-	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221004084225-130de449e1a1
+	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221018162752-7ab9bde21969
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221013185914-f468203a7c71
 	github.com/sirupsen/logrus v1.9.0
