@@ -45,6 +45,46 @@ func UnaryInterceptor(
 	handler grpc.UnaryHandler,
 ) (interface{}, error) {
 	start := time.Now()
+
+	newCtx, err := authenticateUser(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	h, err := handler(newCtx, req)
+
+	log.Printf("Request - Method:%s\tDuration:%s\tError:%v\n",
+		info.FullMethod,
+		time.Since(start),
+		err)
+
+	return h, err
+}
+
+func StreamInterceptor(
+	srv interface{},
+	ss grpc.ServerStream,
+	info *grpc.StreamServerInfo,
+	handler grpc.StreamHandler,
+) error {
+	start := time.Now()
+
+	newCtx, err := authenticateUser(ss.Context())
+	if err != nil {
+		return err
+	}
+
+	err = handler(newCtx, ss)
+
+	log.Printf("Request - Method:%s\tDuration:%s\tError:%v\n",
+		info.FullMethod,
+		time.Since(start),
+		err)
+
+	return err
+}
+
+func authenticateUser(ctx context.Context) (context.Context, error) {
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
 		return nil, status.Errorf(codes.InvalidArgument, "Failed retrieving metadata")
@@ -72,56 +112,5 @@ func UnaryInterceptor(
 	md.Append("user-id", userInfo.UserID)
 	newCtx := metadata.NewIncomingContext(ctx, md)
 
-	h, err := handler(newCtx, req)
-
-	log.Printf("Request - Method:%s\tDuration:%s\tError:%v\n",
-		info.FullMethod,
-		time.Since(start),
-		err)
-
-	return h, err
-}
-
-func streamInterceptor(
-	srv interface{},
-	ss grpc.ServerStream,
-	info *grpc.StreamServerInfo,
-	handler grpc.StreamHandler,
-) error {
-	start := time.Now()
-	md, ok := metadata.FromIncomingContext(ss.Context())
-	if !ok {
-		return status.Errorf(codes.InvalidArgument, "Failed retrieving metadata")
-	}
-
-	userInfoHeader, ok := md["x-apigateway-api-userinfo"]
-	if !ok {
-		log.Println("Empty Userinfo Header")
-		return status.Errorf(codes.Unauthenticated, "Authorization token is not supplied")
-	}
-	encodedUser := userInfoHeader[0]
-
-	decodedBytes, err := base64.RawURLEncoding.DecodeString(encodedUser)
-	if err != nil {
-		return status.Errorf(codes.Unauthenticated, "Invalid User Info")
-	}
-
-	decoder := json.NewDecoder(bytes.NewReader(decodedBytes))
-	var userInfo UserInfo
-	err = decoder.Decode(&userInfo)
-	if err != nil {
-		return status.Errorf(codes.Unauthenticated, "Invalid User Info")
-	}
-
-	md.Append("user-id", userInfo.UserID)
-	newCtx := metadata.NewIncomingContext(ctx, md)
-
-	h, err := handler(newCtx, req)
-
-	log.Printf("Request - Method:%s\tDuration:%s\tError:%v\n",
-		info.FullMethod,
-		time.Since(start),
-		err)
-
-	return handler(srv, ss)
+	return newCtx, nil
 }
