@@ -7,12 +7,16 @@ import (
 	"log"
 )
 
-func (c chatRepository) JoinRoom(request *pb.JoinRoomRequest, server pb.ChatService_JoinRoomServer) error {
+func (c chatRepository) JoinRoom(
+	request *pb.JoinRoomRequest,
+	server *pb.ChatService_JoinRoomServer,
+) error {
 	ctx := context.Background()
 
 	messages := c.cache.GetMessages(request.GetRoomId())
+	log.Println(messages)
 	for _, msg := range messages {
-		if err := server.Send(msg); err != nil {
+		if err := (*server).Send(msg); err != nil {
 			log.Printf("send error %v", err)
 		}
 	}
@@ -27,11 +31,12 @@ func (c chatRepository) JoinRoom(request *pb.JoinRoomRequest, server pb.ChatServ
 		}
 		message := pb.Message{}
 		if err := json2.Unmarshal([]byte(msg.Payload), &message); err != nil {
+			log.Println(err)
 			panic(err)
 		}
-		log.Println(message)
-		err = server.Send(&message)
+		err = (*server).Send(&message)
 		if err != nil {
+			log.Println(err)
 			return err
 		}
 	}

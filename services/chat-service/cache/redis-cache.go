@@ -185,10 +185,10 @@ func (cache *redisCache) SetMessage(msg *pb.Message) {
 		panic(err)
 	}
 
-	//client.ZAdd(context.Background(), getKeyRoomMessages(msg.GetRoom().GetId()), &redis.Z{
-	//	Score:  float64(msg.GetCreated().Seconds),
-	//	Member: buff.String(),
-	//})
+	client.ZAdd(context.Background(), getKeyRoomMessages(msg.GetRoom().GetId()), redis.Z{
+		Score:  float64(msg.GetCreated().Seconds),
+		Member: buff.String(),
+	})
 	client.Expire(context.Background(), getKeyRoomMessages(msg.GetRoom().GetId()), 24*time.Hour)
 }
 

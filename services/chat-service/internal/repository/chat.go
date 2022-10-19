@@ -8,7 +8,7 @@ import (
 
 type ChatRepository interface {
 	CreateRoom(name string, members []string) (*pb.Room, error)
-	JoinRoom(request *pb.JoinRoomRequest, server pb.ChatService_JoinRoomServer) error
+	JoinRoom(request *pb.JoinRoomRequest, server *pb.ChatService_JoinRoomServer) error
 	ListRoom(userID string) ([]*pb.Room, error)
 
 	ListMembers(request *pb.ListMembersRequest) ([]*user.UserItem, error)
