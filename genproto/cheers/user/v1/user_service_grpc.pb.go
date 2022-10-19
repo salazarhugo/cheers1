@@ -28,6 +28,7 @@ type UserServiceClient interface {
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*user.User, error)
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetUserItemsIn(ctx context.Context, in *GetUserItemsInRequest, opts ...grpc.CallOption) (*GetUserItemsInResponse, error)
 	SearchUser(ctx context.Context, in *SearchUserRequest, opts ...grpc.CallOption) (*SearchUserResponse, error)
 	FollowUser(ctx context.Context, in *FollowUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	UnfollowUser(ctx context.Context, in *UnfollowUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -75,6 +76,15 @@ func (c *userServiceClient) UpdateUser(ctx context.Context, in *UpdateUserReques
 func (c *userServiceClient) DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	out := new(emptypb.Empty)
 	err := c.cc.Invoke(ctx, "/cheers.user.v1.UserService/DeleteUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userServiceClient) GetUserItemsIn(ctx context.Context, in *GetUserItemsInRequest, opts ...grpc.CallOption) (*GetUserItemsInResponse, error) {
+	out := new(GetUserItemsInResponse)
+	err := c.cc.Invoke(ctx, "/cheers.user.v1.UserService/GetUserItemsIn", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -152,6 +162,7 @@ type UserServiceServer interface {
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
 	UpdateUser(context.Context, *UpdateUserRequest) (*user.User, error)
 	DeleteUser(context.Context, *DeleteUserRequest) (*emptypb.Empty, error)
+	GetUserItemsIn(context.Context, *GetUserItemsInRequest) (*GetUserItemsInResponse, error)
 	SearchUser(context.Context, *SearchUserRequest) (*SearchUserResponse, error)
 	FollowUser(context.Context, *FollowUserRequest) (*emptypb.Empty, error)
 	UnfollowUser(context.Context, *UnfollowUserRequest) (*emptypb.Empty, error)
@@ -177,6 +188,9 @@ func (UnimplementedUserServiceServer) UpdateUser(context.Context, *UpdateUserReq
 }
 func (UnimplementedUserServiceServer) DeleteUser(context.Context, *DeleteUserRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
+}
+func (UnimplementedUserServiceServer) GetUserItemsIn(context.Context, *GetUserItemsInRequest) (*GetUserItemsInResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserItemsIn not implemented")
 }
 func (UnimplementedUserServiceServer) SearchUser(context.Context, *SearchUserRequest) (*SearchUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SearchUser not implemented")
@@ -280,6 +294,24 @@ func _UserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServiceServer).DeleteUser(ctx, req.(*DeleteUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _UserService_GetUserItemsIn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserItemsInRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).GetUserItemsIn(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.user.v1.UserService/GetUserItemsIn",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).GetUserItemsIn(ctx, req.(*GetUserItemsInRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -432,6 +464,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteUser",
 			Handler:    _UserService_DeleteUser_Handler,
+		},
+		{
+			MethodName: "GetUserItemsIn",
+			Handler:    _UserService_GetUserItemsIn_Handler,
 		},
 		{
 			MethodName: "SearchUser",

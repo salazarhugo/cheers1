@@ -18,7 +18,7 @@ type RoomCache interface {
 	IsMember(userId string, roomId string) bool
 	DeleteRoom(roomId string)
 	GetRoomWithId(userId string, roomId string) (*pb.Room, error)
-	GetRooms(userId string) []*pb.Room
+	ListRoom(userId string) []*pb.Room
 	GetRoomMembers(roomId string) []string
 	GetUser(userId string) (interface{}, error)
 	DeleteTokens(userId string) int64

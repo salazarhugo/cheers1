@@ -192,10 +192,9 @@ func (cache *redisCache) SetMessage(msg *pb.Message) {
 	client.Expire(context.Background(), getKeyRoomMessages(msg.GetRoom().GetId()), 24*time.Hour)
 }
 
-func (cache *redisCache) GetRooms(userId string) []*pb.Room {
+func (cache *redisCache) ListRoom(userId string) []*pb.Room {
 	client := cache.client
 	values, err := client.SMembers(context.Background(), getKeyUserRooms(userId)).Result()
-
 	if err != nil {
 		panic(err)
 	}

@@ -3,19 +3,21 @@ syntax = "proto3";
 package cheers.chat.v1;
 
 import "google/protobuf/timestamp.proto";
+import "cheers/type/user/user.proto";
 
 option java_multiple_files = true;
 option go_package = "github.com/salazarhugo/cheers1/genproto/cheers/party/v1;party";
 
 
 service ChatService {
-  rpc GetRooms(Empty) returns (stream Room) {}
-  rpc GetRoomId(GetRoomIdReq) returns (RoomId) {}
   rpc CreateChat(CreateChatReq) returns (Room) {}
   rpc JoinRoom(JoinRoomRequest) returns (stream Message) {}
-  rpc GetRoomMembers(RoomId) returns (Users) {}
-  rpc LeaveRoom(RoomId) returns (Empty) {}
+  rpc ListRoom(ListRoomRequest) returns (stream Room) {}
   rpc DeleteRoom(RoomId) returns (Empty) {}
+
+  rpc GetRoomId(GetRoomIdReq) returns (RoomId) {}
+  rpc ListMembers(ListMembersRequest) returns (ListMembersResponse) {}
+  rpc LeaveRoom(RoomId) returns (Empty) {}
 
   rpc SendMessage(stream Message) returns (SendMessageResponse) {}
   rpc LikeMessage(LikeMessageReq) returns (Empty) {}
@@ -40,16 +42,19 @@ message TypingEvent {
   Type type = 3;
 }
 
-message UserCard {
-  string id = 1;
-  string name = 2;
-  string username = 3;
-  bool verified = 4;
-  string avatar = 5;
+message ListRoomRequest {
+  int32 page_size = 2;
+  int32 page = 3;
 }
 
-message Users {
-  repeated UserCard users = 1;
+message ListMembersRequest {
+  string room_id = 1;
+  int32 page_size = 2;
+  int32 page = 3;
+}
+
+message ListMembersResponse {
+  repeated cheers.type.UserItem users = 1;
 }
 
 message UserIdReq {

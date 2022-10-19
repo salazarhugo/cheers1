@@ -48,11 +48,6 @@ func (s *Server) GetRoomId(ctx context.Context, req *pb.GetRoomIdReq) (*pb.RoomI
 	return &pb.RoomId{}, nil
 }
 
-func (s *Server) GetRoomMembers(ctx context.Context, id *pb.RoomId) (*pb.Users, error) {
-	//TODO implement me
-	return &pb.Users{}, nil
-}
-
 func (s *Server) AddToken(ctx context.Context, req *pb.AddTokenReq) (*pb.Empty, error) {
 	//TODO implement me
 	return &pb.Empty{}, nil

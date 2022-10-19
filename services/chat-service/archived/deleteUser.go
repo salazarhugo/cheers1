@@ -1,7 +1,7 @@
 package archived
 
 //func DeleteUser(userId string) {
-//	rooms := roomCache.GetRooms(userId)
+//	rooms := roomCache.ListRoom(userId)
 //
 //	var wg sync.WaitGroup
 //

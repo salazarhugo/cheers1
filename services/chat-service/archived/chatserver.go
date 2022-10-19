@@ -44,14 +44,14 @@ package archived
 //	channel map[string][]chan *chatpb.Message
 //}
 //
-//func (s *chatServiceServer) GetRooms(_ *chatpb.Empty, roomStream chatpb.ChatService_GetRoomsServer) error {
+//func (s *chatServiceServer) ListRoom(_ *chatpb.Empty, roomStream chatpb.ChatService_GetRoomsServer) error {
 //	md, err := authorize(roomStream.Context())
 //	if err != nil {
 //		panic(err)
 //	}
 //	userId := md.Get("userId")[0]
 //
-//	rooms := roomCache.GetRooms(userId)
+//	rooms := roomCache.ListRoom(userId)
 //
 //	for i := range rooms {
 //		if err := roomStream.Send(rooms[i]); err != nil {

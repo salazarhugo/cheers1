@@ -1,29 +1,12 @@
-package app
+package repository
 
 import (
 	pb "github.com/salazarhugo/cheers1/genproto/cheers/chat/v1"
-	"github.com/salazarhugo/cheers1/libs/utils"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
-func (s *Server) GetRooms(
-	empty *pb.Empty,
-	server pb.ChatService_GetRoomsServer,
-) error {
-	_, err := utils.GetUserId(server.Context())
-	if err != nil {
-		return status.Error(codes.Internal, "Failed retrieving userID")
-	}
+func (c chatRepository) ListRoom(userID string) ([]*pb.Room, error) {
+	rooms := c.cache.ListRoom(userID)
 
-	//rooms := s.chatRepository.GetRooms(userID)
-	//
-	//for i := range rooms {
-	//	if err := server.Send(rooms[i]); err != nil {
-	//		log.Printf("send error %v", err)
-	//	}
-	//}
-	//
 	//var ctx = context.Background()
 	//
 	//sub := s.chatRepository.Subscribe(ctx, "messages")
@@ -44,5 +27,6 @@ func (s *Server) GetRooms(
 	//		log.Printf("send error %v", err)
 	//	}
 	//}
-	return nil
+
+	return rooms, nil
 }
