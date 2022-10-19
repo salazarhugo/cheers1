@@ -24,7 +24,11 @@ func (c chatRepository) SendMessage(
 	}
 
 	ack := pb.SendMessageResponse{Status: pb.Message_SENT}
-	server.SendAndClose(&ack)
+	err = server.SendAndClose(&ack)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
 
 	return nil
 }

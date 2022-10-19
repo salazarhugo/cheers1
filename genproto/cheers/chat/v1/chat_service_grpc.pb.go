@@ -4,7 +4,7 @@
 // - protoc             v3.12.4
 // source: cheers/chat/v1/chat_service.proto
 
-package party
+package chat
 
 import (
 	context "context"
