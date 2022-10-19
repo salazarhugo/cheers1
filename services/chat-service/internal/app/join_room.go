@@ -13,7 +13,7 @@ func (s *Server) JoinRoom(request *pb.JoinRoomRequest, server pb.ChatService_Joi
 		return status.Error(codes.Internal, "failed to retrieve userID")
 	}
 
-	err = s.chatRepository.JoinRoom(request, &server)
+	err = s.chatRepository.JoinRoom(request, server)
 	if err != nil {
 		return err
 	}

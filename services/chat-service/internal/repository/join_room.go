@@ -9,17 +9,17 @@ import (
 
 func (c chatRepository) JoinRoom(
 	request *pb.JoinRoomRequest,
-	server *pb.ChatService_JoinRoomServer,
+	server pb.ChatService_JoinRoomServer,
 ) error {
-	ctx := context.Background()
-
 	messages := c.cache.GetMessages(request.GetRoomId())
 	log.Println(messages)
 	for _, msg := range messages {
-		if err := (*server).Send(msg); err != nil {
+		if err := server.Send(msg); err != nil {
 			log.Printf("send error %v", err)
 		}
 	}
+
+	ctx := context.Background()
 
 	sub := c.cache.Subscribe(ctx, request.GetRoomId())
 	defer sub.Close()
@@ -34,10 +34,12 @@ func (c chatRepository) JoinRoom(
 			log.Println(err)
 			panic(err)
 		}
-		err = (*server).Send(&message)
+		err = server.Send(&message)
 		if err != nil {
 			log.Println(err)
 			return err
 		}
 	}
+
+	return nil
 }
