@@ -318,7 +318,7 @@ func (cache *redisCache) CreateGroup(name string, UUIDs []string) *pb.Room {
 	return room
 }
 
-func (cache *redisCache) GetOrCreateDirectRoom(userId string, otherUserId string) *pb.Room {
+func (cache *redisCache) GetOrCreateDirectRoom(userId string, otherUserId string) (*pb.Room, error) {
 	client := cache.client
 
 	ctx := context.Background()
@@ -326,12 +326,15 @@ func (cache *redisCache) GetOrCreateDirectRoom(userId string, otherUserId string
 
 	exists, err := client.Exists(context.Background(), getKeyRoom(roomId)).Result()
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	if exists == 1 {
-		room, _ := cache.GetRoomWithId(userId, roomId)
-		return room
+		room, err := cache.GetRoomWithId(userId, roomId)
+		if err != nil {
+			return nil, err
+		}
+		return room, nil
 	}
 	if exists == 0 {
 		room := pb.Room{
@@ -345,11 +348,14 @@ func (cache *redisCache) GetOrCreateDirectRoom(userId string, otherUserId string
 		client.SAdd(ctx, getKeyUserRooms(otherUserId), roomId)
 		client.SAdd(ctx, getKeyRoomMembers(room.Id), userId, otherUserId)
 
-		room_, _ := cache.GetRoomWithId(userId, roomId)
-		return room_
+		room_, err := cache.GetRoomWithId(userId, roomId)
+		if err != nil {
+			return nil, err
+		}
+		return room_, nil
 	}
 
-	return nil
+	return nil, nil
 }
 
 func getLatestMessage(client *redis.Client, roomId string) *pb.Message {

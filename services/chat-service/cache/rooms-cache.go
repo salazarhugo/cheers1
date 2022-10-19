@@ -13,7 +13,7 @@ type RoomCache interface {
 	LikeMessage(roomId string, messageId string)
 	UnlikeMessage(roomId string, messageId string)
 	CreateGroup(name string, UUIDs []string) *pb.Room
-	GetOrCreateDirectRoom(userId string, otherUserId string) *pb.Room
+	GetOrCreateDirectRoom(userId string, otherUserId string) (*pb.Room, error)
 	LeaveRoom(userId string, roomId string)
 	IsMember(userId string, roomId string) bool
 	DeleteRoom(roomId string)

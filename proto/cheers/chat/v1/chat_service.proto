@@ -21,11 +21,23 @@ service ChatService {
   rpc LikeMessage(LikeMessageReq) returns (Empty) {}
   rpc UnlikeMessage(LikeMessageReq) returns (Empty) {}
 
+  rpc TypingChannel(stream TypingEvent) returns (stream TypingEvent) {}
+
   rpc TypingStart(TypingReq) returns (Empty) {}
   rpc TypingEnd(TypingReq) returns (Empty) {}
 
   rpc AddToken(AddTokenReq) returns (Empty) {}
   rpc DeleteUser(UserIdReq) returns (Empty) {}
+}
+
+message TypingEvent {
+  string room_id = 1;
+  string user_id = 2;
+  enum Type {
+    START = 0;
+    STOP = 1;
+  }
+  Type type = 3;
 }
 
 message UserCard {

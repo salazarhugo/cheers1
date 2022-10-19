@@ -14,19 +14,16 @@ func (s *Server) CreateChat(ctx context.Context, request *pb.CreateChatReq) (*pb
 		return nil, status.Error(codes.Internal, "failed to retrieve userID")
 	}
 
-	UUIDs := append([]string{userID}, request.UserIds...)
-	//UUIDs = unique(UUIDs)
+	members := append([]string{userID}, request.UserIds...)
 
-	if len(UUIDs) < 2 {
+	if len(members) < 2 {
 		return nil, status.Error(codes.InvalidArgument, "chats must have at least 2 users")
 	}
 
-	// Direct Chat
-	//if len(UUIDs) == 2 {
-	//	room := roomCache.GetOrCreateDirectRoom(UUIDs[0], UUIDs[1])
-	//	return room, nil
-	//}
-	//
-	//room := roomCache.CreateGroup(request.GroupName, UUIDs)
-	return nil, nil
+	room, err := s.chatRepository.CreateRoom(request.GroupName, members)
+	if err != nil {
+		return nil, err
+	}
+
+	return room, nil
 }

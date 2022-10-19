@@ -32,6 +32,7 @@ type ChatServiceClient interface {
 	SendMessage(ctx context.Context, opts ...grpc.CallOption) (ChatService_SendMessageClient, error)
 	LikeMessage(ctx context.Context, in *LikeMessageReq, opts ...grpc.CallOption) (*Empty, error)
 	UnlikeMessage(ctx context.Context, in *LikeMessageReq, opts ...grpc.CallOption) (*Empty, error)
+	TypingChannel(ctx context.Context, opts ...grpc.CallOption) (ChatService_TypingChannelClient, error)
 	TypingStart(ctx context.Context, in *TypingReq, opts ...grpc.CallOption) (*Empty, error)
 	TypingEnd(ctx context.Context, in *TypingReq, opts ...grpc.CallOption) (*Empty, error)
 	AddToken(ctx context.Context, in *AddTokenReq, opts ...grpc.CallOption) (*Empty, error)
@@ -207,6 +208,37 @@ func (c *chatServiceClient) UnlikeMessage(ctx context.Context, in *LikeMessageRe
 	return out, nil
 }
 
+func (c *chatServiceClient) TypingChannel(ctx context.Context, opts ...grpc.CallOption) (ChatService_TypingChannelClient, error) {
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[3], "/cheers.chat.v1.ChatService/TypingChannel", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &chatServiceTypingChannelClient{stream}
+	return x, nil
+}
+
+type ChatService_TypingChannelClient interface {
+	Send(*TypingEvent) error
+	Recv() (*TypingEvent, error)
+	grpc.ClientStream
+}
+
+type chatServiceTypingChannelClient struct {
+	grpc.ClientStream
+}
+
+func (x *chatServiceTypingChannelClient) Send(m *TypingEvent) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *chatServiceTypingChannelClient) Recv() (*TypingEvent, error) {
+	m := new(TypingEvent)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func (c *chatServiceClient) TypingStart(ctx context.Context, in *TypingReq, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, "/cheers.chat.v1.ChatService/TypingStart", in, out, opts...)
@@ -257,6 +289,7 @@ type ChatServiceServer interface {
 	SendMessage(ChatService_SendMessageServer) error
 	LikeMessage(context.Context, *LikeMessageReq) (*Empty, error)
 	UnlikeMessage(context.Context, *LikeMessageReq) (*Empty, error)
+	TypingChannel(ChatService_TypingChannelServer) error
 	TypingStart(context.Context, *TypingReq) (*Empty, error)
 	TypingEnd(context.Context, *TypingReq) (*Empty, error)
 	AddToken(context.Context, *AddTokenReq) (*Empty, error)
@@ -297,6 +330,9 @@ func (UnimplementedChatServiceServer) LikeMessage(context.Context, *LikeMessageR
 }
 func (UnimplementedChatServiceServer) UnlikeMessage(context.Context, *LikeMessageReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UnlikeMessage not implemented")
+}
+func (UnimplementedChatServiceServer) TypingChannel(ChatService_TypingChannelServer) error {
+	return status.Errorf(codes.Unimplemented, "method TypingChannel not implemented")
 }
 func (UnimplementedChatServiceServer) TypingStart(context.Context, *TypingReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TypingStart not implemented")
@@ -517,6 +553,32 @@ func _ChatService_UnlikeMessage_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ChatService_TypingChannel_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(ChatServiceServer).TypingChannel(&chatServiceTypingChannelServer{stream})
+}
+
+type ChatService_TypingChannelServer interface {
+	Send(*TypingEvent) error
+	Recv() (*TypingEvent, error)
+	grpc.ServerStream
+}
+
+type chatServiceTypingChannelServer struct {
+	grpc.ServerStream
+}
+
+func (x *chatServiceTypingChannelServer) Send(m *TypingEvent) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *chatServiceTypingChannelServer) Recv() (*TypingEvent, error) {
+	m := new(TypingEvent)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func _ChatService_TypingStart_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(TypingReq)
 	if err := dec(in); err != nil {
@@ -655,6 +717,12 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "SendMessage",
 			Handler:       _ChatService_SendMessage_Handler,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "TypingChannel",
+			Handler:       _ChatService_TypingChannel_Handler,
+			ServerStreams: true,
 			ClientStreams: true,
 		},
 	},

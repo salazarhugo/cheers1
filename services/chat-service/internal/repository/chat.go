@@ -8,6 +8,7 @@ import (
 type ChatRepository interface {
 	SendMessage(msg *pb.Message, server pb.ChatService_SendMessageServer) error
 	JoinRoom(request *pb.JoinRoomRequest, server pb.ChatService_JoinRoomServer) error
+	CreateRoom(name string, members []string) (*pb.Room, error)
 }
 
 type chatRepository struct {

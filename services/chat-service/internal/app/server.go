@@ -38,6 +38,11 @@ func NewServer() *Server {
 	}
 }
 
+func (s *Server) TypingChannel(server pb.ChatService_TypingChannelServer) error {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (s *Server) GetRoomId(ctx context.Context, req *pb.GetRoomIdReq) (*pb.RoomId, error) {
 	//TODO implement me
 	return &pb.RoomId{}, nil
