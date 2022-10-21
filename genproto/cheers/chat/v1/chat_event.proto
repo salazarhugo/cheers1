@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package cheers.chat.v1;
+
+import "google/protobuf/timestamp.proto";
+import "cheers/type/user/user.proto";
+
+option java_multiple_files = true;
+option go_package = "github.com/salazarhugo/cheers1/genproto/cheers/chat/v1;chat";
+
+message ChatEvent {
+  enum Type {
+    CREATE = 0;
+    UPDATE = 1;
+    DELETE = 2;
+    UPDATE = 1;
+  }
+}
