@@ -17,8 +17,8 @@ func (c chatRepository) SendMessage(
 		panic(err)
 	}
 
+	log.Println("publishing message to channel..." + msg.GetRoom().GetId())
 	err = c.cache.Publish(server.Context(), msg.GetRoom().GetId(), json).Err()
-
 	if err != nil {
 		log.Println("could not publish to channel", err)
 	}
