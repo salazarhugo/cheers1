@@ -19,5 +19,5 @@ RETURN
      like_count:    like_count,
      viewer_count:  viewer_count,
      has_liked:     has_liked
-   }
-ORDER BY story.created DESC
+  }
+ORDER BY story.createTime DESC

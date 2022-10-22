@@ -20,4 +20,4 @@ RETURN
      comment_count: comment_count,
      has_liked:     has_liked
    }
-ORDER BY post.created DESC
+ORDER BY post.createTime DESC

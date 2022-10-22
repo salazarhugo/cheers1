@@ -3,8 +3,10 @@ module github.com/salazarhugo/cheers1/services/story-service
 go 1.19
 
 require (
+	github.com/google/uuid v1.3.0
 	github.com/improbable-eng/grpc-web v0.15.0
-	github.com/salazarhugo/cheers1/genproto v0.0.0-20221021152721-69fea359af43
+	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
+	github.com/salazarhugo/cheers1/genproto v0.0.0-20221021194055-efd7fceef4bc
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221018182022-91ddac90c15e
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221013185914-f468203a7c71
@@ -27,7 +29,6 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/pprof v0.0.0-20220412212628-83db2b799d1f // indirect
-	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
 	github.com/googleapis/gax-go/v2 v2.5.1 // indirect
 	github.com/klauspost/compress v1.11.7 // indirect
@@ -35,7 +36,6 @@ require (
 	github.com/labstack/gommon v0.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
-	github.com/neo4j/neo4j-go-driver/v4 v4.4.4 // indirect
 	github.com/rs/cors v1.7.0 // indirect
 	github.com/stretchr/testify v1.8.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect

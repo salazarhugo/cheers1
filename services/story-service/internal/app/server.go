@@ -10,8 +10,8 @@ import (
 
 type Server struct {
 	pb.UnimplementedStoryServiceServer
-	mu           sync.Mutex
-	pbRepository repository.StoryRepository
+	mu              sync.Mutex
+	storyRepository repository.StoryRepository
 }
 
 func (s *Server) FeedStory(ctx context.Context, request *pb.FeedStoryRequest) (*pb.FeedStoryResponse, error) {
@@ -45,11 +45,11 @@ func (s *Server) mustEmbedUnimplementedStoryServiceServer() {
 }
 
 func NewServer() *Server {
-	pbRepository := repository.NewStoryRepository(utils.GetDriver())
+	storyRepository := repository.NewStoryRepository(utils.GetDriver())
 
 	return &Server{
 		UnimplementedStoryServiceServer: pb.UnimplementedStoryServiceServer{},
 		mu:                              sync.Mutex{},
-		pbRepository:                    pbRepository,
+		storyRepository:                 storyRepository,
 	}
 }

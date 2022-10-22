@@ -85,9 +85,6 @@ message StoryResponse {
   cheers.type.Story story = 1;
   cheers.type.User user = 2;
   int64 like_count = 3;
-  int64 comment_count = 4;
+  int64 viewer_count = 4;
   bool has_liked = 5;
-  bool comments_enabled = 6;
-  bool reshare_enabled = 8;
-  int64 media_count = 7;
 }

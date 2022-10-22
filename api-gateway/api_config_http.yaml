@@ -55,7 +55,7 @@ http:
       patch: /v1/posts
     - selector: cheers.post.v1.PostService.DeletePost
       delete: /v1/posts
-    - selector: cheers.post.v1.PostService.FeedParty
+    - selector: cheers.post.v1.PostService.FeedPost
       get: /v1/posts/feed
 
     # Chat Service
@@ -63,3 +63,15 @@ http:
       get: /v1/chat/join
     - selector: cheers.chat.v1.ChatService.SendMessage
       post: /v1/chat/send
+
+    # Story Service
+    - selector: cheers.story.v1.StoryService.CreateStory
+      post: /v1/story
+    - selector: cheers.story.v1.StoryService.GetStory
+      get: /v1/story
+    - selector: cheers.story.v1.StoryService.UpdateStory
+      patch: /v1/story
+    - selector: cheers.story.v1.StoryService.DeleteStory
+      delete: /v1/story
+    - selector: cheers.story.v1.StoryService.FeedStory
+      get: /v1/story/feed
