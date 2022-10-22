@@ -14,32 +14,12 @@ type Server struct {
 	storyRepository repository.StoryRepository
 }
 
-func (s *Server) FeedStory(ctx context.Context, request *pb.FeedStoryRequest) (*pb.FeedStoryResponse, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (s *Server) LikeStory(ctx context.Context, request *pb.LikeStoryRequest) (*pb.LikeStoryResponse, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (s *Server) UnlikeStory(ctx context.Context, request *pb.UnlikeStoryRequest) (*pb.UnlikeStoryResponse, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
 func (s *Server) SaveStory(ctx context.Context, request *pb.SaveStoryRequest) (*pb.SaveStoryResponse, error) {
 	//TODO implement me
 	panic("implement me")
 }
 
 func (s *Server) UnsaveStory(ctx context.Context, request *pb.UnsaveStoryRequest) (*pb.UnsaveStoryResponse, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (s *Server) mustEmbedUnimplementedStoryServiceServer() {
 	//TODO implement me
 	panic("implement me")
 }

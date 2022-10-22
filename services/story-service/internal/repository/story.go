@@ -13,6 +13,7 @@ type StoryRepository interface {
 	DeleteStory(id string) error
 
 	FeedStory(userID string, request *pb.FeedStoryRequest) (*pb.FeedStoryResponse, error)
+	ViewStory(userID string, storyID string) (*pb.ViewStoryResponse, error)
 	LikeStory(userID string, storyID string) (*pb.LikeStoryResponse, error)
 	UnlikeStory(userID string, storyID string) (*pb.UnlikeStoryResponse, error)
 }

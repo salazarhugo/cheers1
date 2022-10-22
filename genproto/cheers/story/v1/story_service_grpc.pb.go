@@ -28,6 +28,7 @@ type StoryServiceClient interface {
 	UpdateStory(ctx context.Context, in *UpdateStoryRequest, opts ...grpc.CallOption) (*StoryResponse, error)
 	DeleteStory(ctx context.Context, in *DeleteStoryRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	FeedStory(ctx context.Context, in *FeedStoryRequest, opts ...grpc.CallOption) (*FeedStoryResponse, error)
+	ViewStory(ctx context.Context, in *ViewStoryRequest, opts ...grpc.CallOption) (*ViewStoryResponse, error)
 	LikeStory(ctx context.Context, in *LikeStoryRequest, opts ...grpc.CallOption) (*LikeStoryResponse, error)
 	UnlikeStory(ctx context.Context, in *UnlikeStoryRequest, opts ...grpc.CallOption) (*UnlikeStoryResponse, error)
 	SaveStory(ctx context.Context, in *SaveStoryRequest, opts ...grpc.CallOption) (*SaveStoryResponse, error)
@@ -87,6 +88,15 @@ func (c *storyServiceClient) FeedStory(ctx context.Context, in *FeedStoryRequest
 	return out, nil
 }
 
+func (c *storyServiceClient) ViewStory(ctx context.Context, in *ViewStoryRequest, opts ...grpc.CallOption) (*ViewStoryResponse, error) {
+	out := new(ViewStoryResponse)
+	err := c.cc.Invoke(ctx, "/cheers.story.v1.StoryService/ViewStory", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *storyServiceClient) LikeStory(ctx context.Context, in *LikeStoryRequest, opts ...grpc.CallOption) (*LikeStoryResponse, error) {
 	out := new(LikeStoryResponse)
 	err := c.cc.Invoke(ctx, "/cheers.story.v1.StoryService/LikeStory", in, out, opts...)
@@ -132,6 +142,7 @@ type StoryServiceServer interface {
 	UpdateStory(context.Context, *UpdateStoryRequest) (*StoryResponse, error)
 	DeleteStory(context.Context, *DeleteStoryRequest) (*emptypb.Empty, error)
 	FeedStory(context.Context, *FeedStoryRequest) (*FeedStoryResponse, error)
+	ViewStory(context.Context, *ViewStoryRequest) (*ViewStoryResponse, error)
 	LikeStory(context.Context, *LikeStoryRequest) (*LikeStoryResponse, error)
 	UnlikeStory(context.Context, *UnlikeStoryRequest) (*UnlikeStoryResponse, error)
 	SaveStory(context.Context, *SaveStoryRequest) (*SaveStoryResponse, error)
@@ -157,6 +168,9 @@ func (UnimplementedStoryServiceServer) DeleteStory(context.Context, *DeleteStory
 }
 func (UnimplementedStoryServiceServer) FeedStory(context.Context, *FeedStoryRequest) (*FeedStoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FeedStory not implemented")
+}
+func (UnimplementedStoryServiceServer) ViewStory(context.Context, *ViewStoryRequest) (*ViewStoryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ViewStory not implemented")
 }
 func (UnimplementedStoryServiceServer) LikeStory(context.Context, *LikeStoryRequest) (*LikeStoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LikeStory not implemented")
@@ -273,6 +287,24 @@ func _StoryService_FeedStory_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _StoryService_ViewStory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ViewStoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StoryServiceServer).ViewStory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.story.v1.StoryService/ViewStory",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StoryServiceServer).ViewStory(ctx, req.(*ViewStoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _StoryService_LikeStory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(LikeStoryRequest)
 	if err := dec(in); err != nil {
@@ -371,6 +403,10 @@ var StoryService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FeedStory",
 			Handler:    _StoryService_FeedStory_Handler,
+		},
+		{
+			MethodName: "ViewStory",
+			Handler:    _StoryService_ViewStory_Handler,
 		},
 		{
 			MethodName: "LikeStory",

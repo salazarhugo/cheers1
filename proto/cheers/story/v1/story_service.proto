@@ -16,6 +16,7 @@ service StoryService {
   rpc DeleteStory (DeleteStoryRequest) returns (google.protobuf.Empty);
 
   rpc FeedStory (FeedStoryRequest) returns (FeedStoryResponse);
+  rpc ViewStory (ViewStoryRequest) returns (ViewStoryResponse);
   rpc LikeStory (LikeStoryRequest) returns (LikeStoryResponse);
   rpc UnlikeStory (UnlikeStoryRequest) returns (UnlikeStoryResponse);
   rpc SaveStory (SaveStoryRequest) returns (SaveStoryResponse);
@@ -47,6 +48,14 @@ message FeedStoryRequest {
 message FeedStoryResponse {
   repeated StoryResponse stories = 1;
   string next_page_token = 2;
+}
+
+message ViewStoryRequest {
+  string id = 1;
+}
+
+message ViewStoryResponse {
+  bool success = 1;
 }
 
 message LikeStoryRequest {

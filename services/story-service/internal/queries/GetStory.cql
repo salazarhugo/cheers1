@@ -9,9 +9,9 @@ OPTIONAL MATCH
 WITH
   story,
   creator,
-  EXISTS((u)-[:LIKED]->(story)) AS has_liked,
   COUNT(DISTINCT likes) AS like_count,
-  COUNT(DISTINCT viewers) AS viewer_count
+  COUNT(DISTINCT viewers) AS viewer_count,
+  EXISTS((u)-[:LIKED]->(story)) AS has_liked
 RETURN
   {
      story:         PROPERTIES(story),
