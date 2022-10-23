@@ -46,12 +46,14 @@ func (p *storyRepository) FeedStory(
 		if err != nil {
 			return nil, err
 		}
+		log.Println(string(bytes))
 		userWithStories := &pb.UserWithStories{}
 		err = protojson.Unmarshal(bytes, userWithStories)
 		if err != nil {
 			log.Print(err)
 			return nil, err
 		}
+		log.Println(userWithStories.String())
 		userWithStoriesList = append(userWithStoriesList, userWithStories)
 	}
 

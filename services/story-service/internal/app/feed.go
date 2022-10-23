@@ -18,7 +18,7 @@ func (s *Server) FeedStory(
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")
 	}
 
-	log.Print(request)
+	log.Print(request.String())
 	posts, err := s.storyRepository.FeedStory(userID, request)
 	if err != nil {
 		return nil, err

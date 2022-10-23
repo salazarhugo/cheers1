@@ -60,18 +60,18 @@ http:
 
     # Chat Service
     - selector: cheers.chat.v1.ChatService.JoinRoom
-      get: /v1/chat/join
+      get: /v1/chats/join
     - selector: cheers.chat.v1.ChatService.SendMessage
-      post: /v1/chat/send
+      post: /v1/chats/send
 
     # Story Service
-    - selector: cheers.story.v1.StoryService.CreateStory
-      post: /v1/story
-    - selector: cheers.story.v1.StoryService.GetStory
-      get: /v1/story
-    - selector: cheers.story.v1.StoryService.UpdateStory
-      patch: /v1/story
-    - selector: cheers.story.v1.StoryService.DeleteStory
-      delete: /v1/story
-    - selector: cheers.story.v1.StoryService.FeedStory
-      get: /v1/story/feed
+    - selector: cheers.stories.v1.StoryService.CreateStory
+      post: /v1/stories
+    - selector: cheers.stories.v1.StoryService.GetStory
+      get: /v1/stories
+    - selector: cheers.stories.v1.StoryService.UpdateStory
+      patch: /v1/stories
+    - selector: cheers.stories.v1.StoryService.DeleteStory
+      delete: /v1/stories
+    - selector: cheers.stories.v1.StoryService.FeedStory
+      get: /v1/stories/feed
