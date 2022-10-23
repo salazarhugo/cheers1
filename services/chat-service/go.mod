@@ -9,9 +9,8 @@ require (
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
 	github.com/salazarhugo/cheers1/genproto v0.0.0-20221019163219-7229b67b679f
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221018182022-91ddac90c15e
-	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
+	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221022084305-122f971a4fa0
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221013185914-f468203a7c71
-	github.com/sirupsen/logrus v1.9.0
 	google.golang.org/api v0.98.0
 	google.golang.org/grpc v1.50.0
 	google.golang.org/protobuf v1.28.1
@@ -41,6 +40,7 @@ require (
 	github.com/mattn/go-colorable v0.1.11 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/rs/cors v1.7.0 // indirect
+	github.com/sirupsen/logrus v1.9.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.1 // indirect
 	go.opencensus.io v0.23.0 // indirect

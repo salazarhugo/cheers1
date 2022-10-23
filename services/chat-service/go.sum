@@ -468,8 +468,8 @@ github.com/salazarhugo/cheers1/genproto v0.0.0-20221019163219-7229b67b679f h1:YA
 github.com/salazarhugo/cheers1/genproto v0.0.0-20221019163219-7229b67b679f/go.mod h1:9inVm//wFHquJ//lv6RYxEmqJJIcW4qN9jDbFB5zBKM=
 github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221018182022-91ddac90c15e h1:7IHYjfg4070iHY5fjy2wBH0JlhlbBThY2Ks8ahySvTM=
 github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221018182022-91ddac90c15e/go.mod h1:ATnqIqULUdldwN1+jj6yVvwyUPhBXpv+eigyiYucp4A=
-github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8 h1:h7xy7Td8H9Iubde5mKJPZqZXTCZs+ttug8gZZ0vqKLk=
-github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8/go.mod h1:r9VVw/Y+1GW5JrqrRZLxVctRHwXEqB6DZEWHCgnx//k=
+github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221022084305-122f971a4fa0 h1:6CfFlixNWTmxlmbiIk0myyBlS6OaYh1nmTWQljBsyUk=
+github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221022084305-122f971a4fa0/go.mod h1:r9VVw/Y+1GW5JrqrRZLxVctRHwXEqB6DZEWHCgnx//k=
 github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221013185914-f468203a7c71 h1:GoJulBhziO9+ZK256Dxp6kKq0z51uTl00eb4To0Iflo=
 github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221013185914-f468203a7c71/go.mod h1:uG7RwzOjpq2VElzwYF0GzRXJffexEGb+tMe+3UK+e0w=
 github.com/samuel/go-zookeeper v0.0.0-20190923202752-2cc03de413da/go.mod h1:gi+0XIa01GRL2eRQVjQkKGqKF3SF9vZR/HnPullcV2E=

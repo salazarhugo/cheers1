@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"context"
+	json2 "encoding/json"
 	pb "github.com/salazarhugo/cheers1/genproto/cheers/chat/v1"
 	"log"
 )
@@ -17,34 +19,30 @@ func (c chatRepository) JoinRoom(
 		}
 	}
 
-	//ctx := context.Background()
-	//
-	//sub := c.cache.Subscribe(ctx, request.GetRoomId())
-	//defer sub.Close()
-	//log.Println(sub.String())
-	//
-	//message := pb.Message{}
-	//
-	//for {
-	//	msg, err := sub.ReceiveMessage(ctx)
-	//	if err != nil {
-	//		panic(err)
-	//	}
-	//	if err := json2.Unmarshal([]byte(msg.Payload), &message); err != nil {
-	//		log.Println(err)
-	//		panic(err)
-	//	}
-	//
-	//	fmt.Println("Received message from " + msg.Channel + " channel.")
-	//	fmt.Printf("%+v\n", message)
-	//
-	//	err = server.Send(&message)
-	//	if err != nil {
-	//		log.Println(err)
-	//		return err
-	//	}
-	//	log.Println("sent with no errors")
-	//}
+	sub := c.cache.Subscribe(context.Background(), request.GetRoomId())
+	defer sub.Close()
+
+	ch := sub.Channel()
+
+	for {
+		select {
+		case <-server.Context().Done():
+			return nil
+		case msg := <-ch:
+			message := pb.Message{}
+			if err := json2.Unmarshal([]byte(msg.Payload), &message); err != nil {
+				log.Println(err)
+				return err
+			}
+
+			log.Println("sending message to stream: " + message.Message)
+			err := server.Send(&message)
+			if err != nil {
+				log.Println(err)
+				return err
+			}
+		}
+	}
 
 	return nil
 }

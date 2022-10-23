@@ -28,6 +28,9 @@ type StoryServiceClient interface {
 	UpdateStory(ctx context.Context, in *UpdateStoryRequest, opts ...grpc.CallOption) (*StoryResponse, error)
 	DeleteStory(ctx context.Context, in *DeleteStoryRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	FeedStory(ctx context.Context, in *FeedStoryRequest, opts ...grpc.CallOption) (*FeedStoryResponse, error)
+	//
+	//Return stories of a specific user
+	ListUserStory(ctx context.Context, in *ListUserStoryRequest, opts ...grpc.CallOption) (*ListUserStoryResponse, error)
 	ViewStory(ctx context.Context, in *ViewStoryRequest, opts ...grpc.CallOption) (*ViewStoryResponse, error)
 	LikeStory(ctx context.Context, in *LikeStoryRequest, opts ...grpc.CallOption) (*LikeStoryResponse, error)
 	UnlikeStory(ctx context.Context, in *UnlikeStoryRequest, opts ...grpc.CallOption) (*UnlikeStoryResponse, error)
@@ -88,6 +91,15 @@ func (c *storyServiceClient) FeedStory(ctx context.Context, in *FeedStoryRequest
 	return out, nil
 }
 
+func (c *storyServiceClient) ListUserStory(ctx context.Context, in *ListUserStoryRequest, opts ...grpc.CallOption) (*ListUserStoryResponse, error) {
+	out := new(ListUserStoryResponse)
+	err := c.cc.Invoke(ctx, "/cheers.story.v1.StoryService/ListUserStory", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *storyServiceClient) ViewStory(ctx context.Context, in *ViewStoryRequest, opts ...grpc.CallOption) (*ViewStoryResponse, error) {
 	out := new(ViewStoryResponse)
 	err := c.cc.Invoke(ctx, "/cheers.story.v1.StoryService/ViewStory", in, out, opts...)
@@ -142,6 +154,9 @@ type StoryServiceServer interface {
 	UpdateStory(context.Context, *UpdateStoryRequest) (*StoryResponse, error)
 	DeleteStory(context.Context, *DeleteStoryRequest) (*emptypb.Empty, error)
 	FeedStory(context.Context, *FeedStoryRequest) (*FeedStoryResponse, error)
+	//
+	//Return stories of a specific user
+	ListUserStory(context.Context, *ListUserStoryRequest) (*ListUserStoryResponse, error)
 	ViewStory(context.Context, *ViewStoryRequest) (*ViewStoryResponse, error)
 	LikeStory(context.Context, *LikeStoryRequest) (*LikeStoryResponse, error)
 	UnlikeStory(context.Context, *UnlikeStoryRequest) (*UnlikeStoryResponse, error)
@@ -168,6 +183,9 @@ func (UnimplementedStoryServiceServer) DeleteStory(context.Context, *DeleteStory
 }
 func (UnimplementedStoryServiceServer) FeedStory(context.Context, *FeedStoryRequest) (*FeedStoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FeedStory not implemented")
+}
+func (UnimplementedStoryServiceServer) ListUserStory(context.Context, *ListUserStoryRequest) (*ListUserStoryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListUserStory not implemented")
 }
 func (UnimplementedStoryServiceServer) ViewStory(context.Context, *ViewStoryRequest) (*ViewStoryResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ViewStory not implemented")
@@ -283,6 +301,24 @@ func _StoryService_FeedStory_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(StoryServiceServer).FeedStory(ctx, req.(*FeedStoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _StoryService_ListUserStory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListUserStoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(StoryServiceServer).ListUserStory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.story.v1.StoryService/ListUserStory",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(StoryServiceServer).ListUserStory(ctx, req.(*ListUserStoryRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -403,6 +439,10 @@ var StoryService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FeedStory",
 			Handler:    _StoryService_FeedStory_Handler,
+		},
+		{
+			MethodName: "ListUserStory",
+			Handler:    _StoryService_ListUserStory_Handler,
 		},
 		{
 			MethodName: "ViewStory",

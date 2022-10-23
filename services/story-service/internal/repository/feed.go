@@ -6,6 +6,7 @@ import (
 	pb "github.com/salazarhugo/cheers1/genproto/cheers/story/v1"
 	utils "github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/protobuf/encoding/protojson"
+	"log"
 )
 
 func (p *storyRepository) FeedStory(
@@ -37,7 +38,7 @@ func (p *storyRepository) FeedStory(
 	}
 
 	// Empty Feed
-	storys := make([]*pb.StoryResponse, 0)
+	userWithStoriesList := make([]*pb.UserWithStories, 0)
 
 	for result.Next() {
 		m := result.Record().Values[0]
@@ -45,21 +46,22 @@ func (p *storyRepository) FeedStory(
 		if err != nil {
 			return nil, err
 		}
-		story := &pb.StoryResponse{}
-		err = protojson.Unmarshal(bytes, story)
+		userWithStories := &pb.UserWithStories{}
+		err = protojson.Unmarshal(bytes, userWithStories)
 		if err != nil {
+			log.Print(err)
 			return nil, err
 		}
-		storys = append(storys, story)
+		userWithStoriesList = append(userWithStoriesList, userWithStories)
 	}
 
 	nextPageToken := "storyToken123"
-	if len(storys) > 0 {
-		nextPageToken = storys[len(storys)-1].Story.Id
+	if len(userWithStoriesList) > 0 {
+		nextPageToken = userWithStoriesList[len(userWithStoriesList)-1].User.Id
 	}
 
 	return &pb.FeedStoryResponse{
-		Stories:       storys,
+		Items:         userWithStoriesList,
 		NextPageToken: nextPageToken,
 	}, nil
 }
