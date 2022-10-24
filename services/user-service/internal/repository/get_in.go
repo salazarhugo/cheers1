@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-func (p *postRepository) GetUsersIn(
+func (p *userRepository) GetUsersIn(
 	userID string,
 	userIDs []string,
 ) ([]*user.UserItem, error) {

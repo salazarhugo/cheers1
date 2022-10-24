@@ -8,7 +8,7 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-func (p *postRepository) GetUser(
+func (p *userRepository) GetUser(
 	userID string,
 	otherUserID string,
 ) (*pb.GetUserResponse, error) {

@@ -10,7 +10,7 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-func (p *postRepository) ListFollowing(
+func (p *userRepository) ListFollowing(
 	userID string,
 	request *pb.ListFollowingRequest,
 ) ([]*user.UserItem, error) {

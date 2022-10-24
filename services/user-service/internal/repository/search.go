@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-func (p *postRepository) SearchUser(
+func (p *userRepository) SearchUser(
 	userID string,
 	query string,
 ) ([]*user.UserItem, error) {

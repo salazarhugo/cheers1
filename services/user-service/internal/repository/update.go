@@ -8,7 +8,7 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-func (p *postRepository) UpdateUser(
+func (p *userRepository) UpdateUser(
 	userID string,
 	user *pb.UpdateUserRequest,
 ) error {

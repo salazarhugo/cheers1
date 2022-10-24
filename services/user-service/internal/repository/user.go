@@ -24,10 +24,10 @@ type UserRepository interface {
 	ListFollowing(userID string, request *pb.ListFollowingRequest) ([]*user.UserItem, error)
 }
 
-type postRepository struct {
+type userRepository struct {
 	driver neo4j.Driver
 }
 
 func NewUserRepository(driver neo4j.Driver) UserRepository {
-	return &postRepository{driver: driver}
+	return &userRepository{driver: driver}
 }

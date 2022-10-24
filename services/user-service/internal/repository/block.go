@@ -5,7 +5,7 @@ import (
 	"github.com/salazarhugo/cheers1/libs/utils"
 )
 
-func (p *postRepository) BlockUser(
+func (p *userRepository) BlockUser(
 	userID string,
 	otherUserID string,
 ) error {

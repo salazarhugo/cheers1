@@ -5,7 +5,7 @@ import (
 	"github.com/salazarhugo/cheers1/libs/utils"
 )
 
-func (p *postRepository) FollowUser(
+func (p *userRepository) FollowUser(
 	userID string,
 	otherUserID string,
 ) error {

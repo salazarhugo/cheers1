@@ -1,5 +1,5 @@
 package repository
 
-func (p *postRepository) DeleteUser(id string) error {
+func (p *userRepository) DeleteUser(id string) error {
 	return nil
 }

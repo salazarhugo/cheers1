@@ -5,7 +5,7 @@ import (
 	"github.com/salazarhugo/cheers1/libs/utils"
 )
 
-func (p *postRepository) UnfollowUser(
+func (p *userRepository) UnfollowUser(
 	userID string,
 	otherUserID string,
 ) error {

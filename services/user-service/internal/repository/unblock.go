@@ -5,7 +5,7 @@ import (
 	"github.com/salazarhugo/cheers1/libs/utils"
 )
 
-func (p *postRepository) UnblockUser(
+func (p *userRepository) UnblockUser(
 	userID string,
 	otherUserID string,
 ) error {
