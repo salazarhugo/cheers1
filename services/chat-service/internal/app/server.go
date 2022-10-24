@@ -1,6 +1,7 @@
 package app
 
 import (
+	"cloud.google.com/go/pubsub"
 	"context"
 	"github.com/go-redis/redis/v9"
 	pb "github.com/salazarhugo/cheers1/genproto/cheers/chat/v1"
@@ -28,7 +29,13 @@ func NewServer() *Server {
 		}),
 	)
 
-	chatRepository := repository.NewChatRepository(cache)
+	ctx := context.Background()
+	client, err := pubsub.NewClient(ctx, "cheers-a275e")
+	if err != nil {
+		return nil
+	}
+
+	chatRepository := repository.NewChatRepository(cache, client)
 
 	return &Server{
 		UnimplementedChatServiceServer: pb.UnimplementedChatServiceServer{},

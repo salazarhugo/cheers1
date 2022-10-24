@@ -175,21 +175,35 @@ func (cache *redisCache) GetMessages(roomId string) []*pb.Message {
 	return messages
 }
 
-func (cache *redisCache) SetMessage(msg *pb.Message) {
+func (cache *redisCache) SetMessage(msg *pb.Message) error {
 	client := cache.client
 
 	buff := bytes.NewBufferString("")
 	enc := json2.NewEncoder(buff)
 	err := enc.Encode(msg)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	client.ZAdd(context.Background(), getKeyRoomMessages(msg.GetRoom().GetId()), redis.Z{
-		Score:  float64(msg.GetCreated().Seconds),
-		Member: buff.String(),
+	err = client.Watch(context.Background(), func(tx *redis.Tx) error {
+		cmd := tx.ZAdd(context.Background(), getKeyRoomMessages(msg.GetRoom().GetId()), redis.Z{
+			Score:  float64(msg.GetCreated().Seconds),
+			Member: buff.String(),
+		})
+
+		if cmd.Err() != nil {
+			return cmd.Err()
+		}
+
+		cmd2 := tx.Expire(context.Background(), getKeyRoomMessages(msg.GetRoom().GetId()), 24*time.Hour)
+		if cmd2.Err() != nil {
+			return cmd.Err()
+		}
+
+		return nil
 	})
-	client.Expire(context.Background(), getKeyRoomMessages(msg.GetRoom().GetId()), 24*time.Hour)
+
+	return err
 }
 
 func (cache *redisCache) ListRoom(userId string) []*pb.Room {

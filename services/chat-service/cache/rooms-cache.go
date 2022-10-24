@@ -8,7 +8,7 @@ import (
 )
 
 type RoomCache interface {
-	SetMessage(msg *pb.Message)
+	SetMessage(msg *pb.Message) error
 	GetMessages(roomId string) []*pb.Message
 	LikeMessage(roomId string, messageId string)
 	UnlikeMessage(roomId string, messageId string)
