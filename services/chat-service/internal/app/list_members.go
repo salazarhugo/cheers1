@@ -17,7 +17,7 @@ func (s *Server) ListMembers(
 		return nil, status.Error(codes.Internal, "failed retrieving userID")
 	}
 
-	members, err := s.chatRepository.ListMembers(request)
+	members, err := s.chatRepository.ListMembers(ctx, request)
 	if err != nil {
 		return nil, err
 	}

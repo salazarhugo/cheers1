@@ -2,6 +2,7 @@ package repository
 
 import (
 	"cloud.google.com/go/pubsub"
+	"context"
 	pb "github.com/salazarhugo/cheers1/genproto/cheers/chat/v1"
 	"github.com/salazarhugo/cheers1/genproto/cheers/type/user"
 	"github.com/salazarhugo/cheers1/services/chat-service/cache"
@@ -12,7 +13,7 @@ type ChatRepository interface {
 	JoinRoom(request *pb.JoinRoomRequest, server pb.ChatService_JoinRoomServer) error
 	ListRoom(userID string) ([]*pb.Room, error)
 
-	ListMembers(request *pb.ListMembersRequest) ([]*user.UserItem, error)
+	ListMembers(context context.Context, request *pb.ListMembersRequest) ([]*user.UserItem, error)
 
 	SendMessage(msg *pb.Message, server pb.ChatService_SendMessageServer) error
 }

@@ -20,7 +20,7 @@ func (s *Server) GeUserItemsIn(
 	users, err := s.userRepository.GetUsersIn(userID, request.GetUserIds())
 	if err != nil {
 		log.Error(err)
-		return nil, status.Error(codes.Internal, "failed to get users")
+		return nil, status.Error(codes.Internal, "failed to get users in")
 	}
 
 	return &pb.GetUserItemsInResponse{Users: users}, nil

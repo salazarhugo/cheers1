@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	pb "github.com/salazarhugo/cheers1/genproto/cheers/chat/v1"
+	"github.com/salazarhugo/cheers1/libs/auth"
 	profiler "github.com/salazarhugo/cheers1/libs/profiler"
 	"github.com/salazarhugo/cheers1/services/chat-service/internal/app"
 	grpc "google.golang.org/grpc"
@@ -36,8 +37,8 @@ func main() {
 	}
 
 	grpcServer := grpc.NewServer(
-		//grpc.UnaryInterceptor(auth.UnaryInterceptor),
-		//grpc.StreamInterceptor(auth.StreamInterceptor),
+		grpc.UnaryInterceptor(auth.UnaryInterceptor),
+		grpc.StreamInterceptor(auth.StreamInterceptor),
 	)
 
 	server := app.NewServer()
