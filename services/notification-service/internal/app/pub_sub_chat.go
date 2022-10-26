@@ -1,29 +1,42 @@
 package app
 
 import (
-	"context"
-	pb "github.com/salazarhugo/cheers1/genproto/cheers/chat/v1"
-	"github.com/salazarhugo/cheers1/libs/utils"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
+	"encoding/json"
+	"github.com/labstack/echo/v4"
+	"io/ioutil"
+	"net/http"
 )
 
-func (s *Server) CreateChat(ctx context.Context, request *pb.CreateChatReq) (*pb.Room, error) {
-	userID, err := utils.GetUserId(ctx)
+func ChatEventPubSub(c echo.Context) error {
+	var m PubSubMessage
+	body, err := ioutil.ReadAll(c.Request().Body)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to retrieve userID")
+		log.Printf("ioutil.ReadAll: %v", err)
+		return c.String(http.StatusBadRequest, "Bad Request")
+	}
+	if err := json.Unmarshal(body, &m); err != nil {
+		log.Printf("json.Unmarshal: %v", err)
+		return c.String(http.StatusBadRequest, "Bad Request")
 	}
 
-	members := append([]string{userID}, request.UserIds...)
-
-	if len(members) < 2 {
-		return nil, status.Error(codes.InvalidArgument, "chats must have at least 2 users")
-	}
-
-	room, err := s.chatRepository.CreateRoom(request.GroupName, members)
+	userevent := &usereventpb.UserEvent{}
+	err = proto.Unmarshal(m.Message.Data, userevent)
 	if err != nil {
-		return nil, err
+		log.Fatal(err)
+		return err
 	}
 
-	return room, nil
+	switch userevent.Type {
+	case usereventpb.UserEventType_POST_LIKE:
+		likePostNotification(c, userevent)
+	case usereventpb.UserEventType_CREATE_POST:
+		postNotification(c, userevent)
+	case usereventpb.UserEventType_FOLLOW:
+		followNotification(c, userevent)
+	case usereventpb.UserEventType_COMMENT:
+		commentNotification(c, userevent)
+	default:
+	}
+
+	return c.NoContent(http.StatusOK)
 }

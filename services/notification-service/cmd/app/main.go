@@ -10,12 +10,12 @@ import (
 func main() {
 	e := echo.New()
 
-	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
-		return func(c echo.Context) error {
-			cc := &CustomContext{c, getDriver()}
-			return next(cc)
-		}
-	})
+	//e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
+	//	return func(c echo.Context) error {
+	//		cc := &CustomContext{c, getDriver()}
+	//		return next(cc)
+	//	}
+	//})
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},

@@ -28,8 +28,7 @@ type StoryServiceClient interface {
 	UpdateStory(ctx context.Context, in *UpdateStoryRequest, opts ...grpc.CallOption) (*StoryResponse, error)
 	DeleteStory(ctx context.Context, in *DeleteStoryRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	FeedStory(ctx context.Context, in *FeedStoryRequest, opts ...grpc.CallOption) (*FeedStoryResponse, error)
-	//
-	//Return stories of a specific user
+	// Return stories of a specific user
 	ListUserStory(ctx context.Context, in *ListUserStoryRequest, opts ...grpc.CallOption) (*ListUserStoryResponse, error)
 	ViewStory(ctx context.Context, in *ViewStoryRequest, opts ...grpc.CallOption) (*ViewStoryResponse, error)
 	LikeStory(ctx context.Context, in *LikeStoryRequest, opts ...grpc.CallOption) (*LikeStoryResponse, error)
@@ -154,8 +153,7 @@ type StoryServiceServer interface {
 	UpdateStory(context.Context, *UpdateStoryRequest) (*StoryResponse, error)
 	DeleteStory(context.Context, *DeleteStoryRequest) (*emptypb.Empty, error)
 	FeedStory(context.Context, *FeedStoryRequest) (*FeedStoryResponse, error)
-	//
-	//Return stories of a specific user
+	// Return stories of a specific user
 	ListUserStory(context.Context, *ListUserStoryRequest) (*ListUserStoryResponse, error)
 	ViewStory(context.Context, *ViewStoryRequest) (*ViewStoryResponse, error)
 	LikeStory(context.Context, *LikeStoryRequest) (*LikeStoryResponse, error)
