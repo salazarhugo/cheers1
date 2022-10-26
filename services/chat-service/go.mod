@@ -57,3 +57,5 @@ require (
 )
 
 //replace github.com/salazarhugo/cheers1/genproto => ../../genproto
+
+//replace github.com/salazarhugo/cheers1/libs/utils  => ../../libs/utils

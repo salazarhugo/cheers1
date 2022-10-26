@@ -3,6 +3,7 @@ package repository
 import (
 	json2 "encoding/json"
 	pb "github.com/salazarhugo/cheers1/genproto/cheers/chat/v1"
+	"github.com/salazarhugo/cheers1/libs/utils"
 	"log"
 )
 
@@ -15,13 +16,15 @@ func (c chatRepository) SendMessage(
 		return err
 	}
 
-	//c.pubsub.Topic("cheers.chat.v1.messages").Publish(server.Context(), &pubsub.Message{
-	//	ID:              "",
-	//	Data:            nil,
-	//	Attributes:      nil,
-	//	PublishTime:     time.Time{},
-	//	DeliveryAttempt: nil,
-	//})
+	go func() {
+		err := utils.PublishProtoMessages("chat-topic", &pb.ChatEvent{
+			SenderId: msg.Sender,
+			RoomId:   msg.Room.Id,
+		})
+		if err != nil {
+			log.Println(err)
+		}
+	}()
 
 	json, err := json2.Marshal(msg)
 	if err != nil {

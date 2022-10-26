@@ -2,41 +2,48 @@ package app
 
 import (
 	"encoding/json"
-	"github.com/labstack/echo/v4"
-	"io/ioutil"
+	"github.com/salazarhugo/cheers1/genproto/cheers/chat/v1"
+	"google.golang.org/protobuf/proto"
+	"io"
+	"log"
 	"net/http"
 )
 
-func ChatEventPubSub(c echo.Context) error {
+// PubSubMessage is the payload of a Pub/Sub event.
+// See the documentation for more details:
+// https://cloud.google.com/pubsub/docs/reference/rest/v1/PubsubMessage
+type PubSubMessage struct {
+	Message struct {
+		Data []byte `json:"data,omitempty"`
+		ID   string `json:"id"`
+	} `json:"message"`
+	Subscription string `json:"subscription"`
+}
+
+func ChatEventPubSub(w http.ResponseWriter, r *http.Request) {
 	var m PubSubMessage
-	body, err := ioutil.ReadAll(c.Request().Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Printf("ioutil.ReadAll: %v", err)
-		return c.String(http.StatusBadRequest, "Bad Request")
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		return
 	}
+
+	// byte slice unmarshalling handles base64 decoding.
 	if err := json.Unmarshal(body, &m); err != nil {
 		log.Printf("json.Unmarshal: %v", err)
-		return c.String(http.StatusBadRequest, "Bad Request")
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		return
 	}
 
-	userevent := &usereventpb.UserEvent{}
-	err = proto.Unmarshal(m.Message.Data, userevent)
+	event := &chat.ChatEvent{}
+	err = proto.Unmarshal(m.Message.Data, event)
 	if err != nil {
 		log.Fatal(err)
-		return err
+		return
 	}
 
-	switch userevent.Type {
-	case usereventpb.UserEventType_POST_LIKE:
-		likePostNotification(c, userevent)
-	case usereventpb.UserEventType_CREATE_POST:
-		postNotification(c, userevent)
-	case usereventpb.UserEventType_FOLLOW:
-		followNotification(c, userevent)
-	case usereventpb.UserEventType_COMMENT:
-		commentNotification(c, userevent)
-	default:
-	}
+	log.Println(event.String())
 
-	return c.NoContent(http.StatusOK)
+	return
 }

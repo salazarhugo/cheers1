@@ -1,33 +1,23 @@
 package main
 
 import (
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	"github.com/salazarhugo/cheers1/services/notification-service/internal/app"
 	"log"
+	"net/http"
 	"os"
 )
 
 func main() {
-	e := echo.New()
-
-	//e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
-	//	return func(c echo.Context) error {
-	//		cc := &CustomContext{c, getDriver()}
-	//		return next(cc)
-	//	}
-	//})
-
-	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
-	}))
-
+	http.HandleFunc("/", app.ChatEventPubSub)
 	// Determine port for HTTP service.
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
-		log.Printf("defaulting to port %s", port)
+		log.Printf("Defaulting to port %s", port)
 	}
-
-	e.POST("/", UserEventPubSub)
-	e.Logger.Fatal(e.Start(":" + port))
+	// Start HTTP server.
+	log.Printf("Listening on port %s", port)
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
+		log.Fatal(err)
+	}
 }
