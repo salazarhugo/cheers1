@@ -2,11 +2,13 @@ package app
 
 import (
 	"encoding/json"
-	"github.com/salazarhugo/cheers1/genproto/cheers/chat/v1"
+	chat "github.com/salazarhugo/cheers1/genproto/cheers/chat/v1"
+	"github.com/salazarhugo/cheers1/services/notification-service/internal/repository"
 	"google.golang.org/protobuf/proto"
 	"io"
 	"log"
 	"net/http"
+	"strings"
 )
 
 // PubSubMessage is the payload of a Pub/Sub event.
@@ -43,7 +45,15 @@ func ChatEventPubSub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Get the Cloud Pub/Sub-generated JWT in the "Authorization" header.
+	authHeader := r.Header.Get("Authorization")
+	if authHeader == "" || len(strings.Split(authHeader, " ")) != 2 {
+		http.Error(w, "Missing Authorization header", http.StatusBadRequest)
+		return
+	}
 	log.Println(event.String())
+	log.Println(authHeader)
+	repository.NewRepository().SendChatNotification(authHeader)
 
 	return
 }

@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/golang/protobuf/ptypes/empty"
 	pb "github.com/salazarhugo/cheers1/genproto/cheers/post/v1"
-	"github.com/salazarhugo/cheers1/libs/utils"
+	utils "github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -12,7 +12,7 @@ import (
 )
 
 func (s *Server) DeletePost(ctx context.Context, request *pb.DeletePostRequest) (*emptypb.Empty, error) {
-	_, err := utils.GetUserId(ctx)
+	userID, err := utils.GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")
 	}
@@ -24,7 +24,7 @@ func (s *Server) DeletePost(ctx context.Context, request *pb.DeletePostRequest) 
 
 	log.Print(postID)
 
-	err = s.postRepository.DeletePost(postID)
+	err = s.postRepository.DeletePost(userID, postID)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to create party")
 	}

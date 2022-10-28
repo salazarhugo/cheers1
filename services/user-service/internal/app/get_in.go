@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *Server) GeUserItemsIn(
+func (s *Server) GetUserItemsIn(
 	ctx context.Context,
 	request *pb.GetUserItemsInRequest,
 ) (*pb.GetUserItemsInResponse, error) {

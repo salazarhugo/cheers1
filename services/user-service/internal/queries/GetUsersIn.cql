@@ -1,19 +1,19 @@
 MATCH
   (me:User {id: $userID})
 MATCH
-  (f:User) WHERE u.id IN $userIDs
+  (u:User) WHERE u.id IN $userIDs
 OPTIONAL MATCH
-  (f)-[:POSTED]->(s:Story) WHERE s.created > datetime().epochMillis-24*60*60*1000
+  (u)-[:POSTED]->(s:Story) WHERE s.created > datetime().epochMillis-24*60*60*1000
 OPTIONAL MATCH
   (me)-[seen:SEEN]->(s)
 WITH
-  f,
-  EXISTS((u)-[:FOLLOWS]->(f)) as has_followed,
+  u,
+  EXISTS((me)-[:FOLLOWS]->(u)) as has_followed,
   COUNT(s) > 0 as has_story,
   COUNT(seen) = COUNT(s) as seen_story
   LIMIT 20
 RETURN
-  f {
+  u {
     .id,
     .name,
     .username,
