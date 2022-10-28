@@ -14,12 +14,12 @@ func (s *Server) ListActivity(
 ) (*activity.ListActivityResponse, error) {
 	userID, err := utils.GetUserId(ctx)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "Failed retrieving userID")
+		return nil, status.Error(codes.Internal, "failed retrieving userID")
 	}
 
 	activities, err := s.activityRepository.ListActivity(userID)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to get post")
+		return nil, status.Error(codes.Internal, "failed to list activity")
 	}
 
 	return &activity.ListActivityResponse{

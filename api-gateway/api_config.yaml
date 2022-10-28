@@ -8,6 +8,7 @@ apis:
   - name: cheers.party.v1.PartyService
   - name: cheers.chat.v1.ChatService
   - name: cheers.story.v1.StoryService
+  - name: cheers.activity.v1.ActivityService
 usage:
   rules:
     # All methods can be called without an API Key.
@@ -44,3 +45,7 @@ backend:
     # Story Service methods
     - selector: cheers.story.v1.*
       address: grpcs://story-service-r3a2dr4u4a-nw.a.run.app
+
+    # Activity Service methods
+    - selector: cheers.activity.v1.*
+      address: grpcs://activity-service-r3a2dr4u4a-nw.a.run.app

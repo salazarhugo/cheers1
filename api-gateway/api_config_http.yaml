@@ -1,4 +1,4 @@
-# HTTP rules for User
+# HTTP rules
 
 type: google.api.Service
 config_version: 3

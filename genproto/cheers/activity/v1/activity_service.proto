@@ -30,7 +30,9 @@ message Activity {
   }
   ActivityType type = 1;
   string text = 2;
-  cheers.type.UserItem user = 3;
-  google.protobuf.Timestamp timestamp  = 4;
-  optional string media = 5;
+  string picture = 3;
+  string user_id  = 4;
+  google.protobuf.Timestamp timestamp  = 5;
+  optional string media_picture = 6;
+  optional string media_id = 7;
 }

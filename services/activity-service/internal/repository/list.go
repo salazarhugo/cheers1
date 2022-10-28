@@ -7,6 +7,7 @@ import (
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/api/iterator"
 	"google.golang.org/protobuf/encoding/protojson"
+	"log"
 )
 
 func (a activityRepository) ListActivity(
@@ -31,11 +32,13 @@ func (a activityRepository) ListActivity(
 		m := doc.Data()
 		bytes, err := json.Marshal(m)
 		if err != nil {
+			log.Println(err)
 			return nil, err
 		}
 		a := &activity.Activity{}
 		err = protojson.Unmarshal(bytes, a)
 		if err != nil {
+			log.Println(err)
 			return nil, err
 		}
 		activities = append(activities, a)

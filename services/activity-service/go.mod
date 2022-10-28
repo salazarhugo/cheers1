@@ -4,10 +4,11 @@ go 1.19
 
 require (
 	github.com/improbable-eng/grpc-web v0.15.0
-	github.com/salazarhugo/cheers1/genproto v0.0.0-20221028075628-41c8e72f61a4
+	github.com/salazarhugo/cheers1/genproto v0.0.0-20221028124523-f3097bbe539d
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221028075628-41c8e72f61a4
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221028101521-0cb4516952cb
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221028101521-0cb4516952cb
+	google.golang.org/api v0.100.0
 	google.golang.org/grpc v1.50.1
 	google.golang.org/protobuf v1.28.1
 )
@@ -49,7 +50,6 @@ require (
 	golang.org/x/sys v0.0.0-20220728004956-3c1f35247d10 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
-	google.golang.org/api v0.100.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/appengine/v2 v2.0.2 // indirect
 	google.golang.org/genproto v0.0.0-20221024183307-1bc688fe9f3e // indirect
