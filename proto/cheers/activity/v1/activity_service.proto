@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package cheers.activity.v1;
 
-import "cheers/type/user/user.proto";
 import "google/protobuf/timestamp.proto";
 
 option java_multiple_files = true;
@@ -21,6 +20,7 @@ message ListActivityResponse {
 }
 
 message Activity {
+  string id = 8;
   enum ActivityType {
     LIKE_POST = 0;
     LIKE_STORY = 1;
@@ -33,6 +33,6 @@ message Activity {
   string picture = 3;
   string user_id  = 4;
   google.protobuf.Timestamp timestamp  = 5;
-  optional string media_picture = 6;
-  optional string media_id = 7;
+  string media_picture = 6;
+  string media_id = 7;
 }
