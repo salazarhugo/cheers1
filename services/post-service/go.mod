@@ -4,9 +4,10 @@ go 1.19
 
 require (
 	github.com/golang/protobuf v1.5.2
+	github.com/google/uuid v1.3.0
 	github.com/improbable-eng/grpc-web v0.15.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
-	github.com/salazarhugo/cheers1/genproto v0.0.0-20221016190848-56633ebdbae5
+	github.com/salazarhugo/cheers1/genproto v0.0.0-20221028075410-2c374f45e38d
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221004084225-130de449e1a1
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221026133808-a7afb0950d56
@@ -30,7 +31,6 @@ require (
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/pprof v0.0.0-20220412212628-83db2b799d1f // indirect
-	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
 	github.com/googleapis/gax-go/v2 v2.6.0 // indirect
 	github.com/klauspost/compress v1.11.7 // indirect
@@ -56,7 +56,7 @@ require (
 	nhooyr.io/websocket v1.8.6 // indirect
 )
 
-replace github.com/salazarhugo/cheers1/genproto => ../../genproto
+//replace github.com/salazarhugo/cheers1/genproto => ../../genproto
 
 //replace github.com/salazarhugo/cheers1/libs/profiler => ../../libs/profiler
 
