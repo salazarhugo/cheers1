@@ -1,11 +1,12 @@
-module salazar/cheers/activity
+module github.com/salazarhugo/cheers1/services/activity-service
 
-go 1.18
+go 1.19
 
 require (
 	cloud.google.com/go/firestore v1.6.1
-	github.com/fatih/structs v1.1.0
-	google.golang.org/protobuf v1.28.0
+	github.com/salazarhugo/cheers1/genproto v0.0.0-20221028075628-41c8e72f61a4
+	google.golang.org/grpc v1.50.1
+	google.golang.org/protobuf v1.28.1
 )
 
 require (
@@ -23,5 +24,4 @@ require (
 	google.golang.org/api v0.59.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto v0.0.0-20211028162531-8db9c33dc351 // indirect
-	google.golang.org/grpc v1.40.0 // indirect
 )

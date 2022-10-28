@@ -74,7 +74,6 @@ func main() {
 		Handler: grpcWebServer,
 		Addr:    ":8081",
 	}
-
 	log.Infof("Post Service Feedening on port %s", port)
 
 	if err := srv.ListenAndServe(); err != nil {
