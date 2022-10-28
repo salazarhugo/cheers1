@@ -1,13 +1,16 @@
 package repository
 
-type Repository interface {
-	SendChatNotification(authorization string) error
+import (
+	"github.com/salazarhugo/cheers1/genproto/cheers/activity/v1"
+)
+
+type ActivityRepository interface {
+	ListActivity(userID string) ([]*activity.Activity, error)
 }
 
-type repository struct {
-	//pubsub *pubsub.Client
+type activityRepository struct {
 }
 
-func NewRepository() Repository {
-	return &repository{}
+func NewRepository() ActivityRepository {
+	return &activityRepository{}
 }

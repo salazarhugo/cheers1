@@ -24,7 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PostServiceClient interface {
 	CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*PostResponse, error)
-	GetParty(ctx context.Context, in *GetPostRequest, opts ...grpc.CallOption) (*PostResponse, error)
+	GetPost(ctx context.Context, in *GetPostRequest, opts ...grpc.CallOption) (*PostResponse, error)
 	UpdatePost(ctx context.Context, in *UpdatePostRequest, opts ...grpc.CallOption) (*PostResponse, error)
 	DeletePost(ctx context.Context, in *DeletePostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	FeedPost(ctx context.Context, in *FeedPostRequest, opts ...grpc.CallOption) (*FeedPostResponse, error)
@@ -51,9 +51,9 @@ func (c *postServiceClient) CreatePost(ctx context.Context, in *CreatePostReques
 	return out, nil
 }
 
-func (c *postServiceClient) GetParty(ctx context.Context, in *GetPostRequest, opts ...grpc.CallOption) (*PostResponse, error) {
+func (c *postServiceClient) GetPost(ctx context.Context, in *GetPostRequest, opts ...grpc.CallOption) (*PostResponse, error) {
 	out := new(PostResponse)
-	err := c.cc.Invoke(ctx, "/cheers.post.v1.PostService/GetParty", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/cheers.post.v1.PostService/GetPost", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -128,7 +128,7 @@ func (c *postServiceClient) UnsavePost(ctx context.Context, in *UnsavePostReques
 // for forward compatibility
 type PostServiceServer interface {
 	CreatePost(context.Context, *CreatePostRequest) (*PostResponse, error)
-	GetParty(context.Context, *GetPostRequest) (*PostResponse, error)
+	GetPost(context.Context, *GetPostRequest) (*PostResponse, error)
 	UpdatePost(context.Context, *UpdatePostRequest) (*PostResponse, error)
 	DeletePost(context.Context, *DeletePostRequest) (*emptypb.Empty, error)
 	FeedPost(context.Context, *FeedPostRequest) (*FeedPostResponse, error)
@@ -146,8 +146,8 @@ type UnimplementedPostServiceServer struct {
 func (UnimplementedPostServiceServer) CreatePost(context.Context, *CreatePostRequest) (*PostResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreatePost not implemented")
 }
-func (UnimplementedPostServiceServer) GetParty(context.Context, *GetPostRequest) (*PostResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetParty not implemented")
+func (UnimplementedPostServiceServer) GetPost(context.Context, *GetPostRequest) (*PostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPost not implemented")
 }
 func (UnimplementedPostServiceServer) UpdatePost(context.Context, *UpdatePostRequest) (*PostResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdatePost not implemented")
@@ -201,20 +201,20 @@ func _PostService_CreatePost_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
-func _PostService_GetParty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _PostService_GetPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetPostRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(PostServiceServer).GetParty(ctx, in)
+		return srv.(PostServiceServer).GetPost(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/cheers.post.v1.PostService/GetParty",
+		FullMethod: "/cheers.post.v1.PostService/GetPost",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(PostServiceServer).GetParty(ctx, req.(*GetPostRequest))
+		return srv.(PostServiceServer).GetPost(ctx, req.(*GetPostRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -357,8 +357,8 @@ var PostService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _PostService_CreatePost_Handler,
 		},
 		{
-			MethodName: "GetParty",
-			Handler:    _PostService_GetParty_Handler,
+			MethodName: "GetPost",
+			Handler:    _PostService_GetPost_Handler,
 		},
 		{
 			MethodName: "UpdatePost",

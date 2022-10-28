@@ -3,6 +3,7 @@ package app
 import (
 	"encoding/json"
 	post "github.com/salazarhugo/cheers1/genproto/cheers/post/v1"
+	"github.com/salazarhugo/cheers1/services/activity-service/internal/repository"
 	"google.golang.org/protobuf/proto"
 	"io"
 	"log"
@@ -50,9 +51,12 @@ func PostEventPubSub(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Missing Authorization header", http.StatusBadRequest)
 		return
 	}
-	log.Println(event.String())
-	log.Println(authHeader)
-	//repository.NewRepository().SendChatNotification(authHeader)
+
+	err = repository.NewRepository().CreateActivity(event)
+	if err != nil {
+		http.Error(w, "failed to create activity", http.StatusInternalServerError)
+		return
+	}
 
 	return
 }

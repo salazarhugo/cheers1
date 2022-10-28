@@ -1,8 +1,13 @@
 package main
 
 import (
+	grpcweb "github.com/improbable-eng/grpc-web/go/grpcweb"
+	pb "github.com/salazarhugo/cheers1/genproto/cheers/activity/v1"
+	auth "github.com/salazarhugo/cheers1/libs/auth"
+	"github.com/salazarhugo/cheers1/libs/profiler"
 	app "github.com/salazarhugo/cheers1/services/activity-service/internal/app"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/health/grpc_health_v1"
 	"log"
 	"net"
 	"net/http"
@@ -10,31 +15,56 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/", app.PostEventPubSub)
+	if os.Getenv("DISABLE_PROFILER") == "" {
+		log.Println("Profiling enabled.")
+		go profiler.InitProfiling("post-service", "1.0.0")
+	} else {
+		log.Println("Profiling disabled.")
+	}
+
 	// Determine port for HTTP service.
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 		log.Printf("Defaulting to port %s", port)
 	}
-	// Start HTTP server.
-	log.Printf("Listening on port %s", port)
-	if err := http.ListenAndServe(":"+port, nil); err != nil {
-		log.Fatal(err)
-	}
+
+	StartGrpcServer(port)
 }
 
-func startGrpcServer() {
+func StartGrpcServer(port string) {
 	listener, err := net.Listen("tcp", ":"+port)
 	if err != nil {
 		log.Fatalf("net.Feeden: %v", err)
 	}
 
-	s := grpc.NewServer()
+	grpcServer := grpc.NewServer(
+		grpc.UnaryInterceptor(auth.UnaryInterceptor),
+	)
 
-	pb.RegisterGreeterServer(s, &server{})
-	log.Printf("server listening at %v", lis.Addr())
-	if err := s.Serve(lis); err != nil {
+	server := app.NewServer()
+
+	pb.RegisterActivityServiceServer(grpcServer, server)
+	grpc_health_v1.RegisterHealthServer(grpcServer, server)
+
+	go func() {
+		if err = grpcServer.Serve(listener); err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	grpcWebServer := grpcweb.WrapServer(
+		grpcServer,
+		grpcweb.WithOriginFunc(func(origin string) bool { return true }),
+	)
+
+	srv := &http.Server{
+		Handler: grpcWebServer,
+		Addr:    ":8081",
+	}
+	log.Printf("Post Service Feedening on port %s", port)
+
+	if err := srv.ListenAndServe(); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }
