@@ -2,6 +2,7 @@ package utils
 
 import (
 	"context"
+	"encoding/json"
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/auth"
 	"github.com/labstack/echo/v4"
@@ -12,6 +13,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/proto"
 	"os"
 	"time"
 )
@@ -22,6 +25,19 @@ func GetUserId(ctx context.Context) (string, error) {
 		return "", status.Error(codes.InvalidArgument, "Failed retrieving metadata")
 	}
 	return md["user-id"][0], nil
+}
+
+func ProtoToMap(m proto.Message) (map[string]interface{}, error) {
+	bytes, err := protojson.Marshal(m)
+	if err != nil {
+		return nil, err
+	}
+	var res = make(map[string]interface{}, 0)
+	err = json.Unmarshal(bytes, &m)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
 }
 
 func InitLogrus() *logrus.Logger {

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	pb "github.com/salazarhugo/cheers1/genproto/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/libs/auth"
 	"github.com/salazarhugo/cheers1/libs/profiler"
@@ -10,7 +9,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health/grpc_health_v1"
 	"net"
-	"net/http"
 	"os"
 	"time"
 )
@@ -59,24 +57,7 @@ func main() {
 	pb.RegisterPostServiceServer(grpcServer, server)
 	grpc_health_v1.RegisterHealthServer(grpcServer, server)
 
-	go func() {
-		if err = grpcServer.Serve(listener); err != nil {
-			log.Fatal(err)
-		}
-	}()
-
-	grpcWebServer := grpcweb.WrapServer(
-		grpcServer,
-		grpcweb.WithOriginFunc(func(origin string) bool { return true }),
-	)
-
-	srv := &http.Server{
-		Handler: grpcWebServer,
-		Addr:    ":8081",
-	}
-	log.Infof("Post Service Feedening on port %s", port)
-
-	if err := srv.ListenAndServe(); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+	if err = grpcServer.Serve(listener); err != nil {
+		log.Fatal(err)
 	}
 }

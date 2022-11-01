@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/improbable-eng/grpc-web v0.15.0
-	github.com/salazarhugo/cheers1/genproto v0.0.0-20221028133154-2094e874758e
+	github.com/salazarhugo/cheers1/genproto v0.0.0-20221028141304-2757c1b50718
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221028075628-41c8e72f61a4
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221028101521-0cb4516952cb
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221028101521-0cb4516952cb

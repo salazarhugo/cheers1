@@ -8,6 +8,7 @@ import (
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"log"
 )
 
 func (p *partyRepository) CreateParty(
@@ -19,6 +20,7 @@ func (p *partyRepository) CreateParty(
 
 	cypher, err := utils.GetCypher("internal/queries/CreateParty.cql")
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
@@ -26,14 +28,15 @@ func (p *partyRepository) CreateParty(
 	party.CreateTime = timestamppb.Now()
 
 	bytes, err := protojson.Marshal(party)
-
-	// convert proto to map[string]interface{}
 	if err != nil {
 		return nil, err
 	}
+
 	var m = make(map[string]interface{}, 0)
+
 	err = json.Unmarshal(bytes, &m)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
@@ -44,6 +47,7 @@ func (p *partyRepository) CreateParty(
 
 	_, err = session.Run(*cypher, params)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 

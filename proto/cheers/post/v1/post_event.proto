@@ -3,7 +3,7 @@ syntax = "proto3";
 package cheers.post.v1;
 
 option java_multiple_files = true;
-option go_package = "github.com/salazarhugo/cheers1/genproto/cheers/post/v1;post";
+option go_package = "github.com/salazarhugo/cheers1/go/gen/cheers/post/v1;post";
 
 message PostEvent {
   string user_id = 1;

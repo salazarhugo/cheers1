@@ -1,7 +1,10 @@
 type: google.api.Service
 config_version: 3
-name: android.apigateway.cheers-a275e.cloud.goog
+name: android-2c1jeuamu4xtp.apigateway.cheers-a275e.cloud.goog
 title: Cheers API
+endpoints:
+  - name: android-2c1jeuamu4xtp.apigateway.cheers-a275e.cloud.goog
+    allow_cors: true
 apis:
   - name: cheers.user.v1.UserService
   - name: cheers.post.v1.PostService
