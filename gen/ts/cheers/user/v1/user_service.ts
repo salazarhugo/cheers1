@@ -5,6 +5,12 @@ import { StoryState, storyStateFromJSON, storyStateToJSON, User, UserItem } from
 
 export const protobufPackage = "cheers.user.v1";
 
+export interface BlockUserResponse {
+}
+
+export interface UnblockUserResponse {
+}
+
 export interface GetUserItemsInRequest {
   userIds: string[];
 }
@@ -86,6 +92,84 @@ export interface UpdateUserRequest {
 export interface DeleteUserRequest {
   id: string;
 }
+
+function createBaseBlockUserResponse(): BlockUserResponse {
+  return {};
+}
+
+export const BlockUserResponse = {
+  encode(_: BlockUserResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): BlockUserResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseBlockUserResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): BlockUserResponse {
+    return {};
+  },
+
+  toJSON(_: BlockUserResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<BlockUserResponse>, I>>(_: I): BlockUserResponse {
+    const message = createBaseBlockUserResponse();
+    return message;
+  },
+};
+
+function createBaseUnblockUserResponse(): UnblockUserResponse {
+  return {};
+}
+
+export const UnblockUserResponse = {
+  encode(_: UnblockUserResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): UnblockUserResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUnblockUserResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): UnblockUserResponse {
+    return {};
+  },
+
+  toJSON(_: UnblockUserResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UnblockUserResponse>, I>>(_: I): UnblockUserResponse {
+    const message = createBaseUnblockUserResponse();
+    return message;
+  },
+};
 
 function createBaseGetUserItemsInRequest(): GetUserItemsInRequest {
   return { userIds: [] };
@@ -1049,8 +1133,8 @@ export interface UserService {
   SearchUser(request: SearchUserRequest): Promise<SearchUserResponse>;
   FollowUser(request: FollowUserRequest): Promise<Empty>;
   UnfollowUser(request: UnfollowUserRequest): Promise<Empty>;
-  BlockUser(request: BlockUserRequest): Promise<Empty>;
-  UnblockUser(request: UnblockUserRequest): Promise<Empty>;
+  BlockUser(request: BlockUserRequest): Promise<BlockUserResponse>;
+  UnblockUser(request: UnblockUserRequest): Promise<UnblockUserResponse>;
   ListFollowers(request: ListFollowersRequest): Promise<ListFollowersResponse>;
   ListFollowing(request: ListFollowingRequest): Promise<ListFollowingResponse>;
 }
@@ -1122,16 +1206,16 @@ export class UserServiceClientImpl implements UserService {
     return promise.then((data) => Empty.decode(new _m0.Reader(data)));
   }
 
-  BlockUser(request: BlockUserRequest): Promise<Empty> {
+  BlockUser(request: BlockUserRequest): Promise<BlockUserResponse> {
     const data = BlockUserRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "BlockUser", data);
-    return promise.then((data) => Empty.decode(new _m0.Reader(data)));
+    return promise.then((data) => BlockUserResponse.decode(new _m0.Reader(data)));
   }
 
-  UnblockUser(request: UnblockUserRequest): Promise<Empty> {
+  UnblockUser(request: UnblockUserRequest): Promise<UnblockUserResponse> {
     const data = UnblockUserRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UnblockUser", data);
-    return promise.then((data) => Empty.decode(new _m0.Reader(data)));
+    return promise.then((data) => UnblockUserResponse.decode(new _m0.Reader(data)));
   }
 
   ListFollowers(request: ListFollowersRequest): Promise<ListFollowersResponse> {

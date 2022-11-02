@@ -21,7 +21,6 @@ func main() {
 	mux := runtime.NewServeMux(
 		runtime.WithMetadata(func(ctx context.Context, request *http.Request) metadata.MD {
 			header := request.Header.Get("Authorization")
-			// send all the headers received from the client
 			jwt := strings.Fields(header)[1]
 
 			app := utils.InitializeAppDefault()
@@ -38,7 +37,6 @@ func main() {
 			jwtPayload := strings.Split(jwt, ".")[1]
 
 			log.Printf("Verified ID token: %v\n", token)
-			log.Println(jwtPayload)
 
 			md := metadata.Pairs("x-apigateway-api-userinfo", jwtPayload)
 			return md

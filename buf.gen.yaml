@@ -8,6 +8,11 @@ plugins:
     out: gen/go
     opt:
       - paths=source_relative
+  - name: grpc-gateway
+    out: gen/go
+    opt:
+      - paths=source_relative
+#      - grpc_api_configuration=api-gateway/api_config_http2.yaml
   - remote: buf.build/stephenh/plugins/ts-proto
     out: gen/ts
     opt:

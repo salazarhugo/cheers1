@@ -1,0 +1,8 @@
+type: google.api.Service
+config_version: 3
+
+http:
+  rules:
+    # Party Service
+    - selector: cheers.party.v1.PartyService.CreateParty
+      post: /v1/parties
