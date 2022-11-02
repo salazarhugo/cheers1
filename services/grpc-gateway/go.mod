@@ -3,13 +3,13 @@ module github.com/salazarhugo/cheers1/services/grpc-gateway
 go 1.19
 
 require (
+	github.com/felixge/httpsnoop v1.0.3
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.12.0
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-00010101000000-000000000000
 	google.golang.org/grpc v1.50.1
-	github.com/salazarhugo/cheers1/gen v0.0.0-00010101000000-000000000000
 )
 
 require (
-	github.com/golang/glog v1.0.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	golang.org/x/net v0.0.0-20220909164309-bea034e7d591 // indirect
 	golang.org/x/sys v0.0.0-20220728004956-3c1f35247d10 // indirect
@@ -18,4 +18,4 @@ require (
 	google.golang.org/protobuf v1.28.1 // indirect
 )
 
-replace github.com/salazarhugo/cheers1/gen => ../../gen
+replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go

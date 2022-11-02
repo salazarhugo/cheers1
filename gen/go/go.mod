@@ -1,4 +1,4 @@
-module github.com/salazarhugo/cheers1/gen
+module github.com/salazarhugo/cheers1/gen/go
 
 go 1.19
 

@@ -8,8 +8,7 @@ plugins:
     out: gen/go
     opt:
       - paths=source_relative
-  - name: grpc-gateway
-    out: gen/go
+  - remote: buf.build/stephenh/plugins/ts-proto
+    out: gen/ts
     opt:
       - paths=source_relative
-      - generate_unbound_methods=true

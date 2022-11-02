@@ -18,10 +18,16 @@ service UserService {
   rpc SearchUser (SearchUserRequest) returns (SearchUserResponse);
   rpc FollowUser (FollowUserRequest) returns (google.protobuf.Empty);
   rpc UnfollowUser (UnfollowUserRequest) returns (google.protobuf.Empty);
-  rpc BlockUser (BlockUserRequest) returns (google.protobuf.Empty);
-  rpc UnblockUser (UnblockUserRequest) returns (google.protobuf.Empty);
+  rpc BlockUser (BlockUserRequest) returns (BlockUserResponse);
+  rpc UnblockUser (UnblockUserRequest) returns (UnblockUserResponse);
   rpc ListFollowers (ListFollowersRequest) returns (ListFollowersResponse);
   rpc ListFollowing (ListFollowingRequest) returns (ListFollowingResponse);
+}
+
+message BlockUserResponse {
+}
+
+message UnblockUserResponse {
 }
 
 message GetUserItemsInRequest {

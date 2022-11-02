@@ -4,29 +4,40 @@ import (
 	"context"
 	"crypto/tls"
 	"crypto/x509"
+	"github.com/felixge/httpsnoop"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/metadata"
 	"log"
 	"net"
 	"net/http"
+	"strings"
 )
 
 func main() {
-	mux := runtime.NewServeMux()
+	mux := runtime.NewServeMux(
+		runtime.WithMetadata(func(ctx context.Context, request *http.Request) metadata.MD {
+			header := request.Header.Get("Authorization")
+			// send all the headers received from the client
+			words := strings.Fields(header)
+			log.Println(words)
+			md := metadata.Pairs("x-apigateway-api-userinfo", words[1])
+			return md
+		},
+		))
 
 	systemRoots, err := x509.SystemCertPool()
 	if err != nil {
 		log.Println(err)
-		return
 	}
 
 	transportCredentials := credentials.NewTLS(&tls.Config{
 		RootCAs: systemRoots,
 	})
 
-	err = party.RegisterPartyServiceHandlerFromEndpoint(context.Background(), mux, "localhost:8080",
+	err = party.RegisterPartyServiceHandlerFromEndpoint(context.Background(), mux, "party-service-r3a2dr4u4a-nw.a.run.app:443",
 		[]grpc.DialOption{
 			grpc.WithTransportCredentials(transportCredentials),
 		},
@@ -37,10 +48,10 @@ func main() {
 
 	// Creating a normal HTTP server
 	server := http.Server{
-		Handler: Cors(mux),
+		Handler: withLogger(Cors(mux)),
 	}
 
-	l, err := net.Listen("tcp", ":8081")
+	l, err := net.Listen("tcp", ":8080")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -48,4 +59,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func withLogger(handler http.Handler) http.Handler {
+	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+		m := httpsnoop.CaptureMetrics(handler, writer, request)
+		log.Printf("http[%d]-- %s -- %s\n", m.Code, m.Duration, request.URL.Path)
+	})
 }
