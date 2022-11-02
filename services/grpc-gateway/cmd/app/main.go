@@ -7,6 +7,7 @@ import (
 	"github.com/felixge/httpsnoop"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
+	"github.com/salazarhugo/cheers1/libs/auth/utils"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"
@@ -21,9 +22,25 @@ func main() {
 		runtime.WithMetadata(func(ctx context.Context, request *http.Request) metadata.MD {
 			header := request.Header.Get("Authorization")
 			// send all the headers received from the client
-			words := strings.Fields(header)
-			log.Println(words)
-			md := metadata.Pairs("x-apigateway-api-userinfo", words[1])
+			jwt := strings.Fields(header)[1]
+
+			app := utils.InitializeAppDefault()
+			client, err := app.Auth(ctx)
+			if err != nil {
+				log.Fatalf("error getting Auth client: %v\n", err)
+			}
+
+			token, err := client.VerifyIDToken(ctx, jwt)
+			if err != nil {
+				log.Fatalf("error verifying ID token: %v\n", err)
+			}
+
+			jwtPayload := strings.Split(jwt, ".")[1]
+
+			log.Printf("Verified ID token: %v\n", token)
+			log.Println(jwtPayload)
+
+			md := metadata.Pairs("x-apigateway-api-userinfo", jwtPayload)
 			return md
 		},
 		))
