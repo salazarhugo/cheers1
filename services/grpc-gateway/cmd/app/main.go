@@ -6,7 +6,12 @@ import (
 	"crypto/x509"
 	"github.com/felixge/httpsnoop"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/activity/v1"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/story/v1"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
 	"github.com/salazarhugo/cheers1/libs/auth/utils"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -24,19 +29,19 @@ func main() {
 			jwt := strings.Fields(header)[1]
 
 			app := utils.InitializeAppDefault()
-			client, err := app.Auth(ctx)
-			if err != nil {
-				log.Fatalf("error getting Auth client: %v\n", err)
-			}
+			//client, err := app.Auth(ctx)
+			//if err != nil {
+			//	log.Fatalf("error getting Auth client: %v\n", err)
+			//}
 
-			token, err := client.VerifyIDToken(ctx, jwt)
-			if err != nil {
-				log.Fatalf("error verifying ID token: %v\n", err)
-			}
+			//token, err := client.VerifyIDToken(ctx, jwt)
+			//if err != nil {
+			//	log.Fatalf("error verifying ID token: %v\n", err)
+			//}
 
 			jwtPayload := strings.Split(jwt, ".")[1]
 
-			log.Printf("Verified ID token: %v\n", token)
+			//log.Printf("Verified ID token: %v\n", token)
 
 			md := metadata.Pairs("x-apigateway-api-userinfo", jwtPayload)
 			return md
@@ -52,14 +57,17 @@ func main() {
 		RootCAs: systemRoots,
 	})
 
-	err = party.RegisterPartyServiceHandlerFromEndpoint(context.Background(), mux, "party-service-r3a2dr4u4a-nw.a.run.app:443",
-		[]grpc.DialOption{
-			grpc.WithTransportCredentials(transportCredentials),
-		},
-	)
-	if err != nil {
-		log.Fatal(err)
+	ctx := context.Background()
+	options := []grpc.DialOption{
+		grpc.WithTransportCredentials(transportCredentials),
 	}
+
+	user.RegisterUserServiceHandlerFromEndpoint(ctx, mux, "user-service-r3a2dr4u4a-nw.a.run.app:443", options)
+	party.RegisterPartyServiceHandlerFromEndpoint(ctx, mux, "party-service-r3a2dr4u4a-nw.a.run.app:443", options)
+	post.RegisterPostServiceHandlerFromEndpoint(ctx, mux, "post-service-r3a2dr4u4a-nw.a.run.app:443", options)
+	story.RegisterStoryServiceHandlerFromEndpoint(ctx, mux, "story-service-r3a2dr4u4a-nw.a.run.app:443", options)
+	activity.RegisterActivityServiceHandlerFromEndpoint(ctx, mux, "activity-service-r3a2dr4u4a-nw.a.run.app:443", options)
+	chat.RegisterChatServiceHandlerFromEndpoint(ctx, mux, "chat-service-r3a2dr4u4a-nw.a.run.app:443", options)
 
 	// Creating a normal HTTP server
 	server := http.Server{

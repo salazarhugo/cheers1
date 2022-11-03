@@ -4,7 +4,7 @@
 // - protoc             (unknown)
 // source: cheers/user/v1/user_service.proto
 
-package user
+package v1
 
 import (
 	context "context"
