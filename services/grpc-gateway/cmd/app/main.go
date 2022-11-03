@@ -12,7 +12,6 @@ import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/story/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
-	"github.com/salazarhugo/cheers1/libs/auth/utils"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"
@@ -28,7 +27,7 @@ func main() {
 			header := request.Header.Get("Authorization")
 			jwt := strings.Fields(header)[1]
 
-			app := utils.InitializeAppDefault()
+			//app := utils.InitializeAppDefault()
 			//client, err := app.Auth(ctx)
 			//if err != nil {
 			//	log.Fatalf("error getting Auth client: %v\n", err)

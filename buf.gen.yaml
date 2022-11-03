@@ -12,8 +12,8 @@ plugins:
     out: gen/go
     opt:
       - paths=source_relative
-      - logtostderr=true
-      - standalone=true
+#      - logtostderr=true
+#      - standalone=true
       - grpc_api_configuration=proto/cheers/user/v1/user_service.yaml
   - remote: buf.build/stephenh/plugins/ts-proto
     out: gen/ts

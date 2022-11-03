@@ -15,7 +15,6 @@ import (
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
-	extParty "github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/grpclog"
@@ -32,8 +31,8 @@ var _ = runtime.String
 var _ = utilities.NewDoubleArray
 var _ = metadata.Join
 
-func request_PartyService_CreateParty_0(ctx context.Context, marshaler runtime.Marshaler, client extParty.PartyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extParty.CreatePartyRequest
+func request_PartyService_CreateParty_0(ctx context.Context, marshaler runtime.Marshaler, client PartyServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreatePartyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -49,8 +48,8 @@ func request_PartyService_CreateParty_0(ctx context.Context, marshaler runtime.M
 
 }
 
-func local_request_PartyService_CreateParty_0(ctx context.Context, marshaler runtime.Marshaler, server extParty.PartyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq extParty.CreatePartyRequest
+func local_request_PartyService_CreateParty_0(ctx context.Context, marshaler runtime.Marshaler, server PartyServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq CreatePartyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -70,7 +69,7 @@ func local_request_PartyService_CreateParty_0(ctx context.Context, marshaler run
 // UnaryRPC     :call PartyServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterPartyServiceHandlerFromEndpoint instead.
-func RegisterPartyServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server extParty.PartyServiceServer) error {
+func RegisterPartyServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server PartyServiceServer) error {
 
 	mux.Handle("POST", pattern_PartyService_CreateParty_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -128,15 +127,15 @@ func RegisterPartyServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.S
 // RegisterPartyServiceHandler registers the http handlers for service PartyService to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
 func RegisterPartyServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterPartyServiceHandlerClient(ctx, mux, extParty.NewPartyServiceClient(conn))
+	return RegisterPartyServiceHandlerClient(ctx, mux, NewPartyServiceClient(conn))
 }
 
 // RegisterPartyServiceHandlerClient registers the http handlers for service PartyService
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "extParty.PartyServiceClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "extParty.PartyServiceClient"
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "PartyServiceClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "PartyServiceClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "extParty.PartyServiceClient" to call the correct interceptors.
-func RegisterPartyServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client extParty.PartyServiceClient) error {
+// "PartyServiceClient" to call the correct interceptors.
+func RegisterPartyServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client PartyServiceClient) error {
 
 	mux.Handle("POST", pattern_PartyService_CreateParty_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
