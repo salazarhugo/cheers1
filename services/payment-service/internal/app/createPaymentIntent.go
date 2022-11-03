@@ -35,7 +35,6 @@ func CreatePaymentIntent(c echo.Context) error {
 
 	userId := cc.Get("userId").(string)
 	partyId := cc.QueryParam("partyId")
-	var amount int64 = 0
 
 	paymentIntentReq := make(map[string]int64)
 
@@ -44,22 +43,7 @@ func CreatePaymentIntent(c echo.Context) error {
 		return err
 	}
 
-	tickets := make([]map[string]interface{}, 0, 0)
-
-	for ticketId, quantity := range paymentIntentReq {
-		log.Println(ticketId, quantity)
-		docsnap, err := client.Collection("ticketing").Doc(partyId).Collection("tickets").Doc(ticketId).Get(ctx)
-		if err != nil {
-			log.Println(err)
-			return err
-		}
-		ticketMap := docsnap.Data()
-		var i int64
-		for i = 0; i < quantity; i++ {
-			tickets = append(tickets, ticketMap)
-		}
-		amount += ticketMap["price"].(int64) * quantity
-	}
+	amount, err := calculateTotalPrice(client, paymentIntentReq, userId)
 
 	userDoc, err := client.Collection("stripe_customers").Doc(userId).Get(ctx)
 	if err != nil {
@@ -80,6 +64,7 @@ func CreatePaymentIntent(c echo.Context) error {
 		Customer: &customer.Id,
 	}
 
+	// Create stripe payment intent
 	paymentIntent, err := paymentintent.New(params)
 
 	if err != nil {
@@ -88,6 +73,7 @@ func CreatePaymentIntent(c echo.Context) error {
 		})
 	}
 
+	// Store payment intent
 	ref := client.Collection("orders").Doc(paymentIntent.ID)
 	_, err = ref.Set(ctx, map[string]interface{}{
 		"id":         paymentIntent.ID,
@@ -108,4 +94,31 @@ func CreatePaymentIntent(c echo.Context) error {
 	return c.JSON(http.StatusOK, map[string]interface{}{
 		"clientSecret": paymentIntent.ClientSecret,
 	})
+}
+
+func calculateTotalPrice(
+	client *firestore.Client,
+	paymentIntentReq map[string]int64,
+	partyId string,
+) (int64, error) {
+	var amount int64 = 0
+
+	tickets := make([]map[string]interface{}, 0, 0)
+
+	for ticketId, quantity := range paymentIntentReq {
+		log.Println(ticketId, quantity)
+		docsnap, err := client.Collection("ticketing").Doc(partyId).Collection("tickets").Doc(ticketId).Get(context.Background())
+		if err != nil {
+			log.Println(err)
+			return 0, err
+		}
+		ticketMap := docsnap.Data()
+		var i int64
+		for i = 0; i < quantity; i++ {
+			tickets = append(tickets, ticketMap)
+		}
+		amount += ticketMap["price"].(int64) * quantity
+	}
+
+	return amount, nil
 }

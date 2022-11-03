@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 	"salazar/cheers/payment/auth"
-	"salazar/cheers/payment/endpoints"
+	"salazar/cheers/payment/internal/app"
 	"salazar/cheers/payment/utils"
 )
 
@@ -35,9 +35,9 @@ func main() {
 		log.Printf("defaulting to port %s", port)
 	}
 
-	e.POST("/createPaymentIntent", endpoints.CreatePaymentIntent)
-	e.POST("/handleStripeEvents", endpoints.HandleStripeEvent)
-	e.GET("/ticket/validate", endpoints.ValidateTicket)
+	e.POST("/createPaymentIntent", app.CreatePaymentIntent)
+	e.POST("/handleStripeEvents", app.HandleStripeEvent)
+	e.GET("/ticket/validate", app.ValidateTicket)
 
 	e.Logger.Fatal(e.Start(":" + port))
 }
