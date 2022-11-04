@@ -892,6 +892,7 @@ export const PostResponse = {
 };
 
 export interface PostService {
+  /** Create a new post */
   CreatePost(request: CreatePostRequest): Promise<PostResponse>;
   GetPost(request: GetPostRequest): Promise<PostResponse>;
   UpdatePost(request: UpdatePostRequest): Promise<PostResponse>;
