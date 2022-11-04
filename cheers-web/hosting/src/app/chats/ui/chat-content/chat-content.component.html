@@ -1,0 +1,33 @@
+<div class="chat-content-container">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxLayout="row" fxLayoutAlign="none center">
+            <button mat-icon-button>
+                <mat-icon>chevron_left</mat-icon>
+            </button>
+            <div>
+                <app-user-chip [user]="{name: room.name}"></app-user-chip>
+            </div>
+        </div>
+
+        <div>
+<!--            <app-user-chip [user]="{name: room.name}"></app-user-chip>-->
+        </div>
+    </div>
+
+    <mat-card class="chat-body-container outline" fxLayout="column">
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <img [src]="room.picture ? room.picture : 'assets/default_profile_picture.png' "
+                 ngClass="avatar--extra-large" ngClass.lt-md="avatar--medium" ngClass.lt-sm="avatar--medium"/>
+            <h2>{{room.name}}</h2>
+        </div>
+        <div fxLayout="row">
+            <div class="search-bar" fxLayoutAlign="none center">
+                <input #searchInput placeholder="Send a chat" type="text">
+            </div>
+            <button class="chat-gallery-btn outline" mat-icon-button>
+                <mat-icon>image_outline</mat-icon>
+            </button>
+        </div>
+    </mat-card>
+</div>
+

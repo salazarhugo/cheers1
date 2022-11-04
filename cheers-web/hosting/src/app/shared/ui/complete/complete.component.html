@@ -1,0 +1,22 @@
+<div class="container">
+    <div [ngSwitch]="status">
+        <div *ngSwitchCase="'succeeded'">
+            <mat-card fxLayout="column" fxLayoutAlign="center center">
+                <ng-lottie [options]="options"
+                           style="width: 60px">
+                </ng-lottie>
+                <h1>Payment approved</h1>
+                <button mat-flat-button routerLink="/tickets">See tickets</button>
+            </mat-card>
+        </div>
+        <div *ngSwitchCase="'processing'">
+            <h1>Payment processing. We'll update you when payment is received.</h1>
+        </div>
+        <div *ngSwitchCase="'requires_payment_method'">
+            <h1>Payment failed. Please try another payment method.</h1>
+        </div>
+        <div *ngSwitchCase="'processing'">
+            <h1>Payment is processing</h1>
+        </div>
+    </div>
+</div>

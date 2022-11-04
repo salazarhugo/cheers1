@@ -1,0 +1,54 @@
+<mat-card [routerLink]="['/p', party.id]" class="party" matRipple>
+    <div class="party-image-container">
+        <img (error)="onImgError($event)" *ngIf="party.bannerUrl" [src]="party.bannerUrl"
+             class="party-image"/>
+        <button mat-icon-button [mat-menu-trigger-for]="menu" (click)="$event.stopPropagation()">
+            <mat-icon>more_horiz</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+                <mat-icon>share_outline</mat-icon>
+                Share
+            </button>
+            <button mat-menu-item>
+                <mat-icon>mail</mat-icon>
+                Invite
+            </button>
+            <button mat-menu-item (click)="cancelParty(party.id)">
+                <mat-icon>close</mat-icon>
+                Cancel Party
+            </button>
+        </mat-menu>
+    </div>
+
+    <div class="party-body" fxLayout="column" fxLayoutAlign="space-between none">
+        <div class="party-header">
+            <span class="party-date">{{party.startDate | date}}</span>
+            <span *ngIf="party.endDate != 0" class="party-date">- {{party.endDate | date}}</span>
+            <h1 class="party-title"> {{party.name}} </h1>
+            <div class="party-location">
+                <span class="party-location"> {{party.locationName}}</span>
+            </div>
+            <div class="party-interested-going">
+                <span *ngIf="party.interestedCount > 0">{{party.interestedCount}} interested</span>
+                <span *ngIf="party.goingCount > 0" class="party-date">{{party.goingCount}} going</span>
+            </div>
+        </div>
+        <div class="party-footer" fxLayout="column">
+            <div class="party-footer-buttons" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="row" fxLayoutAlign="none center" fxLayoutGap="12px">
+                    <button (click)="$event.stopPropagation()" fxFlex mat-flat-button>
+                        <mat-icon>star_outline</mat-icon>
+                        Interested
+                    </button>
+                    <button (click)="$event.stopPropagation()" mat-flat-button>
+                        <mat-icon>share</mat-icon>
+                    </button>
+                    <!--                <button (click)="onDeleteParty()" mat-icon-button>-->
+                    <!--                    <mat-icon>delete_outline</mat-icon>-->
+                    <!--                </button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-card>

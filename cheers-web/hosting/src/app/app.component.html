@@ -1,0 +1,5 @@
+<router-outlet *ngIf="!isLoading"></router-outlet>
+
+<div *ngIf="isLoading" class="loading-wrapper" fxLayoutAlign="center center">
+    <mat-spinner diameter="40" strokeWidth="2"></mat-spinner>
+</div>

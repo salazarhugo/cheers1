@@ -1,0 +1,49 @@
+<mat-toolbar class="app-toolbar" fxLayoutAlign="space-between center">
+    <div fxLayout="row" fxLayoutAlign="none center" style="z-index: 4">
+        <img alt="avatar" height="50" src="assets/cheers-logo.png" width="50">
+        <img height="34" src="assets/img/cheers-logo-white.svg">
+
+        <mat-menu #menu="matMenu" class="search-menu" fxLayoutAlign="none none" xPosition="before">
+            <div *ngIf="$recentSearches | async as recentUsers">
+                <h3 style="padding: 16px">Recent searches</h3>
+                <div *ngFor="let user of recentUsers" [routerLink]="['u', user.username]" class="user-item"
+                     fxLayoutAlign="none" mat-menu-item>
+                    <img (error)="onImgError($event)" [src]="user.picture" class="avatar--small">
+                    <div class="user-text" fxLayout="column">
+                        <span class="username">{{user.username}}</span>
+                        <span class="name">{{user.name}}</span>
+                    </div>
+                </div>
+            </div>
+            <div (click)="onUserClick(user)" *ngFor="let user of ($searchResults | async)"
+                 [routerLink]="['u', user.username]" class="user-item"
+                 fxLayoutAlign="none" mat-menu-item>
+                <img (error)="onImgError($event)" [src]="user.picture" class="avatar--small">
+                <div class="user-text" fxLayout="column">
+                    <span class="username">{{user.username}}</span>
+                    <span class="name">{{user.name}}</span>
+                </div>
+            </div>
+        </mat-menu>
+    </div>
+
+    <div class="search-bar" fxLayoutAlign="none center">
+        <mat-icon>search</mat-icon>
+        <input #searchInput [matMenuTriggerFor]="menu" placeholder="Search Cheers" type="text" class="cheers-input">
+         <button mat-button *ngIf="searchInput.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchInput.value=''">
+            <mat-icon>close</mat-icon>
+          </button>
+    </div>
+
+    <div *ngIf="$user | async as user">
+        <app-user-chip [user]="user" [mat-menu-trigger-for]="menu"></app-user-chip>
+        <mat-menu #menu>
+            <button mat-menu-item>
+                <span>Settings</span>
+            </button>
+            <button mat-menu-item routerLink="profile">
+                <span>Profile</span>
+            </button>
+        </mat-menu>
+    </div>
+</mat-toolbar>

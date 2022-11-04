@@ -1,0 +1,37 @@
+<div class="main" fxLayout="column" fxLayoutAlign="space-between">
+    <div class="parties-container">
+        <header class="party-feed-header">
+            <mat-chip-list class="example-chip" >
+                <mat-chip class="example-box" *ngFor="let chip of chips">
+                    {{chip}}
+                </mat-chip>
+            </mat-chip-list>
+        </header>
+        <section *ngIf="$myParties | async as parties" class="your-parties m0">
+            <div fxLayoutAlign="space-between center">
+                <h2 class="title">Your parties</h2>
+                <div class="parties-header">
+                    <button color="primary" mat-flat-button routerLink="/parties/create">Create New Party</button>
+                </div>
+            </div>
+
+            <div fxLayout="row wrap" fxLayoutAlign="flex-start" fxLayoutGap="16px">
+                <ng-container *ngFor="let party of parties">
+                    <app-party-item [party]="party"></app-party-item>
+                </ng-container>
+            </div>
+        </section>
+        <section *ngIf="$parties | async as parties">
+            <h2>Discover parties</h2>
+            <div *ngIf="parties.length == 0" fxLayout="column" fxLayoutAlign="center center">
+                <h1> No parties at the moment</h1>
+                <h3> Follow people to start seeing parties they share</h3>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="flex-start" fxLayoutGap="16px">
+                <ng-container *ngFor="let party of parties">
+                    <app-party-item [party]="party"></app-party-item>
+                </ng-container>
+            </div>
+        </section>
+    </div>
+</div>

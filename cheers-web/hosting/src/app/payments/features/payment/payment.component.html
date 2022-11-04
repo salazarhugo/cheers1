@@ -1,0 +1,51 @@
+<div class="payment-container">
+    <img alt="avatar" height="50" src="../../../../assets/cheers-logo.png" width="50" routerLink="/">
+
+    <div class="payment-body" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="32px" *ngIf="paymentIntent" fxLayoutAlign="center center">
+        <div>
+            <h1>Payment informations</h1>
+            <legend>Veuillez saisir les informations de votre paiement</legend>
+            <app-elements *ngIf="clientSecret && paymentIntent" [clientSecret]="clientSecret" [amount]="paymentIntent.amount"></app-elements>
+            <div>
+                <mat-divider></mat-divider>
+            </div>
+            <div>
+                <p class="threeDSWarningMessage" style="white-space: initial">
+                    Selon votre établissement bancaire,<br> vous pourrez être redirigé vers la page d’authentification <br> de votre
+                    banque avant la validation de votre paiement.
+                </p>
+            </div>
+        </div>
+
+        <mat-card class="payment-body--left" fxFlex="30">
+            <h2>Informations sur la transaction</h2>
+            <h3>LW-CHEERS</h3>
+            <mat-divider></mat-divider>
+            <div class="payment-info-item">
+                <h3 class="mat-h3">Référence de la transaction</h3>
+                <h3>{{paymentIntent.id}}</h3>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="payment-info-item">
+                <h3 class="mat-h3">Status</h3>
+                <h3>{{paymentIntent.status}}</h3>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="payment-info-item">
+                <h3 class="mat-h3">Amount</h3>
+                <h3>{{paymentIntent.amount / 100}}</h3>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="payment-info-item">
+                <h3 class="mat-h3">Currency</h3>
+                <h3>{{paymentIntent.currency.toUpperCase()}}</h3>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="payment-info-item" *ngIf="paymentIntent.description">
+                <h3 class="mat-h3">Description</h3>
+                <h3>{{paymentIntent.description}}</h3>
+            </div>
+        </mat-card>
+
+    </div>
+</div>

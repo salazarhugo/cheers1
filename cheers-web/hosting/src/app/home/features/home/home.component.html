@@ -1,0 +1,56 @@
+<div class="main" fxLayout="row" fxLayoutAlign="space-between">
+
+    <div class="container-left" fxHide.lt-md>
+    </div>
+
+    <div class="container">
+
+        <mat-card *ngIf="story$ | async as stories" class="story-container" fxLayout="row" fxLayoutGap="16px">
+          <a class="story" fxLayout="column" fxLayoutAlign="none center">
+            <img (error)="onImgError($event)" src="../../../../assets/default_profile_picture.png" class="story-avatar">
+            <span class="story-username">Your story</span>
+          </a>
+            <ng-container *ngFor="let story of stories">
+                <a [routerLink]="['/story-feed', story.id]" class="story" fxLayout="column" fxLayoutAlign="none center">
+                    <img (error)="onImgError($event)" [ngClass]="{'story-avatar--seen' : !story.seen}"
+                         [src]="story.profilePictureUrl" class="story-avatar">
+                    <span class="story-username">{{story.username}}</span>
+                </a>
+            </ng-container>
+        </mat-card>
+
+        <mat-card *ngIf="this.$user | async as user" class="home-post-input">
+            <div fxFlexFill fxLayoutAlign="none center" fxLayoutGap="16px" style="padding-bottom: 16px">
+                <img (error)="onImgError($event)" [routerLink]="['/u', user.id]" [src]="user.picture"
+                     class="avatar--small">
+                <input [formControl]="tweet" class="form-control" placeholder="What's happening?" style="margin: 0"
+                       type="text">
+            </div>
+            <mat-divider></mat-divider>
+            <div fxLayoutAlign="space-between" style="padding-top: 16px">
+                <span></span>
+                <button [disabled]="!tweet.valid" color="primary" mat-flat-button (click)="createPost()">Post</button>
+            </div>
+        </mat-card>
+
+        <div *ngIf="$posts | async as posts">
+            <div *ngIf="posts.length == 0" fxLayoutAlign="center center" fxLayout="column">
+                <h1> Welcome to Cheers </h1>
+                <h3> Follow people to start seeing the photos and videos they share</h3>
+            </div>
+            <ng-container *ngFor="let post of posts">
+                <app-post [postResponse]="post"></app-post>
+            </ng-container>
+        </div>
+    </div>
+
+    <div class="container-right" fxHide.lt-md>
+        <mat-card>
+            <span class="card-title">Trends for you</span>
+<!--            <div *ngFor="let a of [].constructor(100)">l-->
+<!--                <span>Macron</span>-->
+<!--            </div>-->
+        </mat-card>
+    </div>
+
+</div>

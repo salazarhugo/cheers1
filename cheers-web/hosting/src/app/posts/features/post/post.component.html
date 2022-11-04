@@ -1,0 +1,59 @@
+<mat-card *ngIf="postResponse.post && postResponse.user" fxLayout="column" class="post">
+    <div class="post-header" fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxLayout="row center">
+            <img (error)="onImgError($event)" [src]="postResponse.user.picture" class="avatar--small"
+                 [routerLink]="['/u', postResponse.user.id]">
+            <div class="post-header-text" fxLayout="column" fxLayoutAlign="center none">
+                <div fxLayout="row" fxLayoutAlign="none center">
+                    {{postResponse.user.username}}
+                    <img *ngIf="postResponse.user.verified" height="14" src="../../../../assets/ic_verified.png"
+                         style="margin: 0 4px" width="14"/>
+                    <span *ngIf="postResponse.post.drink && postResponse.post.drink != 'NONE'"> is drinking {{postResponse.post.drink.toLowerCase()}}</span>
+                </div>
+                <div *ngIf="postResponse.post.locationName"> {{postResponse.post.locationName}}</div>
+            </div>
+        </div>
+        <button mat-icon-button>
+            <mat-icon>more_vert</mat-icon>
+        </button>
+    </div>
+    <div class="post-body" fxLayout="column">
+        <span class="post-caption">{{postResponse.post.caption}}</span>
+        <img *ngIf="postResponse.post.photos && postResponse.post.photos.length > 0" [src]="postResponse.post.photos[0]"
+             class="post-image"/>
+    </div>
+    <div class="post-footer" fxLayout="column">
+        <div class="post-footer-buttons" fxLayout="row" fxLayoutAlign="space-between center">
+            <div>
+                <button (click)="onToggleLike()" mat-icon-button>
+                    <mat-icon>{{(postResponse.hasLiked) ? 'favorite' : 'favorite_border' }}</mat-icon>
+                </button>
+                <button mat-icon-button>
+                    <mat-icon>chat_bubble_outline</mat-icon>
+                </button>
+                <button mat-icon-button>
+                    <mat-icon>share_outline</mat-icon>
+                </button>
+            </div>
+            <div *ngIf="postResponse.post.drunkenness > 0">
+                <button mat-icon-button>
+                    <mat-icon>water_drop_outline</mat-icon>
+                </button>
+                <span> {{postResponse.post.drunkenness}} </span>
+            </div>
+        </div>
+        <div class="post-time">
+            <span class="mat-caption">{{postResponse.post?.createTime! | date}}</span>
+        </div>
+        <div>
+            <mat-divider></mat-divider>
+        </div>
+        <div fxLayoutAlign="none center" class="post-comment">
+            <mat-icon>mood_outline</mat-icon>
+            <textarea aria-label="Add a comment…" placeholder="Add a comment…" class="post-comment-input"
+                      autocomplete="off" autocorrect="off" style="height: 18px !important;"
+                      [(ngModel)]="comment"></textarea>
+            <button mat-button color="primary" [disabled]="comment.length == 0">Post</button>
+        </div>
+    </div>
+</mat-card>

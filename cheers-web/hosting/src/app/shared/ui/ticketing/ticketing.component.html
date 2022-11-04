@@ -1,0 +1,145 @@
+<div class="ticketing-container" fxLayout="column">
+    <div *ngIf="$party | async as party" class="party" fxLayout="column">
+        <div class="ticketing-banner-container" fxLayoutAlign="center center">
+            <img [src]="party.bannerUrl" alt="party banner" class="ticketing-banner">
+        </div>
+
+        <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between" class="ticketing-body-container">
+            <div fxFlex="75">
+                <mat-card class="ticketing-header" fxLayoutAlign="center center" fxLayout="column">
+                    <h1> {{party.name}} </h1>
+                    <div fxLayout="row">
+                        <mat-icon>event</mat-icon>
+                        <h3> {{party.startDate | date}}</h3>
+                    </div>
+                </mat-card>
+
+                <mat-card class="ticketing-body" fxLayout="column" fxLayoutGap="16px">
+
+                    <mat-stepper #stepper linear style="background: transparent">
+                        <mat-step [editable]="true">
+                            <ng-template matStepLabel>Choice of tickets</ng-template>
+                            <form [formGroup]="ticketingForm" fxLayoutGap="16px" fxLayout="column">
+                                <div *ngFor="let pack of tickets;let last=last" class="ticketing-pack"
+                                     fxLayout="column">
+                                    <div fxLayoutAlign="space-between center">
+                                        <div>
+                                            <h2>{{pack.name}}</h2>
+                                            <h3>{{pack.description}}</h3>
+                                        </div>
+                                        <div fxLayout="row" fxLayoutAlign="none center" fxLayoutGap="60px">
+                                            <h1>{{pack.price / 100}} $</h1>
+                                            <div fxLayout="row">
+                                                <button (click)="decrement(pack.id)" mat-stroked-button>
+                                                    <mat-icon>remove</mat-icon>
+                                                </button>
+                                                <input class="quantity-input" matInput placeholder="Ex. Pizza"
+                                                       [formControlName]="pack.id" style="width: 50px">
+                                                <button (click)="increment(pack.id)" mat-stroked-button>
+                                                    <mat-icon>add</mat-icon>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="ticketing-total" fxLayoutAlign="end center">
+                                <h1 style="margin: 0">Total <b>{{this.total / 100}} $</b></h1>
+                            </div>
+                            <div fxLayoutAlign="end">
+                                <button [disabled]="this.total == 0" class="ticketing-next" color="primary"
+                                        mat-flat-button
+                                        matStepperNext>Next
+                                </button>
+                            </div>
+                        </mat-step>
+
+                        <mat-step [editable]="true">
+                            <ng-template matStepLabel>Billing information</ng-template>
+                            <div *ngIf="afAuth.user | async as user; else login">
+                                Logged in as {{user.email}}.
+                            </div>
+                            <ng-template #login>
+                                Log in for a faster experience.
+                            </ng-template>
+                            <form [formGroup]="userForm">
+                                <div>
+                                    <mat-form-field appearance="outline" class="edit-input">
+                                        <mat-label>Reservation name</mat-label>
+                                        <input formControlName="name" matInput type="text">
+                                    </mat-form-field>
+                                </div>
+                                <mat-form-field appearance="outline" class="edit-input">
+                                    <mat-label>Email</mat-label>
+                                    <input formControlName="email" matInput type="text">
+                                </mat-form-field>
+                            </form>
+                        </mat-step>
+
+                        <mat-step>
+                            <ng-template matStepLabel>Recap</ng-template>
+                            <div class="ticketing-recap-title">
+                                <h1 style="margin: 0">Recap</h1>
+                            </div>
+                            <h2>Tickets and options</h2>
+                            <mat-divider></mat-divider>
+                            <div *ngFor="let pack of tickets;let last=last" class="ticketing-recap" fxLayout="column">
+                                <div *ngIf="this.ticketingForm.get(pack.id)?.value != 0"
+                                     fxLayoutAlign="space-between center">
+                                    <div fxLayout="column">
+                                        {{pack.name}}
+                                        <h1>{{pack.price / 100}} $</h1>
+                                    </div>
+                                    <div fxLayout="column">
+                                        Quantity
+                                        <h1>{{this.ticketingForm.get(pack.id)?.value}}</h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-divider></mat-divider>
+                            <div class="ticketing-total" fxLayoutAlign="end center">
+                                <h1 style="margin: 0">Total: <b>{{this.total / 100}} $</b></h1>
+                            </div>
+                            <div class="ticketing-terms">
+                                <mat-checkbox [(ngModel)]="hasAcceptedTerms">
+                                    I accept the General Conditions of Use of the service and I have read the
+                                    confidentiality charter *
+                                </mat-checkbox>
+                                <p>* Mandatory field</p>
+                            </div>
+                            <div fxLayoutAlign="end">
+                                <button (click)="checkout()" color="primary" mat-flat-button
+                                        [disabled]="!hasAcceptedTerms" class="ticketing-next">Checkout
+                                </button>
+                            </div>
+                        </mat-step>
+                    </mat-stepper>
+                </mat-card>
+            </div>
+
+            <div class="ticketing-body--right" fxFlex="25">
+                <mat-card>
+                    <h2>Share Event</h2>
+                </mat-card>
+
+                <mat-card class="margin-top">
+                    <h2>{{party.locationName}}</h2>
+                </mat-card>
+
+                <mat-card class="margin-top">
+                    <h2>Plateforme de paiement 100% sécurisée</h2>
+                    <p>
+                        Toutes les informations bancaires pour traiter ce paiement sont totalement sécurisées. Grâce au
+                        cryptage SSL de vos données bancaires, vous êtes assurés de la fiabilité de vos transactions sur
+                        HelloAsso.
+                    </p>
+                    <div class="CardSecurity--PaymentMethods" fxLayout>
+                        <img alt="VISA" loading="lazy" src="../../../../assets/img/logo-visa.svg">
+                        <img alt="MasterCard" loading="lazy" src="../../../../assets/img/logo-mastercard.svg">
+                        <img alt="Carte Bleue" loading="lazy" src="../../../../assets/img/logo-cb.svg">
+                        <img alt="PCI-DSS" loading="lazy" src="../../../../assets/img/logo-pci.94cad3e.png"></div>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>

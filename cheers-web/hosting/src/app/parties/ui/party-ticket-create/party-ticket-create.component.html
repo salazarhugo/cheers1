@@ -1,0 +1,42 @@
+<form [formGroup]="ticketForm">
+    <header fxLayoutAlign="space-between center">
+        <h2>Add Tickets</h2>
+        <button mat-button>
+            <span>Learn more</span>
+        </button>
+    </header>
+    <mat-divider></mat-divider>
+    <section fxLayout="column" fxLayoutGap="16px">
+        <mat-form-field appearance="outline" class="edit-input">
+            <mat-label>Name</mat-label>
+            <input formControlName="name" matInput type="text">
+            <mat-error *ngIf="name?.errors?.['maxlength']">
+                Name must be less than 50 characters long.
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="edit-input">
+            <mat-label>Available quantity</mat-label>
+            <input formControlName="quantity" matInput type="number">
+            <mat-error *ngIf="quantity?.errors?.['max'] || quantity?.errors?.['min']">
+                Quantity must be between 1 and 500,000.
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="edit-input">
+            <mat-label>Price</mat-label>
+            <input formControlName="price" matInput type="number">
+            <mat-error *ngIf="ticketForm.get('price')?.errors?.['max']">
+                Price must be less than 1,000,000
+            </mat-error>
+        </mat-form-field>
+        <mat-slide-toggle>Free</mat-slide-toggle>
+        <mat-form-field appearance="outline" class="edit-input">
+            <mat-label>Description</mat-label>
+            <input formControlName="description" matInput type="text">
+        </mat-form-field>
+    </section>
+    <mat-divider></mat-divider>
+    <footer fxLayoutAlign="space-around center">
+        <button (click)="onCancel.emit()" mat-flat-button>Cancel</button>
+        <button (click)="onSave()" mat-flat-button>Save</button>
+    </footer>
+</form>

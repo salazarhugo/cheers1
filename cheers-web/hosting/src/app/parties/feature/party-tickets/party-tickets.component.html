@@ -1,0 +1,37 @@
+<!--<mat-sidenav-container style="margin-top: 56px">-->
+
+<mat-sidenav-container style="margin-top: 56px">
+    <mat-sidenav #sidenav class="mat-elevation-z6" fixedInViewport="true" fixedTopGap="56" mode="side" opened
+                 position="end">
+        <app-party-ticket-create (onCancel)="sidenav.close()"></app-party-ticket-create>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <div *ngIf="this.$tickets | async as tickets;" class="container">
+            <div *ngIf="tickets.length > 0" class="tickets-container">
+                <h1>Tickets</h1>
+                <div style="padding-top: 16px">
+                    <button (click)="sidenav.open()" color="primary" mat-flat-button type="button">Add tickets</button>
+                </div>
+                <div *ngFor="let ticket of tickets" fxLayout="row" fxLayoutGap="16px" class="ticket-list-container">
+                    <app-ticket-item (onDelete)="deleteTicket($event)" [ticket]="ticket"></app-ticket-item>
+                    <mat-divider></mat-divider>
+                </div>
+            </div>
+            <div *ngIf="tickets.length == 0" class="empty-tickets-container" fxLayout="column"
+                 fxLayoutAlign="center center">
+                <img height="100" src="assets/img/tickets.svg" style="color: white">
+                <h2>Let's create tickets</h2>
+                <p class="empty-tickets-text">
+                    Create a section if you want to sell multiple ticket types that share the same inventory. i.e.
+                    Floor,
+                    Mezzanine.
+                </p>
+                <div fxLayoutGap="16px" style="padding-top: 16px">
+                    <button mat-flat-button type="button">Create a section</button>
+                    <button (click)="sidenav.open()" color="primary" mat-flat-button type="button">Add tickets</button>
+                </div>
+            </div>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

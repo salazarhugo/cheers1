@@ -1,0 +1,8 @@
+<a class="chip secondary-container" fxLayoutAlign="none center" matRipple>
+    <div fxLayoutAlign="none center">
+        <img (error)="onImgError($event)" [src]="user.picture" class="avatar--small toolbar-avatar">
+        <div>
+            <span class="on-secondary-container chip-name">{{user.name}}</span>
+        </div>
+    </div>
+</a>

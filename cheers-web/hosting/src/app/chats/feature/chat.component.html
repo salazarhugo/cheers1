@@ -1,0 +1,21 @@
+<mat-sidenav-container *ngIf="$rooms | async as rooms">
+    <mat-sidenav fixedInViewport="true" fixedTopGap="56" mode="side" opened>
+        <div fxLayoutAlign="space-between center">
+            <button mat-icon-button>
+                <mat-icon>settings</mat-icon>
+            </button>
+            <img alt="avatar" height="50" src="../../../assets/cheers-logo.png" width="50">
+            <button mat-icon-button>
+                <mat-icon>chat_bubble</mat-icon>
+            </button>
+        </div>
+        <mat-list role="list">
+            <div *ngFor="let room of rooms" fxLayout="column">
+                <app-room-item [room]="room"></app-room-item>
+            </div>
+        </mat-list>
+    </mat-sidenav>
+    <mat-sidenav-content *ngIf="$room | async as room" fxLayout="column">
+        <app-chat-content [room]="room"></app-chat-content>
+    </mat-sidenav-content>
+</mat-sidenav-container>

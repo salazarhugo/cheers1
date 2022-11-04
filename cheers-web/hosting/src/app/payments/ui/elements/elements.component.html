@@ -1,0 +1,12 @@
+<form (submit)="handleForm($event)" class="element" fxLayout="column" fxLayoutAlign="none start">
+
+    <div #paymentElement fxFill>
+        <!--Stripe.js injects the Payment Element-->
+    </div>
+
+    <p>{{ cardErrors }}</p>
+
+    <button *ngIf="!isLoading" color="primary" fxFill mat-flat-button style="margin-top: 16px">Buy for
+        ${{ amount / 100 | number }}</button>
+    <mat-spinner *ngIf="isLoading" [diameter]="50" [strokeWidth]="2" style="padding: 22px"></mat-spinner>
+</form>

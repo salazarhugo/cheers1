@@ -1,0 +1,55 @@
+<div class="edit-container" fxLayoutAlign="center center">
+    <div *ngIf="$user | async as user" class="edit" fxLayout="column">
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <img (click)="openFileChooser()"
+                 [src]="profileForm.get('picture')?.value ? profileForm.get('picture')?.value: 'assets/default_profile_picture.png' "
+                 class="avatar--large"/>
+            <input (change)="addAttachment($event)" accept="image/*" class="hidden" id="upload-file"
+                   name="upload-file" ngf-max-size="2MB" type="file">
+            <div style="margin-left: 16px">
+                <h2>{{user.username}}</h2>
+                <h4>Change profile picture</h4>
+            </div>
+        </div>
+
+        <form (ngSubmit)="onSubmit()" [formGroup]="profileForm" style="margin-top: 16px">
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <h3>Name</h3>
+                <mat-form-field appearance="fill" class="edit-input">
+                    <mat-label>Name</mat-label>
+                    <input [value]="user.name" formControlName="name" matInput type="text">
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <h3>Email</h3>
+                <mat-form-field appearance="fill" class="edit-input">
+                    <mat-label>Email</mat-label>
+                    <input [value]="user.email" formControlName="email" matInput type="email">
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <h3>Username</h3>
+                <mat-form-field appearance="fill" class="edit-input">
+                    <mat-label>Username</mat-label>
+                    <input [value]="user.username" formControlName="username" matInput type="text">
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <h3>Website</h3>
+                <mat-form-field appearance="fill" class="edit-input">
+                    <mat-label>Website</mat-label>
+                    <input [value]="user.website" formControlName="website" matInput type="text">
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <h3>Bio</h3>
+                <mat-form-field appearance="fill" class="edit-input">
+                    <mat-label>Bio</mat-label>
+                    <input [value]="user.bio" formControlName="bio" matInput type="text">
+                </mat-form-field>
+            </div>
+            <button *ngIf="!isLoading" color="primary" mat-flat-button>Submit</button>
+            <mat-spinner *ngIf="isLoading"></mat-spinner>
+        </form>
+    </div>
+</div>

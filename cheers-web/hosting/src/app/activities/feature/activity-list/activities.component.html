@@ -1,0 +1,12 @@
+<h2>Notifications</h2>
+
+<h2>This week</h2>
+<div>
+    <div *ngFor="let activity of activities" fxLayout="column">
+        <app-activity-item [activity]="activity"></app-activity-item>
+    </div>
+    <mat-divider></mat-divider>
+    <div *ngFor="let activity of activities" fxLayout="column">
+        <app-activity-item [activity]="activity"></app-activity-item>
+    </div>
+</div>

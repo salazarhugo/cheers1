@@ -1,0 +1,27 @@
+export class Post {
+      id: string = ""
+      authorId: string = ""
+      caption: string = ""
+      username: string = ""
+      verified: boolean = false
+      profilePictureUrl: string = ""
+      created: number = 0
+      relativeTime: string = ""
+      likes: number = 0
+      liked: boolean = false
+      drink: string = ""
+      comments: number = 0
+      shares: number = 0
+      privacy: string = "FRIENDS"
+      photos: string[] = []
+      videoUrl: string = ""
+      videoThumbnailUrl: string = ""
+      drunkenness: number = 0
+      latitude: number = 0.0
+      longitude: number = 0.0
+      locationName: string = ""
+      allowJoin: boolean = true
+      tagUsersId: string[] = []
+      type: string = ""
+      accountId: string = ""
+}

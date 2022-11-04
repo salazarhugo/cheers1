@@ -1,0 +1,7 @@
+<div [routerLink]="['u', activity.text]" class="user-item" fxLayoutAlign="none">
+    <img (error)="onImgError($event)" [src]="activity.picture" class="avatar--small">
+    <div class="user-text" fxLayout="column center">
+<!--        <span class="username">{{user.username}}</span>-->
+        <span class="name">{{activity.text}}</span>
+    </div>
+</div>

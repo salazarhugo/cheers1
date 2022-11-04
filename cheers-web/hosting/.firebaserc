@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "cheers-a275e"
+  },
+  "targets": {
+    "cheers-a275e": {
+      "hosting": {
+        "main": [
+          "cheers-a275e"
+        ],
+        "cheers": [
+          "web-cheers"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

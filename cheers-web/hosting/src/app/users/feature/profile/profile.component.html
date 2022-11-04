@@ -1,0 +1,37 @@
+<div class="profile-container" fxLayout="column">
+
+    <div *ngIf="$user | async as user">
+        <app-profile-header [user]="user">
+        </app-profile-header>
+    </div>
+
+    <div fxLayout="row">
+        <button mat-flat-button fxFlex routerLink="/u/edit">Edit profile</button>
+        <button mat-icon-button (click)="onSignOut()">
+            <mat-icon>logout</mat-icon>
+        </button>
+    </div>
+
+    <mat-tab-group>
+
+        <mat-tab label="Posts">
+            <div *ngIf="$posts | async as posts">
+                <ng-container *ngFor="let post of posts">
+                    <app-post [postResponse]="post"></app-post>
+                </ng-container>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Events">
+            <div *ngIf="$parties | async as events">
+                <ng-container *ngFor="let event of events">
+                    <app-party-item [party]="event"></app-party-item>
+                </ng-container>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Tags"> Content 3</mat-tab>
+
+    </mat-tab-group>
+
+</div>

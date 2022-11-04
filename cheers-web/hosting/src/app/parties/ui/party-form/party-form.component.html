@@ -1,0 +1,144 @@
+<mat-stepper #stepper [linear]="true" style="background: transparent">
+    <mat-step [stepControl]="partyForm">
+        <h2>Basic Info</h2>
+        <div *ngIf="$user | async as user" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 16px;">
+            <img [src]="user.picture ? user.picture : 'assets/default_profile_picture.png' "
+                 class="avatar--small"/>
+            <div fxLayout="column" fxLayoutAlign="center none" style="margin-left: 16px;">
+                <h3 style="margin: 0">{{user.name}}</h3>
+                <h5 style="margin: 0">Host -- Your profile</h5>
+            </div>
+        </div>
+
+        <form (ngSubmit)="submit()" [formGroup]="partyForm" style="margin-top: 16px">
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <mat-form-field appearance="outline" class="edit-input" fxFill>
+                    <mat-label>Party name</mat-label>
+                    <input formControlName="name" matInput type="text">
+                </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <mat-form-field appearance="outline" class="edit-input" fxFill>
+                    <mat-label>Description</mat-label>
+                    <input formControlName="description" matInput type="text">
+                </mat-form-field>
+            </div>
+            <div>
+                <button color="primary" mat-flat-button matStepperNext type="button">Next</button>
+            </div>
+            <mat-spinner *ngIf="isLoading"></mat-spinner>
+        </form>
+    </mat-step>
+
+    <mat-step>
+        <h2> Date and time </h2>
+        <form (ngSubmit)="submit()" [formGroup]="partyForm" style="margin-top: 16px">
+            <div fxLayout="row" fxLayoutAlign="none center" fxLayoutGap="16px">
+                <mat-form-field appearance="outline" class="edit-input">
+                    <mat-label>Start date</mat-label>
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <input [matDatepicker]="picker" formControlName="startDate" matInput>
+                    <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="edit-input">
+                    <mat-label>Start time</mat-label>
+                    <input formControlName="startTime" matInput type="text">
+                </mat-form-field>
+            </div>
+            <div *ngIf="hasEndDate" fxLayout="row" fxLayoutAlign="none center" fxLayoutGap="16px">
+                <mat-form-field appearance="outline" class="edit-input">
+                    <mat-label>End date</mat-label>
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <input [matDatepicker]="picker" formControlName="endDate" matInput>
+                    <mat-datepicker-toggle [for]="picker" matSuffix></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="edit-input">
+                    <mat-label>End time</mat-label>
+                    <input formControlName="startTime" matInput type="text">
+                </mat-form-field>
+            </div>
+            <div style="padding: 16px 0">
+                <button (click)="hasEndDate = !hasEndDate" mat-button type="button">
+                    <mat-icon *ngIf="hasEndDate">remove</mat-icon>
+                    <mat-icon *ngIf="!hasEndDate">add</mat-icon>
+                    End date and time
+                </button>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <mat-form-field appearance="outline">
+                    <mat-label>Privacy</mat-label>
+                    <mat-select formControlName="privacy">
+                        <mat-option *ngFor="let privacy of privacyList" [value]="privacy">
+                            {{privacy}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div>
+                <button color="primary" mat-flat-button matStepperNext type="button">Next</button>
+            </div>
+        </form>
+    </mat-step>
+
+    <mat-step>
+        <h2> Location </h2>
+        <h3> Add a physical location for people to join your event. </h3>
+        <div style="margin-bottom: 16px">
+            <mat-button-toggle-group #group="matButtonToggleGroup" value="venue" name="fontStyle"
+                                     aria-label="Font Style">
+                <mat-button-toggle value="venue">Venue</mat-button-toggle>
+                <mat-button-toggle value="tobeannouced">To be announced</mat-button-toggle>
+            </mat-button-toggle-group>
+        </div>
+
+        <div [hidden]="group.value != 'venue'">
+            <mat-form-field appearance="outline">
+                <mat-label>Location</mat-label>
+                <mat-hint> Eastern European Summer Time (GMT+3)</mat-hint>
+                <mat-icon matSuffix>location_on</mat-icon>
+                <input #searchInput [matAutocomplete]="auto" matInput placeholder="Include a place or address"
+                       type="text">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
+                                  (optionSelected)="selectPlace($event.option.value)">
+                    <mat-option *ngFor="let option of locationResults | async" [value]="option">
+                        {{option.place_name}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+
+        <div style="padding-top: 16px">
+            <button [disabled]="searchInput.value.length == 0 && group.value == 'venue'" color="primary" mat-flat-button
+                    matStepperNext type="button">
+                Next
+            </button>
+        </div>
+    </mat-step>
+
+    <!--    <mat-step>-->
+    <!--        <h1>Ticketing</h1>-->
+    <!--    </mat-step>-->
+
+    <mat-step>
+        <div fxLayout="column">
+            <h2>Cover photo</h2>
+            <div class="party-banner-container" fxLayoutAlign="center center" *ngIf="partyForm.get('bannerUrl')?.value">
+                <img [src]="partyForm.get('bannerUrl')?.value" alt="party banner" class="party-banner">
+            </div>
+            <div class="upload-box" fxLayoutAlign="center center">
+                <button (click)="handleClick()" href="javascript:undefined" mat-flat-button type="button">
+                    Upload Cover Photo
+                </button>
+                <input (change)="addAttachment($event)" accept="image/*" class="hidden" id="upload-file"
+                       name="upload-file" ngf-max-size="2MB" type="file">
+            </div>
+        </div>
+        <div style="padding-top: 16px">
+            <button (click)="submit()" *ngIf="!isLoading" [disabled]="!partyForm.valid" color="primary" mat-flat-button>
+                Save & Continue
+            </button>
+        </div>
+    </mat-step>
+</mat-stepper>

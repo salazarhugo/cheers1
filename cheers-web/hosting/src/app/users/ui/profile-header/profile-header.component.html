@@ -1,0 +1,32 @@
+<div *ngIf="this.user" class="profile" fxLayout="column">
+    <div class="profile-header" fxLayout="row" fxLayoutAlign="stretch center">
+        <img [src]="user.picture ? user.picture : 'assets/default_profile_picture.png' "
+             ngClass="avatar--extra-large" ngClass.lt-sm="avatar--medium" ngClass.lt-md="avatar--large"/>
+        <div class="profile-header--right" fxLayout="column">
+                <span fxLayout="row" fxLayoutAlign="none center">
+                    <h2>{{user.username}}</h2>
+                    <img *ngIf="user.verified" height="18" matTooltip="Verified" src="../../../../assets/ic_verified.png"
+                         style="margin: 0 4px" width="18"/>
+                </span>
+            <div class="profile-stats" fxLayout="row" fxLayoutAlign="center" fxLayoutGap="26px">
+                <div class="profile-stat" fxLayoutGap="8px">
+                    <span><b>{{user.postCount}}</b></span>
+                    <span>posts</span>
+                </div>
+                <div class="profile-stat" fxLayoutGap="8px" [routerLink]="['/u',user.username, 'followers']">
+                    <span><b>{{user.followers}}</b></span>
+                    <span>followers</span>
+                </div>
+                <div class="profile-stat" fxLayoutGap="8px" [routerLink]="['/u',user.username, 'following']">
+                    <span><b>{{user.following}}</b></span>
+                    <span>following</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="profile-text" fxLayout="column">
+        <span class="profile-name">{{user.name}}</span>
+        <span class="profile-bio">{{user.bio}}</span>
+        <a [href]="user.website" class="profile-website">{{user.website}}</a>
+    </div>
+</div>

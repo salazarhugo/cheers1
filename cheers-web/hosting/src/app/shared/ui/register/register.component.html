@@ -1,0 +1,17 @@
+<mat-card>
+    <form (ngSubmit)="onSubmit()" [formGroup]="userForm" fxLayout="column">
+
+        <div class="form-group has-success">
+            <label class="control-label">Email</label>
+            <input class="form-control" formControlName="email" required type="email">
+        </div>
+
+        <div *ngIf="this.signInLinkSent" fxLayout="column" fxLayoutAlign="none center">
+            <div class="check"></div>
+            <p>A sign in link has been sent to your email account</p>
+        </div>
+    </form>
+
+    <button (click)="onSubmit()" *ngIf="!this.signInLinkSent" color="primary" mat-flat-button>Register</button>
+
+</mat-card>

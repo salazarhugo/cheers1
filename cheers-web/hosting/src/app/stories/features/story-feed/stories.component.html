@@ -1,0 +1,16 @@
+<div fxFlexFill fxLayout="row">
+    <div fxFlex="10">
+        <img alt="avatar" height="100" src="assets/cheers-logo.png" width="100">
+    </div>
+    <div fxFlex="80" *ngIf="selectedStory" fxLayoutAlign="center center" fxFlexFill>
+        <mat-spinner *ngIf="isLoading" [strokeWidth]="1"></mat-spinner>
+        <img [hidden]="isLoading" [src]="selectedStory.photoUrl" (load)="onLoad()" class="story-photo">
+    </div>
+    <div fxFlex="10" fxLayoutAlign="end">
+        <div style="padding: 32px">
+            <button mat-icon-button (click)="back()">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>

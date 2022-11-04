@@ -1,0 +1,207 @@
+@use '@angular/material' as mat
+@include mat.core()
+
+@import 'light-theme'
+@import 'dark-theme'
+@import 'custom-component-themes'
+
+@include custom-components-theme($app-light-theme, $app-theme-info, $app-theme-success, $app-theme-warning, $app-theme-error, $app-theme-grey)
+@include mat.all-component-themes($app-light-theme)
+
+.dark-theme
+    @include mat.all-component-themes($dark-theme)
+    @include custom-components-theme($dark-theme, $dark-theme-info, $dark-theme-success, $dark-theme-warning, $dark-theme-error, $dark-theme-grey)
+
+    .mat-card
+        background: #221e23
+        color: white
+
+    .secondary-container
+        background-color: #4A4458
+
+    .on-secondary-container
+        color: #E8DEF8
+
+    .mat-chip
+        background-color: rgba(255, 255, 255, 0.1) !important
+
+
+.mat-menu-panel
+    border-radius: 12px !important
+
+//@include mat.all-component-typographies($custom-typography)
+//@include mat.typography-hierarchy($custom-typography)
+
+/* GLOBAL STYLES */
+
+*
+    box-sizing: border-box
+
+html, body
+    height: 100%
+
+body
+    font-family: "Google Sans", Arial, sans-serif
+    font-size: 14px
+    padding: 0
+    margin: 0
+
+a
+    text-decoration: none
+    cursor: pointer
+    color: inherit
+
+img
+    max-width: 100%
+
+h2
+    margin: 0 !important
+
+.event-banner
+    aspect-ratio: 2 / 1
+    object-fit: cover
+    width: 400px
+
+.story-avatar
+    border-radius: 50%
+    background-size: cover
+    object-fit: cover
+    width: 60px
+    height: 60px
+
+    &--seen
+        @extend .story-avatar
+        background: linear-gradient(to right, #EC01FB, #7f00ff) border-box
+        border: 2px solid transparent
+
+
+.button-span
+    padding-left: 8px
+
+.avatar
+    border-radius: 50%
+    background-size: cover
+    object-fit: cover
+    cursor: pointer
+
+    &--tiny
+        @extend .avatar
+        width: 20px
+        height: 20px
+
+    &--small
+        @extend .avatar
+        width: 42px
+        height: 42px
+
+    &--medium
+        @extend .avatar
+        width: 60px
+        height: 60px
+
+    &--large
+        @extend .avatar
+        width: 100px
+        height: 100px
+
+    &--extra-large
+        @extend .avatar
+        width: 150px
+        height: 150px
+
+    &--seen
+        @extend .story-avatar
+        background: grey border-box
+        border: 2px solid transparent
+
+    &--unseen
+        @extend .story-avatar
+        background: linear-gradient(to right, #EC01FB, #7f00ff) border-box
+        border: 2px solid transparent
+
+.dialog-border-radius-12 .mat-dialog-container
+    border-radius: 12px
+
+.dialog-300-border-radius-12 .mat-dialog-container
+    border-radius: 12px
+    min-width: 300px
+
+.dialog-400-border-radius-12 .mat-dialog-container
+    border-radius: 12px
+    min-width: 400px
+
+.mat-drawer
+    background-color: #fff
+    color: rgba(0, 0, 0, 0.87)
+
+.mat-drawer-side
+    border-right: none
+
+.mat-list-item, .mat-list-item-ripple
+    border-bottom-right-radius: 25px
+    border-top-right-radius: 25px
+
+.loading-wrapper
+    height: 100%
+
+.container
+    margin: 0 auto
+    width: 500px
+
+.padding-16
+    padding: 16px
+
+.outline
+    border: 0.5px solid rgba(255, 255, 255, 0.1)
+
+.search-bar
+    border-radius: 9990px
+    background-color: #3A3B3C
+    padding: 0 12px
+    height: 40px
+    margin-left: 8px
+
+.mat-card
+    border-radius: 12px !important
+
+.cheers-input
+    background-color: transparent
+    border: 0
+    resize: none
+    outline: none
+    padding-left: 8px
+    font-size: .9375rem
+    color: white
+    height: 40px
+
+h2
+    margin: 0
+    font-size: 1.25rem !important
+    font-weight: 700 !important
+    font-family: Segoe UI Historic, Segoe UI, Helvetica, Arial, sans-serif !important
+
+
+.mat-flat-button
+    border-radius: 9999px !important
+
+.image-placeholder
+    background: #3A3B3C
+    border-radius: 12px
+
+::-webkit-scrollbar
+    width: 18px
+
+::-webkit-scrollbar-track
+    background: transparent
+
+::-webkit-scrollbar-thumb
+    background: #aaaaaa
+    border-radius: 12px
+    border: 5px solid rgba(0, 0, 0, 0)
+    background-clip: padding-box
+
+::-webkit-scrollbar-thumb:hover
+    background: #555
+    border-radius: 12px
+    border: 5px solid rgba(0, 0, 0, 0)
+    background-clip: padding-box

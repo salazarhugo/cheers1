@@ -1,0 +1,28 @@
+<mat-card class="ticket-item" fxLayout="row" fxLayoutAlign="space-between center">
+    <div fxLayout="row" fxLayoutAlign="none center" fxLayoutGap="16px">
+        <mat-icon>drag_handle</mat-icon>
+        <div fxLayout="column">
+            <h2>{{ticket.name}}</h2>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="none center" fxLayoutGap="16px">
+        <h2>{{ticket.price / 100}} EUR</h2>
+        <button [mat-menu-trigger-for]="menu" mat-icon-button>
+            <mat-icon>more_vert</mat-icon>
+        </button>
+    </div>
+    <mat-menu #menu="matMenu">
+        <button (click)="editTicket()" mat-menu-item>
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+        </button>
+        <button (click)="copyTicket()" mat-menu-item>
+            <mat-icon>copy</mat-icon>
+            <span>Copy</span>
+        </button>
+        <button (click)="deleteTicket()" mat-menu-item>
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+        </button>
+    </mat-menu>
+</mat-card>
