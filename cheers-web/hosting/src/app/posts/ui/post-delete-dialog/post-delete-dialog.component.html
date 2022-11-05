@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Delete Post?</h1>
+
+<div mat-dialog-content>
+    <p>
+        This can’t be undone and it will be removed from your profile,
+        the timeline of any accounts that follow you, and from Cheers search results.
+    </p>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button color="warn" [mat-dialog-close]="true">Delete</button>
+</div>

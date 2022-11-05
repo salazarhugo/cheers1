@@ -20,7 +20,7 @@
         </mat-card>
 
         <mat-card *ngIf="this.$user | async as user" class="home-post-input">
-            <div fxFlexFill fxLayoutAlign="none center" fxLayoutGap="16px" style="padding-bottom: 16px">
+            <div fxLayoutAlign="none center" fxLayoutGap="16px" style="padding-bottom: 16px">
                 <img (error)="onImgError($event)" [routerLink]="['/u', user.id]" [src]="user.picture"
                      class="avatar--small">
                 <input [formControl]="tweet" class="form-control" placeholder="What's happening?" style="margin: 0"
@@ -29,17 +29,22 @@
             <mat-divider></mat-divider>
             <div fxLayoutAlign="space-between" style="padding-top: 16px">
                 <span></span>
-                <button [disabled]="!tweet.valid" color="primary" mat-flat-button (click)="createPost()">Post</button>
+                <button [disabled]="!tweet.valid || isPosting" color="primary" mat-flat-button (click)="createPost()">
+                    <div fxLayoutAlign="none center">
+                        <mat-spinner *ngIf="isPosting" [strokeWidth]="1" [diameter]="20" [style.margin-right.px]="8"></mat-spinner>
+                        <span>Post</span>
+                    </div>
+                </button>
             </div>
         </mat-card>
 
-        <div *ngIf="$posts | async as posts">
+        <div *ngIf="this.posts">
             <div *ngIf="posts.length == 0" fxLayoutAlign="center center" fxLayout="column">
                 <h1> Welcome to Cheers </h1>
                 <h3> Follow people to start seeing the photos and videos they share</h3>
             </div>
             <ng-container *ngFor="let post of posts">
-                <app-post [postResponse]="post"></app-post>
+                <app-post-item [postResponse]="post" (onDelete)="onDelete($event)"></app-post-item>
             </ng-container>
         </div>
     </div>

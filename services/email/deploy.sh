@@ -1,1 +1,5 @@
-gcloud run deploy email-service --source . --region=europe-west2
+REGION=europe-west2
+
+gcloud run deploy email-service \
+  --source . \
+  --region=$REGION

@@ -2,7 +2,7 @@ package app
 
 import (
 	"encoding/json"
-	post "github.com/salazarhugo/cheers1/genproto/cheers/post/v1"
+	post "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/services/activity-service/internal/repository"
 	"google.golang.org/protobuf/proto"
 	"io"

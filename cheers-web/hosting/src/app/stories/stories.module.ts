@@ -3,7 +3,6 @@ import {CommonModule} from '@angular/common';
 import {StoriesComponent} from "./features/story-feed/stories.component";
 import {MaterialModule} from "../material/material.module";
 import {MatIconModule} from "@angular/material/icon";
-import {PostsModule} from "../posts/posts.module";
 
 
 const components = [

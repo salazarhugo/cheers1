@@ -20,9 +20,9 @@ import {SharedModule} from "./shared/shared.module";
 import {HomeModule} from "./home/home.module";
 import {PaymentsModule} from "./payments/payments.module";
 import {StoriesModule} from "./stories/stories.module";
-import {PostsModule} from "./posts/posts.module";
 import {CoreModule} from "./core/core.module";
 import {PartyShellModule} from "./parties/feature/party-shell/party-shell.module";
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from "@angular/material/snack-bar";
 
 
 export function playerFactory(): any {
@@ -60,13 +60,13 @@ if (!environment.production)
         HomeModule,
         PaymentsModule,
         StoriesModule,
-        PostsModule,
         CoreModule,
         PartyShellModule,
     ],
     providers: [
         httpInterceptorProviders,
         {provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig},
+        {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}
     ],
     exports: [],
     bootstrap: [AppComponent]

@@ -10,6 +10,7 @@ import {Timestamp} from "google-protobuf/google/protobuf/timestamp_pb";
 import {user} from "@angular/fire/auth";
 import {orderByKey, orderByPriority} from "@angular/fire/database";
 import {FeedPostResponse, PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
+import {Empty} from "../../../../gen/ts/google/protobuf/empty";
 
 @Injectable({
     providedIn: 'root'
@@ -78,12 +79,16 @@ export class ApiService {
         )
     }
 
+    deletePost(id: string): Observable<Empty> {
+        return this.http.delete(`${this.GATEWAY_URL}/v1/posts?id=${id}`)
+    }
+
     deleteParty(id: string): Observable<any> {
         return this.http.delete(`${this.BASE_URL}/party/${id}`)
     }
 
-    createPost(post: Post): Observable<Post> {
-        return this.http.post<Post>(`${this.GATEWAY_URL}/v1/posts`, {
+    createPost(post: Post): Observable<PostResponse> {
+        return this.http.post<PostResponse>(`${this.GATEWAY_URL}/v1/posts`, {
             post: {
                 caption: post.caption
             }

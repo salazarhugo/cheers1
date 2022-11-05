@@ -9,6 +9,7 @@ import {Post} from "../../../shared/data/models/post.model";
 import {Router} from "@angular/router";
 import {ActivityService} from "../../../activities/data/activity.service";
 import {PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
+import {PostService} from "../../../posts/data/post.service";
 
 @Component({
     selector: 'app-profile',
@@ -25,12 +26,13 @@ export class ProfileComponent implements OnInit {
         private authService: AuthService,
         private userService: UserService,
         private eventService: PartyService,
+        private postService: PostService,
         private activityService: ActivityService,
         private router: Router,
     ) {
         this.$user = this.userService.user$
         this.$parties = this.eventService.getPartyFeed()
-        this.$posts = this.userService.getPostFeed()
+        this.$posts = this.postService.getPostFeed()
     }
 
     ngOnInit(): void {

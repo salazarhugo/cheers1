@@ -1,6 +1,9 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from "../../shared/data/services/api.service";
 import {Post} from "../../shared/data/models/post.model";
+import {Observable} from "rxjs";
+import {PostResponse} from "../../../gen/ts/cheers/post/v1/post_service";
+import {Empty} from "../../../gen/ts/google/protobuf/empty";
 
 @Injectable({
     providedIn: 'root'
@@ -12,8 +15,16 @@ export class PostService {
     ) {
     }
 
-    createPost(post: Post) {
+    createPost(post: Post): Observable<PostResponse> {
         return this.api.createPost(post)
+    }
+
+    deletePost(postId: string): Observable<Empty> {
+        return this.api.deletePost(postId)
+    }
+
+    getPostFeed(): Observable<PostResponse[]> {
+        return this.api.getPostFeed()
     }
 
     likePost(postId: string) {

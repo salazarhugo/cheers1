@@ -1,14 +1,14 @@
 package main
 
 import (
+	"github.com/salazarhugo/cheers1/services/email-service/internal/app"
 	"log"
 	"net/http"
 	"os"
-	"salazar/cheers/email/subscriptions"
 )
 
 func main() {
-	http.HandleFunc("/", subscriptions.PaymentSub)
+	http.HandleFunc("/", app.PaymentSub)
 
 	// Determine port for HTTP service.
 	port := os.Getenv("PORT")

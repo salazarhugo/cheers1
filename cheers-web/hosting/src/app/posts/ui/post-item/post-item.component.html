@@ -13,9 +13,12 @@
                 <div *ngIf="postResponse.post.locationName"> {{postResponse.post.locationName}}</div>
             </div>
         </div>
-        <button mat-icon-button>
+        <button mat-icon-button [mat-menu-trigger-for]="menu">
             <mat-icon>more_vert</mat-icon>
         </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="delete()">Delete</button>
+        </mat-menu>
     </div>
     <div class="post-body" fxLayout="column">
         <span class="post-caption">{{postResponse.post.caption}}</span>

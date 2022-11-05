@@ -4,8 +4,8 @@ import {CommonModule} from '@angular/common';
 import {UserProfileRoutingModule} from './user-profile-routing.module';
 import {OtherProfileComponent} from "./other-profile.component";
 import {MatTabsModule} from "@angular/material/tabs";
-import {PostsModule} from "../../../posts/posts.module";
 import {ProfileHeaderModule} from "../../ui/profile-header/profile-header.module";
+import {PostItemModule} from "../../../posts/ui/post-item/post-item.module";
 
 
 @NgModule({
@@ -14,7 +14,7 @@ import {ProfileHeaderModule} from "../../ui/profile-header/profile-header.module
         CommonModule,
         UserProfileRoutingModule,
         MatTabsModule,
-        PostsModule,
+        PostItemModule,
         ProfileHeaderModule,
     ],
     exports: [OtherProfileComponent],

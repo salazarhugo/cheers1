@@ -1,6 +1,6 @@
-module salazar/cheers/payment
+module github.com/salazarhugo/cheers1/services/payment-service
 
-go 1.18
+go 1.19
 
 require (
 	cloud.google.com/go/firestore v1.6.1

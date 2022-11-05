@@ -46,10 +46,6 @@ export class UserService {
         this.userSubject.next(user)
     }
 
-    getPostFeed(): Observable<PostResponse[]> {
-        return this.api.getPostFeed()
-    }
-
     getUser(userIdOrUsername: string) {
         return this.api.getUser(userIdOrUsername)
     }

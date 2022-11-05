@@ -1,12 +1,13 @@
-package subscriptions
+package app
 
 import (
 	"encoding/json"
-	"fmt"
+	payment "github.com/salazarhugo/cheers1/gen/go/cheers/payment/v1"
+	"github.com/salazarhugo/cheers1/services/email-service/internal/repository"
+	"google.golang.org/protobuf/proto"
 	"io"
 	"log"
 	"net/http"
-	"net/smtp"
 )
 
 type PubSubMessage struct {
@@ -32,36 +33,20 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	email := string(m.Message.Data)
-	SendEmail(email)
-	log.Print(email)
-}
-
-func SendEmail(email string) {
-	// Sender data.
-	from := "hugobrock74@gmail.com"
-	password := "uwihdfveoxdtoaab"
-
-	// Receiver email address.
-	to := []string{
-		email,
-	}
-
-	// smtp server configuration.
-	smtpHost := "smtp.gmail.com"
-	smtpPort := "587"
-
-	// Message.
-	message := []byte("This is a test email message.")
-
-	// Authentication.
-	auth := smtp.PlainAuth("", from, password, smtpHost)
-
-	// Sending email.
-	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, message)
+	event := &payment.PaymentEvent{}
+	err = proto.Unmarshal(m.Message.Data, event)
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 		return
 	}
-	fmt.Println("Email Sent Successfully!")
+
+	email, err := repository.GetEmailAndOrder(event.GetPaymentIntentId(), event.GetCustomerId())
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "Failed to get user email", http.StatusInternalServerError)
+		return
+	}
+
+	SendEmail(*email)
+	log.Print(email)
 }

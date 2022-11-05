@@ -2,11 +2,11 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HomeComponent} from "./features/home/home.component";
 import {MaterialModule} from "../material/material.module";
-import {PostsModule} from "../posts/posts.module";
 import {MatCardModule} from "@angular/material/card";
 import { RouterModule } from '@angular/router';
 import { TopbarComponent } from './ui/topbar/topbar.component';
 import {TopbarModule} from "./ui/topbar/topbar.module";
+import {PostItemModule} from "../posts/ui/post-item/post-item.module";
 
 
 const components = [
@@ -22,7 +22,7 @@ const components = [
         CommonModule,
         MaterialModule,
         RouterModule,
-        PostsModule,
+        PostItemModule,
         MatCardModule,
         TopbarModule,
     ],

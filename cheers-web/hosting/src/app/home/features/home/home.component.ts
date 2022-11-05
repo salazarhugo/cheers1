@@ -16,8 +16,11 @@ import {PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
 })
 export class HomeComponent implements OnInit {
 
+    isPosting = false
+    private sub: any;
+
     $user: Observable<User | null> = of(null)
-    $posts: Observable<PostResponse[] | null> = of(null)
+    posts: PostResponse[] | null = null
     story$: Observable<Story[] | null> = of(null)
 
     tweet = new UntypedFormControl('', Validators.compose([
@@ -36,8 +39,14 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.$posts = this.userService.getPostFeed()
+        this.sub = this.postService.getPostFeed().subscribe(posts => {
+            this.posts = posts
+        })
         this.story$ = this.storyService.getStoryFeed()
+    }
+
+    ngOnDestroy() {
+        this.sub.unsubscribe();
     }
 
     onImgError(event: any) {
@@ -45,10 +54,22 @@ export class HomeComponent implements OnInit {
     }
 
     createPost() {
+        this.isPosting = true
         const post = new Post()
         post.caption = this.tweet.value
         this.postService.createPost(post).subscribe(post => {
-            console.log(post)
+            this.posts?.unshift(post)
+            this.tweet.reset()
+            this.isPosting = false
         })
+    }
+
+    onDelete(postResponse: PostResponse) {
+        if (this.posts == undefined) return
+
+        const index = this.posts.indexOf(postResponse, 0);
+        if (index > -1) {
+            this.posts.splice(index, 1);
+        }
     }
 }
