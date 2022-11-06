@@ -2,17 +2,17 @@ package utils
 
 import (
 	"encoding/json"
+	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
-	"salazar/cheers/payment/proto/ticketpb"
 )
 
-func MapToTicket(m map[string]interface{}) (*ticketpb.Ticket, error) {
+func MapToTicket(m map[string]interface{}) (*empty.Empty, error) {
 	b, err := json.Marshal(m)
 	if err != nil {
 		return nil, err
 	}
-	s := &ticketpb.Ticket{}
+	s := &empty.Empty{}
 	err = protojson.Unmarshal(b, s)
 	if err != nil {
 		return nil, err

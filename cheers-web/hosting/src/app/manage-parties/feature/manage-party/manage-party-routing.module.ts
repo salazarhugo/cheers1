@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {PartyTicketsComponent} from "./party-tickets.component";
+import {ManagePartyComponent} from "./manage-party.component";
 
-const routes: Routes = [{path: '', component: PartyTicketsComponent}];
+const routes: Routes = [{path: '', component: ManagePartyComponent}];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class PartyTicketsRoutingModule { }
+export class ManagePartyRoutingModule { }

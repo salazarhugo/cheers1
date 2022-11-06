@@ -1,0 +1,11 @@
+<app-topbar></app-topbar>
+<mat-sidenav-container style="margin-top: 56px">
+    <mat-sidenav fixedInViewport="true" fixedTopGap="56" mode="side" opened>
+        <app-manage-party-sidenav></app-manage-party-sidenav>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <main [@fadeAnimation]="outlet.isActivated ? outlet.activatedRoute : ''">
+            <router-outlet #outlet="outlet"></router-outlet>
+        </main>
+    </mat-sidenav-content>
+</mat-sidenav-container>

@@ -8,6 +8,7 @@ import {TicketingComponent} from "./shared/ui/ticketing/ticketing.component";
 import {PaymentComponent} from "./payments/features/payment/payment.component";
 import {CompleteComponent} from "./shared/ui/complete/complete.component";
 import {StoriesComponent} from "./stories/features/story-feed/stories.component";
+import {ManagePartyComponent} from "./manage-parties/feature/manage-party/manage-party.component";
 
 const routes: Routes = [
     {
@@ -37,6 +38,11 @@ const routes: Routes = [
     {
         path: 'sign-in',
         component: SignInComponent,
+    },
+    {
+        path: 'manage/parties',
+        component: ManagePartyComponent, resolve: {data: UserResolver},
+        loadChildren: () => import('./manage-parties/feature/manage-party-shell/manage-party-shell.module').then(m => m.ManagePartyShellModule)
     },
     {
         path: '',

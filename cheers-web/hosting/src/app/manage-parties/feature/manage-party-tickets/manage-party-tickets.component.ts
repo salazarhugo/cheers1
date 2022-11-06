@@ -1,18 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {UntypedFormBuilder} from "@angular/forms";
+import { Component, OnInit } from '@angular/core';
+import {Observable} from "rxjs";
 import {Ticket} from "../../../shared/data/models/ticket.model";
+import {UntypedFormBuilder} from "@angular/forms";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {ActivatedRoute, ParamMap} from "@angular/router";
-import {tick} from "@angular/core/testing";
-import {filter, Observable, of} from "rxjs";
-
 
 @Component({
-    selector: 'app-party-tickets',
-    templateUrl: './party-tickets.component.html',
-    styleUrls: ['./party-tickets.component.sass']
+    selector: 'app-manage-party-tickets',
+    templateUrl: './manage-party-tickets.component.html',
+    styleUrls: ['./manage-party-tickets.component.sass']
 })
-export class PartyTicketsComponent implements OnInit {
+export class ManagePartyTicketsComponent implements OnInit {
 
     $tickets: Observable<Ticket[] | undefined>
     partyId: string

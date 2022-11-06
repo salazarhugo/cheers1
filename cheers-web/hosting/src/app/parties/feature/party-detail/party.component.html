@@ -71,7 +71,7 @@
                 <mat-card>
                     <div fxLayoutAlign="space-between">
                         <h2>Tickets</h2>
-                        <mat-icon [routerLink]="['./tickets']">edit</mat-icon>
+                        <mat-icon [routerLink]="['/manage/parties', party.id, 'tickets']">edit</mat-icon>
                     </div>
                     <button [routerLink]="['/ticketing', party.id]" color="primary" mat-flat-button
                             style="margin-top: 16px">

@@ -3,12 +3,12 @@ package repository
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/salazarhugo/cheers1/services/payment-service/utils"
 	"github.com/stripe/stripe-go/v72"
 	"github.com/stripe/stripe-go/v72/webhook"
 	"io"
 	"net/http"
 	"os"
-	"salazar/cheers/payment/utils"
 )
 
 func ValidateStripeRequest(cc *utils.CustomContext) (*stripe.Event, error) {

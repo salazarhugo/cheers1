@@ -6,12 +6,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/labstack/echo/v4"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/payment/v1"
+	utils2 "github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/services/payment-service/internal/repository"
+	"github.com/salazarhugo/cheers1/services/payment-service/utils"
 	"github.com/stripe/stripe-go/v72"
 	"log"
 	"net/http"
 	"os"
-	"salazar/cheers/payment/internal/repository"
-	"salazar/cheers/payment/utils"
 )
 
 func HandleStripeEvent(c echo.Context) error {
@@ -114,11 +116,11 @@ func handlePaymentSuccess(paymentIntent stripe.PaymentIntent) {
 		{Path: "population", Value: firestore.Increment(paymentIntent.Amount)},
 	})
 
-	userDoc, err := client.Collection("users").Doc(stripeCustomerRef.ID).Get(ctx)
-	userMap := userDoc.Data()
-	userEmail := userMap["email"].(string)
-
-	err = utils.PublishPayment(userEmail)
+	err = utils2.PublishProtoMessages("payment-topic", &payment.PaymentEvent{
+		PaymentIntentId: paymentIntent.ID,
+		CustomerId:      customerId,
+		Type:            payment.PaymentEvent_PAYMENT_SUCCESS,
+	})
 
 	if err != nil {
 		log.Println(err)

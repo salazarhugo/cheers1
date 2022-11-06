@@ -4,13 +4,13 @@ import (
 	"cloud.google.com/go/firestore"
 	"context"
 	"github.com/labstack/echo/v4"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
+	"github.com/salazarhugo/cheers1/services/payment-service/utils"
 	"google.golang.org/grpc"
 	grpcMetadata "google.golang.org/grpc/metadata"
 	"log"
 	"net/http"
 	"os"
-	"salazar/cheers/payment/proto/userpb"
-	"salazar/cheers/payment/utils"
 )
 
 type Ticket struct {
@@ -18,6 +18,7 @@ type Ticket struct {
 }
 
 func ValidateTicket(c echo.Context) error {
+	cry
 	cc := c.(*utils.CustomContext)
 	session := utils.GetSession(cc.Driver)
 	defer session.Close()
@@ -43,7 +44,7 @@ func ValidateTicket(c echo.Context) error {
 	}
 
 	ticketMap := ticketDoc.Data()
-	ticket, err := utils.MapToTicket(ticketMap)
+	//_, err := utils.MapToTicket(ticketMap)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, "Failed to Unmarshal ticket")
 	}
@@ -57,8 +58,8 @@ func ValidateTicket(c echo.Context) error {
 	}
 
 	ctx = grpcMetadata.AppendToOutgoingContext(ctx, "authorization", "Bearer "+os.Getenv("TOKEN"))
-	userClient := userpb.NewUserServiceClient(conn)
-	resp, err := userClient.GetUser(ctx, &userpb.GetUserRequest{})
+	userClient := user.NewUserServiceClient(conn)
+	resp, err := userClient.GetUser(ctx, &user.GetUserRequest{})
 	if err != nil {
 		log.Println(err)
 		return c.JSON(http.StatusInternalServerError, err.Error())
@@ -69,11 +70,11 @@ func ValidateTicket(c echo.Context) error {
 	// Check if ticket was already validated
 	if ticketMap["validated"] == true {
 		return cc.JSON(http.StatusOK, map[string]interface{}{
-			"valid":            false,
-			"name":             ticket.Name,
-			"description":      ticket.Description,
-			"message":          "Ticket already validated",
-			"price":            ticket.Price,
+			"valid": false,
+			//"name":             ticket.Name,
+			//"description":      ticket.Description,
+			"message": "Ticket already validated",
+			//"price":            ticket.Price,
 			"reservation_name": user.Name,
 			"party_name":       "Summer Breeze",
 			"party_banner":     "Summer Breeze",
@@ -92,11 +93,11 @@ func ValidateTicket(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-	err = utils.PublishPayment(user.Email)
-	if err != nil {
-		log.Println(err)
-		return c.JSON(http.StatusInternalServerError, err.Error())
-	}
+	//err = utils2.PublishProtoMessages("payment-topic", nil)
+	//if err != nil {
+	//	log.Println(err)
+	//	return c.JSON(http.StatusInternalServerError, err.Error())
+	//}
 
 	return cc.JSON(http.StatusOK, map[string]interface{}{
 		"valid":           true,

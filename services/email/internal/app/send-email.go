@@ -2,13 +2,25 @@ package app
 
 import (
 	"fmt"
+	"log"
 	"net/smtp"
+	"os"
+	"strconv"
 )
 
-func SendEmail(email string) {
+func SendEmail(
+	email string,
+	tickets []map[string]interface{},
+	totalPrice int64,
+) {
+	log.Println(email)
+	log.Println(tickets)
+	log.Println(totalPrice)
+
 	// Sender data.
-	from := "hugobrock74@gmail.com"
-	password := "uwihdfveoxdtoaab"
+	from := "admin@maparty.fr"
+	pwd := os.Getenv("EMAIL_PASSWORD")
+	password := pwd
 
 	// Receiver email address.
 	to := []string{
@@ -19,8 +31,9 @@ func SendEmail(email string) {
 	smtpHost := "smtp.gmail.com"
 	smtpPort := "587"
 
+	amount := strconv.Itoa(int(totalPrice) / 100)
 	// Message.
-	message := []byte("This is a test email message.")
+	message := []byte("Thank you for your payment of " + amount + " EUR")
 
 	// Authentication.
 	auth := smtp.PlainAuth("", from, password, smtpHost)

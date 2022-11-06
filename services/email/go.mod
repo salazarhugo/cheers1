@@ -5,8 +5,8 @@ go 1.19
 require google.golang.org/protobuf v1.28.1
 
 require (
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-00010101000000-000000000000
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-00010101000000-000000000000
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221105090922-7db1c47202c4
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221105090922-7db1c47202c4
 )
 
 require (
@@ -48,6 +48,6 @@ require (
 	google.golang.org/grpc v1.50.1 // indirect
 )
 
-replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
+//replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
 
-replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils
+//replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils

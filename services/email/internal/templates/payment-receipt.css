@@ -1,0 +1,28 @@
+body {
+    background-color:  #f8f9fa;
+}
+
+.container {
+    margin: 32px;
+    width: calc(100% - 56px);
+    height: 200px;
+    background-color:  white;
+    border: lightgray 1px solid;
+    padding: 5px 20px 0 20px;
+}
+.title {
+    font-family: 'Google sans',Arial,sans-serif;
+    font-weight:700;
+    line-height:32px;
+    font-size:24px;
+}
+
+footer > p {
+    line-height:20px;
+    color:#6c737f;
+    font-size:12px;
+    font-weight:400;
+    margin:12px 20px 12px 20px;
+    font-family:Roboto,Arial,Helvetica,sans-serif;
+    text-align:left;
+}

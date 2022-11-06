@@ -3,11 +3,11 @@ package main
 import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/salazarhugo/cheers1/services/payment-service/auth"
+	"github.com/salazarhugo/cheers1/services/payment-service/internal/app"
+	"github.com/salazarhugo/cheers1/services/payment-service/utils"
 	"log"
 	"os"
-	"salazar/cheers/payment/auth"
-	"salazar/cheers/payment/internal/app"
-	"salazar/cheers/payment/utils"
 )
 
 func main() {

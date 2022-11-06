@@ -5,12 +5,12 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/labstack/echo/v4"
+	"github.com/salazarhugo/cheers1/services/payment-service/utils"
 	"github.com/stripe/stripe-go/v72"
 	"github.com/stripe/stripe-go/v72/paymentintent"
 	"log"
 	"net/http"
 	"os"
-	"salazar/cheers/payment/utils"
 )
 
 type StripeCustomer struct {
@@ -43,7 +43,15 @@ func CreatePaymentIntent(c echo.Context) error {
 		return err
 	}
 
-	amount, err := calculateTotalPrice(client, paymentIntentReq, userId)
+	log.Println(paymentIntentReq)
+	tickets, err := getTickets(client, paymentIntentReq, partyId)
+	log.Println(tickets)
+	amount, err := calculateTotalPrice(tickets)
+	log.Println(amount)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
 
 	userDoc, err := client.Collection("stripe_customers").Doc(userId).Get(ctx)
 	if err != nil {
@@ -96,28 +104,35 @@ func CreatePaymentIntent(c echo.Context) error {
 	})
 }
 
-func calculateTotalPrice(
+func getTickets(
 	client *firestore.Client,
 	paymentIntentReq map[string]int64,
 	partyId string,
-) (int64, error) {
-	var amount int64 = 0
-
+) ([]map[string]interface{}, error) {
 	tickets := make([]map[string]interface{}, 0, 0)
 
 	for ticketId, quantity := range paymentIntentReq {
-		log.Println(ticketId, quantity)
 		docsnap, err := client.Collection("ticketing").Doc(partyId).Collection("tickets").Doc(ticketId).Get(context.Background())
 		if err != nil {
-			log.Println(err)
-			return 0, err
+			return nil, err
 		}
 		ticketMap := docsnap.Data()
 		var i int64
 		for i = 0; i < quantity; i++ {
 			tickets = append(tickets, ticketMap)
 		}
-		amount += ticketMap["price"].(int64) * quantity
+	}
+
+	return tickets, nil
+}
+
+func calculateTotalPrice(
+	tickets []map[string]interface{},
+) (int64, error) {
+	var amount int64 = 0
+
+	for _, ticket := range tickets {
+		amount += ticket["price"].(int64)
 	}
 
 	return amount, nil

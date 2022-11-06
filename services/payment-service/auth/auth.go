@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 	"github.com/labstack/echo/v4"
+	"github.com/salazarhugo/cheers1/services/payment-service/utils"
 	"log"
 	"net/http"
-	"salazar/cheers/payment/utils"
 	"strings"
 )
 

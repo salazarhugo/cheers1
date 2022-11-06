@@ -1,5 +1,6 @@
 REGION=europe-west2
 
-gcloud run deploy email-service \
+gcloud beta run deploy email-service \
   --source . \
-  --region=$REGION
+  --region=$REGION \
+  --update-secrets="EMAIL_PASSWORD=EMAIL_PASSWORD:latest"

@@ -18,10 +18,6 @@ const routes: Routes = [
         path: ':id/guestlist',
         loadChildren: () => import('../party-guest-list/party-guest-list.module').then(m => m.PartyGuestListModule)
     },
-    {
-        path: ':id/tickets',
-        loadChildren: () => import('../party-tickets/party-tickets.module').then(m => m.PartyTicketsModule)
-    },
 ];
 
 @NgModule({

@@ -26,7 +26,10 @@ import {UserShellModule} from "../users/feature/user-shell/user-shell.module";
         TopbarModule,
     ],
     providers: [],
-    exports: []
+    exports: [
+        SidenavComponent,
+        SidenavItemComponent
+    ]
 })
 export class CoreModule {
 }

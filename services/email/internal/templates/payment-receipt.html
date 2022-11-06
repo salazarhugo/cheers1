@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Simple Transactional Email</title>
+        <link rel="stylesheet" href="payment-receipt.css">
+    </head>
+
+    <body>
+        <div class="container">
+            <header>
+                <span class="title">Thank you for your payment</span>
+            </header>
+
+            <main>
+                <h1>{{.Amount}}</h1>
+            </main>
+
+            <footer>
+                <p>© 2022 Cheers LLC Tatoi Court Glaudstonos street, Limassol, CY 94343</p>
+                <p style="line-height:20px;color:#6c737f;font-size:12px;font-weight:400;margin:12px 20px 12px 20px;font-family:Roboto,Arial,Helvetica,sans-serif;text-align:left">
+                    <em>You’re receiving this mandatory email service announcement to update you about important changes to your Cheers Cloud product or account.</em>
+                </p>
+            </footer>
+        </div>
+    </body>
+</html>
