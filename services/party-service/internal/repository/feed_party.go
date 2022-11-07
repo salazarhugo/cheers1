@@ -13,13 +13,18 @@ func (p *partyRepository) FeedParty(
 	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close()
 
-	cypher, err := utils.GetCypher("internal/queries/FeedPost.cql")
+	pageSize := 50
+	skip := 0
+
+	cypher, err := utils.GetCypher("internal/queries/FeedParty.cql")
 	if err != nil {
 		return nil, err
 	}
 
 	params := map[string]interface{}{
-		"userID": userID,
+		"userID":   userID,
+		"skip":     int(skip),
+		"pageSize": int(pageSize),
 	}
 
 	result, err := session.Run(*cypher, params)

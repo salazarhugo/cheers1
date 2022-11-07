@@ -1,46 +1,31 @@
 MATCH
-  (u: User{id:$userId})
+  (me:User {id: $userID})
+MATCH
+  (creator:User)-[:POSTED]->(party:Party)
 OPTIONAL MATCH
-  (e1:Party {privacy: "PUBLIC"})
+  (:User)-[interest:INTERESTED]->(party)
 OPTIONAL MATCH
-  (u)-[:FOLLOWS]->(author:User)-[:POSTED]->(e2:Party {privacy: "FRIENDS"})
+  (:User)-[going:GOING]->(party)
 OPTIONAL MATCH
-  (e3:Party)-[:INVITED]->(u)
-UNWIND
-  [val in [e1, e2, e3] WHERE val is not null] as e
-OPTIONAL MATCH
-  (:User)-[interest:INTERESTED]->(e)
-OPTIONAL MATCH
-  (:User)-[going:GOING]->(e)
+  (:User)-[invite:INVITED]->(party)
 WITH
-  u,
-  e,
-  author,
-  exists((u)-[:INTERESTED]->(e)) as interested,
-  count(DISTINCT interest) as interestedCount,
-  exists((u)-[:GOING]->(e)) as going,
-  count(DISTINCT going) as goingCount
-  SKIP
+  me,
+  creator,
+  party,
+  count(DISTINCT interest) AS interested_count,
+  count(DISTINCT going) AS going_count,
+  count(DISTINCT invite) AS invited_count
+SKIP
   $skip
-  LIMIT
+LIMIT
   $pageSize
-CALL {
-  WITH u, e, author
-  OPTIONAL MATCH (u)-[:FOLLOWS]->(mutual:User)-[:GOING]->(e)
-  WITH mutual, count(mutual) as mutualCount LIMIT 2
-  RETURN collect(mutual.picture) as mutualpictures,
-         collect(mutual.username) as mutualUsernames, mutualCount
-}
-RETURN e {
-       .*,
-         hostId: author.id,
-         hostName: author.name,
-         interested: interested,
-         interestedCount: interestedCount,
-         going: going,
-         goingCount: goingCount,
-         mutualCount: mutualCount,
-         mutualUsernames: mutualUsernames,
-         mutualpictures: mutualpictures
-       }
-ORDER BY e.startDate DESC
+RETURN
+  {
+    party:            PROPERTIES(party),
+    user:             PROPERTIES(creator),
+    going_count:      going_count,
+    interested_count: interested_count,
+    invited_count:    invited_count,
+    is_creator:       creator.id = me.id
+  }
+  ORDER BY party.createTime DESC

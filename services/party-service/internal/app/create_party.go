@@ -6,6 +6,7 @@ import (
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"log"
 )
 
 func (s *Server) CreateParty(
@@ -18,6 +19,7 @@ func (s *Server) CreateParty(
 	}
 
 	partyReq := request.GetParty()
+	log.Println(partyReq)
 	if partyReq == nil {
 		return nil, status.Error(codes.InvalidArgument, "party parameter can't be nil")
 	}

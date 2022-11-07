@@ -11,6 +11,7 @@ import {FlexModule} from "@angular/flex-layout";
 import {MatButtonModule} from "@angular/material/button";
 import {MatMenuModule} from "@angular/material/menu";
 import {PostDeleteDialogModule} from "../post-delete-dialog/post-delete-dialog.module";
+import {RelativeTimeModule} from "../../../shared/data/pipes/relative-time/relative-time.module";
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import {PostDeleteDialogModule} from "../post-delete-dialog/post-delete-dialog.m
     FlexModule,
     MatButtonModule,
     MatMenuModule,
-      PostDeleteDialogModule,
+    PostDeleteDialogModule,
+    RelativeTimeModule,
   ],
   exports: [PostItemComponent],
 })

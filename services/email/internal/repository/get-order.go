@@ -51,9 +51,15 @@ func GetOrder(paymentIntentId string, customerId string) ([]map[string]interface
 		return nil, err
 	}
 	orderMap := doc.Data()
-	tickets := orderMap["tickets"].([]map[string]interface{})
 
-	return tickets, nil
+	tickets := orderMap["tickets"].([]interface{})
+	var res = make([]map[string]interface{}, 0)
+
+	for _, ticket := range tickets {
+		res = append(res, ticket.(map[string]interface{}))
+	}
+
+	return res, nil
 }
 
 func CalculateTotalPrice(tickets []map[string]interface{}) int64 {

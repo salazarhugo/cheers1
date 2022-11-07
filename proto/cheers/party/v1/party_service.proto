@@ -14,7 +14,7 @@ service PartyService {
   rpc CreateParty (CreatePartyRequest) returns (CreatePartyResponse) {
     option (google.api.http) = {
       post: "/v1/parties"
-      body: "party"
+      body: "*"
     };
   }
 
@@ -27,7 +27,7 @@ service PartyService {
   rpc UpdateParty (UpdatePartyRequest) returns (UpdatePartyResponse) {
     option (google.api.http) = {
       patch: "/v1/parties"
-      body: "party"
+      body: "*"
     };
   }
 

@@ -7,7 +7,7 @@
                 </mat-chip>
             </mat-chip-list>
         </header>
-        <section *ngIf="$myParties | async as parties" class="your-parties m0">
+        <section class="your-parties m0">
             <div fxLayoutAlign="space-between center">
                 <h2 class="title">Your parties</h2>
                 <div class="parties-header">
@@ -15,7 +15,7 @@
                 </div>
             </div>
 
-            <div fxLayout="row wrap" fxLayoutAlign="flex-start" fxLayoutGap="16px">
+            <div *ngIf="$myParties | async as parties" fxLayout="row wrap" fxLayoutAlign="flex-start" fxLayoutGap="16px">
                 <ng-container *ngFor="let party of parties">
                     <app-party-item [party]="party"></app-party-item>
                 </ng-container>

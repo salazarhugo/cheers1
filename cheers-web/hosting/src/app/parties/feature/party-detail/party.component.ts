@@ -4,7 +4,6 @@ import {Party} from "../../../shared/data/models/party.model";
 import {PartyService} from "../../data/party.service";
 import {Clipboard} from '@angular/cdk/clipboard';
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {PartyItem} from "../../../../gen/ts/cheers/party/v1/party_service";
 
 @Component({
     selector: 'app-party-detail',

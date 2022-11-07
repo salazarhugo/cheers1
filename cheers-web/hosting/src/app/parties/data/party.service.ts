@@ -4,6 +4,7 @@ import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {BehaviorSubject, firstValueFrom, lastValueFrom, map, Observable} from "rxjs";
 import {Ticket} from "../../shared/data/models/ticket.model";
 import {
+    CreatePartyResponse,
     FeedPartyResponse,
     GetPartyItemResponse,
     PartyItem
@@ -39,9 +40,16 @@ export class PartyService {
         return this.api.deleteParty(id)
     }
 
-    createParty(party: Party): Observable<Party> {
-        return this.http.post<Party>(`${environment.GATEWAY_URL}/v1/parties`, {
-            party: party
+    createParty(party: Party): Observable<CreatePartyResponse> {
+        return this.http.post<CreatePartyResponse>(`${environment.GATEWAY_URL}/v1/parties`, {
+            party: {
+                name: party.name,
+                description: party.description,
+                address: party.address,
+                privacy: "FRIENDS",
+                bannerUrl: party.bannerUrl,
+                locationName: party.locationName,
+            }
         })
     }
 
