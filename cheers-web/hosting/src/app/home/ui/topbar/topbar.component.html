@@ -1,7 +1,9 @@
 <mat-toolbar class="app-toolbar" fxLayoutAlign="space-between center">
     <div fxLayout="row" fxLayoutAlign="none center" style="z-index: 4">
-        <img alt="avatar" height="50" src="assets/cheers-logo.png" width="50">
-        <img height="34" src="assets/img/cheers-logo-white.svg">
+        <div fxLayoutAlign="none center" routerLink="/home" style="cursor: pointer">
+            <img alt="avatar" height="50" src="assets/cheers-logo.png" width="50">
+            <img height="34" src="assets/img/cheers-logo-white.svg">
+        </div>
 
         <mat-menu #menu="matMenu" class="search-menu" fxLayoutAlign="none none" xPosition="before">
             <div *ngIf="$recentSearches | async as recentUsers">

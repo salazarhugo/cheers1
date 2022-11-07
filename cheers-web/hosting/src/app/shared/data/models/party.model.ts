@@ -34,7 +34,7 @@ export class Party {
 
 export function toParty(value: PartyItem): Party {
     const party = new Party()
-    Object.assign(party, value)
+    Object.assign(party, value.party)
     party.goingCount = value.goingCount
     party.interestedCount = value.interestedCount
     party.goingCount = value.invitedCount

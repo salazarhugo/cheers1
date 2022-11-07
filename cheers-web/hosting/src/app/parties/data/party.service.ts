@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from "../../shared/data/services/api.service";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
-import {firstValueFrom, lastValueFrom, map, Observable} from "rxjs";
+import {BehaviorSubject, firstValueFrom, lastValueFrom, map, Observable} from "rxjs";
 import {Ticket} from "../../shared/data/models/ticket.model";
 import {
-    CreatePartyRequest,
     FeedPartyResponse,
     GetPartyItemResponse,
     PartyItem
@@ -17,6 +16,8 @@ import {Party, toParty} from "../../shared/data/models/party.model";
     providedIn: 'root'
 })
 export class PartyService {
+
+    private partyFeed$ = new BehaviorSubject<Party[]>([])
 
     constructor(
         private api: ApiService,
@@ -55,6 +56,10 @@ export class PartyService {
     getMyParties(): Observable<Party[]> {
         return this.http.get<PartyItem[]>(`${environment.GATEWAY_URL}/v1/parties/my?pageSize=10&page=0`)
             .pipe(map(res => res.map(p => toParty(p))));
+    }
+
+    getFeed(): Observable<Party[]> {
+        return this.partyFeed$
     }
 
     getPartyFeed(): Observable<Party[]> {
