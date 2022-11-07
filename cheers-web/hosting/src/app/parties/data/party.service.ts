@@ -18,12 +18,21 @@ import {Party, toParty} from "../../shared/data/models/party.model";
 export class PartyService {
 
     private partyFeed$ = new BehaviorSubject<Party[]>([])
+    private party$ = new BehaviorSubject<Party>(new Party())
 
     constructor(
         private api: ApiService,
         private fs: AngularFirestore,
         private http: HttpClient,
     ) {
+    }
+
+    setParty(party: Party) {
+        this.party$.next(party)
+    }
+
+    getManagedParty() {
+        return this.party$
     }
 
     deleteParty(id: string) {

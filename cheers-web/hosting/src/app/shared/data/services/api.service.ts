@@ -101,10 +101,6 @@ export class ApiService {
         return this.http.post(`${this.BASE_URL}/party/uninterest?partyId=${partyId}`, {})
     }
 
-    getParty(partyId: string): Observable<Party> {
-        return this.http.get<Party>(`${this.GATEWAY_URL}/v1/parties/${partyId}`)
-    }
-
     getUserPosts(userId: string): Observable<PostResponse[]> {
         return this.http.get<PostResponse[]>(`${this.GATEWAY_URL}/v1/posts?userId=${userId}&pageSize=10&page=0`)
     }

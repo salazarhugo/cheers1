@@ -9,6 +9,7 @@ import {PaymentComponent} from "./payments/features/payment/payment.component";
 import {CompleteComponent} from "./shared/ui/complete/complete.component";
 import {StoriesComponent} from "./stories/features/story-feed/stories.component";
 import {ManagePartyComponent} from "./manage-parties/feature/manage-party/manage-party.component";
+import {PartyResolver} from "./manage-parties/data/party.resolver";
 
 const routes: Routes = [
     {
@@ -41,7 +42,7 @@ const routes: Routes = [
     },
     {
         path: 'manage/parties',
-        component: ManagePartyComponent, resolve: {data: UserResolver},
+        component: ManagePartyComponent, resolve: {party: PartyResolver},
         loadChildren: () => import('./manage-parties/feature/manage-party-shell/manage-party-shell.module').then(m => m.ManagePartyShellModule)
     },
     {
