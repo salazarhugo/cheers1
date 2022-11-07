@@ -31,12 +31,13 @@ export class ManagePartyBasicinfoComponent implements OnInit {
     constructor(
         private partyService: PartyService,
     ) {
-        this.partyService.getManagedParty().subscribe(party => {
-            this.partyForm.patchValue(party as any)
-        })
     }
 
     ngOnInit(): void {
+        this.partyService.getManagedParty().subscribe(party => {
+            console.log(party)
+            this.partyForm.patchValue(party as any)
+        })
     }
 
     onSubmit($event: Party) {
