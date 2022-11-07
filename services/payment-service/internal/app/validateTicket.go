@@ -18,7 +18,6 @@ type Ticket struct {
 }
 
 func ValidateTicket(c echo.Context) error {
-	cry
 	cc := c.(*utils.CustomContext)
 	session := utils.GetSession(cc.Driver)
 	defer session.Close()

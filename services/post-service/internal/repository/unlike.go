@@ -2,7 +2,7 @@ package repository
 
 import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
-	pb "github.com/salazarhugo/cheers1/genproto/cheers/post/v1"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	utils "github.com/salazarhugo/cheers1/libs/utils"
 )
 

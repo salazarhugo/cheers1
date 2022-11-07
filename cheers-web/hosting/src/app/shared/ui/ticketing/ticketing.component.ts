@@ -2,13 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {environment} from "../../../../environments/environment";
 import {loadStripe} from "@stripe/stripe-js";
 import {Observable, of} from "rxjs";
-import {Party} from "../../data/models/party.model";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {PartyService} from "../../../parties/data/party.service";
 import {PaymentService} from "../../../payments/data/payment.service";
 import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {Ticket} from "../../data/models/ticket.model";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
+import {Party} from "../../../../gen/ts/cheers/type/party/party";
 
 @Component({
     selector: 'app-ticketing',

@@ -1,7 +1,7 @@
 package main
 
 import (
-	pb "github.com/salazarhugo/cheers1/genproto/cheers/party/v1"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
 	"github.com/salazarhugo/cheers1/libs/auth"
 	"github.com/salazarhugo/cheers1/libs/profiler"
 	"github.com/salazarhugo/cheers1/libs/utils"

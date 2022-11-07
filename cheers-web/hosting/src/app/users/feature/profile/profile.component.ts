@@ -10,6 +10,7 @@ import {Router} from "@angular/router";
 import {ActivityService} from "../../../activities/data/activity.service";
 import {PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
 import {PostService} from "../../../posts/data/post.service";
+import {PartyItem} from "../../../../gen/ts/cheers/party/v1/party_service";
 
 @Component({
     selector: 'app-profile',

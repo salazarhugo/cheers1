@@ -3,7 +3,7 @@ package app
 import (
 	"context"
 	"github.com/golang/protobuf/ptypes/empty"
-	pb "github.com/salazarhugo/cheers1/genproto/cheers/post/v1"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	utils "github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

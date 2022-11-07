@@ -4,6 +4,7 @@ import {Party} from "../../../shared/data/models/party.model";
 import {PartyService} from "../../data/party.service";
 import {Clipboard} from '@angular/cdk/clipboard';
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {PartyItem} from "../../../../gen/ts/cheers/party/v1/party_service";
 
 @Component({
     selector: 'app-party-detail',
@@ -12,7 +13,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class PartyComponent implements OnInit {
 
-    $party: Party | undefined
+    partyItem: PartyItem | undefined
     partyId: string | null
 
     constructor(
@@ -29,17 +30,17 @@ export class PartyComponent implements OnInit {
             const partyId = params.get("id")
             this.partyId = params.get("id")
             if (partyId)
-                this.$party = await this.partyService.getParty(partyId).toPromise()
+                this.partyItem = await this.partyService.getParty(partyId).toPromise()
         })
     }
 
     onInterestedClick() {
-        if (this.$party!.interested)
+        if (this.partyItem!.isInterested)
             this.partyService.uninterested(this.partyId!).subscribe(res => console.log(res))
         else
             this.partyService.interested(this.partyId!).subscribe(res => console.log(res))
 
-        this.$party!.interested = !this.$party!.interested
+        this.partyItem!.isInterested = !this.partyItem!.isInterested
     }
 
     copyLink() {

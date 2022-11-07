@@ -2,15 +2,13 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {map, Observable} from "rxjs";
 import {StoryState, User, UserResponse} from "../models/user.model";
-import {Party} from "../models/party.model";
 import {Post} from "../models/post.model";
 import {Story} from "../models/story.model";
 import {Ticket} from "../models/ticket.model";
-import {Timestamp} from "google-protobuf/google/protobuf/timestamp_pb";
-import {user} from "@angular/fire/auth";
-import {orderByKey, orderByPriority} from "@angular/fire/database";
 import {FeedPostResponse, PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
 import {Empty} from "../../../../gen/ts/google/protobuf/empty";
+import {PartyItem} from "../../../../gen/ts/cheers/party/v1/party_service";
+import {Party} from "../../../../gen/ts/cheers/type/party/party";
 
 @Injectable({
     providedIn: 'root'
@@ -95,19 +93,6 @@ export class ApiService {
         })
     }
 
-    createParty(party: Party): Observable<Party> {
-        party.privacy = "FRIENDS"
-        return this.http.post<Party>(`${this.GATEWAY_URL}/v1/parties`, {
-            party: {
-                name: party.name,
-                description: party.description,
-                banner_url: party.bannerUrl,
-                location_name: party.locationName,
-                privacy: party.privacy,
-            }
-        })
-    }
-
     interestParty(partyId: string): Observable<any> {
         return this.http.post(`${this.BASE_URL}/party/interest?partyId=${partyId}`, {})
     }
@@ -117,15 +102,11 @@ export class ApiService {
     }
 
     getParty(partyId: string): Observable<Party> {
-        return this.http.get<Party>(`${this.BASE_URL}/party/${partyId}`)
+        return this.http.get<Party>(`${this.GATEWAY_URL}/v1/parties/${partyId}`)
     }
 
-    getMyParties(): Observable<Party[]> {
-        return this.http.get<Party[]>(`${this.BASE_URL}/party/my?pageSize=10&page=0`)
-    }
-
-    getPartyFeed(): Observable<Party[]> {
-        return this.http.get<Party[]>(`${this.BASE_URL}/party/feed?pageSize=10&page=0`)
+    getPartyItem(partyId: string): Observable<PartyItem> {
+        return this.http.get<PartyItem>(`${this.GATEWAY_URL}/v1/parties/${partyId}/item`)
     }
 
     getUserPosts(userId: string): Observable<PostResponse[]> {

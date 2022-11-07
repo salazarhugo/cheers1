@@ -2,8 +2,8 @@ package repository
 
 import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
-	pb "github.com/salazarhugo/cheers1/genproto/cheers/party/v1"
-	party "github.com/salazarhugo/cheers1/genproto/cheers/type/party"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
+	party "github.com/salazarhugo/cheers1/gen/go/cheers/type/party"
 )
 
 type PartyRepository interface {
@@ -12,6 +12,7 @@ type PartyRepository interface {
 	UpdateParty(party *party.Party) error
 	DeleteParty(id string) error
 
+	GetPartyItem(id string) (*pb.PartyItem, error)
 	FeedParty(userID string, request *pb.FeedPartyRequest) (*pb.FeedPartyResponse, error)
 }
 

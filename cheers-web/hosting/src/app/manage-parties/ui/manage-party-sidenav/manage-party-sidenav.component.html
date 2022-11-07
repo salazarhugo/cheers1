@@ -1,9 +1,15 @@
-<section fxLayout="column" style="padding: 24px" *ngIf="party">
-    <h2>{{party.name}}</h2>
+
+<section fxLayout="column" *ngIf="party">
+    <div class="party-banner-container image-placeholder" fxLayoutAlign="center center">
+        <img *ngIf="party.bannerUrl" [src]="party.bannerUrl" alt="party banner" class="party-banner">
+    </div>
+    <div style="padding: 24px">
+        <h2>{{party.name}}</h2>
+    </div>
 </section>
 <section fxLayout="column" style="padding: 12px">
-    <div *ngFor="let item of items" [routerLink]="item.routerLink">
+    <a *ngFor="let item of items" [routerLink]="[party?.id!, item.routerLink]">
         <app-sidenav-item [item]="item"></app-sidenav-item>
-    </div>
+    </a>
 </section>
 <mat-divider></mat-divider>

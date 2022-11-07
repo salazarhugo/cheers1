@@ -16,7 +16,7 @@ export class ManagePartySidenavComponent implements OnInit {
     {
       title: "Basic Info",
       icon: "check_circle",
-      routerLink: "/basicinfo",
+      routerLink: "basicinfo",
     },
     {
       title: "Details",
@@ -26,12 +26,12 @@ export class ManagePartySidenavComponent implements OnInit {
     {
       title: "Tickets",
       icon: "check_circle",
-      routerLink: "/tickets",
+      routerLink: "tickets",
     },
     {
       title: "Publish",
       icon: "check_circle",
-      routerLink: "/publish",
+      routerLink: "publish",
     },
   ]
 

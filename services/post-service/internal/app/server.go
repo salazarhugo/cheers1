@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/salazarhugo/cheers1/genproto/cheers/post/v1"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/libs/auth/utils"
 	"github.com/salazarhugo/cheers1/services/post-service/internal/repository"
 	"google.golang.org/grpc/health/grpc_health_v1"

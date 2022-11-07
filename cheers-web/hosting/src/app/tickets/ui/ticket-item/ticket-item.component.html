@@ -5,8 +5,15 @@
             <h2>{{ticket.name}}</h2>
         </div>
     </div>
+    <div>
+        <span class="ticket-item-quantity">0 / {{ticket.quantity}}</span>
+    </div>
     <div fxLayout="row" fxLayoutAlign="none center" fxLayoutGap="16px">
-        <h2>{{ticket.price / 100}} EUR</h2>
+        <h2 *ngIf="ticket.price == 0; else price">Free</h2>
+        <ng-template #price>
+            <h2>{{ticket.price / 100}} EUR</h2>
+        </ng-template>
+
         <button [mat-menu-trigger-for]="menu" mat-icon-button>
             <mat-icon>more_vert</mat-icon>
         </button>

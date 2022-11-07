@@ -8,11 +8,9 @@ package party
 
 import (
 	context "context"
-	party "github.com/salazarhugo/cheers1/gen/go/cheers/type/party"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
-	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -24,10 +22,11 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PartyServiceClient interface {
-	CreateParty(ctx context.Context, in *CreatePartyRequest, opts ...grpc.CallOption) (*party.Party, error)
-	GetParty(ctx context.Context, in *GetPartyRequest, opts ...grpc.CallOption) (*PartyResponse, error)
-	UpdateParty(ctx context.Context, in *UpdatePartyRequest, opts ...grpc.CallOption) (*party.Party, error)
-	DeleteParty(ctx context.Context, in *DeletePartyRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	CreateParty(ctx context.Context, in *CreatePartyRequest, opts ...grpc.CallOption) (*CreatePartyResponse, error)
+	GetParty(ctx context.Context, in *GetPartyRequest, opts ...grpc.CallOption) (*GetPartyResponse, error)
+	UpdateParty(ctx context.Context, in *UpdatePartyRequest, opts ...grpc.CallOption) (*UpdatePartyResponse, error)
+	DeleteParty(ctx context.Context, in *DeletePartyRequest, opts ...grpc.CallOption) (*DeletePartyResponse, error)
+	GetPartyItem(ctx context.Context, in *GetPartyItemRequest, opts ...grpc.CallOption) (*GetPartyItemResponse, error)
 	FeedParty(ctx context.Context, in *FeedPartyRequest, opts ...grpc.CallOption) (*FeedPartyResponse, error)
 }
 
@@ -39,8 +38,8 @@ func NewPartyServiceClient(cc grpc.ClientConnInterface) PartyServiceClient {
 	return &partyServiceClient{cc}
 }
 
-func (c *partyServiceClient) CreateParty(ctx context.Context, in *CreatePartyRequest, opts ...grpc.CallOption) (*party.Party, error) {
-	out := new(party.Party)
+func (c *partyServiceClient) CreateParty(ctx context.Context, in *CreatePartyRequest, opts ...grpc.CallOption) (*CreatePartyResponse, error) {
+	out := new(CreatePartyResponse)
 	err := c.cc.Invoke(ctx, "/cheers.party.v1.PartyService/CreateParty", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -48,8 +47,8 @@ func (c *partyServiceClient) CreateParty(ctx context.Context, in *CreatePartyReq
 	return out, nil
 }
 
-func (c *partyServiceClient) GetParty(ctx context.Context, in *GetPartyRequest, opts ...grpc.CallOption) (*PartyResponse, error) {
-	out := new(PartyResponse)
+func (c *partyServiceClient) GetParty(ctx context.Context, in *GetPartyRequest, opts ...grpc.CallOption) (*GetPartyResponse, error) {
+	out := new(GetPartyResponse)
 	err := c.cc.Invoke(ctx, "/cheers.party.v1.PartyService/GetParty", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -57,8 +56,8 @@ func (c *partyServiceClient) GetParty(ctx context.Context, in *GetPartyRequest, 
 	return out, nil
 }
 
-func (c *partyServiceClient) UpdateParty(ctx context.Context, in *UpdatePartyRequest, opts ...grpc.CallOption) (*party.Party, error) {
-	out := new(party.Party)
+func (c *partyServiceClient) UpdateParty(ctx context.Context, in *UpdatePartyRequest, opts ...grpc.CallOption) (*UpdatePartyResponse, error) {
+	out := new(UpdatePartyResponse)
 	err := c.cc.Invoke(ctx, "/cheers.party.v1.PartyService/UpdateParty", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -66,9 +65,18 @@ func (c *partyServiceClient) UpdateParty(ctx context.Context, in *UpdatePartyReq
 	return out, nil
 }
 
-func (c *partyServiceClient) DeleteParty(ctx context.Context, in *DeletePartyRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
-	out := new(emptypb.Empty)
+func (c *partyServiceClient) DeleteParty(ctx context.Context, in *DeletePartyRequest, opts ...grpc.CallOption) (*DeletePartyResponse, error) {
+	out := new(DeletePartyResponse)
 	err := c.cc.Invoke(ctx, "/cheers.party.v1.PartyService/DeleteParty", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *partyServiceClient) GetPartyItem(ctx context.Context, in *GetPartyItemRequest, opts ...grpc.CallOption) (*GetPartyItemResponse, error) {
+	out := new(GetPartyItemResponse)
+	err := c.cc.Invoke(ctx, "/cheers.party.v1.PartyService/GetPartyItem", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -88,10 +96,11 @@ func (c *partyServiceClient) FeedParty(ctx context.Context, in *FeedPartyRequest
 // All implementations must embed UnimplementedPartyServiceServer
 // for forward compatibility
 type PartyServiceServer interface {
-	CreateParty(context.Context, *CreatePartyRequest) (*party.Party, error)
-	GetParty(context.Context, *GetPartyRequest) (*PartyResponse, error)
-	UpdateParty(context.Context, *UpdatePartyRequest) (*party.Party, error)
-	DeleteParty(context.Context, *DeletePartyRequest) (*emptypb.Empty, error)
+	CreateParty(context.Context, *CreatePartyRequest) (*CreatePartyResponse, error)
+	GetParty(context.Context, *GetPartyRequest) (*GetPartyResponse, error)
+	UpdateParty(context.Context, *UpdatePartyRequest) (*UpdatePartyResponse, error)
+	DeleteParty(context.Context, *DeletePartyRequest) (*DeletePartyResponse, error)
+	GetPartyItem(context.Context, *GetPartyItemRequest) (*GetPartyItemResponse, error)
 	FeedParty(context.Context, *FeedPartyRequest) (*FeedPartyResponse, error)
 	mustEmbedUnimplementedPartyServiceServer()
 }
@@ -100,17 +109,20 @@ type PartyServiceServer interface {
 type UnimplementedPartyServiceServer struct {
 }
 
-func (UnimplementedPartyServiceServer) CreateParty(context.Context, *CreatePartyRequest) (*party.Party, error) {
+func (UnimplementedPartyServiceServer) CreateParty(context.Context, *CreatePartyRequest) (*CreatePartyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateParty not implemented")
 }
-func (UnimplementedPartyServiceServer) GetParty(context.Context, *GetPartyRequest) (*PartyResponse, error) {
+func (UnimplementedPartyServiceServer) GetParty(context.Context, *GetPartyRequest) (*GetPartyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetParty not implemented")
 }
-func (UnimplementedPartyServiceServer) UpdateParty(context.Context, *UpdatePartyRequest) (*party.Party, error) {
+func (UnimplementedPartyServiceServer) UpdateParty(context.Context, *UpdatePartyRequest) (*UpdatePartyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateParty not implemented")
 }
-func (UnimplementedPartyServiceServer) DeleteParty(context.Context, *DeletePartyRequest) (*emptypb.Empty, error) {
+func (UnimplementedPartyServiceServer) DeleteParty(context.Context, *DeletePartyRequest) (*DeletePartyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteParty not implemented")
+}
+func (UnimplementedPartyServiceServer) GetPartyItem(context.Context, *GetPartyItemRequest) (*GetPartyItemResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPartyItem not implemented")
 }
 func (UnimplementedPartyServiceServer) FeedParty(context.Context, *FeedPartyRequest) (*FeedPartyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FeedParty not implemented")
@@ -200,6 +212,24 @@ func _PartyService_DeleteParty_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PartyService_GetPartyItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPartyItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PartyServiceServer).GetPartyItem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.party.v1.PartyService/GetPartyItem",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PartyServiceServer).GetPartyItem(ctx, req.(*GetPartyItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PartyService_FeedParty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(FeedPartyRequest)
 	if err := dec(in); err != nil {
@@ -240,6 +270,10 @@ var PartyService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteParty",
 			Handler:    _PartyService_DeleteParty_Handler,
+		},
+		{
+			MethodName: "GetPartyItem",
+			Handler:    _PartyService_GetPartyItem_Handler,
 		},
 		{
 			MethodName: "FeedParty",

@@ -27,6 +27,18 @@ func GetUserId(ctx context.Context) (string, error) {
 	return md["user-id"][0], nil
 }
 
+func MapToProto(out proto.Message, data interface{}) error {
+	bytes, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+	err = protojson.Unmarshal(bytes, out)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func ProtoToMap(m proto.Message) (map[string]interface{}, error) {
 	bytes, err := protojson.Marshal(m)
 	if err != nil {

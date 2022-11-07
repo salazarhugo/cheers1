@@ -23,9 +23,9 @@
         </mat-tab>
 
         <mat-tab label="Events">
-            <div *ngIf="$parties | async as events">
-                <ng-container *ngFor="let event of events">
-                    <app-party-item [party]="event"></app-party-item>
+            <div *ngIf="$parties | async as items">
+                <ng-container *ngFor="let item of items">
+                    <app-party-item [party]="item"></app-party-item>
                 </ng-container>
             </div>
         </mat-tab>

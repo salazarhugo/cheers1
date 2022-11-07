@@ -2,8 +2,8 @@ package repository
 
 import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
-	pb "github.com/salazarhugo/cheers1/genproto/cheers/post/v1"
-	postpb "github.com/salazarhugo/cheers1/genproto/cheers/type/post"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
+	postpb "github.com/salazarhugo/cheers1/gen/go/cheers/type/post"
 )
 
 type PostRepository interface {

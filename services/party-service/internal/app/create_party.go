@@ -2,8 +2,7 @@ package app
 
 import (
 	"context"
-	pb "github.com/salazarhugo/cheers1/genproto/cheers/party/v1"
-	party "github.com/salazarhugo/cheers1/genproto/cheers/type/party"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -12,7 +11,7 @@ import (
 func (s *Server) CreateParty(
 	ctx context.Context,
 	request *pb.CreatePartyRequest,
-) (*party.Party, error) {
+) (*pb.CreatePartyResponse, error) {
 	userID, err := utils.GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")
@@ -30,5 +29,7 @@ func (s *Server) CreateParty(
 		return nil, status.Error(codes.Internal, "failed to create party")
 	}
 
-	return response, nil
+	return &pb.CreatePartyResponse{
+		Party: response,
+	}, nil
 }

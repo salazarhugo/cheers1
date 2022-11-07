@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: ':id/basic-info',
+    path: ':id/basicinfo',
     loadChildren: () => import('../manage-party-basicinfo/manage-party-basicinfo.module').then(m => m.ManagePartyBasicinfoModule)
   },
   {

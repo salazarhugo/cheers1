@@ -69,7 +69,7 @@ export class CreatePartyComponent implements OnInit {
             const newParty = await lastValueFrom(this.partyService.createParty(party))
             console.log(newParty)
             this.openSnackBar("Party created", 'OK')
-            await this.router.navigate(['parties', newParty.id, 'tickets'])
+            await this.router.navigate(['/manage/parties', newParty.id, 'tickets'])
         } catch (e) {
             console.log(e)
             this.openSnackBar("Failed to create party-detail", 'OK')

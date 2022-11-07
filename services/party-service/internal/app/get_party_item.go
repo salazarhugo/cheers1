@@ -7,26 +7,26 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *Server) GetParty(
+func (s *Server) GetPartyItem(
 	ctx context.Context,
-	request *pb.GetPartyRequest,
-) (*pb.GetPartyResponse, error) {
-	err := ValidateGetPartyRequest(request)
+	request *pb.GetPartyItemRequest,
+) (*pb.GetPartyItemResponse, error) {
+	err := ValidateGetPartyItemRequest(request)
 	if err != nil {
 		return nil, err
 	}
 
-	party, err := s.partyRepository.GetParty(request.GetPartyId())
+	item, err := s.partyRepository.GetPartyItem(request.GetPartyId())
 	if err != nil {
 		return nil, err
 	}
 
-	return &pb.GetPartyResponse{
-		Party: party,
+	return &pb.GetPartyItemResponse{
+		Item: item,
 	}, nil
 }
 
-func ValidateGetPartyRequest(request *pb.GetPartyRequest) error {
+func ValidateGetPartyItemRequest(request *pb.GetPartyItemRequest) error {
 	partyId := request.GetPartyId()
 	if partyId == "" {
 		return status.Error(codes.InvalidArgument, "party_id parameter can't be nil")

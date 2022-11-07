@@ -7,7 +7,7 @@ go_binary(
 #        "internal/app/create_party.go",
         ],
     deps= [
-        "github.com/salazarhugo/cheers1/genproto/cheers/api/v1",
+        "github.com/salazarhugo/cheers1/gen/go/cheers/api/v1",
         "github.com/salazarhugo/cheers1/libs/auth",
         "github.com/salazarhugo/cheers1/services/party-service/internal/app",
         "google.golang.org/grpc",

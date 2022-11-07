@@ -17,5 +17,6 @@ export const environment = {
     stripe: {
         // public_key: 'pk_live_51KWqPTAga4Q2CELO2K93NrScmrQOQf0Pbvn0XpDXSqW4gzgXFWpMx1lnSjTfR8251B3TI4zHmQ0MqFDCYdpKD2D200KhtML5F7',
         public_key: 'pk_test_51KWqPTAga4Q2CELOu5oK8GHRPlQwVPvcISBMuoWU5yxP8VrtmBhRGm0TBKaKeKm1tz2EY7gmmvvYuFWMJEzWvFhC00qOX6gQb1',
-    }
+    },
+    GATEWAY_URL: "https://web-gateway-r3a2dr4u4a-nw.a.run.app",
 };
