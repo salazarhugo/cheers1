@@ -8,7 +8,7 @@ import {PaymentService} from "../../../payments/data/payment.service";
 import {UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators} from "@angular/forms";
 import {Ticket} from "../../data/models/ticket.model";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
-import {Party} from "../../../../gen/ts/cheers/type/party/party";
+import {Party} from "../../data/models/party.model";
 
 @Component({
     selector: 'app-ticketing',

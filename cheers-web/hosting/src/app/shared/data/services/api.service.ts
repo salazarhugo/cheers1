@@ -7,7 +7,7 @@ import {Story} from "../models/story.model";
 import {Ticket} from "../models/ticket.model";
 import {FeedPostResponse, PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
 import {Empty} from "../../../../gen/ts/google/protobuf/empty";
-import {PartyItem} from "../../../../gen/ts/cheers/party/v1/party_service";
+import {GetPartyItemResponse, PartyItem} from "../../../../gen/ts/cheers/party/v1/party_service";
 import {Party} from "../../../../gen/ts/cheers/type/party/party";
 
 @Injectable({
@@ -103,10 +103,6 @@ export class ApiService {
 
     getParty(partyId: string): Observable<Party> {
         return this.http.get<Party>(`${this.GATEWAY_URL}/v1/parties/${partyId}`)
-    }
-
-    getPartyItem(partyId: string): Observable<PartyItem> {
-        return this.http.get<PartyItem>(`${this.GATEWAY_URL}/v1/parties/${partyId}/item`)
     }
 
     getUserPosts(userId: string): Observable<PostResponse[]> {

@@ -9,7 +9,7 @@ OPTIONAL MATCH
 WITH
   party,
   user,
-  exists((me)-[:GOING]->(post)) AS is_going,
+  exists((me)-[:GOING]->(party)) AS is_going,
   count(DISTINCT interest) AS interested_count,
   count(DISTINCT going) AS going_count
 RETURN

@@ -1,25 +1,25 @@
 <div class="party-container" fxLayout="column">
-    <div *ngIf="partyItem" class="party" fxLayout="column">
+    <div *ngIf="party as party" class="party" fxLayout="column">
         <div class="party-banner-container image-placeholder" fxLayoutAlign="center center">
-            <img *ngIf="partyItem.party.bannerUrl" [src]="partyItem.party.bannerUrl" alt="party banner" class="party-banner">
+            <img *ngIf="party.bannerUrl" [src]="party.bannerUrl" alt="party banner" class="party-banner">
         </div>
         <div class="party-header">
-            <span class="party-date">{{partyItem.party.startDate | date}}</span>
-            <h1 class="party-title"> {{partyItem.party.name}} </h1>
-            <h3> {{partyItem.goingCount}}</h3>
+            <span class="party-date">{{party.startDate | date}}</span>
+            <h1 class="party-title"> {{party.name}} </h1>
+            <h3> {{party.locationName}}</h3>
             <mat-divider></mat-divider>
             <div class="party-header-buttons" fxLayoutAlign="end" fxLayoutGap="20px">
-                <button *ngIf="partyItem.isCreator" [routerLink]="['edit']" mat-flat-button>
+                <button *ngIf="party.isHost" [routerLink]="['edit']" mat-flat-button>
                     <mat-icon>edit</mat-icon>
                     <span class="button-span">Edit</span>
                 </button>
-                <button *ngIf="!partyItem.isCreator" [color]="partyItem.isInterested ? 'primary' : undefined" mat-flat-button
+                <button *ngIf="!party.isHost" [color]="party.interested ? 'primary' : undefined" mat-flat-button
                         (click)="onInterestedClick()">
-                    <mat-icon *ngIf="partyItem.isInterested">star</mat-icon>
-                    <mat-icon *ngIf="!partyItem.isInterested">star_border</mat-icon>
+                    <mat-icon *ngIf="party.interested">star</mat-icon>
+                    <mat-icon *ngIf="!party.interested">star_border</mat-icon>
                     <span class="button-span">Interested</span>
                 </button>
-                <button *ngIf="!partyItem.isCreator" mat-flat-button>
+                <button *ngIf="!party.isHost" mat-flat-button>
                     <mat-icon>check_circle_outline</mat-icon>
                     <span class="button-span">Going</span>
                 </button>
@@ -48,21 +48,21 @@
                     <div class="party-details" fxLayout="column" fxLayoutGap="8px">
                         <div fxLayoutAlign="none center">
                             <mat-icon>people</mat-icon>
-                            <span class="button-span">{{partyItem.goingCount}}
-                                person going, including {{partyItem.creator.name}}</span>
+                            <span class="button-span">{{party.goingCount}}
+                                person going, including {{party.hostName}}</span>
                             <!--                            <span class="button-span">{{party-detail.interestedCount}} people interested</span>-->
                         </div>
                         <div fxLayoutAlign="none center">
                             <mat-icon>flag_outline</mat-icon>
-                            <span class="button-span">Party by {{partyItem.creator.name}}</span>
+                            <span class="button-span">Party by {{party.hostName}}</span>
                         </div>
                         <div fxLayoutAlign="none center">
                             <mat-icon>location_on_outline</mat-icon>
-                            <span class="button-span">{{partyItem.party.locationName}}</span>
+                            <span class="button-span">{{party.locationName}}</span>
                         </div>
                         <div fxLayoutAlign="none center">
                             <mat-icon>public_outline</mat-icon>
-                            <span class="button-span">{{partyItem.party.locationName}}</span>
+                            <span class="button-span">{{party.privacy}}</span>
                         </div>
                     </div>
                     <!--                <span class="button-span">{{party-detail.description}}</span>-->
@@ -71,9 +71,9 @@
                 <mat-card>
                     <div fxLayoutAlign="space-between">
                         <h2>Tickets</h2>
-                        <mat-icon [routerLink]="['/manage/parties', partyItem.party.id, 'tickets']">edit</mat-icon>
+                        <mat-icon [routerLink]="['/manage/parties', party.id, 'tickets']">edit</mat-icon>
                     </div>
-                    <button [routerLink]="['/ticketing', partyItem.party.id]" color="primary" mat-flat-button
+                    <button [routerLink]="['/ticketing', party.id]" color="primary" mat-flat-button
                             style="margin-top: 16px">
                         <mat-icon>confirmation_number_outline</mat-icon>
                         <span class="button-span">Buy tickets</span>
@@ -85,10 +85,10 @@
                 <mat-card style="padding: 0">
                     <div>
                         <img alt='static Mapbox map of the San Francisco bay area' class="party-location"
-                             [src]="'https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-s+555555(' + partyItem.party.latlng.longitude + ',' + partyItem.party.latlng.latitude + '/' + partyItem.party.latlng.longitude + ',' + partyItem.party.latlng.latitude + ',13.75,0.00,0.00/1000x600@2x?access_token=pk.eyJ1Ijoic2FsYXphcmJyb2NrIiwiYSI6ImNqd3hxaDBleTFobGQ0Y2sxc3lpdnNwYXMifQ.TgYFgyclmL6pGXXANhnlsw'">
+                             [src]="'https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-s+555555(' + party.longitude + ',' + party.latitude + '/' + party.longitude + ',' + party.latitude + ',13.75,0.00,0.00/1000x600@2x?access_token=pk.eyJ1Ijoic2FsYXphcmJyb2NrIiwiYSI6ImNqd3hxaDBleTFobGQ0Y2sxc3lpdnNwYXMifQ.TgYFgyclmL6pGXXANhnlsw'">
                     </div>
                     <div class="" fxLayout="column">
-                        <h2 style="padding: 16px">{{partyItem.party.locationName}}</h2>
+                        <h2 style="padding: 16px">{{party.locationName}}</h2>
                     </div>
                 </mat-card>
 
@@ -99,11 +99,11 @@
                     </div>
                     <div class="party-counters" fxLayout="row">
                         <div class="party-counter" fxLayout="column" fxLayoutAlign="center center">
-                            <span class="party-counter-title">{{partyItem.goingCount}}</span>
+                            <span class="party-counter-title">{{party.goingCount}}</span>
                             <span class="party-counter-subtitle">GOING</span>
                         </div>
                         <div class="party-counter" fxLayout="column" fxLayoutAlign="center center">
-                            <span class="party-counter-title">{{partyItem.interestedCount}}</span>
+                            <span class="party-counter-title">{{party.interestedCount}}</span>
                             <span class="party-counter-subtitle">INTERESTED</span>
                         </div>
                         <div class="party-counter" fxLayout="column" fxLayoutAlign="center center">

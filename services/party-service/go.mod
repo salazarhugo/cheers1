@@ -5,10 +5,10 @@ go 1.19
 require (
 	github.com/google/uuid v1.3.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221105090922-7db1c47202c4
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221107131935-2163f0fb8843
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221004084225-130de449e1a1
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221013185914-f468203a7c71
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221107131935-2163f0fb8843
 	github.com/sirupsen/logrus v1.9.0
 	google.golang.org/grpc v1.50.1
 	google.golang.org/protobuf v1.28.1
@@ -20,7 +20,6 @@ require (
 	cloud.google.com/go/compute/metadata v0.2.1 // indirect
 	cloud.google.com/go/firestore v1.6.1 // indirect
 	cloud.google.com/go/iam v0.6.0 // indirect
-	cloud.google.com/go/kms v1.6.0 // indirect
 	cloud.google.com/go/profiler v0.3.0 // indirect
 	cloud.google.com/go/pubsub v1.3.1 // indirect
 	cloud.google.com/go/storage v1.27.0 // indirect

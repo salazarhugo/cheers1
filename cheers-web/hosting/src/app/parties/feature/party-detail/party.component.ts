@@ -13,7 +13,7 @@ import {PartyItem} from "../../../../gen/ts/cheers/party/v1/party_service";
 })
 export class PartyComponent implements OnInit {
 
-    partyItem: PartyItem | undefined
+    party: Party | undefined
     partyId: string | null
 
     constructor(
@@ -30,17 +30,17 @@ export class PartyComponent implements OnInit {
             const partyId = params.get("id")
             this.partyId = params.get("id")
             if (partyId)
-                this.partyItem = await this.partyService.getParty(partyId).toPromise()
+                this.party = await this.partyService.getParty(partyId).toPromise()
         })
     }
 
     onInterestedClick() {
-        if (this.partyItem!.isInterested)
+        if (this.party!.interested)
             this.partyService.uninterested(this.partyId!).subscribe(res => console.log(res))
         else
             this.partyService.interested(this.partyId!).subscribe(res => console.log(res))
 
-        this.partyItem!.isInterested = !this.partyItem!.isInterested
+        this.party!.interested = !this.party!.interested
     }
 
     copyLink() {

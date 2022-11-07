@@ -97,12 +97,10 @@ export interface FeedPartyResponse {
 
 export interface PartyItem {
   party: Party | undefined;
-  creator: User | undefined;
+  user: User | undefined;
   goingCount: number;
   interestedCount: number;
   invitedCount: number;
-  isGoing: boolean;
-  isInterested: boolean;
   isCreator: boolean;
   userResponse: PartyUserResponse;
 }
@@ -701,12 +699,10 @@ export const FeedPartyResponse = {
 function createBasePartyItem(): PartyItem {
   return {
     party: undefined,
-    creator: undefined,
+    user: undefined,
     goingCount: 0,
     interestedCount: 0,
     invitedCount: 0,
-    isGoing: false,
-    isInterested: false,
     isCreator: false,
     userResponse: 0,
   };
@@ -717,8 +713,8 @@ export const PartyItem = {
     if (message.party !== undefined) {
       Party.encode(message.party, writer.uint32(10).fork()).ldelim();
     }
-    if (message.creator !== undefined) {
-      User.encode(message.creator, writer.uint32(18).fork()).ldelim();
+    if (message.user !== undefined) {
+      User.encode(message.user, writer.uint32(18).fork()).ldelim();
     }
     if (message.goingCount !== 0) {
       writer.uint32(24).int64(message.goingCount);
@@ -728,12 +724,6 @@ export const PartyItem = {
     }
     if (message.invitedCount !== 0) {
       writer.uint32(40).int64(message.invitedCount);
-    }
-    if (message.isGoing === true) {
-      writer.uint32(48).bool(message.isGoing);
-    }
-    if (message.isInterested === true) {
-      writer.uint32(56).bool(message.isInterested);
     }
     if (message.isCreator === true) {
       writer.uint32(64).bool(message.isCreator);
@@ -755,7 +745,7 @@ export const PartyItem = {
           message.party = Party.decode(reader, reader.uint32());
           break;
         case 2:
-          message.creator = User.decode(reader, reader.uint32());
+          message.user = User.decode(reader, reader.uint32());
           break;
         case 3:
           message.goingCount = longToNumber(reader.int64() as Long);
@@ -765,12 +755,6 @@ export const PartyItem = {
           break;
         case 5:
           message.invitedCount = longToNumber(reader.int64() as Long);
-          break;
-        case 6:
-          message.isGoing = reader.bool();
-          break;
-        case 7:
-          message.isInterested = reader.bool();
           break;
         case 8:
           message.isCreator = reader.bool();
@@ -789,12 +773,10 @@ export const PartyItem = {
   fromJSON(object: any): PartyItem {
     return {
       party: isSet(object.party) ? Party.fromJSON(object.party) : undefined,
-      creator: isSet(object.creator) ? User.fromJSON(object.creator) : undefined,
+      user: isSet(object.user) ? User.fromJSON(object.user) : undefined,
       goingCount: isSet(object.goingCount) ? Number(object.goingCount) : 0,
       interestedCount: isSet(object.interestedCount) ? Number(object.interestedCount) : 0,
       invitedCount: isSet(object.invitedCount) ? Number(object.invitedCount) : 0,
-      isGoing: isSet(object.isGoing) ? Boolean(object.isGoing) : false,
-      isInterested: isSet(object.isInterested) ? Boolean(object.isInterested) : false,
       isCreator: isSet(object.isCreator) ? Boolean(object.isCreator) : false,
       userResponse: isSet(object.userResponse) ? partyUserResponseFromJSON(object.userResponse) : 0,
     };
@@ -803,12 +785,10 @@ export const PartyItem = {
   toJSON(message: PartyItem): unknown {
     const obj: any = {};
     message.party !== undefined && (obj.party = message.party ? Party.toJSON(message.party) : undefined);
-    message.creator !== undefined && (obj.creator = message.creator ? User.toJSON(message.creator) : undefined);
+    message.user !== undefined && (obj.user = message.user ? User.toJSON(message.user) : undefined);
     message.goingCount !== undefined && (obj.goingCount = Math.round(message.goingCount));
     message.interestedCount !== undefined && (obj.interestedCount = Math.round(message.interestedCount));
     message.invitedCount !== undefined && (obj.invitedCount = Math.round(message.invitedCount));
-    message.isGoing !== undefined && (obj.isGoing = message.isGoing);
-    message.isInterested !== undefined && (obj.isInterested = message.isInterested);
     message.isCreator !== undefined && (obj.isCreator = message.isCreator);
     message.userResponse !== undefined && (obj.userResponse = partyUserResponseToJSON(message.userResponse));
     return obj;
@@ -817,14 +797,10 @@ export const PartyItem = {
   fromPartial<I extends Exact<DeepPartial<PartyItem>, I>>(object: I): PartyItem {
     const message = createBasePartyItem();
     message.party = (object.party !== undefined && object.party !== null) ? Party.fromPartial(object.party) : undefined;
-    message.creator = (object.creator !== undefined && object.creator !== null)
-      ? User.fromPartial(object.creator)
-      : undefined;
+    message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
     message.goingCount = object.goingCount ?? 0;
     message.interestedCount = object.interestedCount ?? 0;
     message.invitedCount = object.invitedCount ?? 0;
-    message.isGoing = object.isGoing ?? false;
-    message.isInterested = object.isInterested ?? false;
     message.isCreator = object.isCreator ?? false;
     message.userResponse = object.userResponse ?? 0;
     return message;

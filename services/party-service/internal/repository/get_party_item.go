@@ -6,7 +6,10 @@ import (
 	"github.com/salazarhugo/cheers1/libs/utils"
 )
 
-func (p *partyRepository) GetPartyItem(id string) (*pb.PartyItem, error) {
+func (p *partyRepository) GetPartyItem(
+	userID string,
+	partyID string,
+) (*pb.PartyItem, error) {
 	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close()
 
@@ -16,7 +19,8 @@ func (p *partyRepository) GetPartyItem(id string) (*pb.PartyItem, error) {
 	}
 
 	params := map[string]interface{}{
-		"partyID": id,
+		"userID":  userID,
+		"partyID": partyID,
 	}
 
 	result, err := session.Run(*cypher, params)

@@ -1,3 +1,5 @@
+import {PartyItem} from "../../../../gen/ts/cheers/party/v1/party_service";
+
 export class Party {
     isHost: boolean = false
     hostName: string = ""
@@ -28,4 +30,14 @@ export class Party {
     name: string = ""
     interested: boolean = false
     startDate: number = 0
+}
+
+export function toParty(value: PartyItem): Party {
+    const party = new Party()
+    Object.assign(party, value)
+    party.goingCount = value.goingCount
+    party.interestedCount = value.interestedCount
+    party.goingCount = value.invitedCount
+    party.isHost = value.isCreator
+    return party
 }
