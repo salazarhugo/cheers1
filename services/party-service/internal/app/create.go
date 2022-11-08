@@ -15,7 +15,7 @@ func (s *Server) CreateParty(
 ) (*pb.CreatePartyResponse, error) {
 	userID, err := utils.GetUserId(ctx)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "Failed retrieving userID")
+		return nil, status.Error(codes.Internal, "failed retrieving userID")
 	}
 
 	partyReq := request.GetParty()

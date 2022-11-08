@@ -24,12 +24,12 @@ export class PartyResolver implements Resolve<Party> {
     return new Promise(async (resolve, reject) => {
 
       const partyId = route.firstChild?.paramMap.get("id")
-      console.log(partyId)
       if (!partyId)
         return reject();
 
       const party = await firstValueFrom(this.partyService.getParty(partyId))
       this.partyService.setParty(party)
+      console.log(party)
       resolve(party)
     })
   }

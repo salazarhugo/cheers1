@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/labstack/gommon/log"
-	pb "github.com/salazarhugo/cheers1/genproto/cheers/post/v1"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"

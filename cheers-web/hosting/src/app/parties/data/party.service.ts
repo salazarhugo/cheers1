@@ -7,7 +7,7 @@ import {
     CreatePartyResponse,
     FeedPartyResponse,
     GetPartyItemResponse,
-    PartyItem
+    PartyItem, UpdatePartyRequest, UpdatePartyResponse
 } from "../../../gen/ts/cheers/party/v1/party_service";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
@@ -38,6 +38,12 @@ export class PartyService {
 
     deleteParty(id: string) {
         return this.api.deleteParty(id)
+    }
+
+    updateParty(party: any): Observable<UpdatePartyResponse> {
+        return this.http.patch<UpdatePartyResponse>(`${environment.GATEWAY_URL}/v1/parties`, {
+            party: party
+        })
     }
 
     createParty(party: Party): Observable<CreatePartyResponse> {

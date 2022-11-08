@@ -7,7 +7,7 @@ require (
 	github.com/improbable-eng/grpc-web v0.15.0
 	github.com/labstack/gommon v0.4.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
-	github.com/salazarhugo/cheers1/genproto v0.0.0-20221019125347-5c198608e4ea
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221019125347-5c198608e4ea
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221004084225-130de449e1a1
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221015161842-0aeae4025b17
@@ -53,6 +53,6 @@ require (
 	nhooyr.io/websocket v1.8.6 // indirect
 )
 
-replace github.com/salazarhugo/cheers1/genproto => ../../genproto
+replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
 
 replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils

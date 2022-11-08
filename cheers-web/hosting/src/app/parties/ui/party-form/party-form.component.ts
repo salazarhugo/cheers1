@@ -88,31 +88,4 @@ export class PartyFormComponent implements OnInit {
         this._snackBar.open(message, action, {duration: 3000});
     }
 
-    pushFileToStorage(file: File): Observable<number | undefined> {
-        const filePath = `parties/${file.name}`;
-        const storageRef = this.storage.ref(filePath);
-        const uploadTask = this.storage.upload(filePath, file);
-        uploadTask.snapshotChanges().pipe(
-            finalize(() => {
-                storageRef.getDownloadURL().subscribe(downloadURL => {
-                    this.url = downloadURL
-                    this.partyForm.get("bannerUrl")?.setValue(downloadURL)
-                });
-            })
-        ).subscribe();
-        return uploadTask.percentageChanges()
-    }
-
-    addAttachment(fileInput: any) {
-        const banner = fileInput.target.files[0] as File
-        const reader = new FileReader();
-        reader.readAsDataURL(banner);
-        this.pushFileToStorage(banner)
-
-        reader.addEventListener("load", () => {
-            const uploaded_image = reader.result;
-            this.partyForm.get("bannerUrl")?.setValue(uploaded_image)
-        });
-    }
-
 }

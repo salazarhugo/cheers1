@@ -1,1 +1,54 @@
-<p>manage-party-details works!</p>
+<form [formGroup]="partyForm" fxLayout="column" class="container">
+    <section fxLayout="column">
+        <h2>Party photo</h2>
+        <ngx-dropzone (change)="onSelect($event)" [multiple]="false" accept="image/jpeg,image/jpg,image/png,image/gif" [maxFileSize]="10000000">
+            <ngx-dropzone-label>
+                <button mat-flat-button type="button">
+                    Upload Cover Photo
+                </button>
+            </ngx-dropzone-label>
+            <ngx-dropzone-image-preview *ngIf="banner" ngProjectAs="ngx-dropzone-preview" [file]="banner">
+                <ngx-dropzone-label>
+<!--                    {{ f.name }} ({{ f.type }})-->
+                </ngx-dropzone-label>
+            </ngx-dropzone-image-preview>
+        </ngx-dropzone>
+        <p> Recommended image size: 2160 x 1080px Maximum file size: 10MB Supported image files: JPEG or PNG </p>
+    </section>
+
+    <section>
+        <h2>Short Description</h2>
+        <p>
+            Tell attendees what your event is about in a few words. Attendees will see this when searching for events
+            and at the top of your event page (140 characters max).
+        </p>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-form-field appearance="outline" class="edit-input" fxFill>
+                <mat-label>Description</mat-label>
+                <input formControlName="summary" matInput type="text">
+            </mat-form-field>
+        </div>
+    </section>
+
+    <section>
+        <h2>Description</h2>
+        <p>Add more details to your event like your schedule, sponsors, or featured guests. Learn more</p>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-form-field appearance="outline" class="edit-input" fxFill>
+                <mat-label>Description</mat-label>
+                <input formControlName="description" matInput type="text">
+            </mat-form-field>
+        </div>
+    </section>
+</form>
+
+<mat-divider *ngIf="canSave"></mat-divider>
+<footer *ngIf="canSave" class="bottom-bar container" fxLayoutAlign="end" fxLayoutGap="16px">
+    <button mat-button (click)="onDiscard()">Discard</button>
+    <button mat-flat-button color="primary" (click)="onSave()" [disabled]="isLoading">
+        <div fxLayoutAlign="none center">
+            <mat-spinner *ngIf="isLoading" [strokeWidth]="1" [diameter]="20" [style.margin-right.px]="8"></mat-spinner>
+            <span>Save</span>
+        </div>
+    </button>
+</footer>

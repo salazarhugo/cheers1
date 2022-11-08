@@ -2,8 +2,8 @@ package repository
 
 import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
-	"github.com/salazarhugo/cheers1/genproto/cheers/type/user"
-	pb "github.com/salazarhugo/cheers1/genproto/cheers/user/v1"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
 )
 
 type UserRepository interface {

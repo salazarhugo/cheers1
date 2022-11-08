@@ -29,7 +29,7 @@ export class Party {
     accountId: string = ""
     name: string = ""
     interested: boolean = false
-    startDate: number = 0
+    startDate: Date = new Date()
 }
 
 export function toParty(value: PartyItem): Party {

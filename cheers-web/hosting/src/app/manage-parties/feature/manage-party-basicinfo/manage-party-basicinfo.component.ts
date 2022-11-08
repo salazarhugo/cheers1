@@ -21,8 +21,6 @@ export class ManagePartyBasicinfoComponent implements OnInit {
         startTime: new FormControl(0),
         endDate: new FormControl(0),
         endTime: new FormControl(0),
-        bannerUrl: new FormControl(''),
-        privacy: new FormControl(Privacy.FRIENDS),
         latitude: new FormControl(0),
         longitude: new FormControl(0),
         locationName: new FormControl(''),
@@ -35,8 +33,12 @@ export class ManagePartyBasicinfoComponent implements OnInit {
 
     ngOnInit(): void {
         this.partyService.getManagedParty().subscribe(party => {
-            console.log(party)
-            this.partyForm.patchValue(party as any)
+            this.partyForm.patchValue({
+                name: party.name,
+                description: party.description,
+                startDate: new Date(party.startDate),
+                locationName: party.locationName,
+            })
         })
     }
 

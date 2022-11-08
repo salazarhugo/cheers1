@@ -45,7 +45,7 @@ func ProtoToMap(m proto.Message) (map[string]interface{}, error) {
 		return nil, err
 	}
 	var res = make(map[string]interface{}, 0)
-	err = json.Unmarshal(bytes, &m)
+	err = json.Unmarshal(bytes, &res)
 	if err != nil {
 		return nil, err
 	}
