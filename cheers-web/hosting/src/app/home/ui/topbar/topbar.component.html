@@ -40,7 +40,7 @@
     <div *ngIf="$user | async as user">
         <app-user-chip [user]="user" [mat-menu-trigger-for]="menu"></app-user-chip>
         <mat-menu #menu>
-            <button mat-menu-item>
+            <button mat-menu-item routerLink="settings">
                 <span>Settings</span>
             </button>
             <button mat-menu-item routerLink="profile">

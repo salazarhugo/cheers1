@@ -72,18 +72,6 @@ export class ManagePartyDetailsComponent implements OnInit {
         return uploadTask.percentageChanges()
     }
 
-    addAttachment(fileInput: any) {
-        const banner = fileInput.target.files[0] as File
-        const reader = new FileReader();
-        reader.readAsDataURL(banner);
-        this.pushFileToStorage(banner)
-
-        reader.addEventListener("load", () => {
-            const uploaded_image = reader.result;
-            this.partyForm.get("bannerUrl")?.setValue(uploaded_image?.toString()!)
-        });
-    }
-
     openSnackBar(message: string, action: string) {
         this._snackBar.open(message, action, {duration: 3000});
     }
@@ -95,6 +83,8 @@ export class ManagePartyDetailsComponent implements OnInit {
     async onSave() {
         this.isLoading = true
         try {
+            if (this.banner)
+                await this.pushFileToStorage(this.banner)
             const response = await lastValueFrom(this.partyService.updateParty(this.partyForm.getRawValue()))
             this.openSnackBar("Party updated", 'Hide')
         } catch (e) {
