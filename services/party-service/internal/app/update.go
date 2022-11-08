@@ -44,5 +44,12 @@ func ValidateUpdatePartyRequest(request *pb.UpdatePartyRequest) error {
 	if request == nil {
 		return status.Error(codes.InvalidArgument, "party parameter can't be nil")
 	}
+
+	party := request.GetParty()
+
+	if party.Id == "" {
+		return status.Error(codes.InvalidArgument, "missing party id")
+	}
+
 	return nil
 }

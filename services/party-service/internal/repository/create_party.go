@@ -1,12 +1,10 @@
 package repository
 
 import (
-	"encoding/json"
 	"github.com/google/uuid"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	party "github.com/salazarhugo/cheers1/gen/go/cheers/type/party"
 	"github.com/salazarhugo/cheers1/libs/utils"
-	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"log"
 )
@@ -27,16 +25,8 @@ func (p *partyRepository) CreateParty(
 	party.Id = uuid.NewString()
 	party.CreateTime = timestamppb.Now()
 
-	bytes, err := protojson.Marshal(party)
+	m, err := utils.ProtoToMap(party)
 	if err != nil {
-		return nil, err
-	}
-
-	var m = make(map[string]interface{}, 0)
-
-	err = json.Unmarshal(bytes, &m)
-	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 

@@ -4,6 +4,7 @@ import {finalize, lastValueFrom, Observable} from "rxjs";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
 import {PartyService} from "../../../parties/data/party.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {Party, toParty} from "../../../shared/data/models/party.model";
 
 @Component({
     selector: 'app-manage-party-details',
@@ -93,9 +94,8 @@ export class ManagePartyDetailsComponent implements OnInit {
 
     async onSave() {
         this.isLoading = true
-
         try {
-            await lastValueFrom(this.partyService.updateParty(this.partyForm.getRawValue()))
+            const response = await lastValueFrom(this.partyService.updateParty(this.partyForm.getRawValue()))
             this.openSnackBar("Party updated", 'Hide')
         } catch (e) {
             console.log(e)
