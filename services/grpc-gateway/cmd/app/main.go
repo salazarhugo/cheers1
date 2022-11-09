@@ -25,7 +25,11 @@ func main() {
 	mux := runtime.NewServeMux(
 		runtime.WithMetadata(func(ctx context.Context, request *http.Request) metadata.MD {
 			header := request.Header.Get("Authorization")
-			jwt := strings.Fields(header)[1]
+			fields := strings.Fields(header)
+			if len(fields) < 2 {
+				return nil
+			}
+			jwt := fields[1]
 
 			//app := utils.InitializeAppDefault()
 			//client, err := app.Auth(ctx)

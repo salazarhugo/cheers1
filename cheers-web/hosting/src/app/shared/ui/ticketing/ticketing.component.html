@@ -74,6 +74,12 @@
                                     <input formControlName="email" matInput type="text">
                                 </mat-form-field>
                             </form>
+                            <div fxLayoutAlign="end">
+                                <button [disabled]="this.total == 0" class="ticketing-next" color="primary"
+                                        mat-flat-button
+                                        matStepperNext>Next
+                                </button>
+                            </div>
                         </mat-step>
 
                         <mat-step>

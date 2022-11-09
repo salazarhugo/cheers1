@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
-	pb "github.com/salazarhugo/cheers1/genproto/cheers/user/v1"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
 	"github.com/salazarhugo/cheers1/libs/auth"
 	"github.com/salazarhugo/cheers1/libs/profiler"
 	"github.com/salazarhugo/cheers1/services/user-service/internal/app"

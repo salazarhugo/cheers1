@@ -17,6 +17,7 @@ export const environment = {
         public_key: 'pk_test_51KWqPTAga4Q2CELOu5oK8GHRPlQwVPvcISBMuoWU5yxP8VrtmBhRGm0TBKaKeKm1tz2EY7gmmvvYuFWMJEzWvFhC00qOX6gQb1'
     },
     GATEWAY_URL: "http://localhost:8080",
+    // GATEWAY_URL: "http://35.230.155.254:80",
 };
 
 /*

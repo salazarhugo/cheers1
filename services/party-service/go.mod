@@ -10,6 +10,7 @@ require (
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221108155123-ea47fff22aaf
 	github.com/sirupsen/logrus v1.9.0
+	github.com/soheilhy/cmux v0.1.5
 	google.golang.org/grpc v1.50.1
 	google.golang.org/protobuf v1.28.1
 )
