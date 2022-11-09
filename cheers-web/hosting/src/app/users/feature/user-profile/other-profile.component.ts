@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../../shared/data/services/user.service";
 import {ActivatedRoute, ParamMap} from "@angular/router";
-import {Observable, of} from "rxjs";
+import {firstValueFrom, Observable, of} from "rxjs";
 import {User} from "../../../shared/data/models/user.model";
 import {PostService} from "../../../posts/data/post.service";
 import {Post} from "../../../shared/data/models/post.model";
@@ -37,12 +37,12 @@ export class OtherProfileComponent implements OnInit {
         })
     }
 
-    unfollowUser(username: string) {
-        this.userService.unfollowUser(username)
+    async unfollowUser(username: string) {
+        await firstValueFrom(this.userService.unfollowUser(username))
     }
 
-    followUser(username: string) {
-        this.userService.followUser(username)
+    async followUser(username: string) {
+        await firstValueFrom(this.userService.followUser(username))
     }
 
     onImgError(event: any) {

@@ -32,3 +32,16 @@ export class UserResponse {
     hasFollowed: boolean
     storyState: string
 }
+
+export function toUser(res: UserResponse): User | null {
+    const user = res.user
+    if (user == null)
+        return null
+    user.postCount = res.postCount
+    user.following = res.followingCount
+    user.followers = res.followersCount
+    user.followBack = res.hasFollowed
+    const strEnum = res.storyState as unknown as StoryState;
+    user.storyState = strEnum
+    return user
+}

@@ -41,10 +41,10 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 	}
 
 	userID, err := repository.GetUserId(event.GetCustomerId())
-	email, err := repository.GetEmail(userID)
+	user, err := repository.GetAuthUser(userID)
 	if err != nil {
 		log.Println(err)
-		http.Error(w, "Failed to get user email", http.StatusInternalServerError)
+		http.Error(w, "Failed to get user", http.StatusInternalServerError)
 		return
 	}
 
@@ -57,5 +57,5 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 
 	totalPrice := repository.CalculateTotalPrice(tickets)
 
-	SendEmail(email, tickets, totalPrice)
+	SendEmail(user, tickets, totalPrice)
 }

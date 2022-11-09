@@ -23,7 +23,7 @@ func main() {
 	})
 
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"https://web-cheers.web.app", "http://localhost:4200"},
+		AllowOrigins: []string{"https://web-cheers.web.app", "http://localhost:4200", "https://maparty.fr"},
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
 	}))
 

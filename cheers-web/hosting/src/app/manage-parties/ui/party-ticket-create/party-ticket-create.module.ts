@@ -10,6 +10,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {PriceModule} from "../../../shared/data/directives/price/price.module";
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
         MatInputModule,
         MatDividerModule,
         MatButtonToggleModule,
-        MatSlideToggleModule
+        MatSlideToggleModule,
+        PriceModule
     ],
     exports: [
         PartyTicketCreateComponent

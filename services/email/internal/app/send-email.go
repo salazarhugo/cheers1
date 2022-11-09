@@ -2,56 +2,69 @@ package app
 
 import (
 	"bytes"
+	"firebase.google.com/go/v4/auth"
 	"fmt"
 	"html/template"
 	"log"
+	"net/mail"
 	"net/smtp"
 	"os"
 	"strconv"
 )
 
 func SendEmail(
-	email string,
+	user *auth.UserRecord,
 	tickets []map[string]interface{},
 	totalPrice int64,
 ) {
-	log.Println(email)
-	log.Println(tickets)
-	log.Println(totalPrice)
-
-	// Sender data.
-	from := "admin@maparty.fr"
-	pwd := os.Getenv("EMAIL_PASSWORD")
-	password := pwd
-
-	// Receiver email address.
-	to := []string{
-		email,
-	}
-
 	// smtp server configuration.
 	smtpHost := "smtp.gmail.com"
 	smtpPort := "587"
 
+	// Sender data.
+	from := mail.Address{Name: "MaParty", Address: "admin@maparty.fr"}
+	to := mail.Address{Address: user.Email}
+
+	pwd := os.Getenv("EMAIL_PASSWORD")
 	amount := strconv.Itoa(int(totalPrice) / 100)
 
-	body, err := ParseTemplate("internal/templates/payment-receipt.html")
+	body, err := ParseTemplate("internal/templates/payment-receipt.html", user, amount)
 	if err != nil {
 		log.Println(err)
 		return
 	}
 
-	subject := "Subject: Thank you for your payment of " + amount + " EUR\n"
-	mime := "MIME-version: 1.0;\nContent-Type: text/html; charset=\"UTF-8\";\n\n"
+	header := make(map[string]string)
+	header["From"] = from.String()
+	header["To"] = to.String()
+	header["Subject"] = "Thank you for your payment"
+	header["MIME-Version"] = "1.0"
+	header["Content-Type"] = "text/html; charset=\"utf-8\""
 
-	// Message.
-	message := []byte(subject + mime + body)
+	message := ""
+	for k, v := range header {
+		message += fmt.Sprintf("%s: %s\r\n", k, v)
+	}
+	message += "\r\n" + body
+
+	log.Println(message)
 
 	// Authentication.
-	auth := smtp.PlainAuth("", from, password, smtpHost)
+	auth := smtp.PlainAuth(
+		"",
+		from.Address,
+		pwd,
+		smtpHost,
+	)
 
 	// Sending email.
-	err = smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, message)
+	err = smtp.SendMail(
+		smtpHost+":"+smtpPort,
+		auth,
+		from.Address,
+		[]string{to.Address},
+		[]byte(message),
+	)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -59,14 +72,27 @@ func SendEmail(
 	fmt.Println("Email Sent Successfully!")
 }
 
-func ParseTemplate(templateFileName string) (string, error) {
+func ParseTemplate(
+	templateFileName string,
+	user *auth.UserRecord,
+	price string,
+) (string, error) {
 	t, err := template.ParseFiles(templateFileName)
 	if err != nil {
 		log.Println(err)
 		return "", err
 	}
 	buf := new(bytes.Buffer)
-	if err = t.Execute(buf, nil); err != nil {
+
+	if err = t.Execute(buf, struct {
+		Name      string
+		EventName string
+		Price     string
+	}{
+		Name:      user.DisplayName,
+		EventName: "Summer Breeze",
+		Price:     price,
+	}); err != nil {
 		return "", err
 	}
 

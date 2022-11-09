@@ -6,6 +6,8 @@ import {OtherProfileComponent} from "./other-profile.component";
 import {MatTabsModule} from "@angular/material/tabs";
 import {ProfileHeaderModule} from "../../ui/profile-header/profile-header.module";
 import {PostItemModule} from "../../../posts/ui/post-item/post-item.module";
+import {MatButtonModule} from "@angular/material/button";
+import {FlexModule} from "@angular/flex-layout";
 
 
 @NgModule({
@@ -16,6 +18,8 @@ import {PostItemModule} from "../../../posts/ui/post-item/post-item.module";
         MatTabsModule,
         PostItemModule,
         ProfileHeaderModule,
+        MatButtonModule,
+        FlexModule,
     ],
     exports: [OtherProfileComponent],
 })

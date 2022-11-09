@@ -9,23 +9,23 @@ OPTIONAL MATCH
 OPTIONAL MATCH
   (:User)-[invite:INVITED]->(party)
 WITH
-  me,
   creator,
   party,
+  me.id = creator.id AS is_creator,
   count(DISTINCT interest) AS interested_count,
   count(DISTINCT going) AS going_count,
   count(DISTINCT invite) AS invited_count
-SKIP
+  SKIP
   $skip
-LIMIT
+  LIMIT
   $pageSize
 RETURN
   {
-    party:            PROPERTIES(party),
-    user:             PROPERTIES(creator),
+    party:            properties(party),
+    user:             properties(creator),
     going_count:      going_count,
     interested_count: interested_count,
     invited_count:    invited_count,
-    is_creator:       creator.id = me.id
+    is_creator:       is_creator
   }
   ORDER BY party.createTime DESC

@@ -1,20 +1,25 @@
 body {
-    background-color:  #f8f9fa;
+    background-color:  #d6d6d5;
+    font-family: 'Open Sans',Arial,sans-serif;
+}
+
+header, main, footer {
+    padding: 32px
 }
 
 .container {
-    margin: 32px;
-    width: calc(100% - 56px);
-    height: 200px;
     background-color:  white;
-    border: lightgray 1px solid;
     padding: 5px 20px 0 20px;
+    border: none;
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto
 }
+
 .title {
-    font-family: 'Google sans',Arial,sans-serif;
     font-weight:700;
-    line-height:32px;
-    font-size:24px;
+    font-size: 44px;
+    line-height: 48px;
 }
 
 footer > p {
@@ -22,7 +27,11 @@ footer > p {
     color:#6c737f;
     font-size:12px;
     font-weight:400;
-    margin:12px 20px 12px 20px;
     font-family:Roboto,Arial,Helvetica,sans-serif;
     text-align:left;
+}
+
+/* Solid border */
+hr.solid {
+  border-top: 1px solid #bbb;
 }

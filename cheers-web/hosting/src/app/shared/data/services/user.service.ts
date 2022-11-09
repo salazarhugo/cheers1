@@ -21,10 +21,6 @@ export class UserService {
         return this.api.getUserTickets()
     }
 
-    unfollowUser(username: string) {
-        return this.api.unfollowUser(username)
-    }
-
     updateUser(user: User) {
         return this.api.updateUser(user)
     }
@@ -33,13 +29,17 @@ export class UserService {
         return this.api.followUser(username)
     }
 
+    unfollowUser(username: string) {
+        return this.api.unfollowUser(username)
+    }
+
     searchUser(query: string) {
         return this.api.searchUser(query)
     }
 
     refreshCurrentUser() {
         const userId = JSON.parse(localStorage.getItem('user')!).uid;
-        this.getUser(userId).subscribe(user => this.userSubject.next(user))
+        // this.getUser(userId).subscribe(user => this.userSubject.next(user))
     }
 
     setUser(user: User) {

@@ -9,7 +9,7 @@
             <h3> {{party.locationName}}</h3>
             <mat-divider></mat-divider>
             <div class="party-header-buttons" fxLayoutAlign="end" fxLayoutGap="20px">
-                <button *ngIf="party.isHost" [routerLink]="['edit']" mat-flat-button>
+                <button *ngIf="party.isHost" [routerLink]="['/manage/parties', party.id, 'basicinfo']" mat-flat-button>
                     <mat-icon>edit</mat-icon>
                     <span class="button-span">Edit</span>
                 </button>

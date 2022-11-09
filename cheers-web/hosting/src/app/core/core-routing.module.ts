@@ -47,7 +47,7 @@ const routes: Routes = [
         path: 'u',
         loadChildren: () => import('../users/feature/user-shell/user-shell.module').then(m => m.UserShellModule)
     },
-    {path: '**', redirectTo: 'profile'},
+    {path: '**', redirectTo: 'home'},
 ];
 
 @NgModule({

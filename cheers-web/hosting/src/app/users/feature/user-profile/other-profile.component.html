@@ -2,14 +2,14 @@
 
     <div *ngIf="$user | async as user">
         <app-profile-header [user]="user">
-            <div>
-                <button (click)="unfollowUser(user.username)" *ngIf="user.followBack" color="primary" mat-button>
-                    Unfollow
-                </button>
-                <button (click)="followUser(user.username)" *ngIf="!user.followBack" color="primary" mat-button>Follow
-                </button>
-            </div>
         </app-profile-header>
+        <div>
+            <button (click)="unfollowUser(user.username)" *ngIf="user.followBack" color="primary" mat-button>
+                Unfollow
+            </button>
+            <button (click)="followUser(user.username)" *ngIf="!user.followBack" color="primary" mat-button>Follow
+            </button>
+        </div>
     </div>
 
     <mat-tab-group>

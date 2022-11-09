@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"firebase.google.com/go/v4/auth"
 	"github.com/salazarhugo/cheers1/libs/utils"
 )
 
@@ -22,20 +23,20 @@ func GetUserId(customerId string) (string, error) {
 	return doc.Ref.ID, nil
 }
 
-func GetEmail(userID string) (string, error) {
+func GetAuthUser(userID string) (*auth.UserRecord, error) {
 	ctx := context.Background()
 	app := utils.InitializeAppDefault()
 
 	auth, err := app.Auth(ctx)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	user, err := auth.GetUser(ctx, userID)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return user.Email, nil
+	return user, nil
 }
 
 func GetOrder(paymentIntentId string, customerId string) ([]map[string]interface{}, error) {
@@ -66,7 +67,10 @@ func CalculateTotalPrice(tickets []map[string]interface{}) int64 {
 	var total int64
 
 	for _, ticket := range tickets {
-		total += ticket["price"].(int64)
+		price, ok := ticket["price"].(int64)
+		if ok {
+			total += price
+		}
 	}
 
 	return total

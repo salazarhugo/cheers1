@@ -29,7 +29,8 @@ export class PartyTicketCreateComponent implements OnInit {
                 Validators.max(500_000),
             ]],
             price: [0, [
-                Validators.max(1_000_000)]
+                Validators.max(1_000_000)
+            ]
             ],
             description: ['', [
                 Validators.maxLength(2500),
