@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from "../../shared/data/services/api.service";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
-import {BehaviorSubject, firstValueFrom, lastValueFrom, map, Observable} from "rxjs";
+import {BehaviorSubject, firstValueFrom, lastValueFrom, map, Observable, of} from "rxjs";
 import {Ticket} from "../../shared/data/models/ticket.model";
 import {
     CreatePartyResponse,
@@ -73,6 +73,7 @@ export class PartyService {
     }
 
     getPartyOrders(id: string): Observable<Order[]> {
+        return of([])
         // return this.http.get<GetPartyItemResponse>(`${environment.GATEWAY_URL}/v1/parties/${id}/orders`)
         //     .pipe(map(p => toParty(p.item!)));
     }
