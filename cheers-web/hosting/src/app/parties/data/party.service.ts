@@ -12,6 +12,7 @@ import {
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Party, toParty} from "../../shared/data/models/party.model";
+import {Order} from "../../shared/data/models/order.party";
 
 @Injectable({
     providedIn: 'root'
@@ -69,6 +70,11 @@ export class PartyService {
 
     uninterested(id: string) {
         return this.api.uninterestParty(id)
+    }
+
+    getPartyOrders(id: string): Observable<Order[]> {
+        // return this.http.get<GetPartyItemResponse>(`${environment.GATEWAY_URL}/v1/parties/${id}/orders`)
+        //     .pipe(map(p => toParty(p.item!)));
     }
 
     getParty(id: string): Observable<Party> {

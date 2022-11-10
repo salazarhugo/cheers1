@@ -3,11 +3,11 @@ package main
 import (
 	"errors"
 	"fmt"
-	pb "github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
-	"github.com/salazarhugo/cheers1/libs/auth"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/order/v1"
+	auth "github.com/salazarhugo/cheers1/libs/auth"
 	"github.com/salazarhugo/cheers1/libs/profiler"
 	"github.com/salazarhugo/cheers1/libs/utils"
-	"github.com/salazarhugo/cheers1/services/party-service/internal/app"
+	"github.com/salazarhugo/cheers1/services/order-service/internal/app"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
@@ -28,7 +28,7 @@ func init() {
 func main() {
 	if os.Getenv("DISABLE_PROFILER") == "" {
 		log.Info("Profiling enabled.")
-		go profiler.InitProfiling("party-service", "1.0.0")
+		go profiler.InitProfiling("order-service", "1.0.0")
 	} else {
 		log.Info("Profiling disabled.")
 	}
@@ -48,8 +48,8 @@ func main() {
 
 	server := app.NewServer()
 
-	pb.RegisterPartyServiceServer(grpcS, server)
 	grpc_health_v1.RegisterHealthServer(grpcS, server)
+	pb.RegisterOrderServiceServer(grpcS, server)
 
 	mixedHandler := newHTTPandGRPCMux(httpMux, grpcS)
 	http2Server := &http2.Server{}

@@ -1,0 +1,25 @@
+<div class="container">
+    <h2>Dashboard</h2>
+    <section class="dashboard-cards" fxLayout="row" fxLayoutAlign="none center" fxLayoutGap="16px" fxFlexFill style="width: 100%">
+        <mat-card>
+            <span class="mat-hint">Net Sales</span>
+            <h2>0.00 EUR</h2>
+        </mat-card>
+        <mat-card>
+            <span class="mat-hint">Ticket Sold</span>
+            <h2>0/120</h2>
+        </mat-card>
+        <mat-card>
+            <span class="mat-hint">Page Views</span>
+            <h2>1</h2>
+        </mat-card>
+    </section>
+
+    <section>
+        <h2>Orders</h2>
+        <div *ngFor="let order of orders">
+            {{order.name}}
+            {{order.price}}
+        </div>
+    </section>
+</div>

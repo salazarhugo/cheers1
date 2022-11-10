@@ -13,20 +13,16 @@ export class Party {
     mutualCount: number = 0
     price: number = 0
     bannerUrl: string = ""
-    mutualProfilePictureUrls: string[] = []
     id: string = ""
     goingCount: number = 0
-    participants: string[] = []
+    interestedCount: number = 0
+    invitedCount: number = 0
     longitude: number = 0.0
-    mutualUsernames: string[] = []
     address: string = ""
     locationName: string = ""
     going: boolean = false
     created: number = 0
-    showOnMap: boolean = false
     hostId: string = ""
-    interestedCount: number = 0
-    accountId: string = ""
     name: string = ""
     interested: boolean = false
     startDate: Date = new Date()
@@ -37,7 +33,7 @@ export function toParty(value: PartyItem): Party {
     Object.assign(party, value.party)
     party.goingCount = value.goingCount
     party.interestedCount = value.interestedCount
-    party.goingCount = value.invitedCount
+    party.invitedCount = value.invitedCount
     party.isHost = value.isCreator
     return party
 }

@@ -1,8 +1,11 @@
 package app
 
 import (
+	"context"
 	"encoding/json"
 	payment "github.com/salazarhugo/cheers1/gen/go/cheers/payment/v1"
+	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/services/party-service/internal/repository"
 	"google.golang.org/protobuf/proto"
 	"io"
 	"log"
@@ -39,5 +42,50 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Println(event)
+	userID, err := GetUserId(event.GetCustomerId())
+	partyID, err := GetPartyId(event.GetPaymentIntentId(), event.GetCustomerId())
+
+	repo := repository.NewPartyRepository(utils.GetDriver())
+	err = repo.GoingParty(userID, partyID)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	return
+}
+
+func GetPartyId(paymentIntentId string, customerId string) (string, error) {
+	ctx := context.Background()
+	app := utils.InitializeAppDefault()
+	client, err := app.Firestore(ctx)
+	if err != nil {
+		return "", err
+	}
+
+	doc, err := client.Collection("orders").Doc(paymentIntentId).Get(ctx)
+	if err != nil {
+		return "", err
+	}
+	orderMap := doc.Data()
+	partyId := orderMap["partyId"].(string)
+
+	return partyId, nil
+}
+
+func GetUserId(customerId string) (string, error) {
+	ctx := context.Background()
+	app := utils.InitializeAppDefault()
+	client, err := app.Firestore(ctx)
+	if err != nil {
+		return "", err
+	}
+
+	snapshot := client.Collection("stripe_customers").Where("customer_id", "==", customerId).Documents(ctx)
+	doc, err := snapshot.Next()
+	if err != nil {
+		return "", err
+	}
+
+	return doc.Ref.ID, nil
 }

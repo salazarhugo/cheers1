@@ -14,6 +14,7 @@ type PartyRepository interface {
 
 	GetPartyItem(userID string, partyID string) (*pb.PartyItem, error)
 	FeedParty(userID string, request *pb.FeedPartyRequest) (*pb.FeedPartyResponse, error)
+	GoingParty(userID string, partyID string) error
 }
 
 type partyRepository struct {
