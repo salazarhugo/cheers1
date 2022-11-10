@@ -41,7 +41,6 @@ service OrderService {
       get: "/v1/orders/list"
     };
   }
-
 }
 
 message Order {
@@ -51,6 +50,7 @@ message Order {
   string customer_id = 4;
   string user_id = 6;
   google.protobuf.Timestamp create_time = 7;
+  map<string, int32> tickets = 8;
 }
 
 message CreateOrderRequest {
