@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
+	"cloud.google.com/go/firestore"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/order/v1"
 )
 
@@ -10,14 +10,17 @@ type OrderRepository interface {
 	GetOrder(id string) (*pb.Order, error)
 	UpdateOrder(pb *pb.Order) (string, error)
 	DeleteOrder(id string) error
+
+	ListOrderWithPartyId(partyID string) ([]*pb.Order, error)
+	ListOrderWithUserId(userID string) ([]*pb.Order, error)
 }
 
 type orderRepository struct {
-	driver neo4j.Driver
+	client *firestore.Client
 }
 
-func NewOrderRepository(driver neo4j.Driver) OrderRepository {
+func NewOrderRepository(client *firestore.Client) OrderRepository {
 	return &orderRepository{
-		driver: driver,
+		client: client,
 	}
 }

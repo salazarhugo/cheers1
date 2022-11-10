@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 	"encoding/json"
-	"github.com/salazarhugo/cheers1/genproto/cheers/activity/v1"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/activity/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/api/iterator"
 	"google.golang.org/protobuf/encoding/protojson"

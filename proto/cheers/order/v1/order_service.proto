@@ -35,6 +35,13 @@ service OrderService {
       delete: "/v1/orders/{order_id}"
     };
   }
+
+  rpc ListOrder (ListOrderRequest) returns (ListOrderResponse) {
+    option (google.api.http) = {
+      get: "/v1/orders/list"
+    };
+  }
+
 }
 
 message Order {
@@ -76,4 +83,15 @@ message DeleteOrderRequest {
 }
 
 message DeleteOrderResponse {
+}
+
+message ListOrderRequest {
+  oneof filter {
+    string party_id = 1;
+    string user_id = 2;
+  }
+}
+
+message ListOrderResponse {
+  repeated Order orders = 1;
 }

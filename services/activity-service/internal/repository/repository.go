@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/salazarhugo/cheers1/genproto/cheers/activity/v1"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/activity/v1"
 )
 
 type ActivityRepository interface {

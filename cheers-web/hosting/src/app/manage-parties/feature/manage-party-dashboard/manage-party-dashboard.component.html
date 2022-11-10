@@ -15,7 +15,7 @@
         </mat-card>
     </section>
 
-    <section>
+    <section *ngIf="orders | async as orders">
         <h2>Orders</h2>
         <div *ngFor="let order of orders">
             {{order.name}}

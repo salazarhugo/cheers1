@@ -45,6 +45,15 @@ export interface DeleteOrderRequest {
 export interface DeleteOrderResponse {
 }
 
+export interface ListOrderRequest {
+  partyId: string | undefined;
+  userId: string | undefined;
+}
+
+export interface ListOrderResponse {
+  orders: Order[];
+}
+
 function createBaseOrder(): Order {
   return { id: "", status: "", amount: 0, customerId: "", orderId: "", userId: "", createTime: undefined };
 }
@@ -516,11 +525,121 @@ export const DeleteOrderResponse = {
   },
 };
 
+function createBaseListOrderRequest(): ListOrderRequest {
+  return { partyId: undefined, userId: undefined };
+}
+
+export const ListOrderRequest = {
+  encode(message: ListOrderRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.partyId !== undefined) {
+      writer.uint32(10).string(message.partyId);
+    }
+    if (message.userId !== undefined) {
+      writer.uint32(18).string(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListOrderRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListOrderRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.partyId = reader.string();
+          break;
+        case 2:
+          message.userId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListOrderRequest {
+    return {
+      partyId: isSet(object.partyId) ? String(object.partyId) : undefined,
+      userId: isSet(object.userId) ? String(object.userId) : undefined,
+    };
+  },
+
+  toJSON(message: ListOrderRequest): unknown {
+    const obj: any = {};
+    message.partyId !== undefined && (obj.partyId = message.partyId);
+    message.userId !== undefined && (obj.userId = message.userId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListOrderRequest>, I>>(object: I): ListOrderRequest {
+    const message = createBaseListOrderRequest();
+    message.partyId = object.partyId ?? undefined;
+    message.userId = object.userId ?? undefined;
+    return message;
+  },
+};
+
+function createBaseListOrderResponse(): ListOrderResponse {
+  return { orders: [] };
+}
+
+export const ListOrderResponse = {
+  encode(message: ListOrderResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.orders) {
+      Order.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListOrderResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListOrderResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.orders.push(Order.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListOrderResponse {
+    return { orders: Array.isArray(object?.orders) ? object.orders.map((e: any) => Order.fromJSON(e)) : [] };
+  },
+
+  toJSON(message: ListOrderResponse): unknown {
+    const obj: any = {};
+    if (message.orders) {
+      obj.orders = message.orders.map((e) => e ? Order.toJSON(e) : undefined);
+    } else {
+      obj.orders = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListOrderResponse>, I>>(object: I): ListOrderResponse {
+    const message = createBaseListOrderResponse();
+    message.orders = object.orders?.map((e) => Order.fromPartial(e)) || [];
+    return message;
+  },
+};
+
 export interface OrderService {
   CreateOrder(request: CreateOrderRequest): Promise<CreateOrderResponse>;
   GetOrder(request: GetOrderRequest): Promise<GetOrderResponse>;
   UpdateOrder(request: UpdateOrderRequest): Promise<UpdateOrderResponse>;
   DeleteOrder(request: DeleteOrderRequest): Promise<DeleteOrderResponse>;
+  ListOrder(request: ListOrderRequest): Promise<ListOrderResponse>;
 }
 
 export class OrderServiceClientImpl implements OrderService {
@@ -533,6 +652,7 @@ export class OrderServiceClientImpl implements OrderService {
     this.GetOrder = this.GetOrder.bind(this);
     this.UpdateOrder = this.UpdateOrder.bind(this);
     this.DeleteOrder = this.DeleteOrder.bind(this);
+    this.ListOrder = this.ListOrder.bind(this);
   }
   CreateOrder(request: CreateOrderRequest): Promise<CreateOrderResponse> {
     const data = CreateOrderRequest.encode(request).finish();
@@ -556,6 +676,12 @@ export class OrderServiceClientImpl implements OrderService {
     const data = DeleteOrderRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteOrder", data);
     return promise.then((data) => DeleteOrderResponse.decode(new _m0.Reader(data)));
+  }
+
+  ListOrder(request: ListOrderRequest): Promise<ListOrderResponse> {
+    const data = ListOrderRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ListOrder", data);
+    return promise.then((data) => ListOrderResponse.decode(new _m0.Reader(data)));
   }
 }
 
