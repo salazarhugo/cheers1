@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {PartyService} from "../../../parties/data/party.service";
-import {Order} from "../../../shared/data/models/order.party";
+import {Order} from "../../../shared/data/models/order.model";
 import {firstValueFrom, Observable} from "rxjs";
 
 @Component({
@@ -17,9 +17,10 @@ export class ManagePartyDashboardComponent implements OnInit {
   ) {
   }
 
-  async ngOnInit() {
-    const party = await firstValueFrom(this.partyService.getManagedParty())
-    this.orders = this.partyService.getPartyOrders(party.id)
+  ngOnInit() {
+    // const party = await firstValueFrom(this.partyService.getManagedParty())
+    this.partyService.getManagedParty().subscribe(party => {
+      this.orders = this.partyService.getPartyOrders(party.id)
+    })
   }
-
 }

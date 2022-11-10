@@ -39,5 +39,7 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Println(event)
+
 	return
 }

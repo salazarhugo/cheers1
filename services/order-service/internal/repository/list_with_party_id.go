@@ -12,8 +12,13 @@ func (o orderRepository) ListOrderWithPartyId(
 	partyID string,
 ) ([]*pb.Order, error) {
 	ctx := context.Background()
+	client, err := firestore.NewClient(ctx, "cheers-a275e")
+	if err != nil {
+		return nil, err
+	}
+	defer client.Close()
 
-	docs := o.client.Collection("orders").Where("partyId", "==", partyID).OrderBy("createTime", firestore.Desc).Documents(ctx)
+	docs := client.Collection("orders").Where("partyId", "==", partyID).Documents(ctx)
 
 	orderList := make([]*pb.Order, 0)
 
@@ -23,7 +28,6 @@ func (o orderRepository) ListOrderWithPartyId(
 			break
 		}
 		order := &pb.Order{}
-
 		err = utils.MapToProto(order, doc.Data())
 		if err != nil {
 			return nil, err

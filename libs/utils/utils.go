@@ -14,6 +14,7 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
 	"os"
 	"time"
@@ -32,7 +33,7 @@ func MapToProto(out proto.Message, data interface{}) error {
 	if err != nil {
 		return err
 	}
-	err = protojson.Unmarshal(bytes, out)
+	err = (prototext.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(bytes, out)
 	if err != nil {
 		return err
 	}
