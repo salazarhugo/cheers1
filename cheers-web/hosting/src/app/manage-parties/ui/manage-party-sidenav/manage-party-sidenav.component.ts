@@ -12,6 +12,19 @@ export class ManagePartySidenavComponent implements OnInit {
 
     party: Party | undefined
 
+    items0 = [
+        {
+            title: "Dashboard",
+            icon: "dashboard",
+            routerLink: "dashboard",
+        },
+        {
+            title: "Guest list",
+            icon: "group",
+            routerLink: "guestlist",
+        },
+    ]
+
     items = [
         {
             title: "Basic Info",

@@ -9,6 +9,12 @@
 </section>
 <mat-divider></mat-divider>
 <section fxLayout="column" style="padding: 12px">
+    <a *ngFor="let item of items0" [routerLink]="[party?.id!, item.routerLink]">
+        <app-sidenav-item [item]="item"></app-sidenav-item>
+    </a>
+</section>
+<mat-divider></mat-divider>
+<section fxLayout="column" style="padding: 12px">
     <a *ngFor="let item of items" [routerLink]="[party?.id!, item.routerLink]">
         <app-sidenav-item [item]="item"></app-sidenav-item>
     </a>

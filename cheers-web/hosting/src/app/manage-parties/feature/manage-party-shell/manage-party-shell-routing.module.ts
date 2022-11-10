@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: ':id',
+    path: ':id/dashboard',
     loadChildren: () => import('../manage-party-dashboard/manage-party-dashboard.module').then(m => m.ManagePartyDashboardModule)
   },
   {
@@ -17,6 +17,10 @@ const routes: Routes = [
   {
     path: ':id/tickets',
     loadChildren: () => import('../manage-party-tickets/manage-party-tickets.module').then(m => m.ManagePartyTicketsModule)
+  },
+  {
+    path: ':id',
+    redirectTo: ':id/dashboard'
   },
 ];
 
