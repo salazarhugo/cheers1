@@ -3,9 +3,10 @@ package repository
 import (
 	"cloud.google.com/go/firestore"
 	"context"
+	"encoding/json"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/order/v1"
-	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/api/iterator"
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
 func (o orderRepository) ListOrderWithPartyId(
@@ -28,7 +29,11 @@ func (o orderRepository) ListOrderWithPartyId(
 			break
 		}
 		order := &pb.Order{}
-		err = utils.MapToProto(order, doc.Data())
+		bytes, err := json.Marshal(doc.Data())
+		if err != nil {
+			return nil, err
+		}
+		err = protojson.Unmarshal(bytes, order)
 		if err != nil {
 			return nil, err
 		}
