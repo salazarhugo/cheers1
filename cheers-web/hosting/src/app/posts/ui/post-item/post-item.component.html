@@ -4,12 +4,12 @@
             <img (error)="onImgError($event)" [src]="postResponse.user.picture" class="avatar--small"
                  [routerLink]="['/u', postResponse.user.id]">
             <div class="post-header-text" fxLayout="column" fxLayoutAlign="center none">
-                <div fxLayout="row" fxLayoutAlign="none center">
-                    {{postResponse.user.username}}
+                <a fxLayout="row" fxLayoutAlign="none center" [routerLink]="['/u', postResponse.user.id]">
+                    <span>{{postResponse.user.username}}</span>
                     <img *ngIf="postResponse.user.verified" height="14" src="../../../../assets/ic_verified.png"
-                         style="margin: 0 4px" width="14"/>
+                         style="margin: 0 4px" width="14" matTooltip="Verified"/>
                     <span *ngIf="postResponse.post.drink && postResponse.post.drink != 'NONE'"> is drinking {{postResponse.post.drink.toLowerCase()}}</span>
-                </div>
+                </a>
                 <div *ngIf="postResponse.post.locationName"> {{postResponse.post.locationName}}</div>
             </div>
         </div>

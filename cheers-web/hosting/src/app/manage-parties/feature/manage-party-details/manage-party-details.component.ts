@@ -58,18 +58,13 @@ export class ManagePartyDetailsComponent implements OnInit {
         this.banner = null
     }
 
-    pushFileToStorage(file: File): Observable<number | undefined> {
+    async pushFileToStorage(file: File): Promise<string> {
         const filePath = `parties/${file.name}`;
         const storageRef = this.storage.ref(filePath);
-        const uploadTask = this.storage.upload(filePath, file);
-        uploadTask.snapshotChanges().pipe(
-            finalize(() => {
-                storageRef.getDownloadURL().subscribe(downloadURL => {
-                    this.partyForm.get("bannerUrl")?.setValue(downloadURL)
-                });
-            })
-        ).subscribe();
-        return uploadTask.percentageChanges()
+        let res = (await this.storage.upload(filePath, file));
+        let urlDownloadImage = await res.ref.getDownloadURL();
+        console.log(urlDownloadImage)
+        return urlDownloadImage
     }
 
     openSnackBar(message: string, action: string) {
@@ -82,10 +77,13 @@ export class ManagePartyDetailsComponent implements OnInit {
 
     async onSave() {
         this.isLoading = true
+        let form = this.partyForm.getRawValue()
         try {
-            if (this.banner)
-                await this.pushFileToStorage(this.banner)
-            const response = await lastValueFrom(this.partyService.updateParty(this.partyForm.getRawValue()))
+            if (this.banner) {
+                const url = await this.pushFileToStorage(this.banner)
+                form.bannerUrl = url
+            }
+            const response = await lastValueFrom(this.partyService.updateParty(form))
             this.openSnackBar("Party updated", 'Hide')
         } catch (e) {
             console.log(e)

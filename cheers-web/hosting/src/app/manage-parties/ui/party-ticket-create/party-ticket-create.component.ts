@@ -69,6 +69,7 @@ export class PartyTicketCreateComponent implements OnInit {
         form.price *= 100
         const doc = this.fs.collection("ticketing").doc(this.partyId).collection("tickets").doc().ref
         form.id = doc.id
+        form.price = Math.trunc(form.price)
         doc.set(form)
             .then(r => console.log(r))
             .catch(err => console.log(err))

@@ -4,10 +4,11 @@
         <app-profile-header [user]="user">
         </app-profile-header>
         <div>
-            <button (click)="unfollowUser(user.username)" *ngIf="user.followBack" color="primary" mat-button>
+            <button (click)="user.followBack = false;user.followers = user.followers - 1; unfollowUser(user.username)" *ngIf="user.followBack" color="primary" mat-button>
                 Unfollow
             </button>
-            <button (click)="followUser(user.username)" *ngIf="!user.followBack" color="primary" mat-button>Follow
+            <button (click)="user.followBack = true;user.followers = user.followers + 1; followUser(user.username)" *ngIf="!user.followBack" color="primary" mat-flat-button>
+                Follow
             </button>
         </div>
     </div>
