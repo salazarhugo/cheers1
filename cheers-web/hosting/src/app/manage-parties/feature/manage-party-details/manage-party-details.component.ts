@@ -36,6 +36,7 @@ export class ManagePartyDetailsComponent implements OnInit {
             this.initialValue = {
                 id: party.id,
                 description: party.description,
+                summary: '',
                 bannerUrl: party.bannerUrl,
             }
             this.partyForm.patchValue(this.initialValue)
@@ -49,9 +50,10 @@ export class ManagePartyDetailsComponent implements OnInit {
 
     banner: File | null;
 
-    onSelect(event: any) {
-        console.log(event);
+    async onSelect(event: any) {
         this.banner = event.addedFiles[0]
+        const url = await this.pushFileToStorage(event.addedFiles[0])
+        this.partyForm.patchValue({bannerUrl: url})
     }
 
     onRemove(event: any) {
@@ -77,12 +79,8 @@ export class ManagePartyDetailsComponent implements OnInit {
 
     async onSave() {
         this.isLoading = true
-        let form = this.partyForm.getRawValue()
+        const form = this.partyForm.getRawValue()
         try {
-            if (this.banner) {
-                const url = await this.pushFileToStorage(this.banner)
-                form.bannerUrl = url
-            }
             const response = await lastValueFrom(this.partyService.updateParty(form))
             this.openSnackBar("Party updated", 'Hide')
         } catch (e) {

@@ -53,11 +53,6 @@ export class SidenavComponent implements OnInit {
             routerLink: "/notifications",
         },
         {
-            title: "Create",
-            icon: "create",
-            routerLink: "./create",
-        },
-        {
             title: "Profile",
             icon: "account_circle",
             routerLink: "/profile",

@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/order/v1"
 	"google.golang.org/api/iterator"
-	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/encoding/prototext"
 )
 
 func (o orderRepository) ListOrderWithPartyId(
@@ -33,7 +33,7 @@ func (o orderRepository) ListOrderWithPartyId(
 		if err != nil {
 			return nil, err
 		}
-		err = protojson.Unmarshal(bytes, order)
+		err = (prototext.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(bytes, order)
 		if err != nil {
 			return nil, err
 		}

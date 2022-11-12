@@ -8,9 +8,11 @@ import (
 	"github.com/salazarhugo/cheers1/services/payment-service/utils"
 	"github.com/stripe/stripe-go/v72"
 	"github.com/stripe/stripe-go/v72/paymentintent"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 type StripeCustomer struct {
@@ -86,11 +88,11 @@ func CreatePaymentIntent(c echo.Context) error {
 	_, err = ref.Set(ctx, map[string]interface{}{
 		"id":         paymentIntent.ID,
 		"amount":     paymentIntent.Amount,
-		"created":    paymentIntent.Created,
 		"customerId": paymentIntent.Customer.ID,
 		"status":     paymentIntent.Status,
 		"partyId":    partyId,
 		"tickets":    tickets,
+		"createTime": timestamppb.New(time.Unix(paymentIntent.Created, 0)),
 	})
 
 	if err != nil {

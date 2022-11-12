@@ -12,6 +12,7 @@ export interface Order {
   userId: string;
   createTime: Date | undefined;
   tickets: { [key: string]: number };
+  partyId: string;
 }
 
 export interface Order_TicketsEntry {
@@ -60,7 +61,7 @@ export interface ListOrderResponse {
 }
 
 function createBaseOrder(): Order {
-  return { id: "", status: "", amount: 0, customerId: "", userId: "", createTime: undefined, tickets: {} };
+  return { id: "", status: "", amount: 0, customerId: "", userId: "", createTime: undefined, tickets: {}, partyId: "" };
 }
 
 export const Order = {
@@ -86,6 +87,9 @@ export const Order = {
     Object.entries(message.tickets).forEach(([key, value]) => {
       Order_TicketsEntry.encode({ key: key as any, value }, writer.uint32(66).fork()).ldelim();
     });
+    if (message.partyId !== "") {
+      writer.uint32(74).string(message.partyId);
+    }
     return writer;
   },
 
@@ -120,6 +124,9 @@ export const Order = {
             message.tickets[entry8.key] = entry8.value;
           }
           break;
+        case 9:
+          message.partyId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -142,6 +149,7 @@ export const Order = {
           return acc;
         }, {})
         : {},
+      partyId: isSet(object.partyId) ? String(object.partyId) : "",
     };
   },
 
@@ -159,6 +167,7 @@ export const Order = {
         obj.tickets[k] = Math.round(v);
       });
     }
+    message.partyId !== undefined && (obj.partyId = message.partyId);
     return obj;
   },
 
@@ -176,6 +185,7 @@ export const Order = {
       }
       return acc;
     }, {});
+    message.partyId = object.partyId ?? "";
     return message;
   },
 };
