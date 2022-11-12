@@ -11,13 +11,16 @@ export interface Order {
   customerId: string;
   userId: string;
   createTime: Date | undefined;
-  tickets: { [key: string]: number };
+  tickets: Ticket[];
   partyId: string;
 }
 
-export interface Order_TicketsEntry {
-  key: string;
-  value: number;
+export interface Ticket {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  quantity: number;
 }
 
 export interface CreateOrderRequest {
@@ -61,7 +64,7 @@ export interface ListOrderResponse {
 }
 
 function createBaseOrder(): Order {
-  return { id: "", status: "", amount: 0, customerId: "", userId: "", createTime: undefined, tickets: {}, partyId: "" };
+  return { id: "", status: "", amount: 0, customerId: "", userId: "", createTime: undefined, tickets: [], partyId: "" };
 }
 
 export const Order = {
@@ -84,9 +87,9 @@ export const Order = {
     if (message.createTime !== undefined) {
       Timestamp.encode(toTimestamp(message.createTime), writer.uint32(58).fork()).ldelim();
     }
-    Object.entries(message.tickets).forEach(([key, value]) => {
-      Order_TicketsEntry.encode({ key: key as any, value }, writer.uint32(66).fork()).ldelim();
-    });
+    for (const v of message.tickets) {
+      Ticket.encode(v!, writer.uint32(66).fork()).ldelim();
+    }
     if (message.partyId !== "") {
       writer.uint32(74).string(message.partyId);
     }
@@ -119,10 +122,7 @@ export const Order = {
           message.createTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
         case 8:
-          const entry8 = Order_TicketsEntry.decode(reader, reader.uint32());
-          if (entry8.value !== undefined) {
-            message.tickets[entry8.key] = entry8.value;
-          }
+          message.tickets.push(Ticket.decode(reader, reader.uint32()));
           break;
         case 9:
           message.partyId = reader.string();
@@ -143,12 +143,7 @@ export const Order = {
       customerId: isSet(object.customerId) ? String(object.customerId) : "",
       userId: isSet(object.userId) ? String(object.userId) : "",
       createTime: isSet(object.createTime) ? fromJsonTimestamp(object.createTime) : undefined,
-      tickets: isObject(object.tickets)
-        ? Object.entries(object.tickets).reduce<{ [key: string]: number }>((acc, [key, value]) => {
-          acc[key] = Number(value);
-          return acc;
-        }, {})
-        : {},
+      tickets: Array.isArray(object?.tickets) ? object.tickets.map((e: any) => Ticket.fromJSON(e)) : [],
       partyId: isSet(object.partyId) ? String(object.partyId) : "",
     };
   },
@@ -161,11 +156,10 @@ export const Order = {
     message.customerId !== undefined && (obj.customerId = message.customerId);
     message.userId !== undefined && (obj.userId = message.userId);
     message.createTime !== undefined && (obj.createTime = message.createTime.toISOString());
-    obj.tickets = {};
     if (message.tickets) {
-      Object.entries(message.tickets).forEach(([k, v]) => {
-        obj.tickets[k] = Math.round(v);
-      });
+      obj.tickets = message.tickets.map((e) => e ? Ticket.toJSON(e) : undefined);
+    } else {
+      obj.tickets = [];
     }
     message.partyId !== undefined && (obj.partyId = message.partyId);
     return obj;
@@ -179,44 +173,57 @@ export const Order = {
     message.customerId = object.customerId ?? "";
     message.userId = object.userId ?? "";
     message.createTime = object.createTime ?? undefined;
-    message.tickets = Object.entries(object.tickets ?? {}).reduce<{ [key: string]: number }>((acc, [key, value]) => {
-      if (value !== undefined) {
-        acc[key] = Number(value);
-      }
-      return acc;
-    }, {});
+    message.tickets = object.tickets?.map((e) => Ticket.fromPartial(e)) || [];
     message.partyId = object.partyId ?? "";
     return message;
   },
 };
 
-function createBaseOrder_TicketsEntry(): Order_TicketsEntry {
-  return { key: "", value: 0 };
+function createBaseTicket(): Ticket {
+  return { id: "", name: "", description: "", price: 0, quantity: 0 };
 }
 
-export const Order_TicketsEntry = {
-  encode(message: Order_TicketsEntry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.key !== "") {
-      writer.uint32(10).string(message.key);
+export const Ticket = {
+  encode(message: Ticket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== "") {
+      writer.uint32(10).string(message.id);
     }
-    if (message.value !== 0) {
-      writer.uint32(16).int32(message.value);
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.description !== "") {
+      writer.uint32(26).string(message.description);
+    }
+    if (message.price !== 0) {
+      writer.uint32(32).uint32(message.price);
+    }
+    if (message.quantity !== 0) {
+      writer.uint32(40).uint32(message.quantity);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): Order_TicketsEntry {
+  decode(input: _m0.Reader | Uint8Array, length?: number): Ticket {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseOrder_TicketsEntry();
+    const message = createBaseTicket();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.key = reader.string();
+          message.id = reader.string();
           break;
         case 2:
-          message.value = reader.int32();
+          message.name = reader.string();
+          break;
+        case 3:
+          message.description = reader.string();
+          break;
+        case 4:
+          message.price = reader.uint32();
+          break;
+        case 5:
+          message.quantity = reader.uint32();
           break;
         default:
           reader.skipType(tag & 7);
@@ -226,21 +233,33 @@ export const Order_TicketsEntry = {
     return message;
   },
 
-  fromJSON(object: any): Order_TicketsEntry {
-    return { key: isSet(object.key) ? String(object.key) : "", value: isSet(object.value) ? Number(object.value) : 0 };
+  fromJSON(object: any): Ticket {
+    return {
+      id: isSet(object.id) ? String(object.id) : "",
+      name: isSet(object.name) ? String(object.name) : "",
+      description: isSet(object.description) ? String(object.description) : "",
+      price: isSet(object.price) ? Number(object.price) : 0,
+      quantity: isSet(object.quantity) ? Number(object.quantity) : 0,
+    };
   },
 
-  toJSON(message: Order_TicketsEntry): unknown {
+  toJSON(message: Ticket): unknown {
     const obj: any = {};
-    message.key !== undefined && (obj.key = message.key);
-    message.value !== undefined && (obj.value = Math.round(message.value));
+    message.id !== undefined && (obj.id = message.id);
+    message.name !== undefined && (obj.name = message.name);
+    message.description !== undefined && (obj.description = message.description);
+    message.price !== undefined && (obj.price = Math.round(message.price));
+    message.quantity !== undefined && (obj.quantity = Math.round(message.quantity));
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<Order_TicketsEntry>, I>>(object: I): Order_TicketsEntry {
-    const message = createBaseOrder_TicketsEntry();
-    message.key = object.key ?? "";
-    message.value = object.value ?? 0;
+  fromPartial<I extends Exact<DeepPartial<Ticket>, I>>(object: I): Ticket {
+    const message = createBaseTicket();
+    message.id = object.id ?? "";
+    message.name = object.name ?? "";
+    message.description = object.description ?? "";
+    message.price = object.price ?? 0;
+    message.quantity = object.quantity ?? 0;
     return message;
   },
 };
@@ -808,10 +827,6 @@ function fromJsonTimestamp(o: any): Date {
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
-}
-
-function isObject(value: any): boolean {
-  return typeof value === "object" && value !== null;
 }
 
 function isSet(value: any): boolean {

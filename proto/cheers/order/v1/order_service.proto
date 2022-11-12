@@ -50,8 +50,16 @@ message Order {
   string customer_id = 4;
   string user_id = 6;
   google.protobuf.Timestamp create_time = 7;
-  map<string, int32> tickets = 8;
+  repeated Ticket tickets = 8;
   string party_id = 9;
+}
+
+message Ticket {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  uint32 price = 4;
+  uint32 quantity = 5;
 }
 
 message CreateOrderRequest {

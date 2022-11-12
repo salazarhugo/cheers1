@@ -17,8 +17,8 @@
 
     <section *ngIf="orders | async as orders">
         <h2>Orders</h2>
-        <div *ngFor="let order of orders">
-            {{order.name}}
+        <div *ngFor="let order of orders" class="order">
+            {{order.id}}
             {{order.price}}
         </div>
     </section>
