@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {PartyService} from "../../../parties/data/party.service";
-import {Order} from "../../../shared/data/models/order.model";
 import {firstValueFrom, Observable} from "rxjs";
+import {Order} from "../../../../gen/ts/cheers/order/v1/order_service";
 
 @Component({
   selector: 'app-manage-party-dashboard',

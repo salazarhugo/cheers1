@@ -13,7 +13,7 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Party, toParty} from "../../shared/data/models/party.model";
 import {Order, toOrder} from "../../shared/data/models/order.model";
-import {ListOrderResponse} from "../../../gen/ts/cheers/order/v1/order_service";
+import {ListOrderResponse, Order as OrderGen} from "../../../gen/ts/cheers/order/v1/order_service";
 
 @Injectable({
     providedIn: 'root'
@@ -73,9 +73,10 @@ export class PartyService {
         return this.api.uninterestParty(id)
     }
 
-    getPartyOrders(partyId: string): Observable<Order[]> {
+    getPartyOrders(partyId: string): Observable<OrderGen[]> {
         return this.http.get<ListOrderResponse>(`${environment.GATEWAY_URL}/v1/orders/list?party_id=${partyId}`)
-            .pipe(map(p => p.orders.map(o => toOrder(o))));
+        .pipe(map(p => p.orders));
+        // .pipe(map(p => p.orders.map(o => toOrder(o))));
     }
 
     getParty(id: string): Observable<Party> {

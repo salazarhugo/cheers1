@@ -4,6 +4,7 @@ export class Order {
     id: string
     name: string
     price: number
+    tickets: number
 }
 
 export function toOrder(value: OrderGen): Order {
