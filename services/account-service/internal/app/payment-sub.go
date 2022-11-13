@@ -72,6 +72,7 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	order := response.GetOrder()
+	log.Println(order)
 	partyId := order.GetPartyId()
 
 	conn2, err := grpc.DialContext(ctx, "party-service-r3a2dr4u4a-nw.a.run.app:443",
@@ -84,6 +85,7 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		return
 	}
+	log.Println(res.GetParty())
 
 	datastore, err := firestore.NewClient(ctx, "cheers-a275e")
 	if err != nil {

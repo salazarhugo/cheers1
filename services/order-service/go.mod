@@ -5,7 +5,7 @@ go 1.19
 require (
 	cloud.google.com/go/firestore v1.8.0
 	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221112143837-7d15805f0070
-	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221113111924-982717c41df5
+	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221113145835-ff70ba3c1a77
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221109222439-50f4ec2ba1bb
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221113111924-982717c41df5
 	github.com/sirupsen/logrus v1.9.0

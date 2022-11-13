@@ -101,8 +101,8 @@ func authenticateUser(ctx context.Context) (context.Context, error) {
 	userInfoHeader, ok := md["x-apigateway-api-userinfo"]
 	if !ok {
 		log.Println("Empty Userinfo Header")
-		return ctx, nil
-		//return nil, status.Errorf(codes.Unauthenticated, "Authorization token is not supplied")
+		newCtx := metadata.NewIncomingContext(ctx, md)
+		return newCtx, nil
 	}
 	encodedUser := userInfoHeader[0]
 
