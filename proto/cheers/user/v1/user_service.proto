@@ -24,6 +24,14 @@ service UserService {
   rpc ListFollowing (ListFollowingRequest) returns (ListFollowingResponse);
 }
 
+message CreateUserRequest {
+  cheers.type.User user = 1;
+}
+
+//message CreateUserResponse {
+//  cheers.type.User user = 1;
+//}
+
 message BlockUserResponse {
 }
 
@@ -89,10 +97,6 @@ message FollowUserRequest {
 
 message SearchUserRequest {
   string query = 1;
-}
-
-message CreateUserRequest {
-  cheers.type.User user = 1;
 }
 
 message GetUserRequest {

@@ -5,6 +5,10 @@ import { StoryState, storyStateFromJSON, storyStateToJSON, User, UserItem } from
 
 export const protobufPackage = "cheers.user.v1";
 
+export interface CreateUserRequest {
+  user: User | undefined;
+}
+
 export interface BlockUserResponse {
 }
 
@@ -72,10 +76,6 @@ export interface SearchUserRequest {
   query: string;
 }
 
-export interface CreateUserRequest {
-  user: User | undefined;
-}
-
 export interface GetUserRequest {
   id: string;
 }
@@ -92,6 +92,53 @@ export interface UpdateUserRequest {
 export interface DeleteUserRequest {
   id: string;
 }
+
+function createBaseCreateUserRequest(): CreateUserRequest {
+  return { user: undefined };
+}
+
+export const CreateUserRequest = {
+  encode(message: CreateUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.user !== undefined) {
+      User.encode(message.user, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateUserRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateUserRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.user = User.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateUserRequest {
+    return { user: isSet(object.user) ? User.fromJSON(object.user) : undefined };
+  },
+
+  toJSON(message: CreateUserRequest): unknown {
+    const obj: any = {};
+    message.user !== undefined && (obj.user = message.user ? User.toJSON(message.user) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CreateUserRequest>, I>>(object: I): CreateUserRequest {
+    const message = createBaseCreateUserRequest();
+    message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
+    return message;
+  },
+};
 
 function createBaseBlockUserResponse(): BlockUserResponse {
   return {};
@@ -885,53 +932,6 @@ export const SearchUserRequest = {
   fromPartial<I extends Exact<DeepPartial<SearchUserRequest>, I>>(object: I): SearchUserRequest {
     const message = createBaseSearchUserRequest();
     message.query = object.query ?? "";
-    return message;
-  },
-};
-
-function createBaseCreateUserRequest(): CreateUserRequest {
-  return { user: undefined };
-}
-
-export const CreateUserRequest = {
-  encode(message: CreateUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.user !== undefined) {
-      User.encode(message.user, writer.uint32(10).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): CreateUserRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCreateUserRequest();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.user = User.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): CreateUserRequest {
-    return { user: isSet(object.user) ? User.fromJSON(object.user) : undefined };
-  },
-
-  toJSON(message: CreateUserRequest): unknown {
-    const obj: any = {};
-    message.user !== undefined && (obj.user = message.user ? User.toJSON(message.user) : undefined);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<CreateUserRequest>, I>>(object: I): CreateUserRequest {
-    const message = createBaseCreateUserRequest();
-    message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
     return message;
   },
 };
