@@ -74,7 +74,7 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 	order := response.GetOrder()
 	partyId := order.GetPartyId()
 
-	conn2, err := grpc.DialContext(ctx, "android-gateway-clzdlli7.nw.gateway.dev:443",
+	conn2, err := grpc.DialContext(ctx, "party-service-r3a2dr4u4a-nw.a.run.app:443",
 		grpc.WithTransportCredentials(transportCredentials),
 	)
 	defer conn.Close()

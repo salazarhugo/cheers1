@@ -10,7 +10,6 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"log"
-	"strings"
 	"time"
 )
 
@@ -45,10 +44,6 @@ func UnaryInterceptor(
 	info *grpc.UnaryServerInfo,
 	handler grpc.UnaryHandler,
 ) (interface{}, error) {
-	if strings.Contains(info.FullMethod, "Get") {
-		return handler, nil
-	}
-
 	start := time.Now()
 
 	newCtx, err := authenticateUser(ctx)
@@ -106,7 +101,8 @@ func authenticateUser(ctx context.Context) (context.Context, error) {
 	userInfoHeader, ok := md["x-apigateway-api-userinfo"]
 	if !ok {
 		log.Println("Empty Userinfo Header")
-		return nil, status.Errorf(codes.Unauthenticated, "Authorization token is not supplied")
+		return ctx, nil
+		//return nil, status.Errorf(codes.Unauthenticated, "Authorization token is not supplied")
 	}
 	encodedUser := userInfoHeader[0]
 

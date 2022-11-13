@@ -4,14 +4,13 @@ go 1.19
 
 require (
 	github.com/google/uuid v1.3.0
-	github.com/lithammer/shortuuid/v3 v3.0.7
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
 	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221107150629-580a25ca6a36
-	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221004084225-130de449e1a1
+	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221113111924-982717c41df5
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221108155123-ea47fff22aaf
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221113111924-982717c41df5
 	github.com/sirupsen/logrus v1.9.0
-	golang.org/x/net v0.0.0-20221014081412-f15817d10f9b
+	golang.org/x/net v0.1.0
 	google.golang.org/grpc v1.50.1
 	google.golang.org/protobuf v1.28.1
 )
@@ -43,7 +42,7 @@ require (
 	golang.org/x/crypto v0.0.0-20220926161630-eccd6366d1be // indirect
 	golang.org/x/oauth2 v0.0.0-20221014153046-6fdb5e3db783 // indirect
 	golang.org/x/sync v0.1.0 // indirect
-	golang.org/x/sys v0.0.0-20220928140112-f11e5e49a4ec // indirect
+	golang.org/x/sys v0.1.0 // indirect
 	golang.org/x/text v0.4.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/api v0.102.0 // indirect
