@@ -10,6 +10,7 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"log"
+	"strings"
 	"time"
 )
 
@@ -44,6 +45,10 @@ func UnaryInterceptor(
 	info *grpc.UnaryServerInfo,
 	handler grpc.UnaryHandler,
 ) (interface{}, error) {
+	if strings.Contains(info.FullMethod, "Get") {
+		return handler, nil
+	}
+
 	start := time.Now()
 
 	newCtx, err := authenticateUser(ctx)

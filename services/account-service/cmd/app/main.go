@@ -45,7 +45,7 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "9080"
+		port = "8080"
 		log.Info("Defaulting to port %s", port)
 	}
 

@@ -49,6 +49,8 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Println(event)
+
 	systemRoots, err := x509.SystemCertPool()
 	if err != nil {
 		log.Println(err)
@@ -59,7 +61,7 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 	})
 
 	ctx := context.Background()
-	conn, err := grpc.DialContext(ctx, "android-gateway-clzdlli7.nw.gateway.dev:443",
+	conn, err := grpc.DialContext(ctx, "order-service-r3a2dr4u4a-nw.a.run.app:443",
 		grpc.WithTransportCredentials(transportCredentials),
 	)
 	defer conn.Close()
