@@ -57,6 +57,10 @@ export class PartyService {
                 privacy: "FRIENDS",
                 bannerUrl: party.bannerUrl,
                 locationName: party.locationName,
+                latlng: {
+                    latitude: party.latitude,
+                    longitude: party.longitude,
+                }
             }
         })
     }
