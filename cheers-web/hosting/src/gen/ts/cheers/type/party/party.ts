@@ -1,7 +1,6 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { Timestamp } from "../../../google/protobuf/timestamp";
-import { LatLng } from "../../../google/type/latlng";
 import { Privacy, privacyFromJSON, privacyToJSON } from "../privacy/privacy";
 
 export const protobufPackage = "cheers.type";
@@ -11,15 +10,24 @@ export interface Party {
   name: string;
   description: string;
   address: string;
-  latlng: LatLng | undefined;
   privacy: Privacy;
   bannerUrl: string;
   startDate: Date | undefined;
-  endDate: Date | undefined;
+  endDate:
+    | Date
+    | undefined;
+  /** The user_id of the creator */
   hostId: string;
+  /** The location name */
   locationName: string;
   /** The time when the party was created. */
-  createTime: Date | undefined;
+  createTime:
+    | Date
+    | undefined;
+  /** The latitude in degrees. It must be in the range [-90.0, +90.0]. */
+  latitude: number;
+  /** The longitude in degrees. It must be in the range [-180.0, +180.0]. */
+  longitude: number;
 }
 
 function createBaseParty(): Party {
@@ -28,7 +36,6 @@ function createBaseParty(): Party {
     name: "",
     description: "",
     address: "",
-    latlng: undefined,
     privacy: 0,
     bannerUrl: "",
     startDate: undefined,
@@ -36,6 +43,8 @@ function createBaseParty(): Party {
     hostId: "",
     locationName: "",
     createTime: undefined,
+    latitude: 0,
+    longitude: 0,
   };
 }
 
@@ -52,9 +61,6 @@ export const Party = {
     }
     if (message.address !== "") {
       writer.uint32(34).string(message.address);
-    }
-    if (message.latlng !== undefined) {
-      LatLng.encode(message.latlng, writer.uint32(42).fork()).ldelim();
     }
     if (message.privacy !== 0) {
       writer.uint32(48).int32(message.privacy);
@@ -76,6 +82,12 @@ export const Party = {
     }
     if (message.createTime !== undefined) {
       Timestamp.encode(toTimestamp(message.createTime), writer.uint32(106).fork()).ldelim();
+    }
+    if (message.latitude !== 0) {
+      writer.uint32(113).double(message.latitude);
+    }
+    if (message.longitude !== 0) {
+      writer.uint32(121).double(message.longitude);
     }
     return writer;
   },
@@ -99,9 +111,6 @@ export const Party = {
         case 4:
           message.address = reader.string();
           break;
-        case 5:
-          message.latlng = LatLng.decode(reader, reader.uint32());
-          break;
         case 6:
           message.privacy = reader.int32() as any;
           break;
@@ -123,6 +132,12 @@ export const Party = {
         case 13:
           message.createTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
+        case 14:
+          message.latitude = reader.double();
+          break;
+        case 15:
+          message.longitude = reader.double();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -137,7 +152,6 @@ export const Party = {
       name: isSet(object.name) ? String(object.name) : "",
       description: isSet(object.description) ? String(object.description) : "",
       address: isSet(object.address) ? String(object.address) : "",
-      latlng: isSet(object.latlng) ? LatLng.fromJSON(object.latlng) : undefined,
       privacy: isSet(object.privacy) ? privacyFromJSON(object.privacy) : 0,
       bannerUrl: isSet(object.bannerUrl) ? String(object.bannerUrl) : "",
       startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
@@ -145,6 +159,8 @@ export const Party = {
       hostId: isSet(object.hostId) ? String(object.hostId) : "",
       locationName: isSet(object.locationName) ? String(object.locationName) : "",
       createTime: isSet(object.createTime) ? fromJsonTimestamp(object.createTime) : undefined,
+      latitude: isSet(object.latitude) ? Number(object.latitude) : 0,
+      longitude: isSet(object.longitude) ? Number(object.longitude) : 0,
     };
   },
 
@@ -154,7 +170,6 @@ export const Party = {
     message.name !== undefined && (obj.name = message.name);
     message.description !== undefined && (obj.description = message.description);
     message.address !== undefined && (obj.address = message.address);
-    message.latlng !== undefined && (obj.latlng = message.latlng ? LatLng.toJSON(message.latlng) : undefined);
     message.privacy !== undefined && (obj.privacy = privacyToJSON(message.privacy));
     message.bannerUrl !== undefined && (obj.bannerUrl = message.bannerUrl);
     message.startDate !== undefined && (obj.startDate = message.startDate.toISOString());
@@ -162,6 +177,8 @@ export const Party = {
     message.hostId !== undefined && (obj.hostId = message.hostId);
     message.locationName !== undefined && (obj.locationName = message.locationName);
     message.createTime !== undefined && (obj.createTime = message.createTime.toISOString());
+    message.latitude !== undefined && (obj.latitude = message.latitude);
+    message.longitude !== undefined && (obj.longitude = message.longitude);
     return obj;
   },
 
@@ -171,9 +188,6 @@ export const Party = {
     message.name = object.name ?? "";
     message.description = object.description ?? "";
     message.address = object.address ?? "";
-    message.latlng = (object.latlng !== undefined && object.latlng !== null)
-      ? LatLng.fromPartial(object.latlng)
-      : undefined;
     message.privacy = object.privacy ?? 0;
     message.bannerUrl = object.bannerUrl ?? "";
     message.startDate = object.startDate ?? undefined;
@@ -181,6 +195,8 @@ export const Party = {
     message.hostId = object.hostId ?? "";
     message.locationName = object.locationName ?? "";
     message.createTime = object.createTime ?? undefined;
+    message.latitude = object.latitude ?? 0;
+    message.longitude = object.longitude ?? 0;
     return message;
   },
 };

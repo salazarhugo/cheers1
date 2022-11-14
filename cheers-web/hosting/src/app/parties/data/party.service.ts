@@ -57,10 +57,8 @@ export class PartyService {
                 privacy: "FRIENDS",
                 bannerUrl: party.bannerUrl,
                 locationName: party.locationName,
-                latlng: {
-                    latitude: party.latitude,
-                    longitude: party.longitude,
-                }
+                latitude: party.latitude,
+                longitude: party.longitude,
             }
         })
     }
@@ -79,7 +77,7 @@ export class PartyService {
 
     getPartyOrders(partyId: string): Observable<OrderGen[]> {
         return this.http.get<ListOrderResponse>(`${environment.GATEWAY_URL}/v1/orders/list?party_id=${partyId}`)
-        .pipe(map(p => p.orders));
+            .pipe(map(p => p.orders));
         // .pipe(map(p => p.orders.map(o => toOrder(o))));
     }
 
