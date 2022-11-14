@@ -8,10 +8,10 @@
             <div fxFlex="75">
                 <mat-card class="ticketing-header" fxLayoutAlign="center center" fxLayout="column">
                     <h1> {{party.name}} </h1>
-                    <div fxLayout="row">
-                        <mat-icon>event</mat-icon>
-                        <h3> {{party.startDate | date}}</h3>
-                    </div>
+<!--                    <div fxLayout="row">-->
+<!--                        <mat-icon>event</mat-icon>-->
+<!--                        <h3> {{party.startDate | date}}</h3>-->
+<!--                    </div>-->
                 </mat-card>
 
                 <mat-card class="ticketing-body" fxLayout="column" fxLayoutGap="16px">
@@ -19,7 +19,7 @@
                     <mat-stepper #stepper linear style="background: transparent">
                         <mat-step [editable]="true">
                             <ng-template matStepLabel>Choice of tickets</ng-template>
-                            <form [formGroup]="ticketingForm" fxLayoutGap="16px" fxLayout="column">
+                            <form [formGroup]="ticketingForm" fxLayoutGap="16px" fxLayout="column" class="ticketing-pack-container">
                                 <div *ngFor="let pack of tickets;let last=last" class="ticketing-pack"
                                      fxLayout="column">
                                     <div fxLayoutAlign="space-between center">
@@ -62,7 +62,7 @@
                             <ng-template #login>
                                 Log in for a faster experience.
                             </ng-template>
-                            <form [formGroup]="userForm">
+                            <form [formGroup]="userForm" class="user-form">
                                 <div>
                                     <mat-form-field appearance="outline" class="edit-input">
                                         <mat-label>Reservation name</mat-label>
@@ -87,7 +87,7 @@
                             <div class="ticketing-recap-title">
                                 <h1 style="margin: 0">Recap</h1>
                             </div>
-                            <h2>Tickets and options</h2>
+                            <h2 class="ticket-options">Tickets and options</h2>
                             <mat-divider></mat-divider>
                             <div *ngFor="let pack of tickets;let last=last" class="ticketing-recap" fxLayout="column">
                                 <div *ngIf="this.ticketingForm.get(pack.id)?.value != 0"

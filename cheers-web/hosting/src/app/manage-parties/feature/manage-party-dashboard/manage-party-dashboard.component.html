@@ -19,6 +19,7 @@
         <h2>Orders</h2>
         <div *ngFor="let order of orders" class="order">
             {{order.id}}
+            {{order.createTime! | relativeTime}}
             <div *ngFor="let ticket of order.tickets" class="order">
                 {{ticket.name}}
                 {{ticket.price}}
