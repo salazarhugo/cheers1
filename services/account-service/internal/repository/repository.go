@@ -9,6 +9,8 @@ type AccountRepository interface {
 	GetAccount(accountID string, otherAccountID string) (*pb.GetAccountResponse, error)
 	UpdateAccount(accountID string, account *pb.UpdateAccountRequest) error
 	DeleteAccount(id string) error
+
+	IncrementBalance(accountID string, value int32) error
 }
 
 type accountRepository struct {

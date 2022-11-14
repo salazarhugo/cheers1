@@ -5,6 +5,7 @@ import (
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/order/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"log"
 )
 
 func (s *Server) GetOrder(
@@ -13,16 +14,18 @@ func (s *Server) GetOrder(
 ) (*pb.GetOrderResponse, error) {
 	err := ValidateGetOrderRequest(request)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
-	Order, err := s.orderRepository.GetOrder(request.GetOrderId())
+	order, err := s.orderRepository.GetOrder(request.GetOrderId())
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
 	return &pb.GetOrderResponse{
-		Order: Order,
+		Order: order,
 	}, nil
 }
 

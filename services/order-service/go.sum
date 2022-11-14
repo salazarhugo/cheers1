@@ -249,10 +249,8 @@ github.com/rogpeppe/fastuuid v1.2.0/go.mod h1:jVj6XXZzXRy/MSR5jhDC/2q6DgLz+nrA6L
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20221112143837-7d15805f0070 h1:fciJK/oNF3Mljngsk0HmoCoq4Yj6RpYFasJn5Gbif5Y=
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20221112143837-7d15805f0070/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
-github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221113111924-982717c41df5 h1:XUzafvysgH2vDhx4H5E3QVgJlnQ0LmmHEFvIEVT9qds=
-github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221113111924-982717c41df5/go.mod h1:OoyrE7E7Em/DgZ/UbFrXaPuUiQZv/VcbJsTuofpA9JY=
-github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221113145835-ff70ba3c1a77 h1:C0f0tYSVEA673mBR3Y9NoP4yHGThBQzkcXqo4kmKKIU=
-github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221113145835-ff70ba3c1a77/go.mod h1:OoyrE7E7Em/DgZ/UbFrXaPuUiQZv/VcbJsTuofpA9JY=
+github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221113151338-1ae307745902 h1:FUv5o53xNKEz0guaQBsTq4Cl/GWkaT+B0S57qnrNODw=
+github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221113151338-1ae307745902/go.mod h1:OoyrE7E7Em/DgZ/UbFrXaPuUiQZv/VcbJsTuofpA9JY=
 github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221109222439-50f4ec2ba1bb h1:XE7Ae6vhHDI7radUf09o5Oi8Na7+xE6GEQcBToFQMW0=
 github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221109222439-50f4ec2ba1bb/go.mod h1:r9VVw/Y+1GW5JrqrRZLxVctRHwXEqB6DZEWHCgnx//k=
 github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221113111924-982717c41df5 h1:Qz2DmZ/hDWP55d7SeUJtOaqmLIaZSEf2yWuHrQdNld0=

@@ -6,7 +6,6 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"encoding/json"
-	pb "github.com/salazarhugo/cheers1/gen/go/cheers/account/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/order/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
 	payment "github.com/salazarhugo/cheers1/gen/go/cheers/payment/v1"
@@ -95,7 +94,7 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 	defer datastore.Close()
 
 	repository := repository.NewAccountRepository()
-	err = repository.UpdateAccount(res.GetParty().HostId, &pb.UpdateAccountRequest{Account: &pb.Account{Balance: order.Amount}})
+	err = repository.IncrementBalance(res.GetParty().HostId, order.Amount)
 	if err != nil {
 		log.Println(err)
 		return

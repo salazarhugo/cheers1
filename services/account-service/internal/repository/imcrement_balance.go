@@ -3,12 +3,11 @@ package repository
 import (
 	"cloud.google.com/go/firestore"
 	"context"
-	pb "github.com/salazarhugo/cheers1/gen/go/cheers/account/v1"
 )
 
-func (p *accountRepository) UpdateAccount(
+func (p *accountRepository) IncrementBalance(
 	accountID string,
-	account *pb.UpdateAccountRequest,
+	value int32,
 ) error {
 	ctx := context.Background()
 	client, err := firestore.NewClient(ctx, "cheers-a275e")
@@ -17,7 +16,11 @@ func (p *accountRepository) UpdateAccount(
 	}
 	defer client.Close()
 
-	_, err = client.Collection("accounts").Doc(accountID).Set(ctx, account)
+	_, err = client.Collection("accounts").Doc(accountID).Set(ctx,
+		map[string]interface{}{
+			"balance": firestore.Increment(value),
+		},
+	)
 	if err != nil {
 		return err
 	}

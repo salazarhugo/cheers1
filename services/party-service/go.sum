@@ -249,6 +249,8 @@ github.com/salazarhugo/cheers1/gen/go v0.0.0-20221107150629-580a25ca6a36 h1:ZWAV
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20221107150629-580a25ca6a36/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
 github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221113145835-ff70ba3c1a77 h1:C0f0tYSVEA673mBR3Y9NoP4yHGThBQzkcXqo4kmKKIU=
 github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221113145835-ff70ba3c1a77/go.mod h1:OoyrE7E7Em/DgZ/UbFrXaPuUiQZv/VcbJsTuofpA9JY=
+github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221113151338-1ae307745902 h1:FUv5o53xNKEz0guaQBsTq4Cl/GWkaT+B0S57qnrNODw=
+github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221113151338-1ae307745902/go.mod h1:OoyrE7E7Em/DgZ/UbFrXaPuUiQZv/VcbJsTuofpA9JY=
 github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8 h1:h7xy7Td8H9Iubde5mKJPZqZXTCZs+ttug8gZZ0vqKLk=
 github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8/go.mod h1:r9VVw/Y+1GW5JrqrRZLxVctRHwXEqB6DZEWHCgnx//k=
 github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221113111924-982717c41df5 h1:Qz2DmZ/hDWP55d7SeUJtOaqmLIaZSEf2yWuHrQdNld0=
