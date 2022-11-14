@@ -31,7 +31,6 @@ func main() {
 				return nil
 			}
 			jwt := fields[1]
-
 			//app := utils.InitializeAppDefault()
 			//client, err := app.Auth(ctx)
 			//if err != nil {

@@ -16,11 +16,21 @@ func (p *accountRepository) IncrementBalance(
 	}
 	defer client.Close()
 
-	_, err = client.Collection("accounts").Doc(accountID).Set(ctx,
-		map[string]interface{}{
-			"balance": firestore.Increment(value),
-		},
-	)
+	doc, err := client.Collection("accounts").Doc(accountID).Get(ctx)
+
+	if doc.Exists() {
+		_, err = client.Collection("accounts").Doc(accountID).Update(ctx,
+			[]firestore.Update{
+				{Path: "balance", Value: firestore.Increment(value)},
+			},
+		)
+	} else {
+		_, err = client.Collection("accounts").Doc(accountID).Set(ctx,
+			map[string]interface{}{
+				"balance": value,
+			},
+		)
+	}
 	if err != nil {
 		return err
 	}

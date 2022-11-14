@@ -6,6 +6,7 @@ import {ManagePartyDashboardComponent} from './manage-party-dashboard.component'
 import {MatCardModule} from "@angular/material/card";
 import {FlexModule} from "@angular/flex-layout";
 import {RelativeTimeModule} from "../../../shared/data/pipes/relative-time/relative-time.module";
+import {OrderItemModule} from "../../ui/order-item/order-item.module";
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import {RelativeTimeModule} from "../../../shared/data/pipes/relative-time/relat
         ManagePartyDashboardRoutingModule,
         MatCardModule,
         FlexModule,
-        RelativeTimeModule
+        RelativeTimeModule,
+        OrderItemModule
     ],
     exports: [
         ManagePartyDashboardComponent

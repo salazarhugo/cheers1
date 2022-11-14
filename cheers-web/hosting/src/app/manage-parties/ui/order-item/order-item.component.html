@@ -1,1 +1,4 @@
-<p>order-item works!</p>
+<mat-card class="order" fxLayoutAlign="space-between center">
+    {{order.id}}
+    {{order.createTime! | relativeTime}}
+</mat-card>
