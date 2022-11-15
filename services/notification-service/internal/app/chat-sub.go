@@ -2,8 +2,7 @@ package app
 
 import (
 	"encoding/json"
-	chat "github.com/salazarhugo/cheers1/genproto/cheers/chat/v1"
-	"github.com/salazarhugo/cheers1/services/notification-service/internal/repository"
+	chat "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
 	"google.golang.org/protobuf/proto"
 	"io"
 	"log"
@@ -22,7 +21,7 @@ type PubSubMessage struct {
 	Subscription string `json:"subscription"`
 }
 
-func ChatEventPubSub(w http.ResponseWriter, r *http.Request) {
+func ChatTopic(w http.ResponseWriter, r *http.Request) {
 	var m PubSubMessage
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
@@ -53,7 +52,7 @@ func ChatEventPubSub(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Println(event.String())
 	log.Println(authHeader)
-	repository.NewRepository().SendChatNotification(authHeader)
+	//repository.NewRepository().SendChatNotification(authHeader)
 
 	return
 }

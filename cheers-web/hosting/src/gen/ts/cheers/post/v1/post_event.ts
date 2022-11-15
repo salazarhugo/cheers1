@@ -1,11 +1,12 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
+import { Post } from "../../type/post/post";
 
 export const protobufPackage = "cheers.post.v1";
 
 export interface PostEvent {
   userId: string;
-  postId: string;
+  post: Post | undefined;
   type: PostEvent_EventType;
 }
 
@@ -61,7 +62,7 @@ export function postEvent_EventTypeToJSON(object: PostEvent_EventType): string {
 }
 
 function createBasePostEvent(): PostEvent {
-  return { userId: "", postId: "", type: 0 };
+  return { userId: "", post: undefined, type: 0 };
 }
 
 export const PostEvent = {
@@ -69,8 +70,8 @@ export const PostEvent = {
     if (message.userId !== "") {
       writer.uint32(10).string(message.userId);
     }
-    if (message.postId !== "") {
-      writer.uint32(18).string(message.postId);
+    if (message.post !== undefined) {
+      Post.encode(message.post, writer.uint32(18).fork()).ldelim();
     }
     if (message.type !== 0) {
       writer.uint32(24).int32(message.type);
@@ -89,7 +90,7 @@ export const PostEvent = {
           message.userId = reader.string();
           break;
         case 2:
-          message.postId = reader.string();
+          message.post = Post.decode(reader, reader.uint32());
           break;
         case 3:
           message.type = reader.int32() as any;
@@ -105,7 +106,7 @@ export const PostEvent = {
   fromJSON(object: any): PostEvent {
     return {
       userId: isSet(object.userId) ? String(object.userId) : "",
-      postId: isSet(object.postId) ? String(object.postId) : "",
+      post: isSet(object.post) ? Post.fromJSON(object.post) : undefined,
       type: isSet(object.type) ? postEvent_EventTypeFromJSON(object.type) : 0,
     };
   },
@@ -113,7 +114,7 @@ export const PostEvent = {
   toJSON(message: PostEvent): unknown {
     const obj: any = {};
     message.userId !== undefined && (obj.userId = message.userId);
-    message.postId !== undefined && (obj.postId = message.postId);
+    message.post !== undefined && (obj.post = message.post ? Post.toJSON(message.post) : undefined);
     message.type !== undefined && (obj.type = postEvent_EventTypeToJSON(message.type));
     return obj;
   },
@@ -121,7 +122,7 @@ export const PostEvent = {
   fromPartial<I extends Exact<DeepPartial<PostEvent>, I>>(object: I): PostEvent {
     const message = createBasePostEvent();
     message.userId = object.userId ?? "";
-    message.postId = object.postId ?? "";
+    message.post = (object.post !== undefined && object.post !== null) ? Post.fromPartial(object.post) : undefined;
     message.type = object.type ?? 0;
     return message;
   },

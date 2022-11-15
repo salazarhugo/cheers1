@@ -1,7 +1,7 @@
 package repository
 
 type Repository interface {
-	SendChatNotification(authorization string) error
+	SendChatNotification(userWithToken map[string][]string) error
 }
 
 type repository struct {

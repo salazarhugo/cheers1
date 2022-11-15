@@ -5,7 +5,9 @@ go 1.19
 require google.golang.org/protobuf v1.28.1
 
 require (
+	firebase.google.com/go/v4 v4.9.0
 	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221105090922-7db1c47202c4
+	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221105090922-7db1c47202c4
 )
 
@@ -16,12 +18,13 @@ require (
 	cloud.google.com/go/firestore v1.6.1 // indirect
 	cloud.google.com/go/iam v0.6.0 // indirect
 	cloud.google.com/go/kms v1.6.0 // indirect
+	cloud.google.com/go/profiler v0.3.0 // indirect
 	cloud.google.com/go/pubsub v1.3.1 // indirect
 	cloud.google.com/go/storage v1.27.0 // indirect
-	firebase.google.com/go/v4 v4.9.0 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
+	github.com/google/pprof v0.0.0-20220412212628-83db2b799d1f // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
 	github.com/googleapis/gax-go/v2 v2.6.0 // indirect

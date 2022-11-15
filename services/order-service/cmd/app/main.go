@@ -33,6 +33,7 @@ func main() {
 		log.Info("Profiling disabled.")
 	}
 
+	// Determine port for HTTP service.
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
