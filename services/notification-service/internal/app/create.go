@@ -22,7 +22,12 @@ func (s *Server) CreateRegistrationToken(
 	if token == "" {
 		return nil, status.Error(codes.InvalidArgument, "registrationToken parameter can't be nil")
 	}
-	log.Println(userID, token)
+
+	err = s.repository.CreateRegistrationToken(userID, token)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
 
 	return &notification.CreateRegistrationTokenResponse{}, nil
 }

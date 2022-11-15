@@ -5,4 +5,5 @@ gcloud run deploy notification-service \
   --source . \
   --region=$REGION \
   --use-http2 \
-  --set-env-vars REDIS_ENDPOINT=$REDIS_ENDPOINT
+  --set-env-vars DB_ENDPOINT=$REDIS_ENDPOINT \
+  --set-secrets="DB_PASSWORD=NOTIFICATION_DB_PASSWORD:latest"
