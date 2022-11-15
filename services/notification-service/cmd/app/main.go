@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/notification/v1"
 	"github.com/salazarhugo/cheers1/libs/auth"
 	"github.com/salazarhugo/cheers1/libs/profiler"
 	"github.com/salazarhugo/cheers1/services/notification-service/internal/app"
@@ -24,9 +25,6 @@ func main() {
 	} else {
 		log.Println("Profiling disabled.")
 	}
-
-	http.HandleFunc("/chat", app.ChatTopic)
-	http.HandleFunc("/post", app.PostSub)
 
 	// Determine port for HTTP service.
 	port := os.Getenv("PORT")
