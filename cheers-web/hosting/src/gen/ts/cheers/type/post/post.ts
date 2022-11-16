@@ -86,6 +86,7 @@ export function postTypeToJSON(object: PostType): string {
 
 export interface Post {
   id: string;
+  creatorId: string;
   caption: string;
   address: string;
   privacy: Privacy;
@@ -104,6 +105,7 @@ export interface Post {
 function createBasePost(): Post {
   return {
     id: "",
+    creatorId: "",
     caption: "",
     address: "",
     privacy: 0,
@@ -124,6 +126,9 @@ export const Post = {
   encode(message: Post, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
+    }
+    if (message.creatorId !== "") {
+      writer.uint32(18).string(message.creatorId);
     }
     if (message.caption !== "") {
       writer.uint32(26).string(message.caption);
@@ -177,6 +182,9 @@ export const Post = {
         case 1:
           message.id = reader.string();
           break;
+        case 2:
+          message.creatorId = reader.string();
+          break;
         case 3:
           message.caption = reader.string();
           break;
@@ -227,6 +235,7 @@ export const Post = {
   fromJSON(object: any): Post {
     return {
       id: isSet(object.id) ? String(object.id) : "",
+      creatorId: isSet(object.creatorId) ? String(object.creatorId) : "",
       caption: isSet(object.caption) ? String(object.caption) : "",
       address: isSet(object.address) ? String(object.address) : "",
       privacy: isSet(object.privacy) ? privacyFromJSON(object.privacy) : 0,
@@ -246,6 +255,7 @@ export const Post = {
   toJSON(message: Post): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
+    message.creatorId !== undefined && (obj.creatorId = message.creatorId);
     message.caption !== undefined && (obj.caption = message.caption);
     message.address !== undefined && (obj.address = message.address);
     message.privacy !== undefined && (obj.privacy = privacyToJSON(message.privacy));
@@ -269,6 +279,7 @@ export const Post = {
   fromPartial<I extends Exact<DeepPartial<Post>, I>>(object: I): Post {
     const message = createBasePost();
     message.id = object.id ?? "";
+    message.creatorId = object.creatorId ?? "";
     message.caption = object.caption ?? "";
     message.address = object.address ?? "";
     message.privacy = object.privacy ?? 0;

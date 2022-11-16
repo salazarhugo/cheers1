@@ -25,6 +25,7 @@ func (p *postRepository) CreatePost(
 	}
 
 	post.Id = uuid.NewString()
+	post.CreatorId = userID
 	post.CreateTime = timestamppb.Now()
 
 	bytes, err := protojson.Marshal(post)
@@ -53,7 +54,7 @@ func (p *postRepository) CreatePost(
 	go func() {
 		err := utils.PublishProtoMessages("post-topic", &pb.PostEvent{
 			UserId: userID,
-			PostId: post.Id,
+			Post:   post,
 			Type:   pb.PostEvent_CREATE,
 		})
 		if err != nil {
