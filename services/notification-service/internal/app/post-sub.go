@@ -34,7 +34,7 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 	log.Println(event)
 
 	repo := repository.NewRepository()
-	postCreatorId := event.GetPost().GetCreatorId()
+	postCreatorId := event.GetCreatorId()
 	tokens, err := repo.GetUserTokens(postCreatorId)
 	if err != nil {
 		return

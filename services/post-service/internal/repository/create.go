@@ -53,16 +53,14 @@ func (p *postRepository) CreatePost(
 
 	go func() {
 		err := utils.PublishProtoMessages("post-topic", &pb.PostEvent{
-			UserId: userID,
-			Post: &pb.PostEvent_Post{
-				Id:           post.Id,
-				CreatorId:    post.CreatorId,
-				Caption:      post.Caption,
-				Address:      post.Address,
-				LocationName: post.LocationName,
-				Drink:        post.Drink,
-			},
-			Type: pb.PostEvent_CREATE,
+			UserId:       userID,
+			PostId:       post.Id,
+			CreatorId:    post.CreatorId,
+			Caption:      post.Caption,
+			Address:      post.Address,
+			LocationName: post.LocationName,
+			Drink:        post.Drink,
+			Type:         pb.PostEvent_CREATE,
 		})
 		if err != nil {
 			log.Println(err)

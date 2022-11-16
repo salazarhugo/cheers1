@@ -35,7 +35,7 @@ export interface FeedPostResponse {
 }
 
 export interface LikePostRequest {
-  id: string;
+  postId: string;
 }
 
 export interface LikePostResponse {
@@ -43,7 +43,7 @@ export interface LikePostResponse {
 }
 
 export interface UnlikePostRequest {
-  id: string;
+  postId: string;
 }
 
 export interface UnlikePostResponse {
@@ -51,7 +51,7 @@ export interface UnlikePostResponse {
 }
 
 export interface SavePostRequest {
-  id: string;
+  postId: string;
 }
 
 export interface SavePostResponse {
@@ -59,7 +59,7 @@ export interface SavePostResponse {
 }
 
 export interface UnsavePostRequest {
-  id: string;
+  postId: string;
 }
 
 export interface UnsavePostResponse {
@@ -395,13 +395,13 @@ export const FeedPostResponse = {
 };
 
 function createBaseLikePostRequest(): LikePostRequest {
-  return { id: "" };
+  return { postId: "" };
 }
 
 export const LikePostRequest = {
   encode(message: LikePostRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
+    if (message.postId !== "") {
+      writer.uint32(10).string(message.postId);
     }
     return writer;
   },
@@ -414,7 +414,7 @@ export const LikePostRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.string();
+          message.postId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -425,18 +425,18 @@ export const LikePostRequest = {
   },
 
   fromJSON(object: any): LikePostRequest {
-    return { id: isSet(object.id) ? String(object.id) : "" };
+    return { postId: isSet(object.postId) ? String(object.postId) : "" };
   },
 
   toJSON(message: LikePostRequest): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    message.postId !== undefined && (obj.postId = message.postId);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<LikePostRequest>, I>>(object: I): LikePostRequest {
     const message = createBaseLikePostRequest();
-    message.id = object.id ?? "";
+    message.postId = object.postId ?? "";
     return message;
   },
 };
@@ -489,13 +489,13 @@ export const LikePostResponse = {
 };
 
 function createBaseUnlikePostRequest(): UnlikePostRequest {
-  return { id: "" };
+  return { postId: "" };
 }
 
 export const UnlikePostRequest = {
   encode(message: UnlikePostRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
+    if (message.postId !== "") {
+      writer.uint32(10).string(message.postId);
     }
     return writer;
   },
@@ -508,7 +508,7 @@ export const UnlikePostRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.string();
+          message.postId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -519,18 +519,18 @@ export const UnlikePostRequest = {
   },
 
   fromJSON(object: any): UnlikePostRequest {
-    return { id: isSet(object.id) ? String(object.id) : "" };
+    return { postId: isSet(object.postId) ? String(object.postId) : "" };
   },
 
   toJSON(message: UnlikePostRequest): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    message.postId !== undefined && (obj.postId = message.postId);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<UnlikePostRequest>, I>>(object: I): UnlikePostRequest {
     const message = createBaseUnlikePostRequest();
-    message.id = object.id ?? "";
+    message.postId = object.postId ?? "";
     return message;
   },
 };
@@ -583,13 +583,13 @@ export const UnlikePostResponse = {
 };
 
 function createBaseSavePostRequest(): SavePostRequest {
-  return { id: "" };
+  return { postId: "" };
 }
 
 export const SavePostRequest = {
   encode(message: SavePostRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
+    if (message.postId !== "") {
+      writer.uint32(10).string(message.postId);
     }
     return writer;
   },
@@ -602,7 +602,7 @@ export const SavePostRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.string();
+          message.postId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -613,18 +613,18 @@ export const SavePostRequest = {
   },
 
   fromJSON(object: any): SavePostRequest {
-    return { id: isSet(object.id) ? String(object.id) : "" };
+    return { postId: isSet(object.postId) ? String(object.postId) : "" };
   },
 
   toJSON(message: SavePostRequest): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    message.postId !== undefined && (obj.postId = message.postId);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<SavePostRequest>, I>>(object: I): SavePostRequest {
     const message = createBaseSavePostRequest();
-    message.id = object.id ?? "";
+    message.postId = object.postId ?? "";
     return message;
   },
 };
@@ -677,13 +677,13 @@ export const SavePostResponse = {
 };
 
 function createBaseUnsavePostRequest(): UnsavePostRequest {
-  return { id: "" };
+  return { postId: "" };
 }
 
 export const UnsavePostRequest = {
   encode(message: UnsavePostRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
+    if (message.postId !== "") {
+      writer.uint32(10).string(message.postId);
     }
     return writer;
   },
@@ -696,7 +696,7 @@ export const UnsavePostRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.string();
+          message.postId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -707,18 +707,18 @@ export const UnsavePostRequest = {
   },
 
   fromJSON(object: any): UnsavePostRequest {
-    return { id: isSet(object.id) ? String(object.id) : "" };
+    return { postId: isSet(object.postId) ? String(object.postId) : "" };
   },
 
   toJSON(message: UnsavePostRequest): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    message.postId !== undefined && (obj.postId = message.postId);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<UnsavePostRequest>, I>>(object: I): UnsavePostRequest {
     const message = createBaseUnsavePostRequest();
-    message.id = object.id ?? "";
+    message.postId = object.postId ?? "";
     return message;
   },
 };

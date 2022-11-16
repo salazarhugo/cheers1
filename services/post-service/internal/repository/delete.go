@@ -33,16 +33,14 @@ func (p *postRepository) DeletePost(
 		postResponse, err := p.GetPost(userID, postID)
 		post := postResponse.GetPost()
 		err = utils.PublishProtoMessages("post-topic", &pb.PostEvent{
-			UserId: userID,
-			Post: &pb.PostEvent_Post{
-				Id:           post.Id,
-				CreatorId:    post.CreatorId,
-				Caption:      post.Caption,
-				Address:      post.Address,
-				LocationName: post.LocationName,
-				Drink:        post.Drink,
-			},
-			Type: pb.PostEvent_DELETE,
+			UserId:       userID,
+			PostId:       post.Id,
+			CreatorId:    post.CreatorId,
+			Caption:      post.Caption,
+			Address:      post.Address,
+			LocationName: post.LocationName,
+			Drink:        post.Drink,
+			Type:         pb.PostEvent_DELETE,
 		})
 		if err != nil {
 			log.Println(err)
