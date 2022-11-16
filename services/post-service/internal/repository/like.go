@@ -30,10 +30,19 @@ func (p *postRepository) LikePost(
 	}
 
 	go func() {
-		err := utils.PublishProtoMessages("post-topic", &pb.PostEvent{
+		postResponse, err := p.GetPost(userID, postID)
+		post := postResponse.GetPost()
+		err = utils.PublishProtoMessages("post-topic", &pb.PostEvent{
 			UserId: userID,
-			PostId: postID,
-			Type:   pb.PostEvent_LIKE,
+			Post: &pb.PostEvent_Post{
+				Id:           post.Id,
+				CreatorId:    post.CreatorId,
+				Caption:      post.Caption,
+				Address:      post.Address,
+				LocationName: post.LocationName,
+				Drink:        post.Drink,
+			},
+			Type: pb.PostEvent_LIKE,
 		})
 		if err != nil {
 			log.Println(err)
