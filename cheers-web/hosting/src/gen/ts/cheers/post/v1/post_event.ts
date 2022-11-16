@@ -6,7 +6,17 @@ export const protobufPackage = "cheers.post.v1";
 
 export interface PostEvent {
   userId: string;
-  post: PostEvent_Post | undefined;
+  postId: string;
+  creatorId: string;
+  caption: string;
+  address: string;
+  photos: string[];
+  isCommentEnabled: boolean;
+  locationName: string;
+  drink: string;
+  drunkenness: number;
+  commentsEnabled: boolean;
+  shareEnabled: boolean;
   type: PostEvent_EventType;
 }
 
@@ -61,92 +71,10 @@ export function postEvent_EventTypeToJSON(object: PostEvent_EventType): string {
   }
 }
 
-export interface PostEvent_Post {
-  id: string;
-  creatorId: string;
-  caption: string;
-  address: string;
-  photos: string[];
-  isCommentEnabled: boolean;
-  locationName: string;
-  drink: string;
-  drunkenness: number;
-  commentsEnabled: boolean;
-  shareEnabled: boolean;
-}
-
 function createBasePostEvent(): PostEvent {
-  return { userId: "", post: undefined, type: 0 };
-}
-
-export const PostEvent = {
-  encode(message: PostEvent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
-    }
-    if (message.post !== undefined) {
-      PostEvent_Post.encode(message.post, writer.uint32(18).fork()).ldelim();
-    }
-    if (message.type !== 0) {
-      writer.uint32(24).int32(message.type);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): PostEvent {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBasePostEvent();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.userId = reader.string();
-          break;
-        case 2:
-          message.post = PostEvent_Post.decode(reader, reader.uint32());
-          break;
-        case 3:
-          message.type = reader.int32() as any;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): PostEvent {
-    return {
-      userId: isSet(object.userId) ? String(object.userId) : "",
-      post: isSet(object.post) ? PostEvent_Post.fromJSON(object.post) : undefined,
-      type: isSet(object.type) ? postEvent_EventTypeFromJSON(object.type) : 0,
-    };
-  },
-
-  toJSON(message: PostEvent): unknown {
-    const obj: any = {};
-    message.userId !== undefined && (obj.userId = message.userId);
-    message.post !== undefined && (obj.post = message.post ? PostEvent_Post.toJSON(message.post) : undefined);
-    message.type !== undefined && (obj.type = postEvent_EventTypeToJSON(message.type));
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<PostEvent>, I>>(object: I): PostEvent {
-    const message = createBasePostEvent();
-    message.userId = object.userId ?? "";
-    message.post = (object.post !== undefined && object.post !== null)
-      ? PostEvent_Post.fromPartial(object.post)
-      : undefined;
-    message.type = object.type ?? 0;
-    return message;
-  },
-};
-
-function createBasePostEvent_Post(): PostEvent_Post {
   return {
-    id: "",
+    userId: "",
+    postId: "",
     creatorId: "",
     caption: "",
     address: "",
@@ -157,13 +85,17 @@ function createBasePostEvent_Post(): PostEvent_Post {
     drunkenness: 0,
     commentsEnabled: false,
     shareEnabled: false,
+    type: 0,
   };
 }
 
-export const PostEvent_Post = {
-  encode(message: PostEvent_Post, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
+export const PostEvent = {
+  encode(message: PostEvent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    if (message.postId !== "") {
+      writer.uint32(90).string(message.postId);
     }
     if (message.creatorId !== "") {
       writer.uint32(18).string(message.creatorId);
@@ -195,18 +127,24 @@ export const PostEvent_Post = {
     if (message.shareEnabled === true) {
       writer.uint32(112).bool(message.shareEnabled);
     }
+    if (message.type !== 0) {
+      writer.uint32(96).int32(message.type);
+    }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): PostEvent_Post {
+  decode(input: _m0.Reader | Uint8Array, length?: number): PostEvent {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBasePostEvent_Post();
+    const message = createBasePostEvent();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.string();
+          message.userId = reader.string();
+          break;
+        case 11:
+          message.postId = reader.string();
           break;
         case 2:
           message.creatorId = reader.string();
@@ -238,6 +176,9 @@ export const PostEvent_Post = {
         case 14:
           message.shareEnabled = reader.bool();
           break;
+        case 12:
+          message.type = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -246,9 +187,10 @@ export const PostEvent_Post = {
     return message;
   },
 
-  fromJSON(object: any): PostEvent_Post {
+  fromJSON(object: any): PostEvent {
     return {
-      id: isSet(object.id) ? String(object.id) : "",
+      userId: isSet(object.userId) ? String(object.userId) : "",
+      postId: isSet(object.postId) ? String(object.postId) : "",
       creatorId: isSet(object.creatorId) ? String(object.creatorId) : "",
       caption: isSet(object.caption) ? String(object.caption) : "",
       address: isSet(object.address) ? String(object.address) : "",
@@ -259,12 +201,14 @@ export const PostEvent_Post = {
       drunkenness: isSet(object.drunkenness) ? Number(object.drunkenness) : 0,
       commentsEnabled: isSet(object.commentsEnabled) ? Boolean(object.commentsEnabled) : false,
       shareEnabled: isSet(object.shareEnabled) ? Boolean(object.shareEnabled) : false,
+      type: isSet(object.type) ? postEvent_EventTypeFromJSON(object.type) : 0,
     };
   },
 
-  toJSON(message: PostEvent_Post): unknown {
+  toJSON(message: PostEvent): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    message.userId !== undefined && (obj.userId = message.userId);
+    message.postId !== undefined && (obj.postId = message.postId);
     message.creatorId !== undefined && (obj.creatorId = message.creatorId);
     message.caption !== undefined && (obj.caption = message.caption);
     message.address !== undefined && (obj.address = message.address);
@@ -279,12 +223,14 @@ export const PostEvent_Post = {
     message.drunkenness !== undefined && (obj.drunkenness = Math.round(message.drunkenness));
     message.commentsEnabled !== undefined && (obj.commentsEnabled = message.commentsEnabled);
     message.shareEnabled !== undefined && (obj.shareEnabled = message.shareEnabled);
+    message.type !== undefined && (obj.type = postEvent_EventTypeToJSON(message.type));
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<PostEvent_Post>, I>>(object: I): PostEvent_Post {
-    const message = createBasePostEvent_Post();
-    message.id = object.id ?? "";
+  fromPartial<I extends Exact<DeepPartial<PostEvent>, I>>(object: I): PostEvent {
+    const message = createBasePostEvent();
+    message.userId = object.userId ?? "";
+    message.postId = object.postId ?? "";
     message.creatorId = object.creatorId ?? "";
     message.caption = object.caption ?? "";
     message.address = object.address ?? "";
@@ -295,6 +241,7 @@ export const PostEvent_Post = {
     message.drunkenness = object.drunkenness ?? 0;
     message.commentsEnabled = object.commentsEnabled ?? false;
     message.shareEnabled = object.shareEnabled ?? false;
+    message.type = object.type ?? 0;
     return message;
   },
 };

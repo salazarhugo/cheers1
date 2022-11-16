@@ -34,7 +34,7 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 	log.Println(event)
 
 	repo := repository.NewRepository()
-	postCreatorId := event.GetPost().GetId()
+	postCreatorId := event.GetPost().GetCreatorId()
 	tokens, err := repo.GetUserTokens(postCreatorId)
 	if err != nil {
 		return
@@ -42,7 +42,7 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 
 	switch event.GetType() {
 	case post.PostEvent_LIKE:
-		err := repo.SendChatNotification(map[string][]string{event.UserId: tokens})
+		err := repo.SendChatNotification(map[string][]string{postCreatorId: tokens})
 		if err != nil {
 			return
 		}
