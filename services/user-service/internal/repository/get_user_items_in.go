@@ -9,14 +9,14 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
-func (p *userRepository) GetUsersIn(
+func (p *userRepository) GetUserItemsIn(
 	userID string,
 	userIDs []string,
 ) ([]*user.UserItem, error) {
 	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close()
 
-	cypher, err := utils.GetCypher("internal/queries/GetUsersIn.cql")
+	cypher, err := utils.GetCypher("internal/queries/GetUserItemsIn.cql")
 	if err != nil {
 		return nil, err
 	}

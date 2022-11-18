@@ -3,6 +3,7 @@ package app
 import (
 	"encoding/json"
 	post "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
+	"github.com/salazarhugo/cheers1/services/notification-service/internal/notifications"
 	"github.com/salazarhugo/cheers1/services/notification-service/internal/repository"
 	"google.golang.org/protobuf/proto"
 	"io"
@@ -33,6 +34,13 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Println(event)
 
+	users, err := repository.GetUsers([]string{event.UserId})
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	user := users[0]
+
 	repo := repository.NewRepository()
 	postCreatorId := event.GetCreatorId()
 	tokens, err := repo.GetUserTokens(postCreatorId)
@@ -42,7 +50,8 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 
 	switch event.GetType() {
 	case post.PostEvent_LIKE:
-		err := repo.SendChatNotification(map[string][]string{postCreatorId: tokens})
+		notification := notifications.LikePostNotification(user.Username, user.Picture)
+		err := repo.SendNotification(map[string][]string{postCreatorId: tokens}, notification)
 		if err != nil {
 			return
 		}

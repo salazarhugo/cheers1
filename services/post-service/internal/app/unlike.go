@@ -17,7 +17,7 @@ func (s *Server) UnlikePost(
 		return nil, status.Error(codes.Internal, "failed retrieving userID")
 	}
 
-	response, err := s.postRepository.UnlikePost(userID, request.Id)
+	response, err := s.postRepository.UnlikePost(userID, request.PostId)
 	if err != nil {
 		return nil, err
 	}

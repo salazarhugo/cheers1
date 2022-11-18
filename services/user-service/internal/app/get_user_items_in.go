@@ -17,7 +17,7 @@ func (s *Server) GetUserItemsIn(
 		return nil, status.Error(codes.Internal, "failed retrieving userID")
 	}
 
-	users, err := s.userRepository.GetUsersIn(userID, request.GetUserIds())
+	users, err := s.userRepository.GetUserItemsIn(userID, request.GetUserIds())
 	if err != nil {
 		log.Error(err)
 		return nil, status.Error(codes.Internal, "failed to get users in")

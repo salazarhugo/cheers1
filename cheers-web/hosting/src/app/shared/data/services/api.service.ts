@@ -34,11 +34,11 @@ export class ApiService {
     }
 
     likePost(postId: string) {
-        return this.http.post(`${environment.GATEWAY_URL}/posts/${postId}/like`, {})
+        return this.http.post(`${environment.GATEWAY_URL}/v1/posts/${postId}/like`, {})
     }
 
     unlikePost(postId: string) {
-        return this.http.post(`${environment.GATEWAY_URL}/posts/${postId}/unlike`, {})
+        return this.http.post(`${environment.GATEWAY_URL}/v1/posts/${postId}/unlike`, {})
     }
 
     updateUser(user: User) {

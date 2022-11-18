@@ -15,6 +15,14 @@ export interface BlockUserResponse {
 export interface UnblockUserResponse {
 }
 
+export interface GetUsersInRequest {
+  userIds: string[];
+}
+
+export interface GetUsersInResponse {
+  users: User[];
+}
+
 export interface GetUserItemsInRequest {
   userIds: string[];
 }
@@ -214,6 +222,108 @@ export const UnblockUserResponse = {
 
   fromPartial<I extends Exact<DeepPartial<UnblockUserResponse>, I>>(_: I): UnblockUserResponse {
     const message = createBaseUnblockUserResponse();
+    return message;
+  },
+};
+
+function createBaseGetUsersInRequest(): GetUsersInRequest {
+  return { userIds: [] };
+}
+
+export const GetUsersInRequest = {
+  encode(message: GetUsersInRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.userIds) {
+      writer.uint32(10).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetUsersInRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetUsersInRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.userIds.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetUsersInRequest {
+    return { userIds: Array.isArray(object?.userIds) ? object.userIds.map((e: any) => String(e)) : [] };
+  },
+
+  toJSON(message: GetUsersInRequest): unknown {
+    const obj: any = {};
+    if (message.userIds) {
+      obj.userIds = message.userIds.map((e) => e);
+    } else {
+      obj.userIds = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetUsersInRequest>, I>>(object: I): GetUsersInRequest {
+    const message = createBaseGetUsersInRequest();
+    message.userIds = object.userIds?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBaseGetUsersInResponse(): GetUsersInResponse {
+  return { users: [] };
+}
+
+export const GetUsersInResponse = {
+  encode(message: GetUsersInResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.users) {
+      User.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetUsersInResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetUsersInResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.users.push(User.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetUsersInResponse {
+    return { users: Array.isArray(object?.users) ? object.users.map((e: any) => User.fromJSON(e)) : [] };
+  },
+
+  toJSON(message: GetUsersInResponse): unknown {
+    const obj: any = {};
+    if (message.users) {
+      obj.users = message.users.map((e) => e ? User.toJSON(e) : undefined);
+    } else {
+      obj.users = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetUsersInResponse>, I>>(object: I): GetUsersInResponse {
+    const message = createBaseGetUsersInResponse();
+    message.users = object.users?.map((e) => User.fromPartial(e)) || [];
     return message;
   },
 };
@@ -1129,6 +1239,7 @@ export interface UserService {
   GetUser(request: GetUserRequest): Promise<GetUserResponse>;
   UpdateUser(request: UpdateUserRequest): Promise<User>;
   DeleteUser(request: DeleteUserRequest): Promise<Empty>;
+  GetUsersIn(request: GetUsersInRequest): Promise<GetUsersInResponse>;
   GetUserItemsIn(request: GetUserItemsInRequest): Promise<GetUserItemsInResponse>;
   SearchUser(request: SearchUserRequest): Promise<SearchUserResponse>;
   FollowUser(request: FollowUserRequest): Promise<Empty>;
@@ -1149,6 +1260,7 @@ export class UserServiceClientImpl implements UserService {
     this.GetUser = this.GetUser.bind(this);
     this.UpdateUser = this.UpdateUser.bind(this);
     this.DeleteUser = this.DeleteUser.bind(this);
+    this.GetUsersIn = this.GetUsersIn.bind(this);
     this.GetUserItemsIn = this.GetUserItemsIn.bind(this);
     this.SearchUser = this.SearchUser.bind(this);
     this.FollowUser = this.FollowUser.bind(this);
@@ -1180,6 +1292,12 @@ export class UserServiceClientImpl implements UserService {
     const data = DeleteUserRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteUser", data);
     return promise.then((data) => Empty.decode(new _m0.Reader(data)));
+  }
+
+  GetUsersIn(request: GetUsersInRequest): Promise<GetUsersInResponse> {
+    const data = GetUsersInRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetUsersIn", data);
+    return promise.then((data) => GetUsersInResponse.decode(new _m0.Reader(data)));
   }
 
   GetUserItemsIn(request: GetUserItemsInRequest): Promise<GetUserItemsInResponse> {

@@ -1,14 +1,20 @@
 package repository
 
 import (
+	"firebase.google.com/go/v4/messaging"
 	"github.com/go-redis/redis/v9"
 	"os"
 )
 
 type Repository interface {
-	SendChatNotification(userWithToken map[string][]string) error
+	SendNotification(
+		userWithToken map[string][]string,
+		notification messaging.Notification,
+	) error
 	CreateRegistrationToken(userID string, token string) error
 	GetUserTokens(userID string) ([]string, error)
+	RemoveExpiredTokens(userId string, tokens []string, responses []*messaging.SendResponse)
+	DeleteToken(userId string, token string) error
 }
 
 type repository struct {

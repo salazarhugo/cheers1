@@ -17,7 +17,7 @@ func (s *Server) LikePost(
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")
 	}
 
-	response, err := s.postRepository.LikePost(userID, request.Id)
+	response, err := s.postRepository.LikePost(userID, request.PostId)
 	if err != nil {
 		return nil, err
 	}

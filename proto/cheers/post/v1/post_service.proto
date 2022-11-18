@@ -38,28 +38,24 @@ service PostService {
   rpc LikePost (LikePostRequest) returns (LikePostResponse) {
     option (google.api.http) = {
       post: "/v1/posts/{post_id}/like"
-      body: "*"
     };
   };
 
   rpc UnlikePost (UnlikePostRequest) returns (UnlikePostResponse) {
     option (google.api.http) = {
       post: "/v1/posts/{post_id}/unlike"
-      body: "*"
     };
   };
 
   rpc SavePost (SavePostRequest) returns (SavePostResponse) {
     option (google.api.http) = {
       post: "/v1/posts/{post_id}/save"
-      body: "*"
     };
   };
 
   rpc UnsavePost (UnsavePostRequest) returns (UnsavePostResponse) {
     option (google.api.http) = {
       post: "/v1/posts/{post_id}/unsave"
-      body: "*"
     };
   };
 }
