@@ -5,9 +5,10 @@ import {StoryState, toUser, User, UserResponse} from "../models/user.model";
 import {Post} from "../models/post.model";
 import {Story} from "../models/story.model";
 import {Ticket} from "../models/ticket.model";
-import {FeedPostResponse, PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
+import {FeedPostResponse, ListPostResponse, PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
 import {Empty} from "../../../../gen/ts/google/protobuf/empty";
 import {environment} from "../../../../environments/environment";
+import {CreateRegistrationTokenResponse} from "../../../../gen/ts/cheers/notification/v1/notification_service";
 
 @Injectable({
     providedIn: 'root'
@@ -79,6 +80,12 @@ export class ApiService {
         })
     }
 
+    createToken(token: string): Observable<CreateRegistrationTokenResponse> {
+        return this.http.post<CreateRegistrationTokenResponse>(`${environment.GATEWAY_URL}/v1/notifications/token`, {
+            token: token,
+        })
+    }
+
     interestParty(partyId: string): Observable<any> {
         return this.http.post(`${this.BASE_URL}/party/interest?partyId=${partyId}`, {})
     }
@@ -88,13 +95,13 @@ export class ApiService {
     }
 
     getUserPosts(userId: string): Observable<PostResponse[]> {
-        return this.http.get<PostResponse[]>(`${environment.GATEWAY_URL}/v1/posts?userId=${userId}&pageSize=10&page=0`)
+        return this.http.get<ListPostResponse>(`${environment.GATEWAY_URL}/v1/posts/list?user_id=${userId}&pageSize=10&page=0`)
+            .pipe(map(r => r.posts))
     }
 
     getPostFeed(): Observable<PostResponse[]> {
-        return this.http.get<FeedPostResponse>(`${environment.GATEWAY_URL}/v1/posts/feed?pageSize=10&page=0`).pipe(
-            map(r => r.posts)
-        )
+        return this.http.get<FeedPostResponse>(`${environment.GATEWAY_URL}/v1/posts/feed?pageSize=10&page=0`)
+            .pipe(map(r => r.posts))
     }
 
     getStoryFeed(): Observable<Story[]> {

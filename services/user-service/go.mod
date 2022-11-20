@@ -7,7 +7,7 @@ require (
 	github.com/improbable-eng/grpc-web v0.15.0
 	github.com/labstack/gommon v0.4.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221116205822-91c0d9c12e5a
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221118194622-10a7b5017670
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221116205822-91c0d9c12e5a

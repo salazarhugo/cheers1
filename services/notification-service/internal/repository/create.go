@@ -7,6 +7,6 @@ func (r repository) CreateRegistrationToken(
 	token string,
 ) error {
 	ctx := context.Background()
-	err := r.redis.SAdd(ctx, userID, token, 0).Err()
+	err := r.redis.SAdd(ctx, userID, token).Err()
 	return err
 }

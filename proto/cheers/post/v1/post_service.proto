@@ -29,6 +29,15 @@ service PostService {
     };
   }
 
+  /*
+    List posts of a specific user
+   */
+  rpc ListPost (ListPostRequest) returns (ListPostResponse) {
+    option (google.api.http) = {
+      get: "/v1/posts/list"
+    };
+  };
+
   rpc FeedPost (FeedPostRequest) returns (FeedPostResponse) {
     option (google.api.http) = {
       get: "/v1/posts/feed"
@@ -75,6 +84,17 @@ message UpdatePostRequest {
 
 message DeletePostRequest {
   string id = 1;
+}
+
+message ListPostRequest {
+  string user_id = 1;
+  int32 page_size = 2;
+  int32 page = 3;
+}
+
+message ListPostResponse {
+  repeated PostResponse posts = 1;
+  string next_page_token = 2;
 }
 
 message FeedPostRequest {

@@ -9,7 +9,7 @@ import (
 type Repository interface {
 	SendNotification(
 		userWithToken map[string][]string,
-		notification messaging.Notification,
+		data map[string]string,
 	) error
 	CreateRegistrationToken(userID string, token string) error
 	GetUserTokens(userID string) ([]string, error)

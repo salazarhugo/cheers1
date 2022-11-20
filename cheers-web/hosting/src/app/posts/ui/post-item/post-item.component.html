@@ -27,13 +27,19 @@
     </div>
     <div class="post-footer" fxLayout="column">
         <div class="post-footer-buttons" fxLayout="row" fxLayoutAlign="space-between center">
-            <div>
-                <button (click)="onToggleLike()" mat-icon-button>
-                    <mat-icon>{{(postResponse.hasLiked) ? 'favorite' : 'favorite_border' }}</mat-icon>
-                </button>
-                <button mat-icon-button>
-                    <mat-icon>chat_bubble_outline</mat-icon>
-                </button>
+            <div fxLayoutAlign="none center">
+                <div fxLayoutAlign="none center">
+                    <button (click)="onToggleLike()" mat-icon-button>
+                        <mat-icon>{{(postResponse.hasLiked) ? 'favorite' : 'favorite_border' }}</mat-icon>
+                    </button>
+                    <span class="post-counter">{{postResponse.likeCount}}</span>
+                </div>
+                <div fxLayoutAlign="none center">
+                    <button mat-icon-button>
+                        <mat-icon>chat_bubble_outline</mat-icon>
+                    </button>
+                    <span class="post-counter">{{postResponse.commentCount}}</span>
+                </div>
                 <button mat-icon-button>
                     <mat-icon>share_outline</mat-icon>
                 </button>

@@ -3,6 +3,12 @@ import {MatSidenav} from "@angular/material/sidenav";
 import {debounceTime, distinctUntilChanged, fromEvent, map, Observable, of} from "rxjs";
 import {User} from "../../../shared/data/models/user.model";
 import {UserService} from "../../../shared/data/services/user.service";
+import {AuthService} from "../../../shared/data/services/auth.service";
+import {PartyService} from "../../../parties/data/party.service";
+import {PostService} from "../../../posts/data/post.service";
+import {ActivityService} from "../../../activities/data/activity.service";
+import {Router} from "@angular/router";
+import {ThemeService} from "../../../core/data/theme.service";
 
 @Component({
     selector: 'app-topbar',
@@ -11,6 +17,7 @@ import {UserService} from "../../../shared/data/services/user.service";
 })
 export class TopbarComponent implements OnInit {
 
+    isDarkTheme: Observable<boolean>
     $user: Observable<User | null> = of(null)
     $searchResults: Observable<User[] | null> = of(null)
     $recentSearches: Observable<User[] | null> = of(null)
@@ -20,12 +27,16 @@ export class TopbarComponent implements OnInit {
 
     constructor(
         public userService: UserService,
+        private authService: AuthService,
+        public themeService: ThemeService,
+        private router: Router,
     ) {
         this.$user = this.userService.user$
 
     }
 
     ngOnInit(): void {
+        this.isDarkTheme = this.themeService.isDarkTheme
         fromEvent(this.searchInput.nativeElement, 'keyup').pipe(
             map((event: any) => event.target.value),
             debounceTime(500),
@@ -41,6 +52,11 @@ export class TopbarComponent implements OnInit {
 
     onImgError(event: any) {
         event.target.src = 'assets/default_profile_picture.png';
+    }
+
+    async onSignOut() {
+        await this.authService.signOut()
+        await this.router.navigate(['sign-in'])
     }
 
     onUserClick(user: User) {

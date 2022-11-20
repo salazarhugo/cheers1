@@ -10,6 +10,8 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatDividerModule} from "@angular/material/divider";
 
 
 @NgModule({
@@ -26,6 +28,8 @@ import {MatFormFieldModule} from "@angular/material/form-field";
         MatIconModule,
         MatButtonModule,
         MatFormFieldModule,
+        MatSlideToggleModule,
+        MatDividerModule,
     ],
     exports: [
         TopbarComponent,

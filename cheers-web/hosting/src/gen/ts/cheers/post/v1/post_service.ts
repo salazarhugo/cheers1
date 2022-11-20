@@ -23,6 +23,17 @@ export interface DeletePostRequest {
   id: string;
 }
 
+export interface ListPostRequest {
+  userId: string;
+  pageSize: number;
+  page: number;
+}
+
+export interface ListPostResponse {
+  posts: PostResponse[];
+  nextPageToken: string;
+}
+
 export interface FeedPostRequest {
   parent: string;
   pageSize: number;
@@ -261,6 +272,135 @@ export const DeletePostRequest = {
   fromPartial<I extends Exact<DeepPartial<DeletePostRequest>, I>>(object: I): DeletePostRequest {
     const message = createBaseDeletePostRequest();
     message.id = object.id ?? "";
+    return message;
+  },
+};
+
+function createBaseListPostRequest(): ListPostRequest {
+  return { userId: "", pageSize: 0, page: 0 };
+}
+
+export const ListPostRequest = {
+  encode(message: ListPostRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(16).int32(message.pageSize);
+    }
+    if (message.page !== 0) {
+      writer.uint32(24).int32(message.page);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListPostRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListPostRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.userId = reader.string();
+          break;
+        case 2:
+          message.pageSize = reader.int32();
+          break;
+        case 3:
+          message.page = reader.int32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListPostRequest {
+    return {
+      userId: isSet(object.userId) ? String(object.userId) : "",
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
+      page: isSet(object.page) ? Number(object.page) : 0,
+    };
+  },
+
+  toJSON(message: ListPostRequest): unknown {
+    const obj: any = {};
+    message.userId !== undefined && (obj.userId = message.userId);
+    message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
+    message.page !== undefined && (obj.page = Math.round(message.page));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListPostRequest>, I>>(object: I): ListPostRequest {
+    const message = createBaseListPostRequest();
+    message.userId = object.userId ?? "";
+    message.pageSize = object.pageSize ?? 0;
+    message.page = object.page ?? 0;
+    return message;
+  },
+};
+
+function createBaseListPostResponse(): ListPostResponse {
+  return { posts: [], nextPageToken: "" };
+}
+
+export const ListPostResponse = {
+  encode(message: ListPostResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.posts) {
+      PostResponse.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageToken !== "") {
+      writer.uint32(18).string(message.nextPageToken);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListPostResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListPostResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.posts.push(PostResponse.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.nextPageToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListPostResponse {
+    return {
+      posts: Array.isArray(object?.posts) ? object.posts.map((e: any) => PostResponse.fromJSON(e)) : [],
+      nextPageToken: isSet(object.nextPageToken) ? String(object.nextPageToken) : "",
+    };
+  },
+
+  toJSON(message: ListPostResponse): unknown {
+    const obj: any = {};
+    if (message.posts) {
+      obj.posts = message.posts.map((e) => e ? PostResponse.toJSON(e) : undefined);
+    } else {
+      obj.posts = [];
+    }
+    message.nextPageToken !== undefined && (obj.nextPageToken = message.nextPageToken);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListPostResponse>, I>>(object: I): ListPostResponse {
+    const message = createBaseListPostResponse();
+    message.posts = object.posts?.map((e) => PostResponse.fromPartial(e)) || [];
+    message.nextPageToken = object.nextPageToken ?? "";
     return message;
   },
 };
@@ -897,6 +1037,8 @@ export interface PostService {
   GetPost(request: GetPostRequest): Promise<PostResponse>;
   UpdatePost(request: UpdatePostRequest): Promise<PostResponse>;
   DeletePost(request: DeletePostRequest): Promise<Empty>;
+  /** List posts of a specific user */
+  ListPost(request: ListPostRequest): Promise<ListPostResponse>;
   FeedPost(request: FeedPostRequest): Promise<FeedPostResponse>;
   LikePost(request: LikePostRequest): Promise<LikePostResponse>;
   UnlikePost(request: UnlikePostRequest): Promise<UnlikePostResponse>;
@@ -914,6 +1056,7 @@ export class PostServiceClientImpl implements PostService {
     this.GetPost = this.GetPost.bind(this);
     this.UpdatePost = this.UpdatePost.bind(this);
     this.DeletePost = this.DeletePost.bind(this);
+    this.ListPost = this.ListPost.bind(this);
     this.FeedPost = this.FeedPost.bind(this);
     this.LikePost = this.LikePost.bind(this);
     this.UnlikePost = this.UnlikePost.bind(this);
@@ -942,6 +1085,12 @@ export class PostServiceClientImpl implements PostService {
     const data = DeletePostRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeletePost", data);
     return promise.then((data) => Empty.decode(new _m0.Reader(data)));
+  }
+
+  ListPost(request: ListPostRequest): Promise<ListPostResponse> {
+    const data = ListPostRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ListPost", data);
+    return promise.then((data) => ListPostResponse.decode(new _m0.Reader(data)));
   }
 
   FeedPost(request: FeedPostRequest): Promise<FeedPostResponse> {

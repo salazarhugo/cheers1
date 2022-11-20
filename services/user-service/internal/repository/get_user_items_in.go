@@ -1,12 +1,10 @@
 package repository
 
 import (
-	"encoding/json"
 	"github.com/labstack/gommon/log"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	"github.com/salazarhugo/cheers1/libs/utils"
-	"google.golang.org/protobuf/encoding/protojson"
 )
 
 func (p *userRepository) GetUserItemsIn(
@@ -35,14 +33,11 @@ func (p *userRepository) GetUserItemsIn(
 
 	for results.Next() {
 		m := results.Record().Values[0]
-		bytes, err := json.Marshal(m)
-		if err != nil {
-			return nil, err
-		}
 		userItem := &user.UserItem{}
-		err = protojson.Unmarshal(bytes, userItem)
+		err := utils.MapToProto(userItem, m)
 		if err != nil {
-			log.Error(err)
+			log.Print(err)
+			return nil, err
 		}
 		users = append(users, userItem)
 	}

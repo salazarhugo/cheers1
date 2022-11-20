@@ -1,5 +1,8 @@
-<router-outlet *ngIf="!isLoading"></router-outlet>
-
+<div [ngClass]="{'dark-theme': isDarkTheme | async}">
+    <div class="mat-typography mat-app-background">
+        <router-outlet *ngIf="!isLoading"></router-outlet>
+    </div>
+</div>
 <div *ngIf="isLoading" class="loading-wrapper" fxLayoutAlign="center center">
     <mat-spinner diameter="40" strokeWidth="2"></mat-spinner>
 </div>

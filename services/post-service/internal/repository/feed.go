@@ -1,11 +1,9 @@
 package repository
 
 import (
-	"encoding/json"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	utils "github.com/salazarhugo/cheers1/libs/utils"
-	"google.golang.org/protobuf/encoding/protojson"
 )
 
 func (p *postRepository) FeedPost(
@@ -41,15 +39,12 @@ func (p *postRepository) FeedPost(
 
 	for result.Next() {
 		m := result.Record().Values[0]
-		bytes, err := json.Marshal(m)
-		if err != nil {
-			return nil, err
-		}
 		post := &pb.PostResponse{}
-		err = protojson.Unmarshal(bytes, post)
+		err := utils.MapToProto(post, m)
 		if err != nil {
 			return nil, err
 		}
+
 		posts = append(posts, post)
 	}
 

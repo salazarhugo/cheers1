@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-func GetUsers(userIds []string) ([]*pb.UserItem, error) {
+func GetUsers(userIds []string) ([]*pb.User, error) {
 	ctx := context.Background()
 	systemRoots, err := x509.SystemCertPool()
 	if err != nil {
@@ -28,7 +28,7 @@ func GetUsers(userIds []string) ([]*pb.UserItem, error) {
 
 	client := user.NewUserServiceClient(conn)
 
-	response, err := client.GetUserItemsIn(ctx, &user.GetUserItemsInRequest{UserIds: userIds})
+	response, err := client.GetUsersIn(ctx, &user.GetUsersInRequest{UserIds: userIds})
 	if err != nil {
 		log.Println(err)
 	}

@@ -9,7 +9,7 @@ import (
 
 func (r repository) SendNotification(
 	userWithToken map[string][]string,
-	notification messaging.Notification,
+	data map[string]string,
 ) error {
 	ctx := context.Background()
 
@@ -21,8 +21,8 @@ func (r repository) SendNotification(
 
 	for userId, tokens := range userWithToken {
 		response, _ := fcmClient.SendMulticast(context.Background(), &messaging.MulticastMessage{
-			Notification: &notification,
-			Tokens:       tokens,
+			Data:   data,
+			Tokens: tokens,
 		})
 		go r.RemoveExpiredTokens(userId, tokens, response.Responses)
 
