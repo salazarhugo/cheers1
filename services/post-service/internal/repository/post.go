@@ -13,6 +13,7 @@ type PostRepository interface {
 	DeletePost(userID string, postID string) error
 
 	FeedPost(userID string, request *pb.FeedPostRequest) (*pb.FeedPostResponse, error)
+	ListPost(userID string, request *pb.ListPostRequest) (*pb.ListPostResponse, error)
 	LikePost(userID string, postID string) (*pb.LikePostResponse, error)
 	UnlikePost(userID string, postID string) (*pb.UnlikePostResponse, error)
 }

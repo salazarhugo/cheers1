@@ -24,7 +24,7 @@ export interface DeletePostRequest {
 }
 
 export interface ListPostRequest {
-  userId: string;
+  username: string;
   pageSize: number;
   page: number;
 }
@@ -277,13 +277,13 @@ export const DeletePostRequest = {
 };
 
 function createBaseListPostRequest(): ListPostRequest {
-  return { userId: "", pageSize: 0, page: 0 };
+  return { username: "", pageSize: 0, page: 0 };
 }
 
 export const ListPostRequest = {
   encode(message: ListPostRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
+    if (message.username !== "") {
+      writer.uint32(10).string(message.username);
     }
     if (message.pageSize !== 0) {
       writer.uint32(16).int32(message.pageSize);
@@ -302,7 +302,7 @@ export const ListPostRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.userId = reader.string();
+          message.username = reader.string();
           break;
         case 2:
           message.pageSize = reader.int32();
@@ -320,7 +320,7 @@ export const ListPostRequest = {
 
   fromJSON(object: any): ListPostRequest {
     return {
-      userId: isSet(object.userId) ? String(object.userId) : "",
+      username: isSet(object.username) ? String(object.username) : "",
       pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
       page: isSet(object.page) ? Number(object.page) : 0,
     };
@@ -328,7 +328,7 @@ export const ListPostRequest = {
 
   toJSON(message: ListPostRequest): unknown {
     const obj: any = {};
-    message.userId !== undefined && (obj.userId = message.userId);
+    message.username !== undefined && (obj.username = message.username);
     message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
     message.page !== undefined && (obj.page = Math.round(message.page));
     return obj;
@@ -336,7 +336,7 @@ export const ListPostRequest = {
 
   fromPartial<I extends Exact<DeepPartial<ListPostRequest>, I>>(object: I): ListPostRequest {
     const message = createBaseListPostRequest();
-    message.userId = object.userId ?? "";
+    message.username = object.username ?? "";
     message.pageSize = object.pageSize ?? 0;
     message.page = object.page ?? 0;
     return message;

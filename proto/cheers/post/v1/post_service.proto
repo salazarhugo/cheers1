@@ -87,7 +87,7 @@ message DeletePostRequest {
 }
 
 message ListPostRequest {
-  string user_id = 1;
+  string username = 1;
   int32 page_size = 2;
   int32 page = 3;
 }
