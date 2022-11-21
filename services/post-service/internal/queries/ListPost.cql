@@ -1,7 +1,7 @@
 MATCH
   (u:User {id: $userID})
 MATCH
-  (creator:User {username: $otherUserID})-[:POSTED]->(post:Post)
+  (creator:User {username: $username})-[:POSTED]->(post:Post)
 WITH
   u,
   creator,
@@ -16,13 +16,15 @@ WITH
   post,
   creator,
   EXISTS((u)-[:LIKED]->(post)) AS has_liked,
-  COUNT(DISTINCT r) AS like_count
+  COUNT(DISTINCT r) AS like_count,
+  u.id = creator.id AS is_creator
 RETURN
   {
      post:          PROPERTIES(post),
      user:          PROPERTIES(creator),
      like_count:    like_count,
      comment_count: 0,
-     has_liked:     has_liked
+     has_liked:     has_liked,
+     is_creator:    is_creator
    }
 ORDER BY post.createTime DESC

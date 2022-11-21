@@ -32,9 +32,11 @@ export class PostItemComponent implements OnInit {
         if (this.postResponse.hasLiked) {
             this.postService.unlikePost(this.postResponse.post?.id!)
             this.postResponse.hasLiked = false
+            this.postResponse.likeCount--
         } else {
             this.postService.likePost(this.postResponse.post?.id!)
             this.postResponse.hasLiked = true
+            this.postResponse.likeCount++
         }
     }
 

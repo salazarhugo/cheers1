@@ -44,8 +44,8 @@ export interface DeleteAccountResponse {
 }
 
 export interface ListAccountRequest {
-  partyId: string | undefined;
-  accountId: string | undefined;
+  partyId?: string | undefined;
+  accountId?: string | undefined;
 }
 
 export interface ListAccountResponse {

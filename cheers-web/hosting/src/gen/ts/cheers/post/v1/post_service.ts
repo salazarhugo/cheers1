@@ -83,9 +83,7 @@ export interface PostResponse {
   likeCount: number;
   commentCount: number;
   hasLiked: boolean;
-  commentsEnabled: boolean;
-  reshareEnabled: boolean;
-  mediaCount: number;
+  isCreator: boolean;
 }
 
 function createBaseCreatePostRequest(): CreatePostRequest {
@@ -911,16 +909,7 @@ export const UnsavePostResponse = {
 };
 
 function createBasePostResponse(): PostResponse {
-  return {
-    post: undefined,
-    user: undefined,
-    likeCount: 0,
-    commentCount: 0,
-    hasLiked: false,
-    commentsEnabled: false,
-    reshareEnabled: false,
-    mediaCount: 0,
-  };
+  return { post: undefined, user: undefined, likeCount: 0, commentCount: 0, hasLiked: false, isCreator: false };
 }
 
 export const PostResponse = {
@@ -940,14 +929,8 @@ export const PostResponse = {
     if (message.hasLiked === true) {
       writer.uint32(40).bool(message.hasLiked);
     }
-    if (message.commentsEnabled === true) {
-      writer.uint32(48).bool(message.commentsEnabled);
-    }
-    if (message.reshareEnabled === true) {
-      writer.uint32(64).bool(message.reshareEnabled);
-    }
-    if (message.mediaCount !== 0) {
-      writer.uint32(56).int64(message.mediaCount);
+    if (message.isCreator === true) {
+      writer.uint32(48).bool(message.isCreator);
     }
     return writer;
   },
@@ -975,13 +958,7 @@ export const PostResponse = {
           message.hasLiked = reader.bool();
           break;
         case 6:
-          message.commentsEnabled = reader.bool();
-          break;
-        case 8:
-          message.reshareEnabled = reader.bool();
-          break;
-        case 7:
-          message.mediaCount = longToNumber(reader.int64() as Long);
+          message.isCreator = reader.bool();
           break;
         default:
           reader.skipType(tag & 7);
@@ -998,9 +975,7 @@ export const PostResponse = {
       likeCount: isSet(object.likeCount) ? Number(object.likeCount) : 0,
       commentCount: isSet(object.commentCount) ? Number(object.commentCount) : 0,
       hasLiked: isSet(object.hasLiked) ? Boolean(object.hasLiked) : false,
-      commentsEnabled: isSet(object.commentsEnabled) ? Boolean(object.commentsEnabled) : false,
-      reshareEnabled: isSet(object.reshareEnabled) ? Boolean(object.reshareEnabled) : false,
-      mediaCount: isSet(object.mediaCount) ? Number(object.mediaCount) : 0,
+      isCreator: isSet(object.isCreator) ? Boolean(object.isCreator) : false,
     };
   },
 
@@ -1011,9 +986,7 @@ export const PostResponse = {
     message.likeCount !== undefined && (obj.likeCount = Math.round(message.likeCount));
     message.commentCount !== undefined && (obj.commentCount = Math.round(message.commentCount));
     message.hasLiked !== undefined && (obj.hasLiked = message.hasLiked);
-    message.commentsEnabled !== undefined && (obj.commentsEnabled = message.commentsEnabled);
-    message.reshareEnabled !== undefined && (obj.reshareEnabled = message.reshareEnabled);
-    message.mediaCount !== undefined && (obj.mediaCount = Math.round(message.mediaCount));
+    message.isCreator !== undefined && (obj.isCreator = message.isCreator);
     return obj;
   },
 
@@ -1024,9 +997,7 @@ export const PostResponse = {
     message.likeCount = object.likeCount ?? 0;
     message.commentCount = object.commentCount ?? 0;
     message.hasLiked = object.hasLiked ?? false;
-    message.commentsEnabled = object.commentsEnabled ?? false;
-    message.reshareEnabled = object.reshareEnabled ?? false;
-    message.mediaCount = object.mediaCount ?? 0;
+    message.isCreator = object.isCreator ?? false;
     return message;
   },
 };

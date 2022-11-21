@@ -55,8 +55,8 @@ export interface DeleteOrderResponse {
 }
 
 export interface ListOrderRequest {
-  partyId: string | undefined;
-  userId: string | undefined;
+  partyId?: string | undefined;
+  userId?: string | undefined;
 }
 
 export interface ListOrderResponse {

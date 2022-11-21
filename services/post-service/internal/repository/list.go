@@ -24,10 +24,10 @@ func (p *postRepository) ListPost(
 	}
 
 	params := map[string]interface{}{
-		"userID":      userID,
-		"otherUserID": request.GetUserId(),
-		"skip":        int(skip),
-		"pageSize":    int(pageSize),
+		"userID":   userID,
+		"username": request.GetUsername(),
+		"skip":     int(skip),
+		"pageSize": int(pageSize),
 	}
 
 	result, err := session.Run(*cypher, params)

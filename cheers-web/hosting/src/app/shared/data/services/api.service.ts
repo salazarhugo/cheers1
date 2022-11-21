@@ -94,8 +94,8 @@ export class ApiService {
         return this.http.post(`${this.BASE_URL}/party/uninterest?partyId=${partyId}`, {})
     }
 
-    getUserPosts(userId: string): Observable<PostResponse[]> {
-        return this.http.get<ListPostResponse>(`${environment.GATEWAY_URL}/v1/posts/list?user_id=${userId}&pageSize=10&page=0`)
+    getUserPosts(username: string): Observable<PostResponse[]> {
+        return this.http.get<ListPostResponse>(`${environment.GATEWAY_URL}/v1/posts/list?username=${username}&pageSize=10&page=0`)
             .pipe(map(r => r.posts))
     }
 

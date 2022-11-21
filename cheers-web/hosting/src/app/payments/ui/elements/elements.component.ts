@@ -4,6 +4,8 @@ import {AngularFireFunctions} from "@angular/fire/compat/functions";
 import {environment} from "../../../../environments/environment";
 import {loadStripe} from "@stripe/stripe-js";
 import {PaymentService} from "../../data/payment.service";
+import {ThemeService} from "../../../core/data/theme.service";
+import {firstValueFrom} from "rxjs";
 
 declare var Stripe: any;
 
@@ -29,7 +31,7 @@ export class ElementsComponent implements OnInit {
     constructor(
         private auth: AuthService,
         private paymentService: PaymentService,
-        private functions: AngularFireFunctions
+        private themeService: ThemeService,
     ) {
     }
 
@@ -41,10 +43,12 @@ export class ElementsComponent implements OnInit {
 
         this.stripe = Stripe(environment.stripe.public_key);
 
+        const isDarkMode = await firstValueFrom(this.themeService.isDarkTheme)
+        console.log("Fwf")
         const options = {
             clientSecret: this.clientSecret,
             appearance: {
-                theme: "night",
+                theme: (isDarkMode) ? "night" : "default",
             },
         };
 

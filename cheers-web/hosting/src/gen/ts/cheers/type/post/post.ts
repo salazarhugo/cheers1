@@ -91,14 +91,13 @@ export interface Post {
   address: string;
   privacy: Privacy;
   photos: string[];
-  isCommentEnabled: boolean;
   locationName: string;
   drink: string;
   drunkenness: number;
   type: PostType;
   createTime: Date | undefined;
-  commentsEnabled: boolean;
-  shareEnabled: boolean;
+  canComment: boolean;
+  canShare: boolean;
   ratio: PostRatio;
 }
 
@@ -110,14 +109,13 @@ function createBasePost(): Post {
     address: "",
     privacy: 0,
     photos: [],
-    isCommentEnabled: false,
     locationName: "",
     drink: "",
     drunkenness: 0,
     type: 0,
     createTime: undefined,
-    commentsEnabled: false,
-    shareEnabled: false,
+    canComment: false,
+    canShare: false,
     ratio: 0,
   };
 }
@@ -142,9 +140,6 @@ export const Post = {
     for (const v of message.photos) {
       writer.uint32(50).string(v!);
     }
-    if (message.isCommentEnabled === true) {
-      writer.uint32(56).bool(message.isCommentEnabled);
-    }
     if (message.locationName !== "") {
       writer.uint32(66).string(message.locationName);
     }
@@ -160,11 +155,11 @@ export const Post = {
     if (message.createTime !== undefined) {
       Timestamp.encode(toTimestamp(message.createTime), writer.uint32(98).fork()).ldelim();
     }
-    if (message.commentsEnabled === true) {
-      writer.uint32(104).bool(message.commentsEnabled);
+    if (message.canComment === true) {
+      writer.uint32(104).bool(message.canComment);
     }
-    if (message.shareEnabled === true) {
-      writer.uint32(112).bool(message.shareEnabled);
+    if (message.canShare === true) {
+      writer.uint32(112).bool(message.canShare);
     }
     if (message.ratio !== 0) {
       writer.uint32(120).int32(message.ratio);
@@ -197,9 +192,6 @@ export const Post = {
         case 6:
           message.photos.push(reader.string());
           break;
-        case 7:
-          message.isCommentEnabled = reader.bool();
-          break;
         case 8:
           message.locationName = reader.string();
           break;
@@ -216,10 +208,10 @@ export const Post = {
           message.createTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
         case 13:
-          message.commentsEnabled = reader.bool();
+          message.canComment = reader.bool();
           break;
         case 14:
-          message.shareEnabled = reader.bool();
+          message.canShare = reader.bool();
           break;
         case 15:
           message.ratio = reader.int32() as any;
@@ -240,14 +232,13 @@ export const Post = {
       address: isSet(object.address) ? String(object.address) : "",
       privacy: isSet(object.privacy) ? privacyFromJSON(object.privacy) : 0,
       photos: Array.isArray(object?.photos) ? object.photos.map((e: any) => String(e)) : [],
-      isCommentEnabled: isSet(object.isCommentEnabled) ? Boolean(object.isCommentEnabled) : false,
       locationName: isSet(object.locationName) ? String(object.locationName) : "",
       drink: isSet(object.drink) ? String(object.drink) : "",
       drunkenness: isSet(object.drunkenness) ? Number(object.drunkenness) : 0,
       type: isSet(object.type) ? postTypeFromJSON(object.type) : 0,
       createTime: isSet(object.createTime) ? fromJsonTimestamp(object.createTime) : undefined,
-      commentsEnabled: isSet(object.commentsEnabled) ? Boolean(object.commentsEnabled) : false,
-      shareEnabled: isSet(object.shareEnabled) ? Boolean(object.shareEnabled) : false,
+      canComment: isSet(object.canComment) ? Boolean(object.canComment) : false,
+      canShare: isSet(object.canShare) ? Boolean(object.canShare) : false,
       ratio: isSet(object.ratio) ? postRatioFromJSON(object.ratio) : 0,
     };
   },
@@ -264,14 +255,13 @@ export const Post = {
     } else {
       obj.photos = [];
     }
-    message.isCommentEnabled !== undefined && (obj.isCommentEnabled = message.isCommentEnabled);
     message.locationName !== undefined && (obj.locationName = message.locationName);
     message.drink !== undefined && (obj.drink = message.drink);
     message.drunkenness !== undefined && (obj.drunkenness = Math.round(message.drunkenness));
     message.type !== undefined && (obj.type = postTypeToJSON(message.type));
     message.createTime !== undefined && (obj.createTime = message.createTime.toISOString());
-    message.commentsEnabled !== undefined && (obj.commentsEnabled = message.commentsEnabled);
-    message.shareEnabled !== undefined && (obj.shareEnabled = message.shareEnabled);
+    message.canComment !== undefined && (obj.canComment = message.canComment);
+    message.canShare !== undefined && (obj.canShare = message.canShare);
     message.ratio !== undefined && (obj.ratio = postRatioToJSON(message.ratio));
     return obj;
   },
@@ -284,14 +274,13 @@ export const Post = {
     message.address = object.address ?? "";
     message.privacy = object.privacy ?? 0;
     message.photos = object.photos?.map((e) => e) || [];
-    message.isCommentEnabled = object.isCommentEnabled ?? false;
     message.locationName = object.locationName ?? "";
     message.drink = object.drink ?? "";
     message.drunkenness = object.drunkenness ?? 0;
     message.type = object.type ?? 0;
     message.createTime = object.createTime ?? undefined;
-    message.commentsEnabled = object.commentsEnabled ?? false;
-    message.shareEnabled = object.shareEnabled ?? false;
+    message.canComment = object.canComment ?? false;
+    message.canShare = object.canShare ?? false;
     message.ratio = object.ratio ?? 0;
     return message;
   },

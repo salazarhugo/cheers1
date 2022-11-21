@@ -35,7 +35,7 @@ export class PostService {
         this.api.unlikePost(postId).subscribe(res => console.log(res))
     }
 
-    getUserPosts(userId: string) {
-        return this.api.getUserPosts(userId)
+    getUserPosts(username: string) {
+        return this.api.getUserPosts(username)
     }
 }
