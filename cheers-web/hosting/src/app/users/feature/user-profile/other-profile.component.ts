@@ -6,6 +6,7 @@ import {User} from "../../../shared/data/models/user.model";
 import {PostService} from "../../../posts/data/post.service";
 import {Post} from "../../../shared/data/models/post.model";
 import {PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
+import {AngularFireAuth} from "@angular/fire/compat/auth";
 
 @Component({
     selector: 'app-user-profile',
@@ -17,16 +18,23 @@ export class OtherProfileComponent implements OnInit {
     $user: Observable<User | null> = of(null)
     $posts: Observable<PostResponse[] | null> = of(null)
     username: string | null = null
+    isAdmin: boolean = false
 
     constructor(
         private userService: UserService,
         private route: ActivatedRoute,
         private postService: PostService,
+        private auth: AngularFireAuth,
     ) {
     }
 
 
-    ngOnInit(): void {
+    async ngOnInit() {
+        const token = await firstValueFrom(this.auth.idTokenResult)
+        if (token == null)
+            return
+        this.isAdmin = token.claims["admin"] != null
+
         this.route.paramMap.subscribe((params: ParamMap) => {
             const username = params.get("username")
             this.username = username

@@ -24,6 +24,9 @@ export class UserResolver implements Resolve<User> {
     return new Promise(async (resolve, reject) => {
 
         const authUser = await firstValueFrom(this.afAuth.authState)
+        const token = await authUser?.getIdTokenResult()
+        if (!token)
+            return
 
         // Check if user is signed in
         if (!authUser) {
@@ -31,17 +34,19 @@ export class UserResolver implements Resolve<User> {
             return reject();
         }
 
-        const user = await firstValueFrom(this.api.getUser(authUser.uid))
+        let user = await firstValueFrom(this.api.getUser(authUser.uid))
 
         // Check if user document exists
-        if (user) {
-            this.userService.setUser(user)
-            resolve(user)
-        } else {
+        if (!user) {
             console.log("User doesn't exist")
             await this.router.navigate(['finish-sign-up']);
             return reject();
         }
+
+        user.admin = token.claims["admin"] != null
+
+        this.userService.setUser(user)
+        resolve(user)
     })
   }
 }

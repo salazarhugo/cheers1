@@ -2,8 +2,6 @@ package app
 
 import (
 	"encoding/json"
-	"github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
-	"google.golang.org/protobuf/proto"
 	"io"
 	"log"
 	"net/http"
@@ -25,22 +23,22 @@ func UserTopicSub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userevent := &user.UserEvent{}
-	err = proto.Unmarshal(m.Message.Data, userevent)
-	if err != nil {
-		log.Fatal(err)
-		return err
-	}
-
-	switch userevent.Type {
-	case usereventpb.UserEventType_POST_LIKE:
-		likePostNotification(c, userevent)
-	case usereventpb.UserEventType_CREATE_POST:
-		postNotification(c, userevent)
-	case usereventpb.UserEventType_FOLLOW:
-		followNotification(c, userevent)
-	case usereventpb.UserEventType_COMMENT:
-		commentNotification(c, userevent)
-	default:
-	}
+	//userevent := &user.UserEvent{}
+	//err = proto.Unmarshal(m.Message.Data, userevent)
+	//if err != nil {
+	//	log.Fatal(err)
+	//	return err
+	//}
+	//
+	//switch userevent.Type {
+	//case usereventpb.UserEventType_POST_LIKE:
+	//	likePostNotification(c, userevent)
+	//case usereventpb.UserEventType_CREATE_POST:
+	//	postNotification(c, userevent)
+	//case usereventpb.UserEventType_FOLLOW:
+	//	followNotification(c, userevent)
+	//case usereventpb.UserEventType_COMMENT:
+	//	commentNotification(c, userevent)
+	//default:
+	//}
 }

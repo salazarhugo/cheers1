@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
+import {AngularFireAuth} from "@angular/fire/compat/auth";
+import {firstValueFrom} from "rxjs";
 
 @Component({
     selector: 'app-sidenav',
@@ -7,6 +9,8 @@ import {ActivatedRoute, Router} from "@angular/router";
     styleUrls: ['./sidenav.component.sass']
 })
 export class SidenavComponent implements OnInit {
+
+    isAdmin: boolean = false
 
     more_items = [
         {
@@ -59,11 +63,10 @@ export class SidenavComponent implements OnInit {
         },
     ]
 
-    constructor(
-    ) {
+    constructor() {
     }
 
-    ngOnInit(): void {
+    async ngOnInit()  {
     }
 
 }

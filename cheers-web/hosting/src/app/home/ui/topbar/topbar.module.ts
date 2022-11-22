@@ -12,6 +12,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatDividerModule} from "@angular/material/divider";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import {MatDividerModule} from "@angular/material/divider";
         MatFormFieldModule,
         MatSlideToggleModule,
         MatDividerModule,
+        MatTooltipModule,
     ],
     exports: [
         TopbarComponent,

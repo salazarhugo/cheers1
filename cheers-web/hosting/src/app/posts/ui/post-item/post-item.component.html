@@ -17,7 +17,8 @@
             <mat-icon>more_vert</mat-icon>
         </button>
         <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="delete()">Delete</button>
+            <button mat-menu-item *ngIf="postResponse.isCreator" (click)="delete()">Delete</button>
+            <button mat-menu-item>Cancel</button>
         </mat-menu>
     </div>
     <div class="post-body" fxLayout="column">
