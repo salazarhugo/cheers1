@@ -3,17 +3,17 @@ package app
 import (
 	"cloud.google.com/go/firestore"
 	"context"
-	"encoding/json"
-	"github.com/labstack/echo/v4"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/order/v1"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/payment/v1"
 	ticketpb "github.com/salazarhugo/cheers1/gen/go/cheers/ticket/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/services/payment-service/internal/repository"
 	"github.com/stripe/stripe-go/v72"
 	"github.com/stripe/stripe-go/v72/paymentintent"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"log"
-	"net/http"
 	"os"
 	"time"
 )
@@ -22,50 +22,40 @@ type StripeCustomer struct {
 	Id string `firestore:"customer_id"`
 }
 
-func CreatePaymentIntent(c echo.Context) error {
-	cc := c.(*utils.CustomContext)
-	session := utils.GetSession(cc.Driver)
-	defer session.Close()
+func (s *Server) CreatePayment(
+	ctx context.Context,
+	request *pb.CreatePaymentRequest,
+) (*pb.CreatePaymentResponse, error) {
+	userId, err := utils.GetUserId(ctx)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "failed retrieving userID")
+	}
 
 	secret := os.Getenv("STRIPE_SK")
 	stripe.Key = secret
 
-	ctx := context.Background()
 	client, err := firestore.NewClient(ctx, "cheers-a275e")
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"error": err.Error(),
-		})
+		return nil, err
 	}
 
-	userId := cc.Get("userId").(string)
-	partyId := cc.QueryParam("partyId")
-
-	paymentIntentReq := make(map[string]int64)
-
-	err = json.NewDecoder(cc.Request().Body).Decode(&paymentIntentReq)
-	if err != nil {
-		return err
-	}
-
-	log.Println(paymentIntentReq)
-	tickets, err := getTickets(client, paymentIntentReq, partyId)
+	tickets, err := getTickets(client, request.GetTickets(), request.GetPartyId())
 	log.Println(tickets)
 	amount, err := calculateTotalPrice(tickets)
 	log.Println(amount)
 	if err != nil {
 		log.Println(err)
-		return err
+		return nil, err
 	}
 
 	userDoc, err := client.Collection("stripe_customers").Doc(userId).Get(ctx)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	var customer StripeCustomer
 	if err := userDoc.DataTo(&customer); err != nil {
-		return c.JSON(http.StatusNotFound, "Customer not found")
+		return nil, status.Error(codes.NotFound, "customer not found")
 	}
 
 	params := &stripe.PaymentIntentParams{
@@ -81,14 +71,12 @@ func CreatePaymentIntent(c echo.Context) error {
 	paymentIntent, err := paymentintent.New(params)
 
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"error": err.Error(),
-		})
+		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	party, err := repository.GetParty(partyId)
+	party, err := repository.GetParty(request.GetPartyId())
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	// Store payment intent
@@ -99,7 +87,7 @@ func CreatePaymentIntent(c echo.Context) error {
 		Amount:      paymentIntent.Amount,
 		CustomerId:  paymentIntent.Customer.ID,
 		UserId:      "",
-		PartyId:     partyId,
+		PartyId:     request.GetPartyId(),
 		PartyHostId: party.HostId,
 		CreateTime:  timestamppb.New(time.Unix(paymentIntent.Created, 0)),
 		Tickets:     tickets,
@@ -112,19 +100,17 @@ func CreatePaymentIntent(c echo.Context) error {
 
 	_, err = ref.Set(ctx, m)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"error": err.Error(),
-		})
+		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"clientSecret": paymentIntent.ClientSecret,
-	})
+	return &pb.CreatePaymentResponse{
+		ClientSecret: paymentIntent.ClientSecret,
+	}, nil
 }
 
 func getTickets(
 	client *firestore.Client,
-	paymentIntentReq map[string]int64,
+	paymentIntentReq map[string]uint32,
 	partyId string,
 ) ([]*ticketpb.Ticket, error) {
 	tickets := make([]*ticketpb.Ticket, 0, 0)
@@ -139,7 +125,7 @@ func getTickets(
 		if err != nil {
 			return nil, err
 		}
-		var i int64
+		var i uint32
 		for i = 0; i < quantity; i++ {
 			tickets = append(tickets, ticket)
 		}

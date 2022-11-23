@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package cheers.payment.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "cheers/ticket/v1/ticket.proto";
+
+option java_multiple_files = true;
+option go_package = "github.com/salazarhugo/cheers1/gen/go/cheers/payment/v1;payment";
+
+service PaymentService {
+  rpc CreatePayment (CreatePaymentRequest) returns (CreatePaymentResponse) {
+    option (google.api.http) = {
+      post: "/v1/payments"
+      body: "*"
+    };
+  }
+}
+
+message CreatePaymentRequest {
+  string party_id = 1;
+  map<string, uint32> tickets = 2;
+}
+
+message CreatePaymentResponse {
+   string client_secret = 1;
+}
