@@ -2,4 +2,5 @@ REGION=europe-west2
 
 gcloud run deploy payment-service \
     --source .  \
-    --region=$REGION
+    --region=$REGION \
+    --use-http2

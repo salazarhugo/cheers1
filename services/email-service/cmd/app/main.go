@@ -9,12 +9,7 @@ import (
 )
 
 func main() {
-	if os.Getenv("DISABLE_PROFILER") == "" {
-		log.Println("Profiling enabled.")
-		go profiler.InitProfiling("email-service", "1.0.0")
-	} else {
-		log.Println("Profiling disabled.")
-	}
+	go profiler.InitProfiling("email-service", "1.0.0")
 
 	http.HandleFunc("/", app.PaymentSub)
 

@@ -54,6 +54,9 @@ message Order {
   repeated cheers.ticket.v1.Ticket tickets = 8;
   string party_id = 9;
   string party_host_id = 10;
+  string email = 11;
+  string first_name = 12;
+  string last_name = 13;
 }
 
 message CreateOrderRequest {

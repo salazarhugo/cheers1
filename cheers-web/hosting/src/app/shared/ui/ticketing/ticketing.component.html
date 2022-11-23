@@ -63,10 +63,14 @@
                                 Log in for a faster experience.
                             </ng-template>
                             <form [formGroup]="userForm" class="user-form">
-                                <div>
+                                <div fxLayoutGap="16px">
                                     <mat-form-field appearance="outline" class="edit-input">
-                                        <mat-label>Reservation name</mat-label>
-                                        <input formControlName="name" matInput type="text">
+                                        <mat-label>First name</mat-label>
+                                        <input formControlName="firstName" matInput type="text">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" class="edit-input">
+                                        <mat-label>Last name</mat-label>
+                                        <input formControlName="lastName" matInput type="text">
                                     </mat-form-field>
                                 </div>
                                 <mat-form-field appearance="outline" class="edit-input">

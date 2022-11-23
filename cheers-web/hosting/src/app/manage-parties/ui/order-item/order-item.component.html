@@ -1,4 +1,11 @@
 <mat-card class="order" fxLayoutAlign="space-between center">
-    {{order.id}}
-    {{order.createTime! | relativeTime}}
+    <span>
+        {{order.amount / 100  | currency: 'EUR'}}
+    </span>
+    <span>
+        {{order.tickets.length}} tickets
+    </span>
+    <span>
+        {{order.createTime! | relativeTime}}
+    </span>
 </mat-card>

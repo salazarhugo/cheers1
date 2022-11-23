@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {environment} from "../../../../environments/environment";
 import {loadStripe} from "@stripe/stripe-js";
-import {Observable, of} from "rxjs";
+import {firstValueFrom, Observable, of} from "rxjs";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {PartyService} from "../../../parties/data/party.service";
 import {PaymentService} from "../../../payments/data/payment.service";
@@ -27,14 +27,18 @@ export class TicketingComponent implements OnInit {
     partyId: string | null
 
     userForm = this.fb.group({
-            name: ['', [
-                Validators.required,
-                Validators.maxLength(50),
-            ]],
-            email: ['', [
-                Validators.required,
-                Validators.maxLength(50),
-            ]],
+        firstName: ['', [
+            Validators.required,
+            Validators.maxLength(20),
+        ]],
+        lastName: ['', [
+            Validators.required,
+            Validators.maxLength(20),
+        ]],
+        email: ['', [
+            Validators.required,
+            Validators.maxLength(50),
+        ]],
         }
     )
 
@@ -57,7 +61,8 @@ export class TicketingComponent implements OnInit {
                 this.userForm.patchValue(
                     {
                         email: user.email,
-                        name: user.displayName
+                        firstName: user.displayName?.split(' ')[0],
+                        lastName: user.displayName?.split(' ')[1],
                     }
                 )
             }
@@ -101,7 +106,13 @@ export class TicketingComponent implements OnInit {
     async checkout() {
         const order = this.ticketingForm.getRawValue()
         console.log(order)
-        const paymentIntent = await this.paymentService.createPaymentIntent(order, this.partyId!!).toPromise()
+        const paymentIntent = await firstValueFrom(this.paymentService.createPaymentIntent(
+            order,
+            this.partyId!!,
+            this.ticketingForm.get("firstName")?.value,
+            this.ticketingForm.get("lastName")?.value,
+            this.ticketingForm.get("email")?.value,
+        ))
         const clientSecret = paymentIntent?.clientSecret
         await this.router.navigate(['payment', clientSecret])
     }

@@ -7,7 +7,7 @@ import (
 
 func (p *accountRepository) IncrementBalance(
 	accountID string,
-	value int32,
+	value int64,
 ) error {
 	ctx := context.Background()
 	client, err := firestore.NewClient(ctx, "cheers-a275e")

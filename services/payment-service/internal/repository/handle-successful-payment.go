@@ -33,37 +33,21 @@ func HandlePaymentSuccess(paymentIntent stripe.PaymentIntent) {
 	})
 
 	// Retrieve the order of that payment
-	orderDoc, err := client.Collection("orders").Doc(paymentIntent.ID).Get(ctx)
+	order, err := GetOrder(paymentIntent.ID)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	orderDocMap := orderDoc.Data()
-	//partyId := orderDocMap["partyId"].(string)
-	tickets := orderDocMap["tickets"].([]interface{})
-
-	for _, ticket := range tickets {
-		ticketMap := ticket.(map[string]interface{})
+	for _, ticket := range order.Tickets {
 		doc := client.Collection("tickets").NewDoc()
-
-		ticketData := map[string]interface{}{
-			"id":              doc.ID,
-			"name":            ticketMap["name"],
-			"description":     ticketMap["description"],
-			"price":           ticketMap["price"],
-			"partyId":         ticketMap["partyId"],
-			"paymentIntentId": paymentIntent.ID,
-			"userId":          stripeCustomerRef.ID,
-			"validated":       false,
-		}
-
-		_, err = doc.Set(ctx, ticketData)
-		_, err = client.Collection("users").Doc(stripeCustomerRef.ID).Collection("tickets").Doc(doc.ID).Set(ctx, ticketData)
+		ticket.Id = doc.ID
+		ticket.PaymentIntentId = paymentIntent.ID
+		ticket.UserId = stripeCustomerRef.ID
+		ticket.Validated = false
+		m, _ := utils2.ProtoToMap(ticket)
+		_, err = doc.Set(ctx, m)
+		_, err = client.Collection("users").Doc(stripeCustomerRef.ID).Collection("tickets").Doc(doc.ID).Set(ctx, m)
 	}
-
-	_, err = stripeCustomerRef.Collection("private").Doc(customerId).Update(ctx, []firestore.Update{
-		{Path: "population", Value: firestore.Increment(paymentIntent.Amount)},
-	})
 
 	err = utils2.PublishProtoMessages("payment-topic", &payment.PaymentEvent{
 		PaymentIntentId: paymentIntent.ID,

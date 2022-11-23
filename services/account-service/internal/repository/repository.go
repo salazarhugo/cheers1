@@ -10,7 +10,7 @@ type AccountRepository interface {
 	UpdateAccount(accountID string, account *pb.UpdateAccountRequest) error
 	DeleteAccount(id string) error
 
-	IncrementBalance(accountID string, value int32) error
+	IncrementBalance(accountID string, value int64) error
 }
 
 type accountRepository struct {

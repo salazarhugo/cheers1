@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {OrderService} from "../../../shared/data/services/order.service";
+import {Observable} from "rxjs";
+import {Order} from "../../../../gen/ts/cheers/order/v1/order_service";
 
 @Component({
   selector: 'app-business-orders',
@@ -8,12 +10,14 @@ import {OrderService} from "../../../shared/data/services/order.service";
 })
 export class BusinessOrdersComponent implements OnInit {
 
+  $orders: Observable<Order[]>
+
   constructor(
       private orderService: OrderService
   ) { }
 
   async ngOnInit()  {
     const res = await this.orderService.getCurrentUserOrders()
-    res.subscribe(res => console.log(res))
+    this.$orders = res
   }
 }

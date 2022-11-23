@@ -7,7 +7,6 @@ import (
 	"crypto/x509"
 	"encoding/json"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/order/v1"
-	"github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
 	payment "github.com/salazarhugo/cheers1/gen/go/cheers/payment/v1"
 	"github.com/salazarhugo/cheers1/services/account-service/internal/repository"
 	"google.golang.org/grpc"
@@ -67,36 +66,23 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 	client := order.NewOrderServiceClient(conn)
 	response, err := client.GetOrder(ctx, &order.GetOrderRequest{OrderId: event.GetPaymentIntentId()})
 	if err != nil {
-		log.Println(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	order := response.GetOrder()
-	log.Println(order)
-	partyId := order.GetPartyId()
-
-	conn2, err := grpc.DialContext(ctx, "party-service-r3a2dr4u4a-nw.a.run.app:443",
-		grpc.WithTransportCredentials(transportCredentials),
-	)
-	defer conn.Close()
-	clientParty := party.NewPartyServiceClient(conn2)
-	res, err := clientParty.GetParty(ctx, &party.GetPartyRequest{PartyId: partyId})
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	log.Println(res.GetParty())
 
 	datastore, err := firestore.NewClient(ctx, "cheers-a275e")
 	if err != nil {
-		log.Println(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	defer datastore.Close()
 
+	log.Printf("Incrementing balance by: %d", order.Amount)
 	repository := repository.NewAccountRepository()
-	err = repository.IncrementBalance(res.GetParty().HostId, order.Amount)
+	err = repository.IncrementBalance(order.GetPartyHostId(), order.Amount)
 	if err != nil {
-		log.Println(err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	return

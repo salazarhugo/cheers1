@@ -13,6 +13,7 @@ import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/notification/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/order/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/payment/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/story/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
@@ -78,6 +79,7 @@ func main() {
 	notification.RegisterNotificationServiceHandlerFromEndpoint(ctx, mux, "notification-service-r3a2dr4u4a-nw.a.run.app:443", options)
 	auth.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, "auth-service-r3a2dr4u4a-nw.a.run.app:443", options)
 	account.RegisterAccountServiceHandlerFromEndpoint(ctx, mux, "account-service-r3a2dr4u4a-nw.a.run.app:443", options)
+	payment.RegisterPaymentServiceHandlerFromEndpoint(ctx, mux, "payment-service-r3a2dr4u4a-nw.a.run.app:443", options)
 
 	// Creating a normal HTTP server
 	server := http.Server{

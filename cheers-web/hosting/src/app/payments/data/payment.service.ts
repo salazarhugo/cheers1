@@ -15,10 +15,19 @@ export class PaymentService {
   ) {
   }
 
-  createPaymentIntent(order: any, partyId: string): Observable<PaymentIntent> {
+  createPaymentIntent(
+      tickets: any,
+      partyId: string,
+      firstName: string,
+      lastName: string,
+      email: string,
+  ): Observable<PaymentIntent> {
     return this.http.post<PaymentIntent>(`${environment.GATEWAY_URL}/v1/payments`, {
       party_id: partyId,
-      tickets: order,
+      tickets: tickets,
+      email: email,
+      first_name: firstName,
+      last_name: lastName,
     })
   }
 }

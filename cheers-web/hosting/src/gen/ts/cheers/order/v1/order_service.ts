@@ -16,6 +16,9 @@ export interface Order {
   tickets: Ticket[];
   partyId: string;
   partyHostId: string;
+  email: string;
+  firstName: string;
+  lastName: string;
 }
 
 export interface CreateOrderRequest {
@@ -69,6 +72,9 @@ function createBaseOrder(): Order {
     tickets: [],
     partyId: "",
     partyHostId: "",
+    email: "",
+    firstName: "",
+    lastName: "",
   };
 }
 
@@ -100,6 +106,15 @@ export const Order = {
     }
     if (message.partyHostId !== "") {
       writer.uint32(82).string(message.partyHostId);
+    }
+    if (message.email !== "") {
+      writer.uint32(90).string(message.email);
+    }
+    if (message.firstName !== "") {
+      writer.uint32(98).string(message.firstName);
+    }
+    if (message.lastName !== "") {
+      writer.uint32(106).string(message.lastName);
     }
     return writer;
   },
@@ -138,6 +153,15 @@ export const Order = {
         case 10:
           message.partyHostId = reader.string();
           break;
+        case 11:
+          message.email = reader.string();
+          break;
+        case 12:
+          message.firstName = reader.string();
+          break;
+        case 13:
+          message.lastName = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -157,6 +181,9 @@ export const Order = {
       tickets: Array.isArray(object?.tickets) ? object.tickets.map((e: any) => Ticket.fromJSON(e)) : [],
       partyId: isSet(object.partyId) ? String(object.partyId) : "",
       partyHostId: isSet(object.partyHostId) ? String(object.partyHostId) : "",
+      email: isSet(object.email) ? String(object.email) : "",
+      firstName: isSet(object.firstName) ? String(object.firstName) : "",
+      lastName: isSet(object.lastName) ? String(object.lastName) : "",
     };
   },
 
@@ -175,6 +202,9 @@ export const Order = {
     }
     message.partyId !== undefined && (obj.partyId = message.partyId);
     message.partyHostId !== undefined && (obj.partyHostId = message.partyHostId);
+    message.email !== undefined && (obj.email = message.email);
+    message.firstName !== undefined && (obj.firstName = message.firstName);
+    message.lastName !== undefined && (obj.lastName = message.lastName);
     return obj;
   },
 
@@ -189,6 +219,9 @@ export const Order = {
     message.tickets = object.tickets?.map((e) => Ticket.fromPartial(e)) || [];
     message.partyId = object.partyId ?? "";
     message.partyHostId = object.partyHostId ?? "";
+    message.email = object.email ?? "";
+    message.firstName = object.firstName ?? "";
+    message.lastName = object.lastName ?? "";
     return message;
   },
 };

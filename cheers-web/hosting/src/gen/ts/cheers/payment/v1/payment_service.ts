@@ -6,6 +6,9 @@ export const protobufPackage = "cheers.payment.v1";
 export interface CreatePaymentRequest {
   partyId: string;
   tickets: { [key: string]: number };
+  firstName: string;
+  lastName: string;
+  email: string;
 }
 
 export interface CreatePaymentRequest_TicketsEntry {
@@ -18,7 +21,7 @@ export interface CreatePaymentResponse {
 }
 
 function createBaseCreatePaymentRequest(): CreatePaymentRequest {
-  return { partyId: "", tickets: {} };
+  return { partyId: "", tickets: {}, firstName: "", lastName: "", email: "" };
 }
 
 export const CreatePaymentRequest = {
@@ -29,6 +32,15 @@ export const CreatePaymentRequest = {
     Object.entries(message.tickets).forEach(([key, value]) => {
       CreatePaymentRequest_TicketsEntry.encode({ key: key as any, value }, writer.uint32(18).fork()).ldelim();
     });
+    if (message.firstName !== "") {
+      writer.uint32(26).string(message.firstName);
+    }
+    if (message.lastName !== "") {
+      writer.uint32(34).string(message.lastName);
+    }
+    if (message.email !== "") {
+      writer.uint32(42).string(message.email);
+    }
     return writer;
   },
 
@@ -48,6 +60,15 @@ export const CreatePaymentRequest = {
             message.tickets[entry2.key] = entry2.value;
           }
           break;
+        case 3:
+          message.firstName = reader.string();
+          break;
+        case 4:
+          message.lastName = reader.string();
+          break;
+        case 5:
+          message.email = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -65,6 +86,9 @@ export const CreatePaymentRequest = {
           return acc;
         }, {})
         : {},
+      firstName: isSet(object.firstName) ? String(object.firstName) : "",
+      lastName: isSet(object.lastName) ? String(object.lastName) : "",
+      email: isSet(object.email) ? String(object.email) : "",
     };
   },
 
@@ -77,6 +101,9 @@ export const CreatePaymentRequest = {
         obj.tickets[k] = Math.round(v);
       });
     }
+    message.firstName !== undefined && (obj.firstName = message.firstName);
+    message.lastName !== undefined && (obj.lastName = message.lastName);
+    message.email !== undefined && (obj.email = message.email);
     return obj;
   },
 
@@ -89,6 +116,9 @@ export const CreatePaymentRequest = {
       }
       return acc;
     }, {});
+    message.firstName = object.firstName ?? "";
+    message.lastName = object.lastName ?? "";
+    message.email = object.email ?? "";
     return message;
   },
 };

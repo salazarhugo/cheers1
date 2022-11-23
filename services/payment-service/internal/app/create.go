@@ -83,11 +83,12 @@ func (s *Server) CreatePayment(
 	ref := client.Collection("orders").Doc(paymentIntent.ID)
 	order := &order.Order{
 		Id:          paymentIntent.ID,
-		Status:      "",
 		Amount:      paymentIntent.Amount,
 		CustomerId:  paymentIntent.Customer.ID,
-		UserId:      "",
-		PartyId:     request.GetPartyId(),
+		FirstName:   request.FirstName,
+		LastName:    request.LastName,
+		Email:       request.Email,
+		PartyId:     request.PartyId,
 		PartyHostId: party.HostId,
 		CreateTime:  timestamppb.New(time.Unix(paymentIntent.Created, 0)),
 		Tickets:     tickets,
