@@ -28,13 +28,13 @@ func (s *Server) CreateAccount(
 		return nil, status.Error(codes.Internal, "failed to create account")
 	}
 
-	account, err := s.accountRepository.GetAccount(accountID, accountID)
-	if err != nil {
-		log.Error(err)
-		return nil, status.Error(codes.Internal, "failed to get account")
-	}
+	//account, err := s.accountRepository.GetAccount(accountID, accountID)
+	//if err != nil {
+	//	log.Error(err)
+	//	return nil, status.Error(codes.Internal, "failed to get account")
+	//}
 
 	return &pb.CreateAccountResponse{
-		Account: account.Account,
+		Account: nil,
 	}, nil
 }

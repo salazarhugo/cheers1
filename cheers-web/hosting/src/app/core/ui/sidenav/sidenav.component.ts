@@ -10,7 +10,25 @@ import {firstValueFrom} from "rxjs";
 })
 export class SidenavComponent implements OnInit {
 
-    isAdmin: boolean = false
+    isBusiness: boolean = false
+
+    businessItems = [
+        {
+            title: "Payouts",
+            icon: "account_balance",
+            routerLink: "/business/payouts",
+        },
+        {
+            title: "Orders",
+            icon: "receipt_long",
+            routerLink: "/business/orders",
+        },
+        {
+            title: "Reports",
+            icon: "candlestick_chart",
+            routerLink: "/business/reports",
+        },
+    ]
 
     more_items = [
         {
@@ -63,10 +81,16 @@ export class SidenavComponent implements OnInit {
         },
     ]
 
-    constructor() {
+    constructor(
+        private auth: AngularFireAuth,
+    ) {
     }
 
     async ngOnInit()  {
+        const token = await firstValueFrom(this.auth.idTokenResult)
+        if (token == null)
+            return
+        this.isBusiness = token.claims["business"] != null
     }
 
 }

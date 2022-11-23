@@ -9,6 +9,8 @@ import {FeedPostResponse, ListPostResponse, PostResponse} from "../../../../gen/
 import {Empty} from "../../../../gen/ts/google/protobuf/empty";
 import {environment} from "../../../../environments/environment";
 import {CreateRegistrationTokenResponse} from "../../../../gen/ts/cheers/notification/v1/notification_service";
+import {Account, GetAccountResponse} from "../../../../gen/ts/cheers/account/v1/account_service";
+import {ListOrderResponse, Order} from "../../../../gen/ts/cheers/order/v1/order_service";
 
 @Injectable({
     providedIn: 'root'
@@ -20,6 +22,11 @@ export class ApiService {
     constructor(
         private http: HttpClient,
     ) {
+    }
+
+    listOrders(userId: string): Observable<Order[]> {
+        return this.http.get<ListOrderResponse>(`${environment.GATEWAY_URL}/v1/orders/list?user_id=${userId}`)
+            .pipe(map(r => r.orders))
     }
 
     getUserTickets(): Observable<Ticket[]> {
@@ -58,10 +65,21 @@ export class ApiService {
         return this.http.get<User[]>(`${this.BASE_URL}/users/search/${query}`)
     }
 
+    getAccount(accountId: string): Observable<Account | undefined> {
+        return this.http.get<GetAccountResponse>(`${environment.GATEWAY_URL}/v1/accounts/${accountId}`)
+            .pipe(map(res => res.account))
+}
+
     getUser(userIdOrUsername: string): Observable<User | null> {
         return this.http.post<UserResponse>(`${environment.GATEWAY_URL}/cheers.user.v1.UserService/GetUser`, {
             id: userIdOrUsername
         }).pipe(map(res => toUser(res)))
+    }
+
+    promoteToBusiness(uid: string): Observable<Empty> {
+        return this.http.post(`${environment.GATEWAY_URL}/v1/auths/business`, {
+            user_id: uid
+        })
     }
 
     deletePost(id: string): Observable<Empty> {

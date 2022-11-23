@@ -34,7 +34,7 @@ const routes: Routes = [
     },
     {
         path: 'p/:id',
-        loadChildren: () => import('./parties/feature/party-detail/party-detail.module').then(m => m.PartyDetailModule)
+        loadChildren: () => import('./parties/features/party-detail/party-detail.module').then(m => m.PartyDetailModule)
     },
     {
         path: 'sign-in',

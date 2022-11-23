@@ -37,7 +37,11 @@ const routes: Routes = [
     },
     {
         path: 'parties',
-        loadChildren: () => import('../parties/feature/party-shell/party-shell.module').then(m => m.PartyShellModule)
+        loadChildren: () => import('../parties/features/party-shell/party-shell.module').then(m => m.PartyShellModule)
+    },
+    {
+        path: 'business',
+        loadChildren: () => import('../business/features/business-shell/business-shell.module').then(m => m.BusinessShellModule)
     },
     {
         path: 'settings',

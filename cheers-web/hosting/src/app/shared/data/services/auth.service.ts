@@ -110,6 +110,10 @@ export class AuthService {
             });
     }
 
+    promoteToBusiness(uid: string) {
+        return this.api.promoteToBusiness(uid)
+    }
+
     signOut() {
         return this.afAuth.signOut();
     }

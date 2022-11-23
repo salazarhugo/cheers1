@@ -23,9 +23,9 @@ func (s *Server) UpdateAccount(
 		return nil, status.Error(codes.Internal, "failed to update account")
 	}
 
-	result, err := s.accountRepository.GetAccount(accountID, accountID)
+	//result, err := s.accountRepository.GetAccount(accountID, accountID)
 
 	return &pb.UpdateAccountResponse{
-		Account: result.GetAccount(),
+		Account: nil,
 	}, nil
 }

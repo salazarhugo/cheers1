@@ -44,6 +44,7 @@ export class UserResolver implements Resolve<User> {
         }
 
         user.admin = token.claims["admin"] != null
+        user.business = token.claims["business"] != null
 
         this.userService.setUser(user)
         resolve(user)

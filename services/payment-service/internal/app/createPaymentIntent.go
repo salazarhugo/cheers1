@@ -5,7 +5,10 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/labstack/echo/v4"
-	"github.com/salazarhugo/cheers1/services/payment-service/utils"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/order/v1"
+	ticketpb "github.com/salazarhugo/cheers1/gen/go/cheers/ticket/v1"
+	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/services/payment-service/internal/repository"
 	"github.com/stripe/stripe-go/v72"
 	"github.com/stripe/stripe-go/v72/paymentintent"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -83,18 +86,31 @@ func CreatePaymentIntent(c echo.Context) error {
 		})
 	}
 
+	party, err := repository.GetParty(partyId)
+	if err != nil {
+		return err
+	}
+
 	// Store payment intent
 	ref := client.Collection("orders").Doc(paymentIntent.ID)
-	_, err = ref.Set(ctx, map[string]interface{}{
-		"id":         paymentIntent.ID,
-		"amount":     paymentIntent.Amount,
-		"customerId": paymentIntent.Customer.ID,
-		"status":     paymentIntent.Status,
-		"partyId":    partyId,
-		"tickets":    tickets,
-		"createTime": timestamppb.New(time.Unix(paymentIntent.Created, 0)),
-	})
+	order := &order.Order{
+		Id:          paymentIntent.ID,
+		Status:      "",
+		Amount:      paymentIntent.Amount,
+		CustomerId:  paymentIntent.Customer.ID,
+		UserId:      "",
+		PartyId:     partyId,
+		PartyHostId: party.HostId,
+		CreateTime:  timestamppb.New(time.Unix(paymentIntent.Created, 0)),
+		Tickets:     tickets,
+	}
 
+	m, err := utils.ProtoToMap(order)
+	if err != nil {
+		log.Println(err)
+	}
+
+	_, err = ref.Set(ctx, m)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"error": err.Error(),
@@ -110,18 +126,22 @@ func getTickets(
 	client *firestore.Client,
 	paymentIntentReq map[string]int64,
 	partyId string,
-) ([]map[string]interface{}, error) {
-	tickets := make([]map[string]interface{}, 0, 0)
+) ([]*ticketpb.Ticket, error) {
+	tickets := make([]*ticketpb.Ticket, 0, 0)
 
 	for ticketId, quantity := range paymentIntentReq {
-		docsnap, err := client.Collection("ticketing").Doc(partyId).Collection("tickets").Doc(ticketId).Get(context.Background())
+		doc, err := client.Collection("ticketing").Doc(partyId).Collection("tickets").Doc(ticketId).Get(context.Background())
 		if err != nil {
 			return nil, err
 		}
-		ticketMap := docsnap.Data()
+		ticket := &ticketpb.Ticket{}
+		err = utils.MapToProto(ticket, doc.Data())
+		if err != nil {
+			return nil, err
+		}
 		var i int64
 		for i = 0; i < quantity; i++ {
-			tickets = append(tickets, ticketMap)
+			tickets = append(tickets, ticket)
 		}
 	}
 
@@ -129,12 +149,12 @@ func getTickets(
 }
 
 func calculateTotalPrice(
-	tickets []map[string]interface{},
+	tickets []*ticketpb.Ticket,
 ) (int64, error) {
 	var amount int64 = 0
 
 	for _, ticket := range tickets {
-		amount += ticket["price"].(int64)
+		amount += ticket.Price
 	}
 
 	return amount, nil

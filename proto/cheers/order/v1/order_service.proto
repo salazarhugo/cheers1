@@ -5,6 +5,7 @@ package cheers.order.v1;
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
+import "cheers/ticket/v1/ticket.proto";
 
 option java_multiple_files = true;
 option go_package = "github.com/salazarhugo/cheers1/gen/go/cheers/order/v1;order";
@@ -46,20 +47,13 @@ service OrderService {
 message Order {
   string id = 1;
   string status = 2;
-  int32 amount = 3;
+  int64 amount = 3;
   string customer_id = 4;
   string user_id = 6;
   google.protobuf.Timestamp create_time = 7;
-  repeated Ticket tickets = 8;
+  repeated cheers.ticket.v1.Ticket tickets = 8;
   string party_id = 9;
-}
-
-message Ticket {
-  string id = 1;
-  string name = 2;
-  string description = 3;
-  uint32 price = 4;
-  uint32 quantity = 5;
+  string party_host_id = 10;
 }
 
 message CreateOrderRequest {

@@ -9,6 +9,7 @@ import {Router} from "@angular/router";
 export class SidenavItemComponent implements OnInit {
 
     @Input() item: any
+    @Input() business: boolean
 
     constructor(
         public router: Router,

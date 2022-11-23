@@ -1,4 +1,4 @@
-<a fxLayout="row" fxLayoutAlign="none center" class="paper-item"
+<a fxLayout="row" fxLayoutAlign="none center" class="paper-item" [ngClass]="business ? 'business': ''"
    [ngClass]="router.url == item.routerLink ? 'paper-item--selected' : ''">
     <mat-icon>{{item.icon}}</mat-icon>
     <div class="paper-item-span">

@@ -49,3 +49,9 @@ require (
 	google.golang.org/appengine/v2 v2.0.2 // indirect
 	google.golang.org/genproto v0.0.0-20221014213838-99cd37c6964a // indirect
 )
+
+//replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
+
+//replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils
+
+//replace github.com/salazarhugo/cheers1/libs/auth => ../../libs/auth

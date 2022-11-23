@@ -6,6 +6,8 @@ import (
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/order/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/api/iterator"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func (o orderRepository) ListOrderWithUserId(
@@ -17,7 +19,15 @@ func (o orderRepository) ListOrderWithUserId(
 		return nil, err
 	}
 	defer client.Close()
-	docs := client.Collection("orders").Where("userId", "==", userID).Documents(ctx)
+
+	doc, err := client.Collection("stripe_customers").Doc(userID).Get(ctx)
+
+	if doc.Exists() == false {
+		return nil, status.Error(codes.Internal, "user is not a stripe customer")
+	}
+
+	customerId := doc.Data()["customer_id"]
+	docs := client.Collection("orders").Where("customerId", "==", customerId).Documents(ctx)
 
 	orderList := make([]*pb.Order, 0)
 

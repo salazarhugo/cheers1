@@ -3,9 +3,8 @@ package main
 import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/salazarhugo/cheers1/services/payment-service/auth"
+	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/services/payment-service/internal/app"
-	"github.com/salazarhugo/cheers1/services/payment-service/utils"
 	"log"
 	"os"
 )
@@ -26,8 +25,6 @@ func main() {
 		AllowOrigins: []string{"https://web-cheers.web.app", "http://localhost:4200", "https://maparty.fr"},
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
 	}))
-
-	e.Use(auth.AuthMiddleware)
 
 	port := os.Getenv("PORT")
 	if port == "" {

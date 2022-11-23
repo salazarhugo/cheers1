@@ -16,7 +16,7 @@ import {Party} from "../../../shared/data/models/party.model";
 @Component({
     selector: 'app-party-form',
     templateUrl: './party-form.component.html',
-    styleUrls: ['./party-form.component.sass', '../../feature/party-detail/party.component.sass']
+    styleUrls: ['./party-form.component.sass', '../../features/party-detail/party.component.sass']
 })
 export class PartyFormComponent implements OnInit {
     @Input() partyForm!: FormGroup;

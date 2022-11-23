@@ -5,7 +5,7 @@ import (
 	"context"
 	"github.com/labstack/echo/v4"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
-	"github.com/salazarhugo/cheers1/services/payment-service/utils"
+	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/grpc"
 	grpcMetadata "google.golang.org/grpc/metadata"
 	"log"

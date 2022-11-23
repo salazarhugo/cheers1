@@ -29,7 +29,7 @@ func (s *Server) ListOrder(
 			Orders: orderList,
 		}, nil
 	case *pb.ListOrderRequest_UserId:
-		orderList, err := s.orderRepository.ListOrderWithPartyId(filter.UserId)
+		orderList, err := s.orderRepository.ListOrderWithUserId(filter.UserId)
 		if err != nil {
 			log.Println(err)
 			return nil, err

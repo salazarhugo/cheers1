@@ -1,15 +1,12 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
-import { Timestamp } from "../../../google/protobuf/timestamp";
 
 export const protobufPackage = "cheers.account.v1";
 
 export interface Account {
   id: string;
-  name: string;
-  email: string;
   balance: number;
-  createTime: Date | undefined;
+  ticketSold: number;
 }
 
 export interface CreateAccountRequest {
@@ -53,7 +50,7 @@ export interface ListAccountResponse {
 }
 
 function createBaseAccount(): Account {
-  return { id: "", name: "", email: "", balance: 0, createTime: undefined };
+  return { id: "", balance: 0, ticketSold: 0 };
 }
 
 export const Account = {
@@ -61,17 +58,11 @@ export const Account = {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
-    if (message.name !== "") {
-      writer.uint32(18).string(message.name);
-    }
-    if (message.email !== "") {
-      writer.uint32(26).string(message.email);
-    }
     if (message.balance !== 0) {
-      writer.uint32(32).int32(message.balance);
+      writer.uint32(16).int32(message.balance);
     }
-    if (message.createTime !== undefined) {
-      Timestamp.encode(toTimestamp(message.createTime), writer.uint32(42).fork()).ldelim();
+    if (message.ticketSold !== 0) {
+      writer.uint32(24).int32(message.ticketSold);
     }
     return writer;
   },
@@ -87,16 +78,10 @@ export const Account = {
           message.id = reader.string();
           break;
         case 2:
-          message.name = reader.string();
-          break;
-        case 3:
-          message.email = reader.string();
-          break;
-        case 4:
           message.balance = reader.int32();
           break;
-        case 5:
-          message.createTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+        case 3:
+          message.ticketSold = reader.int32();
           break;
         default:
           reader.skipType(tag & 7);
@@ -109,30 +94,24 @@ export const Account = {
   fromJSON(object: any): Account {
     return {
       id: isSet(object.id) ? String(object.id) : "",
-      name: isSet(object.name) ? String(object.name) : "",
-      email: isSet(object.email) ? String(object.email) : "",
       balance: isSet(object.balance) ? Number(object.balance) : 0,
-      createTime: isSet(object.createTime) ? fromJsonTimestamp(object.createTime) : undefined,
+      ticketSold: isSet(object.ticketSold) ? Number(object.ticketSold) : 0,
     };
   },
 
   toJSON(message: Account): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
-    message.name !== undefined && (obj.name = message.name);
-    message.email !== undefined && (obj.email = message.email);
     message.balance !== undefined && (obj.balance = Math.round(message.balance));
-    message.createTime !== undefined && (obj.createTime = message.createTime.toISOString());
+    message.ticketSold !== undefined && (obj.ticketSold = Math.round(message.ticketSold));
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Account>, I>>(object: I): Account {
     const message = createBaseAccount();
     message.id = object.id ?? "";
-    message.name = object.name ?? "";
-    message.email = object.email ?? "";
     message.balance = object.balance ?? 0;
-    message.createTime = object.createTime ?? undefined;
+    message.ticketSold = object.ticketSold ?? 0;
     return message;
   },
 };
@@ -689,28 +668,6 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function toTimestamp(date: Date): Timestamp {
-  const seconds = date.getTime() / 1_000;
-  const nanos = (date.getTime() % 1_000) * 1_000_000;
-  return { seconds, nanos };
-}
-
-function fromTimestamp(t: Timestamp): Date {
-  let millis = t.seconds * 1_000;
-  millis += t.nanos / 1_000_000;
-  return new Date(millis);
-}
-
-function fromJsonTimestamp(o: any): Date {
-  if (o instanceof Date) {
-    return o;
-  } else if (typeof o === "string") {
-    return new Date(o);
-  } else {
-    return fromTimestamp(Timestamp.fromJSON(o));
-  }
-}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

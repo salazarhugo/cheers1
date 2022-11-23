@@ -15,6 +15,7 @@ export class User {
     followBack: boolean = false
     created: number = 0
     admin: boolean = false
+    business: boolean = false
     storyState: StoryState = StoryState.EMPTY
 }
 

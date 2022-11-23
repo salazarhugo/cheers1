@@ -3,7 +3,7 @@ package repository
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/salazarhugo/cheers1/services/payment-service/utils"
+	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/stripe/stripe-go/v72"
 	"github.com/stripe/stripe-go/v72/webhook"
 	"io"

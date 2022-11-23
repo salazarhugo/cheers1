@@ -3,6 +3,13 @@
         <app-sidenav-item [item]="item"></app-sidenav-item>
     </div>
 </section>
+<mat-divider *ngIf="isBusiness"></mat-divider>
+<section *ngIf="isBusiness" fxLayout="column" style="padding: 12px">
+    <div mat-subheader style="margin-bottom: 16px">Business</div>
+    <div *ngFor="let item of businessItems" [routerLink]="item.routerLink">
+        <app-sidenav-item [item]="item" [business]="true"></app-sidenav-item>
+    </div>
+</section>
 <mat-divider></mat-divider>
 <section fxLayout="column" style="padding: 12px">
     <div *ngFor="let item of more_items" [routerLink]="item.routerLink">

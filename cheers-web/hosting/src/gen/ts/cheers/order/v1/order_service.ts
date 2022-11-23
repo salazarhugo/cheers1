@@ -1,6 +1,8 @@
 /* eslint-disable */
+import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
 import { Timestamp } from "../../../google/protobuf/timestamp";
+import { Ticket } from "../../ticket/v1/ticket";
 
 export const protobufPackage = "cheers.order.v1";
 
@@ -13,14 +15,7 @@ export interface Order {
   createTime: Date | undefined;
   tickets: Ticket[];
   partyId: string;
-}
-
-export interface Ticket {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  quantity: number;
+  partyHostId: string;
 }
 
 export interface CreateOrderRequest {
@@ -64,7 +59,17 @@ export interface ListOrderResponse {
 }
 
 function createBaseOrder(): Order {
-  return { id: "", status: "", amount: 0, customerId: "", userId: "", createTime: undefined, tickets: [], partyId: "" };
+  return {
+    id: "",
+    status: "",
+    amount: 0,
+    customerId: "",
+    userId: "",
+    createTime: undefined,
+    tickets: [],
+    partyId: "",
+    partyHostId: "",
+  };
 }
 
 export const Order = {
@@ -76,7 +81,7 @@ export const Order = {
       writer.uint32(18).string(message.status);
     }
     if (message.amount !== 0) {
-      writer.uint32(24).int32(message.amount);
+      writer.uint32(24).int64(message.amount);
     }
     if (message.customerId !== "") {
       writer.uint32(34).string(message.customerId);
@@ -92,6 +97,9 @@ export const Order = {
     }
     if (message.partyId !== "") {
       writer.uint32(74).string(message.partyId);
+    }
+    if (message.partyHostId !== "") {
+      writer.uint32(82).string(message.partyHostId);
     }
     return writer;
   },
@@ -110,7 +118,7 @@ export const Order = {
           message.status = reader.string();
           break;
         case 3:
-          message.amount = reader.int32();
+          message.amount = longToNumber(reader.int64() as Long);
           break;
         case 4:
           message.customerId = reader.string();
@@ -126,6 +134,9 @@ export const Order = {
           break;
         case 9:
           message.partyId = reader.string();
+          break;
+        case 10:
+          message.partyHostId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -145,6 +156,7 @@ export const Order = {
       createTime: isSet(object.createTime) ? fromJsonTimestamp(object.createTime) : undefined,
       tickets: Array.isArray(object?.tickets) ? object.tickets.map((e: any) => Ticket.fromJSON(e)) : [],
       partyId: isSet(object.partyId) ? String(object.partyId) : "",
+      partyHostId: isSet(object.partyHostId) ? String(object.partyHostId) : "",
     };
   },
 
@@ -162,6 +174,7 @@ export const Order = {
       obj.tickets = [];
     }
     message.partyId !== undefined && (obj.partyId = message.partyId);
+    message.partyHostId !== undefined && (obj.partyHostId = message.partyHostId);
     return obj;
   },
 
@@ -175,91 +188,7 @@ export const Order = {
     message.createTime = object.createTime ?? undefined;
     message.tickets = object.tickets?.map((e) => Ticket.fromPartial(e)) || [];
     message.partyId = object.partyId ?? "";
-    return message;
-  },
-};
-
-function createBaseTicket(): Ticket {
-  return { id: "", name: "", description: "", price: 0, quantity: 0 };
-}
-
-export const Ticket = {
-  encode(message: Ticket, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
-    }
-    if (message.name !== "") {
-      writer.uint32(18).string(message.name);
-    }
-    if (message.description !== "") {
-      writer.uint32(26).string(message.description);
-    }
-    if (message.price !== 0) {
-      writer.uint32(32).uint32(message.price);
-    }
-    if (message.quantity !== 0) {
-      writer.uint32(40).uint32(message.quantity);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): Ticket {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseTicket();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.id = reader.string();
-          break;
-        case 2:
-          message.name = reader.string();
-          break;
-        case 3:
-          message.description = reader.string();
-          break;
-        case 4:
-          message.price = reader.uint32();
-          break;
-        case 5:
-          message.quantity = reader.uint32();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): Ticket {
-    return {
-      id: isSet(object.id) ? String(object.id) : "",
-      name: isSet(object.name) ? String(object.name) : "",
-      description: isSet(object.description) ? String(object.description) : "",
-      price: isSet(object.price) ? Number(object.price) : 0,
-      quantity: isSet(object.quantity) ? Number(object.quantity) : 0,
-    };
-  },
-
-  toJSON(message: Ticket): unknown {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
-    message.name !== undefined && (obj.name = message.name);
-    message.description !== undefined && (obj.description = message.description);
-    message.price !== undefined && (obj.price = Math.round(message.price));
-    message.quantity !== undefined && (obj.quantity = Math.round(message.quantity));
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<Ticket>, I>>(object: I): Ticket {
-    const message = createBaseTicket();
-    message.id = object.id ?? "";
-    message.name = object.name ?? "";
-    message.description = object.description ?? "";
-    message.price = object.price ?? 0;
-    message.quantity = object.quantity ?? 0;
+    message.partyHostId = object.partyHostId ?? "";
     return message;
   },
 };
@@ -796,6 +725,25 @@ interface Rpc {
   request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
 }
 
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") {
+    return globalThis;
+  }
+  if (typeof self !== "undefined") {
+    return self;
+  }
+  if (typeof window !== "undefined") {
+    return window;
+  }
+  if (typeof global !== "undefined") {
+    return global;
+  }
+  throw "Unable to locate global object";
+})();
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
@@ -827,6 +775,20 @@ function fromJsonTimestamp(o: any): Date {
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
+}
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
+// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
+if (_m0.util.Long !== Long) {
+  _m0.util.Long = Long as any;
+  _m0.configure();
 }
 
 function isSet(value: any): boolean {

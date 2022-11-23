@@ -7,6 +7,7 @@ import {PostService} from "../../../posts/data/post.service";
 import {Post} from "../../../shared/data/models/post.model";
 import {PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
+import {AuthService} from "../../../shared/data/services/auth.service";
 
 @Component({
     selector: 'app-user-profile',
@@ -25,6 +26,7 @@ export class OtherProfileComponent implements OnInit {
         private route: ActivatedRoute,
         private postService: PostService,
         private auth: AngularFireAuth,
+        private authService: AuthService
     ) {
     }
 
@@ -55,5 +57,9 @@ export class OtherProfileComponent implements OnInit {
 
     onImgError(event: any) {
         event.target.src = 'assets/default_profile_picture.png';
+    }
+
+    promoteToBusinessAccount(uid: string) {
+        this.authService.promoteToBusiness(uid).subscribe()
     }
 }

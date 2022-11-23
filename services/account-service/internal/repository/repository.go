@@ -6,7 +6,7 @@ import (
 
 type AccountRepository interface {
 	CreateAccount(accountID string, post *pb.Account) (string, error)
-	GetAccount(accountID string, otherAccountID string) (*pb.GetAccountResponse, error)
+	GetAccount(accountID string) (*pb.Account, error)
 	UpdateAccount(accountID string, account *pb.UpdateAccountRequest) error
 	DeleteAccount(id string) error
 

@@ -6,6 +6,7 @@ import (
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"log"
 )
 
 func (s *Server) CreateBusinessAccount(
@@ -30,9 +31,11 @@ func (s *Server) CreateBusinessAccount(
 	}
 
 	// Set business account privilege on the user corresponding to uid.
-	claims := map[string]interface{}{"business": true}
+	claims := user.CustomClaims
+	claims["business"] = true
 	err = client.SetCustomUserClaims(ctx, request.GetUserId(), claims)
 	if err != nil {
+		log.Println(err)
 		return nil, status.Error(codes.Internal, "error setting custom claims")
 	}
 
