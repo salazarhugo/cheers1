@@ -31,6 +31,12 @@ func (s *Server) CreatePayment(
 		return nil, status.Error(codes.Internal, "failed retrieving userID")
 	}
 
+	log.Println(request)
+	err = ValidateCreatePaymentRequest(request)
+	if err != nil {
+		return nil, err
+	}
+
 	secret := os.Getenv("STRIPE_SK")
 	stripe.Key = secret
 
@@ -145,4 +151,23 @@ func calculateTotalPrice(
 	}
 
 	return amount, nil
+}
+
+func ValidateCreatePaymentRequest(request *pb.CreatePaymentRequest) error {
+	if request.GetFirstName() == "" {
+		return status.Error(codes.InvalidArgument, "missing parameter first_name")
+	}
+	if request.LastName == "" {
+		return status.Error(codes.InvalidArgument, "missing parameter last_name")
+	}
+	if request.Email == "" {
+		return status.Error(codes.InvalidArgument, "missing parameter email")
+	}
+	if request.PartyId == "" {
+		return status.Error(codes.InvalidArgument, "missing parameter party_id")
+	}
+	if len(request.Tickets) < 1 {
+		return status.Error(codes.InvalidArgument, "empty parameter tickets")
+	}
+	return nil
 }

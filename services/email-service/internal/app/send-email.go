@@ -2,8 +2,8 @@ package app
 
 import (
 	"bytes"
-	"firebase.google.com/go/v4/auth"
 	"fmt"
+	ticketpb "github.com/salazarhugo/cheers1/gen/go/cheers/ticket/v1"
 	"html/template"
 	"log"
 	"net/mail"
@@ -13,8 +13,9 @@ import (
 )
 
 func SendEmail(
-	user *auth.UserRecord,
-	tickets []map[string]interface{},
+	email string,
+	firstName string,
+	tickets []*ticketpb.Ticket,
 	totalPrice int64,
 ) {
 	// smtp server configuration.
@@ -23,12 +24,12 @@ func SendEmail(
 
 	// Sender data.
 	from := mail.Address{Name: "MaParty", Address: "admin@maparty.fr"}
-	to := mail.Address{Address: user.Email}
+	to := mail.Address{Address: email}
 
 	pwd := os.Getenv("EMAIL_PASSWORD")
 	amount := strconv.Itoa(int(totalPrice) / 100)
 
-	body, err := ParseTemplate("internal/templates/payment-receipt.html", user, amount)
+	body, err := ParseTemplate("internal/templates/payment-receipt.html", firstName, "", amount)
 	if err != nil {
 		log.Println(err)
 		return
@@ -74,7 +75,8 @@ func SendEmail(
 
 func ParseTemplate(
 	templateFileName string,
-	user *auth.UserRecord,
+	firstName string,
+	eventName string,
 	price string,
 ) (string, error) {
 	t, err := template.ParseFiles(templateFileName)
@@ -89,8 +91,8 @@ func ParseTemplate(
 		EventName string
 		Price     string
 	}{
-		Name:      user.DisplayName,
-		EventName: "Summer Breeze",
+		Name:      firstName,
+		EventName: eventName,
 		Price:     price,
 	}); err != nil {
 		return "", err

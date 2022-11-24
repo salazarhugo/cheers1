@@ -2,7 +2,7 @@
     <img alt="avatar" height="50" src="assets/cheers-logo.png" width="50" routerLink="/">
 
     <div class="payment-body" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="32px" *ngIf="paymentIntent" fxLayoutAlign="center center">
-        <div>
+        <div *ngIf="paymentIntent.status == 'requires_payment_method'">
             <h1>Payment informations</h1>
             <legend>Veuillez saisir les informations de votre paiement</legend>
             <app-elements *ngIf="clientSecret && paymentIntent" [clientSecret]="clientSecret" [amount]="paymentIntent.amount"></app-elements>

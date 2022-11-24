@@ -18,7 +18,7 @@ func (o orderRepository) ListOrderWithUserId(
 	}
 	defer client.Close()
 
-	docs := client.Collection("orders").Where("partyHostId", "==", userID).OrderBy("createTime", firestore.Desc).Documents(ctx)
+	docs := client.Collection("orders").Where("partyHostId", "==", userID).Documents(ctx)
 
 	orderList := make([]*pb.Order, 0)
 

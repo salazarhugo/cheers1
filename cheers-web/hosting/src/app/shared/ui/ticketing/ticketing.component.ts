@@ -106,14 +106,13 @@ export class TicketingComponent implements OnInit {
     async checkout() {
         const order = this.ticketingForm.getRawValue()
         console.log(order)
-        const paymentIntent = await firstValueFrom(this.paymentService.createPaymentIntent(
+        const clientSecret = await firstValueFrom(this.paymentService.createPaymentIntent(
             order,
             this.partyId!!,
-            this.ticketingForm.get("firstName")?.value,
-            this.ticketingForm.get("lastName")?.value,
-            this.ticketingForm.get("email")?.value,
+            this.userForm.get("firstName")?.value,
+            this.userForm.get("lastName")?.value,
+            this.userForm.get("email")?.value,
         ))
-        const clientSecret = paymentIntent?.clientSecret
         await this.router.navigate(['payment', clientSecret])
     }
 }

@@ -40,22 +40,14 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userID, err := repository.GetUserId(event.GetCustomerId())
-	user, err := repository.GetAuthUser(userID)
-	if err != nil {
-		log.Println(err)
-		http.Error(w, "Failed to get user", http.StatusInternalServerError)
-		return
-	}
-
-	tickets, err := repository.GetOrder(event.GetPaymentIntentId(), event.GetCustomerId())
+	order, err := repository.GetOrder(event.GetPaymentIntentId())
 	if err != nil {
 		log.Println(err)
 		http.Error(w, "Failed to get user tickets", http.StatusInternalServerError)
 		return
 	}
 
-	totalPrice := repository.CalculateTotalPrice(tickets)
+	totalPrice, _ := repository.CalculateTotalPrice(order.Tickets)
 
-	SendEmail(user, tickets, totalPrice)
+	SendEmail(event.Email, event.FirstName, order.Tickets, totalPrice)
 }

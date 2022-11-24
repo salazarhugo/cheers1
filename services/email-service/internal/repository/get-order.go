@@ -2,8 +2,14 @@ package repository
 
 import (
 	"context"
-	"firebase.google.com/go/v4/auth"
+	"crypto/tls"
+	"crypto/x509"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/order/v1"
+	ticketpb "github.com/salazarhugo/cheers1/gen/go/cheers/ticket/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
+	"log"
 )
 
 func GetUserId(customerId string) (string, error) {
@@ -23,55 +29,37 @@ func GetUserId(customerId string) (string, error) {
 	return doc.Ref.ID, nil
 }
 
-func GetAuthUser(userID string) (*auth.UserRecord, error) {
+func GetOrder(orderId string) (*order.Order, error) {
 	ctx := context.Background()
-	app := utils.InitializeAppDefault()
 
-	auth, err := app.Auth(ctx)
+	systemRoots, err := x509.SystemCertPool()
+	if err != nil {
+		log.Println(err)
+	}
+	transportCredentials := credentials.NewTLS(&tls.Config{
+		RootCAs: systemRoots,
+	})
+	conn, err := grpc.DialContext(ctx, "order-service-r3a2dr4u4a-nw.a.run.app:443",
+		grpc.WithTransportCredentials(transportCredentials),
+	)
+	defer conn.Close()
+
+	client := order.NewOrderServiceClient(conn)
+
+	order, err := client.GetOrder(ctx, &order.GetOrderRequest{OrderId: orderId})
 	if err != nil {
 		return nil, err
 	}
-	user, err := auth.GetUser(ctx, userID)
-	if err != nil {
-		return nil, err
-	}
 
-	return user, nil
+	return order.GetOrder(), nil
 }
 
-func GetOrder(paymentIntentId string, customerId string) ([]map[string]interface{}, error) {
-	ctx := context.Background()
-	app := utils.InitializeAppDefault()
-	client, err := app.Firestore(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	doc, err := client.Collection("orders").Doc(paymentIntentId).Get(ctx)
-	if err != nil {
-		return nil, err
-	}
-	orderMap := doc.Data()
-
-	tickets := orderMap["tickets"].([]interface{})
-	var res = make([]map[string]interface{}, 0)
+func CalculateTotalPrice(tickets []*ticketpb.Ticket) (int64, error) {
+	var amount int64 = 0
 
 	for _, ticket := range tickets {
-		res = append(res, ticket.(map[string]interface{}))
+		amount += ticket.Price
 	}
 
-	return res, nil
-}
-
-func CalculateTotalPrice(tickets []map[string]interface{}) int64 {
-	var total int64
-
-	for _, ticket := range tickets {
-		price, ok := ticket["price"].(int64)
-		if ok {
-			total += price
-		}
-	}
-
-	return total
+	return amount, nil
 }

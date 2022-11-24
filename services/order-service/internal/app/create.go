@@ -33,3 +33,11 @@ func (s *Server) CreateOrder(
 		Order: response,
 	}, nil
 }
+
+func ValidateCreateOrderRequest(request *pb.CreateOrderRequest) error {
+	order := request.GetOrder()
+	if order == nil {
+		return status.Error(codes.InvalidArgument, "missing parameter order")
+	}
+	return nil
+}

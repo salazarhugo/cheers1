@@ -6,9 +6,10 @@ require google.golang.org/protobuf v1.28.1
 
 require (
 	firebase.google.com/go/v4 v4.9.0
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221105090922-7db1c47202c4
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221123185349-c0035ad7eafe
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221105090922-7db1c47202c4
+	google.golang.org/grpc v1.50.1
 )
 
 require (
@@ -28,6 +29,7 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
 	github.com/googleapis/gax-go/v2 v2.6.0 // indirect
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.12.0 // indirect
 	github.com/labstack/echo/v4 v4.9.1 // indirect
 	github.com/labstack/gommon v0.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.11 // indirect
@@ -48,9 +50,8 @@ require (
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/appengine/v2 v2.0.2 // indirect
 	google.golang.org/genproto v0.0.0-20221027153422-115e99e71e1c // indirect
-	google.golang.org/grpc v1.50.1 // indirect
 )
 
-//replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
+replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
 
 //replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils

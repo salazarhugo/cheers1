@@ -5,7 +5,7 @@
 </section>
 <mat-divider *ngIf="isBusiness"></mat-divider>
 <section *ngIf="isBusiness" fxLayout="column" style="padding: 12px">
-    <div mat-subheader style="margin-bottom: 16px">Business</div>
+    <div mat-subheader style="margin-bottom: 16px;" class="mat-primary">Business</div>
     <div *ngFor="let item of businessItems" [routerLink]="item.routerLink">
         <app-sidenav-item [item]="item" [business]="true"></app-sidenav-item>
     </div>

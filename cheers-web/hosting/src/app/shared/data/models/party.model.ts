@@ -35,5 +35,6 @@ export function toParty(value: PartyItem): Party {
     party.interestedCount = value.interestedCount
     party.invitedCount = value.invitedCount
     party.isHost = value.isCreator
+    party.hostName = value.user?.name  || ""
     return party
 }
