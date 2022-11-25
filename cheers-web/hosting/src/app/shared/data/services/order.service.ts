@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {ApiService} from "./api.service";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
-import {firstValueFrom} from "rxjs";
+import {firstValueFrom, map} from "rxjs";
 
 @Injectable({
   providedIn: 'root'

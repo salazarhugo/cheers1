@@ -93,7 +93,7 @@
                 <mat-hint> Eastern European Summer Time (GMT+3)</mat-hint>
                 <mat-icon matSuffix>location_on</mat-icon>
                 <input #searchInput [matAutocomplete]="auto" matInput placeholder="Include a place or address"
-                       type="text">
+                       type="text" formControlName="locationName" [value]="partyForm.get('locationName')?.value">
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="getOptionText"
                                   (optionSelected)="selectPlace($event.option.value)">
                     <mat-option *ngFor="let option of locationResults | async" [value]="option">
@@ -103,11 +103,11 @@
             </mat-form-field>
         </div>
 
-        <div style="padding-top: 16px">
-            <button [disabled]="searchInput.value.length == 0 && group.value == 'venue'" color="primary" mat-flat-button
-                    matStepperNext type="button">
-                Next
-            </button>
+        <div style="padding-top: 16px" fxLayoutGap="16px">
+<!--            <button [disabled]="searchInput.value.length == 0 && group.value == 'venue'" color="primary" mat-flat-button-->
+<!--                    matStepperNext type="button">-->
+<!--                Next-->
+<!--            </button>-->
             <button (click)="submit()" *ngIf="!isLoading" [disabled]="!partyForm.valid" color="primary" mat-flat-button>
                 Save & Continue
             </button>

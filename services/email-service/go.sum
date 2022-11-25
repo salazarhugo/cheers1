@@ -243,8 +243,8 @@ github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZN
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
 github.com/rogpeppe/fastuuid v1.2.0/go.mod h1:jVj6XXZzXRy/MSR5jhDC/2q6DgLz+nrA6LYCDYWNEvQ=
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
-github.com/salazarhugo/cheers1/gen/go v0.0.0-20221123185349-c0035ad7eafe h1:0wfbMSgO+neacJxA46o5JBrEKnYuUB3cYXBe5XtZpGg=
-github.com/salazarhugo/cheers1/gen/go v0.0.0-20221123185349-c0035ad7eafe/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
+github.com/salazarhugo/cheers1/gen/go v0.0.0-20221124142559-95505f6056e2 h1:bRjWASoSJ+Y63NI4uBYyMCrZhlm8whL7COM80SOxlQo=
+github.com/salazarhugo/cheers1/gen/go v0.0.0-20221124142559-95505f6056e2/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
 github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a h1:TBgSOeX4eqxpmUYNYVMGVHy5peXZ0A6mMwpXnvBOo/0=
 github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a/go.mod h1:r9VVw/Y+1GW5JrqrRZLxVctRHwXEqB6DZEWHCgnx//k=
 github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221105090922-7db1c47202c4 h1:1eX2tzOJlZlmBkIgO8npBjWTsg0WjIsxX+S7tobwwcE=

@@ -83,10 +83,10 @@
 
             <div fxFlex="360" fxFlex.lt-md="0" fxLayout="column" fxLayoutGap="16px">
                 <mat-card style="padding: 0">
-                    <div>
+                    <a [href]="'https://www.google.com/maps/@' + party.latitude + ',' + party.longitude + ',18z/'">
                         <img alt='static Mapbox map of the San Francisco bay area' class="party-location"
                              [src]="'https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-s+555555(' + party.longitude + ',' + party.latitude + '/' + party.longitude + ',' + party.latitude + ',13.75,0.00,0.00/1000x600@2x?access_token=pk.eyJ1Ijoic2FsYXphcmJyb2NrIiwiYSI6ImNqd3hxaDBleTFobGQ0Y2sxc3lpdnNwYXMifQ.TgYFgyclmL6pGXXANhnlsw'">
-                    </div>
+                    </a>
                     <div class="" fxLayout="column">
                         <h2 style="padding: 16px">{{party.locationName}}</h2>
                     </div>

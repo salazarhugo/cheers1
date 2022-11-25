@@ -53,6 +53,9 @@ func HandlePaymentSuccess(paymentIntent stripe.PaymentIntent) {
 		PaymentIntentId: paymentIntent.ID,
 		CustomerId:      customerId,
 		Type:            payment.PaymentEvent_PAYMENT_SUCCESS,
+		FirstName:       order.FirstName,
+		LastName:        order.LastName,
+		Email:           order.Email,
 	})
 
 	if err != nil {

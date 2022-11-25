@@ -5,7 +5,7 @@ go 1.19
 require (
 	cloud.google.com/go/firestore v1.6.1
 	github.com/labstack/gommon v0.4.0
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221123160651-efafd5f3a3d9
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221124142559-95505f6056e2
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221004084225-130de449e1a1
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221122090911-414c85936dd0

@@ -1,4 +1,5 @@
 /* eslint-disable */
+import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
 import { Timestamp } from "../../../google/protobuf/timestamp";
 import { Privacy, privacyFromJSON, privacyToJSON } from "../privacy/privacy";
@@ -12,10 +13,8 @@ export interface Party {
   address: string;
   privacy: Privacy;
   bannerUrl: string;
-  startDate: Date | undefined;
-  endDate:
-    | Date
-    | undefined;
+  startDate: number;
+  endDate: number;
   /** The user_id of the creator */
   hostId: string;
   /** The location name */
@@ -38,8 +37,8 @@ function createBaseParty(): Party {
     address: "",
     privacy: 0,
     bannerUrl: "",
-    startDate: undefined,
-    endDate: undefined,
+    startDate: 0,
+    endDate: 0,
     hostId: "",
     locationName: "",
     createTime: undefined,
@@ -68,11 +67,11 @@ export const Party = {
     if (message.bannerUrl !== "") {
       writer.uint32(58).string(message.bannerUrl);
     }
-    if (message.startDate !== undefined) {
-      Timestamp.encode(toTimestamp(message.startDate), writer.uint32(66).fork()).ldelim();
+    if (message.startDate !== 0) {
+      writer.uint32(64).int64(message.startDate);
     }
-    if (message.endDate !== undefined) {
-      Timestamp.encode(toTimestamp(message.endDate), writer.uint32(74).fork()).ldelim();
+    if (message.endDate !== 0) {
+      writer.uint32(72).int64(message.endDate);
     }
     if (message.hostId !== "") {
       writer.uint32(82).string(message.hostId);
@@ -118,10 +117,10 @@ export const Party = {
           message.bannerUrl = reader.string();
           break;
         case 8:
-          message.startDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.startDate = longToNumber(reader.int64() as Long);
           break;
         case 9:
-          message.endDate = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.endDate = longToNumber(reader.int64() as Long);
           break;
         case 10:
           message.hostId = reader.string();
@@ -154,8 +153,8 @@ export const Party = {
       address: isSet(object.address) ? String(object.address) : "",
       privacy: isSet(object.privacy) ? privacyFromJSON(object.privacy) : 0,
       bannerUrl: isSet(object.bannerUrl) ? String(object.bannerUrl) : "",
-      startDate: isSet(object.startDate) ? fromJsonTimestamp(object.startDate) : undefined,
-      endDate: isSet(object.endDate) ? fromJsonTimestamp(object.endDate) : undefined,
+      startDate: isSet(object.startDate) ? Number(object.startDate) : 0,
+      endDate: isSet(object.endDate) ? Number(object.endDate) : 0,
       hostId: isSet(object.hostId) ? String(object.hostId) : "",
       locationName: isSet(object.locationName) ? String(object.locationName) : "",
       createTime: isSet(object.createTime) ? fromJsonTimestamp(object.createTime) : undefined,
@@ -172,8 +171,8 @@ export const Party = {
     message.address !== undefined && (obj.address = message.address);
     message.privacy !== undefined && (obj.privacy = privacyToJSON(message.privacy));
     message.bannerUrl !== undefined && (obj.bannerUrl = message.bannerUrl);
-    message.startDate !== undefined && (obj.startDate = message.startDate.toISOString());
-    message.endDate !== undefined && (obj.endDate = message.endDate.toISOString());
+    message.startDate !== undefined && (obj.startDate = Math.round(message.startDate));
+    message.endDate !== undefined && (obj.endDate = Math.round(message.endDate));
     message.hostId !== undefined && (obj.hostId = message.hostId);
     message.locationName !== undefined && (obj.locationName = message.locationName);
     message.createTime !== undefined && (obj.createTime = message.createTime.toISOString());
@@ -190,8 +189,8 @@ export const Party = {
     message.address = object.address ?? "";
     message.privacy = object.privacy ?? 0;
     message.bannerUrl = object.bannerUrl ?? "";
-    message.startDate = object.startDate ?? undefined;
-    message.endDate = object.endDate ?? undefined;
+    message.startDate = object.startDate ?? 0;
+    message.endDate = object.endDate ?? 0;
     message.hostId = object.hostId ?? "";
     message.locationName = object.locationName ?? "";
     message.createTime = object.createTime ?? undefined;
@@ -200,6 +199,25 @@ export const Party = {
     return message;
   },
 };
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") {
+    return globalThis;
+  }
+  if (typeof self !== "undefined") {
+    return self;
+  }
+  if (typeof window !== "undefined") {
+    return window;
+  }
+  if (typeof global !== "undefined") {
+    return global;
+  }
+  throw "Unable to locate global object";
+})();
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
@@ -232,6 +250,20 @@ function fromJsonTimestamp(o: any): Date {
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
+}
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
+// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
+if (_m0.util.Long !== Long) {
+  _m0.util.Long = Long as any;
+  _m0.configure();
 }
 
 function isSet(value: any): boolean {

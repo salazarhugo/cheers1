@@ -3,7 +3,8 @@ import {Party} from "../../../shared/data/models/party.model";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Privacy} from "../../../shared/data/enum/privacy.enum";
 import {PartyService} from "../../../parties/data/party.service";
-import {Observable} from "rxjs";
+import {lastValueFrom, Observable} from "rxjs";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-manage-party-basicinfo',
@@ -12,15 +13,15 @@ import {Observable} from "rxjs";
 })
 export class ManagePartyBasicinfoComponent implements OnInit {
 
+    isLoading = false
     $party: Observable<Party>
 
     partyForm = new FormGroup({
+        id: new FormControl(''),
         name: new FormControl('', Validators.required),
         description: new FormControl(''),
         startDate: new FormControl(new Date(), Validators.required),
-        startTime: new FormControl(0),
-        endDate: new FormControl(0),
-        endTime: new FormControl(0),
+        endDate: new FormControl(new Date(), Validators.required),
         latitude: new FormControl(0),
         longitude: new FormControl(0),
         locationName: new FormControl(''),
@@ -28,12 +29,14 @@ export class ManagePartyBasicinfoComponent implements OnInit {
 
     constructor(
         private partyService: PartyService,
+        private _snackBar: MatSnackBar,
     ) {
     }
 
     ngOnInit(): void {
         this.partyService.getManagedParty().subscribe(party => {
             this.partyForm.patchValue({
+                id: party.id,
                 name: party.name,
                 description: party.description,
                 startDate: new Date(party.startDate),
@@ -42,7 +45,22 @@ export class ManagePartyBasicinfoComponent implements OnInit {
         })
     }
 
-    onSubmit($event: Party) {
+    openSnackBar(message: string, action: string) {
+        this._snackBar.open(message, action, {duration: 3000});
+    }
 
+    async onSubmit(party: Party) {
+        this.isLoading = true
+
+        console.log(party)
+
+        try {
+            const response = await lastValueFrom(this.partyService.updateParty(party))
+            this.openSnackBar("Party updated", 'OK')
+        } catch (e) {
+            console.log(e)
+            this.openSnackBar("Failed to update party", 'OK')
+        }
+        this.isLoading = false
     }
 }

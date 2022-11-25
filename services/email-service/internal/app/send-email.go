@@ -48,8 +48,6 @@ func SendEmail(
 	}
 	message += "\r\n" + body
 
-	log.Println(message)
-
 	// Authentication.
 	auth := smtp.PlainAuth(
 		"",
@@ -70,7 +68,7 @@ func SendEmail(
 		fmt.Println(err)
 		return
 	}
-	fmt.Println("Email Sent Successfully!")
+	fmt.Printf("Email Sent Successfully to %s!", to.Address)
 }
 
 func ParseTemplate(
