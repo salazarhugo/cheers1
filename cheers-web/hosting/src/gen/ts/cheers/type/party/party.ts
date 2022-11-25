@@ -1,5 +1,4 @@
 /* eslint-disable */
-import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
 import { Timestamp } from "../../../google/protobuf/timestamp";
 import { Privacy, privacyFromJSON, privacyToJSON } from "../privacy/privacy";
@@ -68,10 +67,10 @@ export const Party = {
       writer.uint32(58).string(message.bannerUrl);
     }
     if (message.startDate !== 0) {
-      writer.uint32(64).int64(message.startDate);
+      writer.uint32(64).int32(message.startDate);
     }
     if (message.endDate !== 0) {
-      writer.uint32(72).int64(message.endDate);
+      writer.uint32(72).int32(message.endDate);
     }
     if (message.hostId !== "") {
       writer.uint32(82).string(message.hostId);
@@ -117,10 +116,10 @@ export const Party = {
           message.bannerUrl = reader.string();
           break;
         case 8:
-          message.startDate = longToNumber(reader.int64() as Long);
+          message.startDate = reader.int32();
           break;
         case 9:
-          message.endDate = longToNumber(reader.int64() as Long);
+          message.endDate = reader.int32();
           break;
         case 10:
           message.hostId = reader.string();
@@ -200,25 +199,6 @@ export const Party = {
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var globalThis: any = (() => {
-  if (typeof globalThis !== "undefined") {
-    return globalThis;
-  }
-  if (typeof self !== "undefined") {
-    return self;
-  }
-  if (typeof window !== "undefined") {
-    return window;
-  }
-  if (typeof global !== "undefined") {
-    return global;
-  }
-  throw "Unable to locate global object";
-})();
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
@@ -250,20 +230,6 @@ function fromJsonTimestamp(o: any): Date {
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
-}
-
-function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  return long.toNumber();
-}
-
-// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
-// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
-if (_m0.util.Long !== Long) {
-  _m0.util.Long = Long as any;
-  _m0.configure();
 }
 
 function isSet(value: any): boolean {

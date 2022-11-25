@@ -41,9 +41,9 @@ export class CreatePartyComponent implements OnInit {
         name: new FormControl('', Validators.required),
         description: new FormControl(''),
         startDate: new FormControl(new Date(), Validators.required),
-        startTime: new FormControl(0),
-        endDate: new FormControl(0),
-        endTime: new FormControl(0),
+        startTime: new FormControl(new Date(), Validators.required),
+        endDate: new FormControl(new Date()),
+        endTime: new FormControl(new Date()),
         bannerUrl: new FormControl(''),
         privacy: new FormControl(Privacy.FRIENDS),
         latitude: new FormControl(0),
@@ -65,6 +65,8 @@ export class CreatePartyComponent implements OnInit {
         let party: Party = Object.assign(new Party(), partyForm);
 
         try {
+            console.log("HUGO")
+            console.log(party)
             const response = await lastValueFrom(this.partyService.createParty(party))
             this.openSnackBar("Party created", 'OK')
             await this.router.navigate(['/manage/parties', response.party?.id!, 'tickets'])

@@ -3,6 +3,7 @@ import {PartyItem} from "../../../../gen/ts/cheers/party/v1/party_service";
 export class Party {
     isHost: boolean = false
     hostName: string = ""
+    startDate: number = 0
     endDate: number = 0
     owner: boolean = false
     latitude: number = 0.0
@@ -25,7 +26,6 @@ export class Party {
     hostId: string = ""
     name: string = ""
     interested: boolean = false
-    startDate: Date = new Date()
 }
 
 export function toParty(value: PartyItem): Party {
@@ -36,5 +36,7 @@ export function toParty(value: PartyItem): Party {
     party.invitedCount = value.invitedCount
     party.isHost = value.isCreator
     party.hostName = value.user?.name  || ""
+    party.startDate = value.party?.startDate || 0
+    party.endDate = value.party?.endDate || 0
     return party
 }

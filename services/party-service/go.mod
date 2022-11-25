@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/google/uuid v1.3.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221114161419-1903ab557dea
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221125120705-93ebafee03a8
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221113151338-1ae307745902
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221113111924-982717c41df5

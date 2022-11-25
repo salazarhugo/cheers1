@@ -48,8 +48,11 @@ export class PartyFormComponent implements OnInit {
     }
 
     submit() {
-        console.log(this.partyForm.getRawValue())
-        this.onSubmit.emit(this.partyForm.getRawValue());
+        const party = this.partyForm.getRawValue()
+        party.startDate = party.startDate.getTime()
+        party.endDate = party.endDate.getTime()
+
+        this.onSubmit.emit(party);
         this.partyForm.reset();
     }
 
