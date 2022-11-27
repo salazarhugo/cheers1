@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { BusinessOrdersRoutingModule } from './business-orders-routing.module';
 import { BusinessOrdersComponent } from './business-orders.component';
 import {OrderItemModule} from "../../../manage-parties/ui/order-item/order-item.module";
+import {MatTableModule} from "@angular/material/table";
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import {OrderItemModule} from "../../../manage-parties/ui/order-item/order-item.
     imports: [
         CommonModule,
         BusinessOrdersRoutingModule,
-        OrderItemModule
+        OrderItemModule,
+        MatTableModule
     ]
 })
 export class BusinessOrdersModule { }

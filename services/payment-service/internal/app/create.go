@@ -88,16 +88,19 @@ func (s *Server) CreatePayment(
 	// Store payment intent
 	ref := client.Collection("orders").Doc(paymentIntent.ID)
 	order := &order.Order{
-		Id:          paymentIntent.ID,
-		Amount:      paymentIntent.Amount,
-		CustomerId:  paymentIntent.Customer.ID,
-		FirstName:   request.FirstName,
-		LastName:    request.LastName,
-		Email:       request.Email,
-		PartyId:     request.PartyId,
-		PartyHostId: party.HostId,
-		CreateTime:  timestamppb.New(time.Unix(paymentIntent.Created, 0)),
-		Tickets:     tickets,
+		Id:                 paymentIntent.ID,
+		PaymentMethodTypes: paymentIntent.PaymentMethodTypes,
+		PaymentMethodType:  string(paymentIntent.PaymentMethod.Type),
+		Status:             string(paymentIntent.Status),
+		Amount:             paymentIntent.Amount,
+		CustomerId:         paymentIntent.Customer.ID,
+		FirstName:          request.FirstName,
+		LastName:           request.LastName,
+		Email:              request.Email,
+		PartyId:            request.PartyId,
+		PartyHostId:        party.HostId,
+		CreateTime:         timestamppb.New(time.Unix(paymentIntent.Created, 0)),
+		Tickets:            tickets,
 	}
 
 	m, err := utils.ProtoToMap(order)

@@ -54,7 +54,7 @@ export class PartyService {
                 name: party.name,
                 description: party.description,
                 address: party.address,
-                privacy: "FRIENDS",
+                privacy: party.privacy,
                 bannerUrl: party.bannerUrl,
                 locationName: party.locationName,
                 start_date: party.startDate,

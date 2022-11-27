@@ -56,7 +56,7 @@ export class SidenavComponent implements OnInit {
         },
         {
             title: "Parties",
-            icon: "explore",
+            icon: "celebration",
             routerLink: "/parties/feed",
         },
         {
@@ -77,7 +77,7 @@ export class SidenavComponent implements OnInit {
         {
             title: "Profile",
             icon: "account_circle",
-            routerLink: "/profile",
+            routerLink: "/u/profile",
         },
     ]
 

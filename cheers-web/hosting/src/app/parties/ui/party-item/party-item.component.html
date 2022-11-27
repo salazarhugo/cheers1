@@ -23,8 +23,10 @@
 
     <div class="party-body" fxLayout="column" fxLayoutAlign="space-between none">
         <div class="party-header">
-            <span class="party-date">{{party.startDate | date}}</span>
-            <span *ngIf="party.endDate != 0" class="party-date">- {{party.endDate | date}}</span>
+            <div fxLayoutAlign="space-between center">
+                <span class="party-date">{{party.startDate * 1000 | date}}</span>
+                <span *ngIf="party.endDate != 0" class="party-date">{{party.endDate * 1000 | date}}</span>
+            </div>
             <h1 class="party-title"> {{party.name}} </h1>
             <div class="party-location">
                 <span class="party-location"> {{party.locationName}}</span>

@@ -1,5 +1,5 @@
-<h2 style="padding-bottom: 16px">Payouts</h2>
-<div *ngIf="$account | async as account">
+<main *ngIf="$account | async as account">
+    <h2 style="padding-bottom: 16px">Payouts</h2>
     <section class="dashboard-cards" fxLayout="row" fxLayoutAlign="none center" fxLayoutGap="16px" fxFlexFill style="width: 100%">
         <mat-card>
             <span class="mat-hint">Net Sales</span>
@@ -14,4 +14,4 @@
             <h2></h2>
         </mat-card>
     </section>
-</div>
+</main>

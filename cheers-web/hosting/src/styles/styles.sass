@@ -5,8 +5,8 @@
 @import 'dark-theme'
 @import 'custom-component-themes'
 
-@include custom-components-theme($app-light-theme, $app-theme-info, $app-theme-success, $app-theme-warning, $app-theme-error, $app-theme-grey)
 @include mat.all-component-themes($app-light-theme)
+@include custom-components-theme($app-light-theme, $app-theme-info, $app-theme-success, $app-theme-warning, $app-theme-error, $app-theme-grey)
 
 .dark-theme
     @include mat.all-component-themes($dark-theme)
@@ -42,6 +42,15 @@
 
     .bottom-bar
         background-color: #1A1A1A
+
+main
+    padding: 12px
+
+.app-toolbar
+    background: white
+
+.mat-sidenav
+    background-color: white
 
 .bottom-bar
     background-color: white
@@ -144,7 +153,6 @@ h2
 
 .cheers-dialog .mat-dialog-container
     border-radius: 12px !important
-
 
 .mat-drawer
     background-color: #fff

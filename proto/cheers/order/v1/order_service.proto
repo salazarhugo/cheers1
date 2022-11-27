@@ -57,6 +57,10 @@ message Order {
   string email = 11;
   string first_name = 12;
   string last_name = 13;
+  // The list of payment method types (e.g. card) that this PaymentIntent is allowed to use.
+  repeated string payment_method_types = 14;
+  // The type of the PaymentMethod
+  string payment_method_type = 15;
 }
 
 message CreateOrderRequest {

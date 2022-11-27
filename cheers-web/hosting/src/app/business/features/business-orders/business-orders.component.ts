@@ -9,8 +9,8 @@ import {Order} from "../../../../gen/ts/cheers/order/v1/order_service";
   styleUrls: ['./business-orders.component.sass']
 })
 export class BusinessOrdersComponent implements OnInit {
-
-  $orders: Observable<Order[]>
+  displayedColumns: string[] = ['status', 'date', 'amount', 'party','firstName', 'lastName', 'email'];
+  orders: Order[]
 
   constructor(
       private orderService: OrderService
@@ -18,6 +18,13 @@ export class BusinessOrdersComponent implements OnInit {
 
   async ngOnInit()  {
     const res = await this.orderService.getCurrentUserOrders()
-    this.$orders = res
+    res.subscribe(data => {
+      this.orders = data
+    })
+  }
+
+  /** Gets the total amount of all orders. */
+  getTotalCost() {
+    return this.orders.map(t => t.amount).reduce((acc, value) => acc + value, 0);
   }
 }

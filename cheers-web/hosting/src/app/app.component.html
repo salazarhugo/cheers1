@@ -1,5 +1,5 @@
 <div [ngClass]="{'dark-theme': isDarkTheme | async}">
-    <div class="mat-typography mat-app-background" style="height: 100vh">
+    <div class="mat-typography mat-app-background">
         <router-outlet *ngIf="!isLoading"></router-outlet>
     </div>
 </div>

@@ -21,7 +21,7 @@ export class ManagePartyBasicinfoComponent implements OnInit {
         name: new FormControl('', Validators.required),
         description: new FormControl(''),
         startDate: new FormControl(new Date(), Validators.required),
-        startTime: new FormControl(new Date()),
+        startTime: new FormControl(''),
         endDate: new FormControl(new Date()),
         endTime: new FormControl(new Date(), Validators.required),
         privacy: new FormControl(Privacy.FRIENDS),
@@ -42,7 +42,9 @@ export class ManagePartyBasicinfoComponent implements OnInit {
                 id: party.id,
                 name: party.name,
                 description: party.description,
-                startDate: new Date(party.startDate),
+                startDate: new Date(party.startDate * 1000),
+                startTime: new Date(party.startDate * 1000).getHours() + ":" + new Date(party.startDate * 1000).getMinutes(),
+                endDate: new Date(party.endDate * 1000),
                 locationName: party.locationName,
             })
         })

@@ -19,6 +19,9 @@ export interface Order {
   email: string;
   firstName: string;
   lastName: string;
+  /** The list of payment method types (e.g. card) that this PaymentIntent is allowed to use. */
+  paymentMethodTypes: string[];
+  paymentMethodType: string;
 }
 
 export interface CreateOrderRequest {
@@ -75,6 +78,8 @@ function createBaseOrder(): Order {
     email: "",
     firstName: "",
     lastName: "",
+    paymentMethodTypes: [],
+    paymentMethodType: "",
   };
 }
 
@@ -115,6 +120,12 @@ export const Order = {
     }
     if (message.lastName !== "") {
       writer.uint32(106).string(message.lastName);
+    }
+    for (const v of message.paymentMethodTypes) {
+      writer.uint32(114).string(v!);
+    }
+    if (message.paymentMethodType !== "") {
+      writer.uint32(122).string(message.paymentMethodType);
     }
     return writer;
   },
@@ -162,6 +173,12 @@ export const Order = {
         case 13:
           message.lastName = reader.string();
           break;
+        case 14:
+          message.paymentMethodTypes.push(reader.string());
+          break;
+        case 15:
+          message.paymentMethodType = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -184,6 +201,10 @@ export const Order = {
       email: isSet(object.email) ? String(object.email) : "",
       firstName: isSet(object.firstName) ? String(object.firstName) : "",
       lastName: isSet(object.lastName) ? String(object.lastName) : "",
+      paymentMethodTypes: Array.isArray(object?.paymentMethodTypes)
+        ? object.paymentMethodTypes.map((e: any) => String(e))
+        : [],
+      paymentMethodType: isSet(object.paymentMethodType) ? String(object.paymentMethodType) : "",
     };
   },
 
@@ -205,6 +226,12 @@ export const Order = {
     message.email !== undefined && (obj.email = message.email);
     message.firstName !== undefined && (obj.firstName = message.firstName);
     message.lastName !== undefined && (obj.lastName = message.lastName);
+    if (message.paymentMethodTypes) {
+      obj.paymentMethodTypes = message.paymentMethodTypes.map((e) => e);
+    } else {
+      obj.paymentMethodTypes = [];
+    }
+    message.paymentMethodType !== undefined && (obj.paymentMethodType = message.paymentMethodType);
     return obj;
   },
 
@@ -222,6 +249,8 @@ export const Order = {
     message.email = object.email ?? "";
     message.firstName = object.firstName ?? "";
     message.lastName = object.lastName ?? "";
+    message.paymentMethodTypes = object.paymentMethodTypes?.map((e) => e) || [];
+    message.paymentMethodType = object.paymentMethodType ?? "";
     return message;
   },
 };

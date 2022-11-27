@@ -7,6 +7,11 @@ $app-warn: mat.define-palette(mat.$red-palette);
 // create light theme
 $app-light-theme: mat.define-light-theme($app-primary, $app-accent, $app-warn);
 
+$custom-background-color: #ffffff;
+$background: map-get($app-light-theme, background);
+$background: map_merge($background, (background: $custom-background-color));
+$app-light-theme: map_merge($app-light-theme, (background: $background));
+
 // themes for notifications
 $app-theme-info: mat.define-palette(mat.$blue-palette);
 $app-theme-success: mat.define-palette(mat.$green-palette);

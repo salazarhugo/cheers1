@@ -4,7 +4,7 @@
             <img *ngIf="party.bannerUrl" [src]="party.bannerUrl" alt="party banner" class="party-banner">
         </div>
         <div class="party-header">
-            <span class="party-date">{{party.startDate | date}}</span>
+            <span class="party-date">{{party.startDate * 1000 | date: 'medium'}}</span>
             <h1 class="party-title"> {{party.name}} </h1>
             <h3> {{party.locationName}}</h3>
             <mat-divider></mat-divider>
@@ -48,8 +48,7 @@
                     <div class="party-details" fxLayout="column" fxLayoutGap="8px">
                         <div fxLayoutAlign="none center">
                             <mat-icon>people</mat-icon>
-                            <span class="button-span">{{party.goingCount}}
-                                person going, including {{party.hostName}}</span>
+                            <span class="button-span">{{party.goingCount}} people going</span>
                             <!--                            <span class="button-span">{{party-detail.interestedCount}} people interested</span>-->
                         </div>
                         <div fxLayoutAlign="none center">
@@ -65,23 +64,24 @@
                             <span class="button-span">{{party.privacy}}</span>
                         </div>
                     </div>
-                    <!--                <span class="button-span">{{party-detail.description}}</span>-->
                 </mat-card>
 
+                <mat-card *ngIf="party.description">
+                    <h2>Description</h2>
+                    <p style="white-space: pre-line">{{party.description}}</p>
+                </mat-card>
+
+            </div>
+
+            <div fxFlex="360" fxFlex.lt-md="0" fxLayout="column" fxLayoutGap="16px">
                 <mat-card>
-                    <div fxLayoutAlign="space-between">
-                        <h2>Tickets</h2>
-                        <mat-icon [routerLink]="['/manage/parties', party.id, 'tickets']">edit</mat-icon>
-                    </div>
+                    <h2>Tickets</h2>
                     <button [routerLink]="['/ticketing', party.id]" color="primary" mat-flat-button
                             style="margin-top: 16px">
                         <mat-icon>confirmation_number_outline</mat-icon>
                         <span class="button-span">Buy tickets</span>
                     </button>
                 </mat-card>
-            </div>
-
-            <div fxFlex="360" fxFlex.lt-md="0" fxLayout="column" fxLayoutGap="16px">
                 <mat-card style="padding: 0">
                     <a [href]="'https://www.google.com/maps/@' + party.latitude + ',' + party.longitude + ',18z/'">
                         <img alt='static Mapbox map of the San Francisco bay area' class="party-location"
