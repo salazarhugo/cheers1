@@ -12,17 +12,20 @@ func (s *Server) GetPartyItem(
 	ctx context.Context,
 	request *pb.GetPartyItemRequest,
 ) (*pb.GetPartyItemResponse, error) {
-	userID, err := utils.GetUserId(ctx)
-	if err != nil {
-		return nil, status.Error(codes.Internal, "Failed retrieving userID")
-	}
+	userID, _ := utils.GetUserId(ctx)
 
-	err = ValidateGetPartyItemRequest(request)
+	err := ValidateGetPartyItemRequest(request)
 	if err != nil {
 		return nil, err
 	}
 
-	item, err := s.partyRepository.GetPartyItem(userID, request.GetPartyId())
+	var item *pb.PartyItem
+	if userID == "" {
+		item, err = s.partyRepository.GetPartyItemPublic(request.PartyId)
+	} else {
+		item, err = s.partyRepository.GetPartyItem(userID, request.PartyId)
+	}
+
 	if err != nil {
 		return nil, err
 	}

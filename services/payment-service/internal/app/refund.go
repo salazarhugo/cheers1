@@ -12,7 +12,6 @@ func (s *Server) RefundPayment(
 	ctx context.Context,
 	request *pb.RefundPaymentRequest,
 ) (*pb.RefundPaymentResponse, error) {
-
 	params := &stripe.RefundParams{
 		PaymentIntent: stripe.String(request.PaymentIntentId),
 	}

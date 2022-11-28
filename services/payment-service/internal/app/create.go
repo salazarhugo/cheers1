@@ -85,12 +85,16 @@ func (s *Server) CreatePayment(
 		return nil, err
 	}
 
+	p := ""
+	if paymentIntent.PaymentMethod != nil {
+		p = string(paymentIntent.PaymentMethod.Type)
+	}
 	// Store payment intent
 	ref := client.Collection("orders").Doc(paymentIntent.ID)
 	order := &order.Order{
 		Id:                 paymentIntent.ID,
 		PaymentMethodTypes: paymentIntent.PaymentMethodTypes,
-		PaymentMethodType:  string(paymentIntent.PaymentMethod.Type),
+		PaymentMethodType:  p,
 		Status:             string(paymentIntent.Status),
 		Amount:             paymentIntent.Amount,
 		CustomerId:         paymentIntent.Customer.ID,

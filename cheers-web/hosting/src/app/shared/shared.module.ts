@@ -8,7 +8,7 @@ import {FlexModule} from "@angular/flex-layout";
 import {MaterialModule} from "../material/material.module";
 import {CompleteComponent} from "./ui/complete/complete.component";
 import {FinishSignUpComponent} from "./ui/finish-sign-up/finish-sign-up.component";
-import {MapComponent} from "./ui/map/map.component";
+import {MapComponent} from "../map/map.component";
 import {RegisterComponent} from "./ui/register/register.component";
 import {SigninComponent} from "./ui/signin/signin.component";
 import {SignInComponent} from "./ui/sign-in/sign-in.component";
@@ -22,7 +22,6 @@ import {DropzoneDirective} from './data/dropzone.directive';
 const components = [
     CompleteComponent,
     FinishSignUpComponent,
-    MapComponent,
     RegisterComponent,
     SigninComponent,
     SignInComponent,

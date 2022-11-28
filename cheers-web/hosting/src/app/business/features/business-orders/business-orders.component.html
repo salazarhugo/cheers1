@@ -1,12 +1,12 @@
 <main>
     <h2>Orders</h2>
-    <table matSort mat-table [dataSource]="dataSource">
+    <table matSort mat-table [dataSource]="dataSource" matSortActive="createTime" matSortDirection="desc">
         <!-- Status Column -->
         <ng-container matColumnDef="status">
             <th mat-header-cell mat-sort-header *matHeaderCellDef> Status</th>
             <td mat-cell *matCellDef="let order">
                 <mat-chip-list>
-                    <mat-chip> {{order.status}} </mat-chip>
+                    <mat-chip> {{order.status == 'requires_payment_method' ? 'Incomplete' : order.status}} </mat-chip>
                 </mat-chip-list>
             </td>
         </ng-container>

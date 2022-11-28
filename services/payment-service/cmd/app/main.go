@@ -10,6 +10,7 @@ import (
 	"github.com/salazarhugo/cheers1/libs/profiler"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/services/payment-service/internal/app"
+	"github.com/stripe/stripe-go/v72"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
@@ -20,6 +21,11 @@ import (
 	"os"
 	"strings"
 )
+
+func init() {
+	secret := os.Getenv("STRIPE_SK")
+	stripe.Key = secret
+}
 
 func main() {
 	log.SetFlags(0)

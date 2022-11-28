@@ -24,8 +24,13 @@ import (
 func GetUserId(ctx context.Context) (string, error) {
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
-		return "", status.Error(codes.InvalidArgument, "Failed retrieving metadata")
+		return "", status.Error(codes.InvalidArgument, "failed retrieving metadata")
 	}
+
+	if len(md["user-id"]) < 1 {
+		return "", status.Error(codes.InvalidArgument, "missing user-id")
+	}
+
 	return md["user-id"][0], nil
 }
 

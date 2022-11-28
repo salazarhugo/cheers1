@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
-import {environment} from "../../../../environments/environment.prod";
+import {environment} from "../../environments/environment.prod";
 
 @Component({
     selector: 'app-map',
@@ -28,4 +28,7 @@ export class MapComponent implements OnInit {
         // this.map.addControl(new mapboxgl.NavigationControl());
     }
 
+    onMapLoad(map: mapboxgl.Map) {
+        map.resize()
+    }
 }

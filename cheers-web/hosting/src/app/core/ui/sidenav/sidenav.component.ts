@@ -65,6 +65,11 @@ export class SidenavComponent implements OnInit {
             routerLink: "/tickets",
         },
         {
+            title: "Map",
+            icon: "map",
+            routerLink: "/map",
+        },
+        {
             title: "Messages",
             icon: "message",
             routerLink: "/chats",

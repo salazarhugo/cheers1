@@ -4,6 +4,9 @@
 
 export const environment = {
     production: false,
+    mapbox: {
+        accessToken: "pk.eyJ1Ijoic2FsYXphcmJyb2NrIiwiYSI6ImNqd3hxaDBleTFobGQ0Y2sxc3lpdnNwYXMifQ.TgYFgyclmL6pGXXANhnlsw",
+    },
     firebaseConfig: {
         apiKey: "AIzaSyCgE3yn1b5HkdLtBcs9U1FprH-Fs5fcCxA",
         authDomain: "cheers-a275e.firebaseapp.com",

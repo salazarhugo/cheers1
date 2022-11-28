@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>Refund Payment?</h1>
+
+<div mat-dialog-content>
+    <p>
+        This action can't be undone.
+        Refunds take 5-10 days to appear on a customer's statement.
+    </p>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-button color="warn" (click)="onNoClick()">Cancel</button>
+    <button mat-button color="primary" [mat-dialog-close]="true">Refund</button>
+</div>

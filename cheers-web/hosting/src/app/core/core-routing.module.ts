@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {ChatComponent} from "../chats/feature/chat.component";
 import {HomeComponent} from "../home/features/home/home.component";
-import {MapComponent} from "../shared/ui/map/map.component";
+import {MapComponent} from "../map/map.component";
 import {TicketsComponent} from "../shared/ui/tickets/tickets.component";
 
 const routes: Routes = [
