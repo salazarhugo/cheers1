@@ -27,18 +27,18 @@ export class TicketingComponent implements OnInit {
     partyId: string | null
 
     userForm = this.fb.group({
-        firstName: ['', [
-            Validators.required,
-            Validators.maxLength(20),
-        ]],
-        lastName: ['', [
-            Validators.required,
-            Validators.maxLength(20),
-        ]],
-        email: ['', [
-            Validators.required,
-            Validators.maxLength(50),
-        ]],
+            firstName: ['', [
+                Validators.required,
+                Validators.maxLength(20),
+            ]],
+            lastName: ['', [
+                Validators.required,
+                Validators.maxLength(20),
+            ]],
+            email: ['', [
+                Validators.required,
+                Validators.maxLength(50),
+            ]],
         }
     )
 
@@ -76,7 +76,12 @@ export class TicketingComponent implements OnInit {
         })
     }
 
+    mobile = false
+
     ngOnInit() {
+        if (window.screen.width === 360) { // 768px portrait
+            this.mobile = true;
+        }
         this.ticketingForm.valueChanges.subscribe(value => {
             let sum = 0;
             for (const key in value) {

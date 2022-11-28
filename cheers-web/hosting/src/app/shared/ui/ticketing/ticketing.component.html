@@ -4,7 +4,7 @@
             <img [src]="party.bannerUrl" alt="party banner" class="ticketing-banner">
         </div>
 
-        <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between" class="ticketing-body-container">
+        <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between" class="ticketing-body-container" fxLayoutGap="1.5rem">
             <div fxFlex="75">
                 <mat-card class="ticketing-header" fxLayoutAlign="center center" fxLayout="column">
                     <h1> {{party.name}} </h1>
@@ -28,7 +28,7 @@
                                             <h3>{{pack.description}}</h3>
                                         </div>
                                         <div fxLayout="row" fxLayoutAlign="none center" fxLayoutGap="60px">
-                                            <h1>{{pack.price / 100}} $</h1>
+                                            <h1 class="pack-price">{{pack.price / 100}} $</h1>
                                             <div fxLayout="row">
                                                 <button (click)="decrement(pack.id)" mat-stroked-button>
                                                     <mat-icon>remove</mat-icon>
