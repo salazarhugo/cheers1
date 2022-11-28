@@ -10,6 +10,8 @@ github.com/grpc-ecosystem/grpc-gateway/v2 v2.12.0 h1:kr3j8iIMR4ywO/O0rvksXaJvauG
 github.com/grpc-ecosystem/grpc-gateway/v2 v2.12.0/go.mod h1:ummNFgdgLhhX7aIiy35vVmQNS0rWXknfPE0qe6fmFXg=
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20221114163206-2897b5f5263a h1:dZ3JHlUqovo+R5OpGF4ArbEcoNQjDRrzz+YX5WyjsE8=
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20221114163206-2897b5f5263a/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
+github.com/salazarhugo/cheers1/gen/go v0.0.0-20221128122651-d4a05e03ad54 h1:553AfFxJEcGmWoU+vlMILXIqEXjdQGgmmIUSqxgwyvY=
+github.com/salazarhugo/cheers1/gen/go v0.0.0-20221128122651-d4a05e03ad54/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
 golang.org/x/net v0.0.0-20220909164309-bea034e7d591 h1:D0B/7al0LLrVC8aWF4+oxpv/m8bc7ViFfVS8/gXGdqI=
 golang.org/x/net v0.0.0-20220909164309-bea034e7d591/go.mod h1:YDH+HFinaLZZlnHAfSS6ZXJJ9M9t4Dl22yv3iI2vPwk=
 golang.org/x/sys v0.0.0-20220728004956-3c1f35247d10 h1:WIoqL4EROvwiPdUtaip4VcDdpZ4kha7wBWZrbVKCIZg=
