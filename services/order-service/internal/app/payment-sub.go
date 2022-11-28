@@ -2,7 +2,10 @@ package app
 
 import (
 	"encoding/json"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/order/v1"
 	payment "github.com/salazarhugo/cheers1/gen/go/cheers/payment/v1"
+	"github.com/salazarhugo/cheers1/services/order-service/internal/repository"
+	"github.com/stripe/stripe-go/v72/paymentintent"
 	"google.golang.org/protobuf/proto"
 	"io"
 	"log"
@@ -41,5 +44,24 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 
 	log.Println(event)
 
+	pi, err := paymentintent.Get(
+		event.PaymentIntentId,
+		nil,
+	)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "failed to get payment intent", http.StatusInternalServerError)
+		return
+	}
+	repo := repository.NewOrderRepository()
+	err = repo.UpdateOrder(&pb.Order{
+		Status: string(pi.Status),
+		Id:     pi.ID,
+	})
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "failed to update order", http.StatusInternalServerError)
+		return
+	}
 	return
 }

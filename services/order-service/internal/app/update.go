@@ -18,12 +18,12 @@ func (s *Server) UpdateOrder(
 
 	OrderReq := request.GetOrder()
 
-	OrderID, err := s.orderRepository.UpdateOrder(OrderReq)
+	err = s.orderRepository.UpdateOrder(OrderReq)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to create Order")
 	}
 
-	Order, err := s.orderRepository.GetOrder(OrderID)
+	Order, err := s.orderRepository.GetOrder(OrderReq.Id)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to get Order")
 	}

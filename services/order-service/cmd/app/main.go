@@ -9,6 +9,7 @@ import (
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/services/order-service/internal/app"
 	"github.com/sirupsen/logrus"
+	"github.com/stripe/stripe-go/v72"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
@@ -23,6 +24,8 @@ var log *logrus.Logger
 
 func init() {
 	log = utils.InitLogrus()
+	secret := os.Getenv("STRIPE_SK")
+	stripe.Key = secret
 }
 
 func main() {
