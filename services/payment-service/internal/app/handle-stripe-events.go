@@ -34,6 +34,15 @@ func HandleStripeEvent(c echo.Context) error {
 		log.Printf("Successful payment for %d.", paymentIntent.Amount)
 		repository.HandlePaymentSuccess(paymentIntent)
 
+	case "charge.refunded":
+		var refund stripe.Refund
+		err := parseEvent(event, &refund)
+		if err != nil {
+			return cc.NoContent(http.StatusInternalServerError)
+		}
+		log.Printf("Successful refund of %d.", refund.Amount)
+		//repository.HandlePaymentSuccess(paymentIntent)
+
 	case "payment_method.attached":
 		var paymentMethod stripe.PaymentMethod
 		err := parseEvent(event, &paymentMethod)

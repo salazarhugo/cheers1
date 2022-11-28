@@ -5,7 +5,7 @@ go 1.19
 require google.golang.org/protobuf v1.28.1
 
 require (
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221124142559-95505f6056e2
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221128185556-362dbf7cf8a4
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221105090922-7db1c47202c4
 	google.golang.org/grpc v1.50.1
