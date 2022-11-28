@@ -5,6 +5,11 @@ import { BusinessOrdersRoutingModule } from './business-orders-routing.module';
 import { BusinessOrdersComponent } from './business-orders.component';
 import {OrderItemModule} from "../../../manage-parties/ui/order-item/order-item.module";
 import {MatTableModule} from "@angular/material/table";
+import {MatSortModule} from "@angular/material/sort";
+import {MatChipsModule} from "@angular/material/chips";
+import {MatButtonModule} from "@angular/material/button";
+import {MatIconModule} from "@angular/material/icon";
+import {MatMenuModule} from "@angular/material/menu";
 
 
 @NgModule({
@@ -15,7 +20,12 @@ import {MatTableModule} from "@angular/material/table";
         CommonModule,
         BusinessOrdersRoutingModule,
         OrderItemModule,
-        MatTableModule
+        MatTableModule,
+        MatSortModule,
+        MatChipsModule,
+        MatButtonModule,
+        MatIconModule,
+        MatMenuModule
     ]
 })
 export class BusinessOrdersModule { }

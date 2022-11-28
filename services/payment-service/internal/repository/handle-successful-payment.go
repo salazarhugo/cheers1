@@ -56,6 +56,7 @@ func HandlePaymentSuccess(paymentIntent stripe.PaymentIntent) {
 		FirstName:       order.FirstName,
 		LastName:        order.LastName,
 		Email:           order.Email,
+		PartyName:       order.PartyName,
 	})
 
 	if err != nil {

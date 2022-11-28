@@ -5,7 +5,7 @@ go 1.19
 require (
 	cloud.google.com/go/firestore v1.6.1
 	github.com/labstack/echo/v4 v4.9.1
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221124142559-95505f6056e2
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221127205749-a95a6842967a
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221123144834-0743a8aa4edb
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221123144834-0743a8aa4edb
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221123144834-0743a8aa4edb
@@ -53,7 +53,7 @@ require (
 	google.golang.org/genproto v0.0.0-20221027153422-115e99e71e1c // indirect
 )
 
-//replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
+replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
 
 //replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils
 

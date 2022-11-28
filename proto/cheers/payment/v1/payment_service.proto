@@ -17,6 +17,13 @@ service PaymentService {
       body: "*"
     };
   }
+
+  rpc RefundPayment (RefundPaymentRequest) returns (RefundPaymentResponse) {
+    option (google.api.http) = {
+      post: "/v1/payments/{payment_intent_id}/refund"
+      body: "*"
+    };
+  }
 }
 
 message CreatePaymentRequest {
@@ -29,4 +36,11 @@ message CreatePaymentRequest {
 
 message CreatePaymentResponse {
    string client_secret = 1;
+}
+
+message RefundPaymentRequest {
+  string payment_intent_id = 1;
+}
+
+message RefundPaymentResponse {
 }

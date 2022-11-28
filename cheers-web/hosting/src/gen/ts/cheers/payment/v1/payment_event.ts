@@ -11,6 +11,8 @@ export interface PaymentEvent {
   firstName: string;
   lastName: string;
   email: string;
+  partyId: string;
+  partyName: string;
 }
 
 export enum PaymentEvent_EventType {
@@ -47,7 +49,16 @@ export function paymentEvent_EventTypeToJSON(object: PaymentEvent_EventType): st
 }
 
 function createBasePaymentEvent(): PaymentEvent {
-  return { paymentIntentId: "", customerId: "", type: 0, firstName: "", lastName: "", email: "" };
+  return {
+    paymentIntentId: "",
+    customerId: "",
+    type: 0,
+    firstName: "",
+    lastName: "",
+    email: "",
+    partyId: "",
+    partyName: "",
+  };
 }
 
 export const PaymentEvent = {
@@ -69,6 +80,12 @@ export const PaymentEvent = {
     }
     if (message.email !== "") {
       writer.uint32(50).string(message.email);
+    }
+    if (message.partyId !== "") {
+      writer.uint32(58).string(message.partyId);
+    }
+    if (message.partyName !== "") {
+      writer.uint32(66).string(message.partyName);
     }
     return writer;
   },
@@ -98,6 +115,12 @@ export const PaymentEvent = {
         case 6:
           message.email = reader.string();
           break;
+        case 7:
+          message.partyId = reader.string();
+          break;
+        case 8:
+          message.partyName = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -114,6 +137,8 @@ export const PaymentEvent = {
       firstName: isSet(object.firstName) ? String(object.firstName) : "",
       lastName: isSet(object.lastName) ? String(object.lastName) : "",
       email: isSet(object.email) ? String(object.email) : "",
+      partyId: isSet(object.partyId) ? String(object.partyId) : "",
+      partyName: isSet(object.partyName) ? String(object.partyName) : "",
     };
   },
 
@@ -125,6 +150,8 @@ export const PaymentEvent = {
     message.firstName !== undefined && (obj.firstName = message.firstName);
     message.lastName !== undefined && (obj.lastName = message.lastName);
     message.email !== undefined && (obj.email = message.email);
+    message.partyId !== undefined && (obj.partyId = message.partyId);
+    message.partyName !== undefined && (obj.partyName = message.partyName);
     return obj;
   },
 
@@ -136,6 +163,8 @@ export const PaymentEvent = {
     message.firstName = object.firstName ?? "";
     message.lastName = object.lastName ?? "";
     message.email = object.email ?? "";
+    message.partyId = object.partyId ?? "";
+    message.partyName = object.partyName ?? "";
     return message;
   },
 };

@@ -21,6 +21,13 @@ export interface CreatePaymentResponse {
   clientSecret: string;
 }
 
+export interface RefundPaymentRequest {
+  paymentIntentId: string;
+}
+
+export interface RefundPaymentResponse {
+}
+
 function createBaseCreatePaymentRequest(): CreatePaymentRequest {
   return { partyId: "", tickets: {}, firstName: "", lastName: "", email: "" };
 }
@@ -228,8 +235,95 @@ export const CreatePaymentResponse = {
   },
 };
 
+function createBaseRefundPaymentRequest(): RefundPaymentRequest {
+  return { paymentIntentId: "" };
+}
+
+export const RefundPaymentRequest = {
+  encode(message: RefundPaymentRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.paymentIntentId !== "") {
+      writer.uint32(10).string(message.paymentIntentId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): RefundPaymentRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRefundPaymentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.paymentIntentId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RefundPaymentRequest {
+    return { paymentIntentId: isSet(object.paymentIntentId) ? String(object.paymentIntentId) : "" };
+  },
+
+  toJSON(message: RefundPaymentRequest): unknown {
+    const obj: any = {};
+    message.paymentIntentId !== undefined && (obj.paymentIntentId = message.paymentIntentId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RefundPaymentRequest>, I>>(object: I): RefundPaymentRequest {
+    const message = createBaseRefundPaymentRequest();
+    message.paymentIntentId = object.paymentIntentId ?? "";
+    return message;
+  },
+};
+
+function createBaseRefundPaymentResponse(): RefundPaymentResponse {
+  return {};
+}
+
+export const RefundPaymentResponse = {
+  encode(_: RefundPaymentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): RefundPaymentResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRefundPaymentResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): RefundPaymentResponse {
+    return {};
+  },
+
+  toJSON(_: RefundPaymentResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RefundPaymentResponse>, I>>(_: I): RefundPaymentResponse {
+    const message = createBaseRefundPaymentResponse();
+    return message;
+  },
+};
+
 export interface PaymentService {
   CreatePayment(request: CreatePaymentRequest): Promise<CreatePaymentResponse>;
+  RefundPayment(request: RefundPaymentRequest): Promise<RefundPaymentResponse>;
 }
 
 export class PaymentServiceClientImpl implements PaymentService {
@@ -239,11 +333,18 @@ export class PaymentServiceClientImpl implements PaymentService {
     this.service = opts?.service || "cheers.payment.v1.PaymentService";
     this.rpc = rpc;
     this.CreatePayment = this.CreatePayment.bind(this);
+    this.RefundPayment = this.RefundPayment.bind(this);
   }
   CreatePayment(request: CreatePaymentRequest): Promise<CreatePaymentResponse> {
     const data = CreatePaymentRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreatePayment", data);
     return promise.then((data) => CreatePaymentResponse.decode(new _m0.Reader(data)));
+  }
+
+  RefundPayment(request: RefundPaymentRequest): Promise<RefundPaymentResponse> {
+    const data = RefundPaymentRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "RefundPayment", data);
+    return promise.then((data) => RefundPaymentResponse.decode(new _m0.Reader(data)));
   }
 }
 

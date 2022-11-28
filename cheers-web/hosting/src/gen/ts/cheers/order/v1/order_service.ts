@@ -15,12 +15,14 @@ export interface Order {
   createTime: Date | undefined;
   tickets: Ticket[];
   partyId: string;
+  partyName: string;
   partyHostId: string;
   email: string;
   firstName: string;
   lastName: string;
   /** The list of payment method types (e.g. card) that this PaymentIntent is allowed to use. */
   paymentMethodTypes: string[];
+  /** The type of the PaymentMethod */
   paymentMethodType: string;
 }
 
@@ -74,6 +76,7 @@ function createBaseOrder(): Order {
     createTime: undefined,
     tickets: [],
     partyId: "",
+    partyName: "",
     partyHostId: "",
     email: "",
     firstName: "",
@@ -109,23 +112,26 @@ export const Order = {
     if (message.partyId !== "") {
       writer.uint32(74).string(message.partyId);
     }
+    if (message.partyName !== "") {
+      writer.uint32(82).string(message.partyName);
+    }
     if (message.partyHostId !== "") {
-      writer.uint32(82).string(message.partyHostId);
+      writer.uint32(90).string(message.partyHostId);
     }
     if (message.email !== "") {
-      writer.uint32(90).string(message.email);
+      writer.uint32(98).string(message.email);
     }
     if (message.firstName !== "") {
-      writer.uint32(98).string(message.firstName);
+      writer.uint32(106).string(message.firstName);
     }
     if (message.lastName !== "") {
-      writer.uint32(106).string(message.lastName);
+      writer.uint32(114).string(message.lastName);
     }
     for (const v of message.paymentMethodTypes) {
-      writer.uint32(114).string(v!);
+      writer.uint32(122).string(v!);
     }
     if (message.paymentMethodType !== "") {
-      writer.uint32(122).string(message.paymentMethodType);
+      writer.uint32(130).string(message.paymentMethodType);
     }
     return writer;
   },
@@ -162,21 +168,24 @@ export const Order = {
           message.partyId = reader.string();
           break;
         case 10:
-          message.partyHostId = reader.string();
+          message.partyName = reader.string();
           break;
         case 11:
-          message.email = reader.string();
+          message.partyHostId = reader.string();
           break;
         case 12:
-          message.firstName = reader.string();
+          message.email = reader.string();
           break;
         case 13:
-          message.lastName = reader.string();
+          message.firstName = reader.string();
           break;
         case 14:
-          message.paymentMethodTypes.push(reader.string());
+          message.lastName = reader.string();
           break;
         case 15:
+          message.paymentMethodTypes.push(reader.string());
+          break;
+        case 16:
           message.paymentMethodType = reader.string();
           break;
         default:
@@ -197,6 +206,7 @@ export const Order = {
       createTime: isSet(object.createTime) ? fromJsonTimestamp(object.createTime) : undefined,
       tickets: Array.isArray(object?.tickets) ? object.tickets.map((e: any) => Ticket.fromJSON(e)) : [],
       partyId: isSet(object.partyId) ? String(object.partyId) : "",
+      partyName: isSet(object.partyName) ? String(object.partyName) : "",
       partyHostId: isSet(object.partyHostId) ? String(object.partyHostId) : "",
       email: isSet(object.email) ? String(object.email) : "",
       firstName: isSet(object.firstName) ? String(object.firstName) : "",
@@ -222,6 +232,7 @@ export const Order = {
       obj.tickets = [];
     }
     message.partyId !== undefined && (obj.partyId = message.partyId);
+    message.partyName !== undefined && (obj.partyName = message.partyName);
     message.partyHostId !== undefined && (obj.partyHostId = message.partyHostId);
     message.email !== undefined && (obj.email = message.email);
     message.firstName !== undefined && (obj.firstName = message.firstName);
@@ -245,6 +256,7 @@ export const Order = {
     message.createTime = object.createTime ?? undefined;
     message.tickets = object.tickets?.map((e) => Ticket.fromPartial(e)) || [];
     message.partyId = object.partyId ?? "";
+    message.partyName = object.partyName ?? "";
     message.partyHostId = object.partyHostId ?? "";
     message.email = object.email ?? "";
     message.firstName = object.firstName ?? "";
