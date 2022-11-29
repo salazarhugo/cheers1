@@ -4,7 +4,6 @@ import (
 	context2 "context"
 	"crypto/tls"
 	"crypto/x509"
-	grpcweb "github.com/improbable-eng/grpc-web/go/grpcweb"
 	pb "github.com/salazarhugo/cheers1/genproto/cheers/chat/v1"
 	userpb "github.com/salazarhugo/cheers1/genproto/cheers/user/v1"
 	auth "github.com/salazarhugo/cheers1/libs/auth"
@@ -16,7 +15,6 @@ import (
 	"google.golang.org/grpc/metadata"
 	"log"
 	"net"
-	"net/http"
 	"os"
 )
 
@@ -59,13 +57,7 @@ func test() {
 }
 
 func main() {
-	if os.Getenv("DISABLE_PROFILER") == "" {
-		log.Println("Profiling enabled.")
-		go profiler.InitProfiling("chat-service", "1.0.0")
-	} else {
-		log.Println("Profiling disabled.")
-	}
-
+	go profiler.InitProfiling("chat-service", "1.0.0")
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
@@ -87,25 +79,7 @@ func main() {
 	pb.RegisterChatServiceServer(grpcServer, server)
 	grpc_health_v1.RegisterHealthServer(grpcServer, server)
 
-	go func() {
-		if err = grpcServer.Serve(listener); err != nil {
-			log.Fatal(err)
-		}
-	}()
-
-	grpcWebServer := grpcweb.WrapServer(
-		grpcServer,
-		grpcweb.WithOriginFunc(func(origin string) bool { return true }),
-	)
-
-	srv := &http.Server{
-		Handler: grpcWebServer,
-		Addr:    ":8081",
-	}
-
-	log.Printf("chat Service listening on port %s", port)
-
-	if err := srv.ListenAndServe(); err != nil {
-		log.Fatalf("failed to serve: %v", err)
+	if err = grpcServer.Serve(listener); err != nil {
+		log.Fatal(err)
 	}
 }

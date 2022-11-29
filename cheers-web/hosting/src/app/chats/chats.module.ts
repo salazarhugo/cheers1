@@ -11,6 +11,8 @@ import {SharedModule} from "../shared/shared.module";
 import {MaterialModule} from "../material/material.module";
 import {RouterModule} from "@angular/router";
 import {UserChipModule} from "../users/ui/user-chip/user-chip.module";
+import {GrpcCoreModule} from "@ngx-grpc/core";
+import {GrpcWebClientModule} from "@ngx-grpc/grpc-web-client";
 
 
 @NgModule({
@@ -25,6 +27,10 @@ import {UserChipModule} from "../users/ui/user-chip/user-chip.module";
       RouterModule,
       MaterialModule,
       UserChipModule,
+      GrpcCoreModule.forRoot(),
+      GrpcWebClientModule.forRoot({
+          settings: {host: 'https://chat-r3a2dr4u4a-nw.a.run.app:443'},
+      }),
   ]
 })
 export class ChatsModule { }

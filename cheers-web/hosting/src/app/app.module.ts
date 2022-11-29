@@ -56,10 +56,6 @@ if (!environment.production)
             provider: new ReCaptchaV3Provider(environment.recaptchaSiteKey),
             isTokenAutoRefreshEnabled: true
         })),
-        GrpcCoreModule.forRoot(),
-        GrpcWebClientModule.forRoot({
-            settings: {host: 'https://chat-r3a2dr4u4a-nw.a.run.app:443'},
-        }),
         SharedModule,
         HomeModule,
         PaymentsModule,

@@ -1,6 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from "rxjs";
 import {Chat} from "../../shared/data/models/chat.model";
+import {HttpClient} from "@angular/common/http";
+import {Room} from "../../../gen/ts/cheers/chat/v1/chat_service";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +11,7 @@ import {Chat} from "../../shared/data/models/chat.model";
 export class ChatService {
 
   constructor(
-      // private client: ChatServiceClient,
+      private http: HttpClient,
   ) {
   }
 
@@ -40,6 +43,9 @@ export class ChatService {
   ]
 
   getRooms(): Observable<Chat[]> {
+    this.http.get<Room>(`${environment.GATEWAY_URL}/v1/chats`).subscribe(res => {
+      console.log(res)
+    })
     return of(this.rooms) //this.client.getRooms(this.rooms)
   }
 
