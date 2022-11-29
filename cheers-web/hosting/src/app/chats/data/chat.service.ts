@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Observable, of} from "rxjs";
-import {Chat} from "../../shared/data/models/chat.model";
+import {map, Observable, of} from "rxjs";
+import {Chat, toChat} from "../../shared/data/models/chat.model";
 import {HttpClient} from "@angular/common/http";
 import {Room} from "../../../gen/ts/cheers/chat/v1/chat_service";
 import {environment} from "../../../environments/environment";
@@ -43,10 +43,8 @@ export class ChatService {
   ]
 
   getRooms(): Observable<Chat[]> {
-    this.http.get<Room>(`${environment.GATEWAY_URL}/v1/chats`).subscribe(res => {
-      console.log(res)
-    })
-    return of(this.rooms) //this.client.getRooms(this.rooms)
+    return this.http.get<Room>(`${environment.GATEWAY_URL}/v1/chats`)
+        .pipe(map(room => [toChat(room)]))
   }
 
   getRoom(roomId: string): Observable<Chat | null> {

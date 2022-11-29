@@ -6,7 +6,6 @@ require (
 	cloud.google.com/go/pubsub v1.3.1
 	github.com/go-redis/redis/v9 v9.0.0-rc.1
 	github.com/google/uuid v1.3.0
-	github.com/improbable-eng/grpc-web v0.15.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
 	github.com/salazarhugo/cheers1/genproto v0.0.0-20221026123725-bd64c5176695
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221018182022-91ddac90c15e
@@ -26,9 +25,7 @@ require (
 	cloud.google.com/go/profiler v0.3.0 // indirect
 	cloud.google.com/go/storage v1.26.0 // indirect
 	firebase.google.com/go/v4 v4.9.0 // indirect
-	github.com/cenkalti/backoff/v4 v4.1.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
-	github.com/desertbit/timer v0.0.0-20180107155436-c41aec40b27f // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
@@ -36,12 +33,10 @@ require (
 	github.com/google/pprof v0.0.0-20220412212628-83db2b799d1f // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
 	github.com/googleapis/gax-go/v2 v2.6.0 // indirect
-	github.com/klauspost/compress v1.11.7 // indirect
 	github.com/labstack/echo/v4 v4.9.1 // indirect
 	github.com/labstack/gommon v0.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.11 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
-	github.com/rs/cors v1.7.0 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.1 // indirect
@@ -51,12 +46,11 @@ require (
 	golang.org/x/oauth2 v0.0.0-20221014153046-6fdb5e3db783 // indirect
 	golang.org/x/sync v0.0.0-20220929204114-8fcdb60fdcc0 // indirect
 	golang.org/x/sys v0.0.0-20220728004956-3c1f35247d10 // indirect
-	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/text v0.3.8 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/appengine/v2 v2.0.2 // indirect
 	google.golang.org/genproto v0.0.0-20221024183307-1bc688fe9f3e // indirect
-	nhooyr.io/websocket v1.8.6 // indirect
 )
 
 //replace github.com/salazarhugo/cheers1/genproto => ../../genproto
