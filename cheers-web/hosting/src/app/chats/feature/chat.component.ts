@@ -29,6 +29,11 @@ export class ChatComponent implements OnInit {
                 this.$room = this.chatService.getRoom(roomId)
             }
         })
+        const socket = new WebSocket('ws://localhost:8081/ws');
+
+        socket.addEventListener('open', function (event) {
+            socket.send("Hello World!");
+        })
     }
 
     onImgError(event: any) {
