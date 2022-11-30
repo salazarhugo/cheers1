@@ -127,6 +127,7 @@ message Room {
   MessageType last_message_type = 13;
   google.protobuf.Timestamp created = 14;
   google.protobuf.Timestamp last_message_time = 15;
+  bool archived = 16;
 }
 
 enum MessageType {
