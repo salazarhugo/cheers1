@@ -2,7 +2,7 @@ package repository
 
 import (
 	json2 "encoding/json"
-	pb "github.com/salazarhugo/cheers1/genproto/cheers/chat/v1"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"log"
 )

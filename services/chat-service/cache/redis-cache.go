@@ -8,7 +8,7 @@ import (
 	"github.com/go-redis/redis/v9"
 	"github.com/google/uuid"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
-	pb "github.com/salazarhugo/cheers1/genproto/cheers/chat/v1"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/timestamppb"

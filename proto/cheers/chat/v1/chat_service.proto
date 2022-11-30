@@ -12,7 +12,7 @@ option go_package = "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1;chat";
 service ChatService {
   rpc CreateChat(CreateChatReq) returns (Room) {}
   rpc JoinRoom(JoinRoomRequest) returns (stream Message) {}
-  rpc ListRoom(ListRoomRequest) returns (stream Room) {
+  rpc ListRoom(ListRoomRequest) returns (ListRoomResponse) {
     option (google.api.http) = {
       get: "/v1/chats"
     };
@@ -49,6 +49,10 @@ message TypingEvent {
 message ListRoomRequest {
   int32 page_size = 2;
   int32 page = 3;
+}
+
+message ListRoomResponse {
+  repeated Room rooms = 1;
 }
 
 message ListMembersRequest {

@@ -1,7 +1,7 @@
 package repository
 
 import (
-	pb "github.com/salazarhugo/cheers1/genproto/cheers/chat/v1"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
 )
 
 func (c chatRepository) ListRoom(userID string) ([]*pb.Room, error) {

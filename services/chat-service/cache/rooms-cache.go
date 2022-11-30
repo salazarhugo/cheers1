@@ -3,7 +3,7 @@ package cache
 import (
 	"context"
 	"github.com/go-redis/redis/v9"
-	pb "github.com/salazarhugo/cheers1/genproto/cheers/chat/v1"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
 	"time"
 )
 

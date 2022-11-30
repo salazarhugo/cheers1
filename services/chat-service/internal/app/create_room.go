@@ -2,13 +2,16 @@ package app
 
 import (
 	"context"
-	pb "github.com/salazarhugo/cheers1/genproto/cheers/chat/v1"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-func (s *Server) CreateChat(ctx context.Context, request *pb.CreateChatReq) (*pb.Room, error) {
+func (s *Server) CreateChat(
+	ctx context.Context,
+	request *pb.CreateChatReq,
+) (*pb.Room, error) {
 	userID, err := utils.GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to retrieve userID")

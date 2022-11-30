@@ -26,16 +26,10 @@ func init() {
 	log = utils.InitLogrus()
 	secret := os.Getenv("STRIPE_SK")
 	stripe.Key = secret
+	go profiler.InitProfiling("order-service", "1.0.0")
 }
 
 func main() {
-	if os.Getenv("DISABLE_PROFILER") == "" {
-		log.Info("Profiling enabled.")
-		go profiler.InitProfiling("order-service", "1.0.0")
-	} else {
-		log.Info("Profiling disabled.")
-	}
-
 	// Determine port for HTTP service.
 	port := os.Getenv("PORT")
 	if port == "" {
