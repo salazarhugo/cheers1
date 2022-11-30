@@ -11,8 +11,8 @@ import {Observable, of} from "rxjs";
 })
 export class ChatComponent implements OnInit {
 
-    $rooms: Observable<Chat[] | null> = of(null)
-    $room: Observable<Chat | null> = of(null)
+    rooms: Chat[] | null = null
+    room: Chat | undefined  = undefined
 
     constructor(
         private route: ActivatedRoute,
@@ -21,12 +21,14 @@ export class ChatComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.$rooms = this.chatService.getRooms()
+        this.chatService.getRooms().subscribe(rooms => {
+            this.rooms = rooms
+        })
 
         this.route.firstChild?.paramMap.subscribe((params: ParamMap) => {
             const roomId = params.get("id")
             if (roomId) {
-                this.$room = this.chatService.getRoom(roomId)
+                this.room = this.rooms?.find(rooms => rooms.id == roomId)
             }
         })
     }

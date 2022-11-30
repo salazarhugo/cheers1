@@ -1,4 +1,4 @@
-<mat-sidenav-container *ngIf="$rooms | async as rooms">
+<mat-sidenav-container *ngIf="rooms">
     <mat-sidenav fixedInViewport="true" fixedTopGap="56" mode="side" opened>
         <div fxLayoutAlign="space-between center">
             <button mat-icon-button>
@@ -15,7 +15,7 @@
             </div>
         </mat-list>
     </mat-sidenav>
-    <mat-sidenav-content *ngIf="$room | async as room" fxLayout="column">
+    <mat-sidenav-content *ngIf="room">
         <app-chat-content [room]="room"></app-chat-content>
     </mat-sidenav-content>
 </mat-sidenav-container>
