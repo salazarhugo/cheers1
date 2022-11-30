@@ -174,6 +174,10 @@ export interface ListRoomRequest {
   page: number;
 }
 
+export interface ListRoomResponse {
+  rooms: Room[];
+}
+
 export interface ListMembersRequest {
   roomId: string;
   pageSize: number;
@@ -431,6 +435,57 @@ export const ListRoomRequest = {
     const message = createBaseListRoomRequest();
     message.pageSize = object.pageSize ?? 0;
     message.page = object.page ?? 0;
+    return message;
+  },
+};
+
+function createBaseListRoomResponse(): ListRoomResponse {
+  return { rooms: [] };
+}
+
+export const ListRoomResponse = {
+  encode(message: ListRoomResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.rooms) {
+      Room.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListRoomResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListRoomResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.rooms.push(Room.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListRoomResponse {
+    return { rooms: Array.isArray(object?.rooms) ? object.rooms.map((e: any) => Room.fromJSON(e)) : [] };
+  },
+
+  toJSON(message: ListRoomResponse): unknown {
+    const obj: any = {};
+    if (message.rooms) {
+      obj.rooms = message.rooms.map((e) => e ? Room.toJSON(e) : undefined);
+    } else {
+      obj.rooms = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListRoomResponse>, I>>(object: I): ListRoomResponse {
+    const message = createBaseListRoomResponse();
+    message.rooms = object.rooms?.map((e) => Room.fromPartial(e)) || [];
     return message;
   },
 };
@@ -1414,7 +1469,7 @@ export const SendMessageResponse = {
 export interface ChatService {
   CreateChat(request: CreateChatReq): Promise<Room>;
   JoinRoom(request: JoinRoomRequest): Observable<Message>;
-  ListRoom(request: ListRoomRequest): Observable<Room>;
+  ListRoom(request: ListRoomRequest): Promise<ListRoomResponse>;
   DeleteRoom(request: RoomId): Promise<Empty>;
   GetRoomId(request: GetRoomIdReq): Promise<RoomId>;
   ListMembers(request: ListMembersRequest): Promise<ListMembersResponse>;
@@ -1463,10 +1518,10 @@ export class ChatServiceClientImpl implements ChatService {
     return result.pipe(map((data) => Message.decode(new _m0.Reader(data))));
   }
 
-  ListRoom(request: ListRoomRequest): Observable<Room> {
+  ListRoom(request: ListRoomRequest): Promise<ListRoomResponse> {
     const data = ListRoomRequest.encode(request).finish();
-    const result = this.rpc.serverStreamingRequest(this.service, "ListRoom", data);
-    return result.pipe(map((data) => Room.decode(new _m0.Reader(data))));
+    const promise = this.rpc.request(this.service, "ListRoom", data);
+    return promise.then((data) => ListRoomResponse.decode(new _m0.Reader(data)));
   }
 
   DeleteRoom(request: RoomId): Promise<Empty> {
