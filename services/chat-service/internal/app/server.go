@@ -1,15 +1,11 @@
 package app
 
 import (
-	"cloud.google.com/go/pubsub"
 	"context"
-	"github.com/go-redis/redis/v9"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
-	"github.com/salazarhugo/cheers1/services/chat-service/cache"
 	"github.com/salazarhugo/cheers1/services/chat-service/internal/repository"
 	"google.golang.org/api/chat/v1"
 	"sync"
-	"time"
 )
 
 type Server struct {
@@ -20,22 +16,7 @@ type Server struct {
 }
 
 func NewServer() *Server {
-	cache := cache.NewCache(
-		time.Duration(time.Duration.Hours(1)),
-		redis.NewClient(&redis.Options{
-			Addr:     "redis-18624.c228.us-central1-1.gce.cloud.redislabs.com:18624",
-			Password: "mBiW18GNIgPzQTbBMDEz71UVsAcNDOYF",
-			DB:       0,
-		}),
-	)
-
-	ctx := context.Background()
-	client, err := pubsub.NewClient(ctx, "cheers-a275e")
-	if err != nil {
-		return nil
-	}
-
-	chatRepository := repository.NewChatRepository(cache, client)
+	chatRepository := repository.NewChatRepository()
 
 	return &Server{
 		UnimplementedChatServiceServer: pb.UnimplementedChatServiceServer{},

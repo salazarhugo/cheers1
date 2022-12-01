@@ -23,7 +23,7 @@ func (s *Server) SendMessage(server pb.ChatService_SendMessageServer) error {
 		return err
 	}
 
-	err = s.chatRepository.SendMessage(msg, server)
+	err = s.chatRepository.SendMessage(msg)
 
 	//go func() {
 	//	streams := s.channel[msg.Room.GetId()]

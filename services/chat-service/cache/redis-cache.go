@@ -187,7 +187,7 @@ func (cache *redisCache) SetMessage(msg *pb.Message) error {
 
 	err = client.Watch(context.Background(), func(tx *redis.Tx) error {
 		cmd := tx.ZAdd(context.Background(), getKeyRoomMessages(msg.GetRoomId()), redis.Z{
-			Score:  float64(msg.GetCreateTime().Seconds),
+			Score:  float64(msg.CreateTime),
 			Member: buff.String(),
 		})
 
@@ -456,7 +456,7 @@ func (cache *redisCache) GetRoomWithId(userId string, roomId string) (*pb.Room, 
 
 	if lastMessage != nil {
 		room.LastMessageText = lastMessage.Text
-		room.LastMessageTime = lastMessage.CreateTime
+		room.LastMessageTime = timestamppb.Now()
 		room.LastMessageType = lastMessage.Type
 	}
 

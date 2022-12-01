@@ -267,7 +267,7 @@ export interface Message {
   likeCount: number;
   type: MessageType;
   status: Message_Status;
-  createTime: Date | undefined;
+  createTime: number;
 }
 
 export enum Message_Status {
@@ -1418,7 +1418,7 @@ function createBaseMessage(): Message {
     likeCount: 0,
     type: 0,
     status: 0,
-    createTime: undefined,
+    createTime: 0,
   };
 }
 
@@ -1457,8 +1457,8 @@ export const Message = {
     if (message.status !== 0) {
       writer.uint32(88).int32(message.status);
     }
-    if (message.createTime !== undefined) {
-      Timestamp.encode(toTimestamp(message.createTime), writer.uint32(98).fork()).ldelim();
+    if (message.createTime !== 0) {
+      writer.uint32(96).int32(message.createTime);
     }
     return writer;
   },
@@ -1504,7 +1504,7 @@ export const Message = {
           message.status = reader.int32() as any;
           break;
         case 12:
-          message.createTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.createTime = reader.int32();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1527,7 +1527,7 @@ export const Message = {
       likeCount: isSet(object.likeCount) ? Number(object.likeCount) : 0,
       type: isSet(object.type) ? messageTypeFromJSON(object.type) : 0,
       status: isSet(object.status) ? message_StatusFromJSON(object.status) : 0,
-      createTime: isSet(object.createTime) ? fromJsonTimestamp(object.createTime) : undefined,
+      createTime: isSet(object.createTime) ? Number(object.createTime) : 0,
     };
   },
 
@@ -1544,7 +1544,7 @@ export const Message = {
     message.likeCount !== undefined && (obj.likeCount = Math.round(message.likeCount));
     message.type !== undefined && (obj.type = messageTypeToJSON(message.type));
     message.status !== undefined && (obj.status = message_StatusToJSON(message.status));
-    message.createTime !== undefined && (obj.createTime = message.createTime.toISOString());
+    message.createTime !== undefined && (obj.createTime = Math.round(message.createTime));
     return obj;
   },
 
@@ -1561,7 +1561,7 @@ export const Message = {
     message.likeCount = object.likeCount ?? 0;
     message.type = object.type ?? 0;
     message.status = object.status ?? 0;
-    message.createTime = object.createTime ?? undefined;
+    message.createTime = object.createTime ?? 0;
     return message;
   },
 };

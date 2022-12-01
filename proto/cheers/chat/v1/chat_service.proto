@@ -179,7 +179,7 @@ message Message {
     FAILED = 4;
   }
   Status status = 11;
-  google.protobuf.Timestamp create_time = 12;
+  int32 create_time = 12;
 }
 
 message MessageItem {

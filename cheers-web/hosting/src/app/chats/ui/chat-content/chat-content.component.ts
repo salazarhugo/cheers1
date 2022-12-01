@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Chat} from "../../../shared/data/models/chat.model";
 import {ChatMessage} from "../../../shared/data/models/chat-message.model";
 import {ChatService} from "../../data/chat.service";
+import {Message, Message_Status, MessageType} from "../../../../gen/ts/cheers/chat/v1/chat_service";
 
 @Component({
     selector: 'app-chat-content',
@@ -37,11 +38,19 @@ export class ChatContentComponent implements OnInit {
 
     sendMessage() {
         const roomId = this.room.id.replace(':', '')
-        const message: ChatMessage = {
+        const message: Message = {
+            createTime: new Date(),
+            likeCount: 0,
+            picture: "",
+            senderId: "55FEvHawinQCa9jgH7ZdWESR3ri2",
+            senderName: "Hugo",
+            senderPicture: "",
+            senderUsername: "",
+            status: Message_Status.DELIVERED,
+            type: MessageType.TEXT,
             id: "",
             roomId: roomId,
-            text: this.text,
-            isCreator: false,
+            text: this.text
         }
         this.socket.send(JSON.stringify(message));
         this.text = ""

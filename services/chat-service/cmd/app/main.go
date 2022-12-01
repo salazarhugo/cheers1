@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"github.com/go-redis/redis/v9"
@@ -11,7 +10,7 @@ import (
 	"github.com/salazarhugo/cheers1/libs/auth"
 	profiler "github.com/salazarhugo/cheers1/libs/profiler"
 	"github.com/salazarhugo/cheers1/services/chat-service/internal/app"
-	"github.com/salazarhugo/cheers1/services/chat-service/internal/models"
+	"github.com/salazarhugo/cheers1/services/chat-service/internal/repository"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
@@ -108,21 +107,18 @@ func ListenMessages(conn *websocket.Conn, roomId string) {
 }
 
 func SendMessage(conn *websocket.Conn) {
-	client := redis.NewClient(&redis.Options{
-		Addr:     "redis-18624.c228.us-central1-1.gce.cloud.redislabs.com:18624",
-		Password: "mBiW18GNIgPzQTbBMDEz71UVsAcNDOYF",
-		DB:       0,
-	})
+	repo := repository.NewChatRepository()
+
 	for {
-		var req models.ChatMessage
-		err := conn.ReadJSON(&req)
+		var chatMessage chat.Message
+		err := conn.ReadJSON(&chatMessage)
 		if err != nil {
 			log.Println(err)
 		}
-		log.Println(req)
-		bytes, err := json.Marshal(req)
-		i := client.Publish(context.Background(), req.RoomId, bytes)
-		log.Println(i.String())
+		err = repo.SendMessage(&chatMessage)
+		if err != nil {
+			log.Println(err)
+		}
 	}
 }
 
