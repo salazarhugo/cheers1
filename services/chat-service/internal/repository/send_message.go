@@ -12,6 +12,7 @@ func (c chatRepository) SendMessage(
 	msg *pb.Message,
 ) error {
 	ctx := context.Background()
+	log.Println("HUGO")
 
 	// Store message in cache
 	err := c.cache.SetMessage(msg)
@@ -24,7 +25,7 @@ func (c chatRepository) SendMessage(
 	// Redis Pub/Sub
 	c.cache.Publish(ctx, msg.RoomId, bytes)
 	// Google Cloud Pub/Sub
-	go PublishToPubSub(msg.SenderId, msg.RoomId)
+	//go PublishToPubSub(msg.SenderId, msg.RoomId)
 
 	return nil
 }

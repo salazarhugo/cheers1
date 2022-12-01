@@ -304,7 +304,7 @@ func getDirectRoomId(userId1 string, userId2 string) string {
 		maxUserId = userId1
 	}
 
-	return fmt.Sprintf("%s:%s", minUserId, maxUserId)
+	return fmt.Sprintf("%s%s", minUserId, maxUserId)
 }
 
 func (cache *redisCache) CreateGroup(name string, UUIDs []string) *pb.Room {

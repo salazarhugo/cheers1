@@ -5,9 +5,12 @@
                 <mat-icon>settings</mat-icon>
             </button>
             <img alt="avatar" height="50" src="../../../assets/cheers-logo.png" width="50">
-            <button mat-icon-button>
+            <button mat-icon-button [mat-menu-trigger-for]="menu">
                 <mat-icon>chat_bubble</mat-icon>
             </button>
+            <mat-menu #menu="matMenu">
+                <app-chat-new></app-chat-new>
+            </mat-menu>
         </div>
         <mat-list role="list">
             <div *ngFor="let room of rooms" fxLayout="column">

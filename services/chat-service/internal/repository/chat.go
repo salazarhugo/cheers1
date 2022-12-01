@@ -38,7 +38,7 @@ func NewChatRepository() ChatRepository {
 	)
 	pubsub, err := pubsub.NewClient(context.Background(), "cheers-a275e")
 	if err != nil {
-		return nil
+		pubsub = nil
 	}
 
 	return &chatRepository{

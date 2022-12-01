@@ -3,12 +3,15 @@
     <div *ngIf="$user | async as user">
         <app-profile-header [user]="user">
         </app-profile-header>
-        <div>
+        <div fxLayoutGap="8px">
             <button (click)="user.followBack = false;user.followers = user.followers - 1; unfollowUser(user.username)" *ngIf="user.followBack" color="primary" mat-button>
                 Unfollow
             </button>
             <button (click)="user.followBack = true;user.followers = user.followers + 1; followUser(user.username)" *ngIf="!user.followBack" color="primary" mat-flat-button>
                 Follow
+            </button>
+            <button color="primary" mat-flat-button style="border-radius: 12px">
+                Message
             </button>
             <button *ngIf="isAdmin" (click)="promoteToBusinessAccount(user.id)" color="primary" mat-flat-button>
                 Promote to Business Account

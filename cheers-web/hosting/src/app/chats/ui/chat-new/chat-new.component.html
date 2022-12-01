@@ -1,0 +1,24 @@
+<div class="main">
+    <h2>Start a Chat</h2>
+    <div class="search-bar" fxLayoutAlign="none center">
+        <mat-icon>search</mat-icon>
+        <input #searchInput placeholder="Search Cheers" type="text" class="cheers-input">
+        <button mat-button *ngIf="searchInput.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchInput.value=''">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <span class="mat-step-label">Select 2 or more friends to create a group.</span>
+    <h3>Best Friends</h3>
+    <div class="chat-new-footer" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+       <button mat-flat-button color="primary" fxFlex="50">
+           <mat-icon>chat_bubble</mat-icon>
+           <span>Chat</span>
+       </button>
+        <button mat-flat-button color="primary" fxFlex="50">
+            <mat-icon>call</mat-icon>
+            <span>Start Call</span>
+        </button>
+    </div>
+</div>
+

@@ -109,6 +109,7 @@ func ListenMessages(conn *websocket.Conn, roomId string) {
 
 func SendMessage(conn *websocket.Conn) {
 	repo := repository.NewChatRepository()
+	log.Println(repo)
 
 	for {
 		var chatMessage chat.Message
@@ -118,6 +119,9 @@ func SendMessage(conn *websocket.Conn) {
 			log.Println(err)
 		}
 
+		log.Println(repo)
+		log.Println("DORA")
+		log.Println(&chatMessage)
 		err = repo.SendMessage(&chatMessage)
 		if err != nil {
 			log.Println(err)

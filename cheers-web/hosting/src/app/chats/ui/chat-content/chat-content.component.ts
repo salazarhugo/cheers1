@@ -22,11 +22,11 @@ export class ChatContentComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.chatService.getRoomMessages(this.room.id).subscribe(messages => {
+        const roomId = this.room.id.replace(':', '')
+        this.chatService.getRoomMessages(roomId).subscribe(messages => {
             this.messages = messages
         })
 
-        const roomId = this.room.id.replace(':', '')
         this.socket = new WebSocket('ws://localhost:8000/ws', roomId);
 
         this.socket.addEventListener('message', (message) => {
@@ -39,7 +39,7 @@ export class ChatContentComponent implements OnInit {
     sendMessage() {
         const roomId = this.room.id.replace(':', '')
         const message: Message = {
-            createTime: new Date().getSeconds(),
+            createTime: 0,
             likeCount: 0,
             picture: "",
             senderId: "55FEvHawinQCa9jgH7ZdWESR3ri2",
