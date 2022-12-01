@@ -6,8 +6,18 @@ import (
 
 func (c chatRepository) ListRoomMessages(
 	roomID string,
-	request *chat.ListRoomMessagesRequest,
-) ([]*chat.Message, error) {
+	userID string,
+) ([]*chat.MessageItem, error) {
+	items := make([]*chat.MessageItem, 0)
+
 	messages := c.cache.GetMessages(roomID)
-	return messages, nil
+	for _, msg := range messages {
+		items = append(items, &chat.MessageItem{
+			Message: msg,
+			Sender:  userID == msg.SenderId,
+			Liked:   false,
+		})
+	}
+
+	return items, nil
 }

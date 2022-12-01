@@ -105,7 +105,7 @@ func (cache *redisCache) GetRoomStatus(roomId string, userId string, otherUserId
 	if lastMsg == nil {
 		return pb.RoomStatus_EMPTY
 	}
-	isLastMessageMe := lastMsg.Sender == userId
+	isLastMessageMe := lastMsg.SenderId == userId
 	seenByMe := lastMsg.Id == lastSeenMsg[0]
 	seenByOther := lastMsg.Id == lastSeenMsg[1]
 
@@ -186,8 +186,8 @@ func (cache *redisCache) SetMessage(msg *pb.Message) error {
 	}
 
 	err = client.Watch(context.Background(), func(tx *redis.Tx) error {
-		cmd := tx.ZAdd(context.Background(), getKeyRoomMessages(msg.GetRoom().GetId()), redis.Z{
-			Score:  float64(msg.GetCreated().Seconds),
+		cmd := tx.ZAdd(context.Background(), getKeyRoomMessages(msg.GetRoomId()), redis.Z{
+			Score:  float64(msg.GetCreateTime().Seconds),
 			Member: buff.String(),
 		})
 
@@ -195,7 +195,7 @@ func (cache *redisCache) SetMessage(msg *pb.Message) error {
 			return cmd.Err()
 		}
 
-		cmd2 := tx.Expire(context.Background(), getKeyRoomMessages(msg.GetRoom().GetId()), 24*time.Hour)
+		cmd2 := tx.Expire(context.Background(), getKeyRoomMessages(msg.GetRoomId()), 24*time.Hour)
 		if cmd2.Err() != nil {
 			return cmd.Err()
 		}
@@ -455,8 +455,8 @@ func (cache *redisCache) GetRoomWithId(userId string, roomId string) (*pb.Room, 
 	lastMessage := getLatestMessage(client, roomId)
 
 	if lastMessage != nil {
-		room.LastMessageText = lastMessage.Message
-		room.LastMessageTime = lastMessage.Created
+		room.LastMessageText = lastMessage.Text
+		room.LastMessageTime = lastMessage.CreateTime
 		room.LastMessageType = lastMessage.Type
 	}
 

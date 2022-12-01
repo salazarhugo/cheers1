@@ -35,7 +35,7 @@ func (c chatRepository) JoinRoom(
 				return err
 			}
 
-			log.Println("sending message to stream: " + message.Message)
+			log.Println("sending message to stream: " + message.Text)
 			err := server.Send(&message)
 			if err != nil {
 				log.Println(err)

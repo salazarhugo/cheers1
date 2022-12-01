@@ -13,7 +13,7 @@ type ChatRepository interface {
 	JoinRoom(request *pb.JoinRoomRequest, server pb.ChatService_JoinRoomServer) error
 	ListRoom(userID string) ([]*pb.Room, error)
 
-	ListRoomMessages(roomID string, request *pb.ListRoomMessagesRequest) ([]*pb.Message, error)
+	ListRoomMessages(roomID string, userID string) ([]*pb.MessageItem, error)
 	ListMembers(context context.Context, request *pb.ListMembersRequest) ([]*user.UserItem, error)
 
 	SendMessage(msg *pb.Message, server pb.ChatService_SendMessageServer) error

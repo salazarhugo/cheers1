@@ -18,8 +18,8 @@ func (c chatRepository) SendMessage(
 
 	go func() {
 		err := utils.PublishProtoMessages("chat-topic", &pb.ChatEvent{
-			SenderId: msg.Sender,
-			RoomId:   msg.Room.Id,
+			SenderId: msg.SenderId,
+			RoomId:   msg.RoomId,
 		})
 		if err != nil {
 			log.Println(err)
@@ -31,8 +31,8 @@ func (c chatRepository) SendMessage(
 		panic(err)
 	}
 
-	log.Println("publishing message to channel..." + msg.GetRoom().GetId())
-	err = c.cache.Publish(server.Context(), msg.GetRoom().GetId(), json).Err()
+	log.Println("publishing message to channel..." + msg.GetRoomId())
+	err = c.cache.Publish(server.Context(), msg.GetRoomId(), json).Err()
 	if err != nil {
 		log.Println("could not publish to channel", err)
 	}

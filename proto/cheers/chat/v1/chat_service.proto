@@ -62,7 +62,7 @@ message ListRoomMessagesRequest {
 }
 
 message ListRoomMessagesResponse {
-  repeated Message messages = 1;
+  repeated MessageItem messages = 1;
 }
 
 message ListRoomRequest {
@@ -162,16 +162,15 @@ message LikeMessageReq {
 
 message Message {
   string id = 1;
-  string sender_id = 2;
-  Room room = 3;
-  string text = 4;
-  string sender_picture = 5;
-  string sender_name = 6;
-  string sender_username = 7;
-  google.protobuf.Timestamp create_time = 8;
-  string photo_url = 9;
+  string room_id = 2;
+  string text = 3;
+  string picture = 4;
+  string sender_id = 5;
+  string sender_picture = 6;
+  string sender_name = 7;
+  string sender_username = 8;
+  int32 like_count = 9;
   MessageType type = 10;
-  int32 like_count = 11;
   enum Status {
     EMPTY = 0;
     SENT = 1;
@@ -179,8 +178,14 @@ message Message {
     READ = 3;
     FAILED = 4;
   }
-  Status status = 12;
-  bool sender = 13;
+  Status status = 11;
+  google.protobuf.Timestamp create_time = 12;
+}
+
+message MessageItem {
+  Message message = 1;
+  bool sender = 2;
+  bool liked = 3;
 }
 
 
