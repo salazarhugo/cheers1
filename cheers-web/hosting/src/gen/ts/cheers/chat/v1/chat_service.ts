@@ -257,17 +257,18 @@ export interface LikeMessageReq {
 
 export interface Message {
   id: string;
-  sender: string;
+  senderId: string;
   room: Room | undefined;
-  message: string;
-  senderpicture: string;
+  text: string;
+  senderPicture: string;
   senderName: string;
   senderUsername: string;
-  created: Date | undefined;
+  createTime: Date | undefined;
   photoUrl: string;
   type: MessageType;
   likeCount: number;
   status: Message_Status;
+  sender: boolean;
 }
 
 export enum Message_Status {
@@ -1400,17 +1401,18 @@ export const LikeMessageReq = {
 function createBaseMessage(): Message {
   return {
     id: "",
-    sender: "",
+    senderId: "",
     room: undefined,
-    message: "",
-    senderpicture: "",
+    text: "",
+    senderPicture: "",
     senderName: "",
     senderUsername: "",
-    created: undefined,
+    createTime: undefined,
     photoUrl: "",
     type: 0,
     likeCount: 0,
     status: 0,
+    sender: false,
   };
 }
 
@@ -1419,17 +1421,17 @@ export const Message = {
     if (message.id !== "") {
       writer.uint32(10).string(message.id);
     }
-    if (message.sender !== "") {
-      writer.uint32(18).string(message.sender);
+    if (message.senderId !== "") {
+      writer.uint32(18).string(message.senderId);
     }
     if (message.room !== undefined) {
       Room.encode(message.room, writer.uint32(26).fork()).ldelim();
     }
-    if (message.message !== "") {
-      writer.uint32(34).string(message.message);
+    if (message.text !== "") {
+      writer.uint32(34).string(message.text);
     }
-    if (message.senderpicture !== "") {
-      writer.uint32(42).string(message.senderpicture);
+    if (message.senderPicture !== "") {
+      writer.uint32(42).string(message.senderPicture);
     }
     if (message.senderName !== "") {
       writer.uint32(50).string(message.senderName);
@@ -1437,8 +1439,8 @@ export const Message = {
     if (message.senderUsername !== "") {
       writer.uint32(58).string(message.senderUsername);
     }
-    if (message.created !== undefined) {
-      Timestamp.encode(toTimestamp(message.created), writer.uint32(66).fork()).ldelim();
+    if (message.createTime !== undefined) {
+      Timestamp.encode(toTimestamp(message.createTime), writer.uint32(66).fork()).ldelim();
     }
     if (message.photoUrl !== "") {
       writer.uint32(74).string(message.photoUrl);
@@ -1451,6 +1453,9 @@ export const Message = {
     }
     if (message.status !== 0) {
       writer.uint32(96).int32(message.status);
+    }
+    if (message.sender === true) {
+      writer.uint32(104).bool(message.sender);
     }
     return writer;
   },
@@ -1466,16 +1471,16 @@ export const Message = {
           message.id = reader.string();
           break;
         case 2:
-          message.sender = reader.string();
+          message.senderId = reader.string();
           break;
         case 3:
           message.room = Room.decode(reader, reader.uint32());
           break;
         case 4:
-          message.message = reader.string();
+          message.text = reader.string();
           break;
         case 5:
-          message.senderpicture = reader.string();
+          message.senderPicture = reader.string();
           break;
         case 6:
           message.senderName = reader.string();
@@ -1484,7 +1489,7 @@ export const Message = {
           message.senderUsername = reader.string();
           break;
         case 8:
-          message.created = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.createTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
         case 9:
           message.photoUrl = reader.string();
@@ -1498,6 +1503,9 @@ export const Message = {
         case 12:
           message.status = reader.int32() as any;
           break;
+        case 13:
+          message.sender = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1509,51 +1517,54 @@ export const Message = {
   fromJSON(object: any): Message {
     return {
       id: isSet(object.id) ? String(object.id) : "",
-      sender: isSet(object.sender) ? String(object.sender) : "",
+      senderId: isSet(object.senderId) ? String(object.senderId) : "",
       room: isSet(object.room) ? Room.fromJSON(object.room) : undefined,
-      message: isSet(object.message) ? String(object.message) : "",
-      senderpicture: isSet(object.senderpicture) ? String(object.senderpicture) : "",
+      text: isSet(object.text) ? String(object.text) : "",
+      senderPicture: isSet(object.senderPicture) ? String(object.senderPicture) : "",
       senderName: isSet(object.senderName) ? String(object.senderName) : "",
       senderUsername: isSet(object.senderUsername) ? String(object.senderUsername) : "",
-      created: isSet(object.created) ? fromJsonTimestamp(object.created) : undefined,
+      createTime: isSet(object.createTime) ? fromJsonTimestamp(object.createTime) : undefined,
       photoUrl: isSet(object.photoUrl) ? String(object.photoUrl) : "",
       type: isSet(object.type) ? messageTypeFromJSON(object.type) : 0,
       likeCount: isSet(object.likeCount) ? Number(object.likeCount) : 0,
       status: isSet(object.status) ? message_StatusFromJSON(object.status) : 0,
+      sender: isSet(object.sender) ? Boolean(object.sender) : false,
     };
   },
 
   toJSON(message: Message): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
-    message.sender !== undefined && (obj.sender = message.sender);
+    message.senderId !== undefined && (obj.senderId = message.senderId);
     message.room !== undefined && (obj.room = message.room ? Room.toJSON(message.room) : undefined);
-    message.message !== undefined && (obj.message = message.message);
-    message.senderpicture !== undefined && (obj.senderpicture = message.senderpicture);
+    message.text !== undefined && (obj.text = message.text);
+    message.senderPicture !== undefined && (obj.senderPicture = message.senderPicture);
     message.senderName !== undefined && (obj.senderName = message.senderName);
     message.senderUsername !== undefined && (obj.senderUsername = message.senderUsername);
-    message.created !== undefined && (obj.created = message.created.toISOString());
+    message.createTime !== undefined && (obj.createTime = message.createTime.toISOString());
     message.photoUrl !== undefined && (obj.photoUrl = message.photoUrl);
     message.type !== undefined && (obj.type = messageTypeToJSON(message.type));
     message.likeCount !== undefined && (obj.likeCount = Math.round(message.likeCount));
     message.status !== undefined && (obj.status = message_StatusToJSON(message.status));
+    message.sender !== undefined && (obj.sender = message.sender);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Message>, I>>(object: I): Message {
     const message = createBaseMessage();
     message.id = object.id ?? "";
-    message.sender = object.sender ?? "";
+    message.senderId = object.senderId ?? "";
     message.room = (object.room !== undefined && object.room !== null) ? Room.fromPartial(object.room) : undefined;
-    message.message = object.message ?? "";
-    message.senderpicture = object.senderpicture ?? "";
+    message.text = object.text ?? "";
+    message.senderPicture = object.senderPicture ?? "";
     message.senderName = object.senderName ?? "";
     message.senderUsername = object.senderUsername ?? "";
-    message.created = object.created ?? undefined;
+    message.createTime = object.createTime ?? undefined;
     message.photoUrl = object.photoUrl ?? "";
     message.type = object.type ?? 0;
     message.likeCount = object.likeCount ?? 0;
     message.status = object.status ?? 0;
+    message.sender = object.sender ?? false;
     return message;
   },
 };

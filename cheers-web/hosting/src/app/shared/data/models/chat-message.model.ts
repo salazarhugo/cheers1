@@ -10,5 +10,6 @@ export class ChatMessage {
 export function toChatMessage(message: Message): ChatMessage {
     let chatMessage = new ChatMessage()
     Object.assign(chatMessage, message)
+    chatMessage.text = message.message
     return chatMessage
 }

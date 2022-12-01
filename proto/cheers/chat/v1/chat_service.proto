@@ -162,17 +162,16 @@ message LikeMessageReq {
 
 message Message {
   string id = 1;
-  string sender = 2;
+  string sender_id = 2;
   Room room = 3;
-  string message = 4;
-  string senderpicture = 5;
-  string senderName = 6;
-  string senderUsername = 7;
-  google.protobuf.Timestamp created = 8;
+  string text = 4;
+  string sender_picture = 5;
+  string sender_name = 6;
+  string sender_username = 7;
+  google.protobuf.Timestamp create_time = 8;
   string photo_url = 9;
   MessageType type = 10;
   int32 like_count = 11;
-
   enum Status {
     EMPTY = 0;
     SENT = 1;
@@ -181,6 +180,7 @@ message Message {
     FAILED = 4;
   }
   Status status = 12;
+  bool sender = 13;
 }
 
 
