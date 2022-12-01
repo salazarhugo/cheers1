@@ -39,7 +39,7 @@ export class ChatContentComponent implements OnInit {
     sendMessage() {
         const roomId = this.room.id.replace(':', '')
         const message: Message = {
-            createTime: new Date(),
+            createTime: new Date().getSeconds(),
             likeCount: 0,
             picture: "",
             senderId: "55FEvHawinQCa9jgH7ZdWESR3ri2",
@@ -52,7 +52,8 @@ export class ChatContentComponent implements OnInit {
             roomId: roomId,
             text: this.text
         }
-        this.socket.send(JSON.stringify(message));
+        const bytes = Message.encode(message).finish()
+        this.socket.send(bytes);
         this.text = ""
     }
 }

@@ -18,6 +18,8 @@ func (s *Server) ListRoomMessages(
 		return nil, status.Error(codes.Internal, "failed to retrieve userID")
 	}
 
+	log.Println("HEY")
+	log.Println(req.GetRoomId())
 	messages, err := s.chatRepository.ListRoomMessages(req.RoomId, userID)
 	if err != nil {
 		log.Println(err)

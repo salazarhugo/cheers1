@@ -16,6 +16,7 @@ func (c chatRepository) SendMessage(
 	// Store message in cache
 	err := c.cache.SetMessage(msg)
 	if err != nil {
+		log.Println(err)
 		return err
 	}
 

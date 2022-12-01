@@ -15,6 +15,7 @@ import (
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health/grpc_health_v1"
+	"google.golang.org/protobuf/proto"
 	"log"
 	"net"
 	"net/http"
@@ -111,10 +112,12 @@ func SendMessage(conn *websocket.Conn) {
 
 	for {
 		var chatMessage chat.Message
-		err := conn.ReadJSON(&chatMessage)
+		_, b, err := conn.ReadMessage()
+		err = proto.Unmarshal(b, &chatMessage)
 		if err != nil {
 			log.Println(err)
 		}
+
 		err = repo.SendMessage(&chatMessage)
 		if err != nil {
 			log.Println(err)
