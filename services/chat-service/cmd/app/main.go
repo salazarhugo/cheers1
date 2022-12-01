@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -9,9 +10,8 @@ import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
 	"github.com/salazarhugo/cheers1/libs/auth"
 	profiler "github.com/salazarhugo/cheers1/libs/profiler"
-	"github.com/salazarhugo/cheers1/services/chat-service/cache"
 	"github.com/salazarhugo/cheers1/services/chat-service/internal/app"
-	"github.com/salazarhugo/cheers1/services/chat-service/internal/repository"
+	"github.com/salazarhugo/cheers1/services/chat-service/internal/models"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
@@ -21,7 +21,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-	"time"
 )
 
 func init() {
@@ -31,7 +30,7 @@ func init() {
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8081"
+		port = "8000"
 		log.Printf("Defaulting to port %s", port)
 	}
 
@@ -66,49 +65,64 @@ func main() {
 
 // serveWs handles websocket requests from the peer.
 func serveWs(w http.ResponseWriter, r *http.Request) {
+	var roomId string
+	h := http.Header{}
+	for _, sub := range websocket.Subprotocols(r) {
+		h.Set("Sec-WebSocket-Protocol", sub)
+		roomId = sub
+	}
+
 	upgrader := websocket.Upgrader{
 		CheckOrigin: func(r *http.Request) bool {
 			return true
 		},
 	}
-	conn, err := upgrader.Upgrade(w, r, nil)
-	if err != nil {
-		log.Println(err)
-		return
-	}
-
-	go WriteMessages(conn)
-	go ReadMessages(conn)
-}
-
-func WriteMessages(conn *websocket.Conn) {
-	cache := cache.NewCache(
-		time.Duration(time.Duration.Hours(1)),
-		redis.NewClient(&redis.Options{
-			Addr:     "redis-18624.c228.us-central1-1.gce.cloud.redislabs.com:18624",
-			Password: "mBiW18GNIgPzQTbBMDEz71UVsAcNDOYF",
-			DB:       0,
-		}),
-	)
-	repo := repository.NewChatRepository(cache, nil)
-	rooms, err := repo.ListRoom("55FEvHawinQCa9jgH7ZdWESR3ri2")
-	bytes, err := json.Marshal(rooms)
-
-	err = conn.WriteMessage(websocket.TextMessage, bytes)
+	conn, err := upgrader.Upgrade(w, r, h)
 	if err != nil {
 		log.Println(err)
 	}
+
+	go ListenMessages(conn, roomId)
+	go SendMessage(conn)
 }
 
-func ReadMessages(conn *websocket.Conn) {
+func ListenMessages(conn *websocket.Conn, roomId string) {
+	client := redis.NewClient(&redis.Options{
+		Addr:     "redis-18624.c228.us-central1-1.gce.cloud.redislabs.com:18624",
+		Password: "mBiW18GNIgPzQTbBMDEz71UVsAcNDOYF",
+		DB:       0,
+	})
+	sub := client.Subscribe(context.Background(), roomId)
+	ch := sub.Channel()
 	for {
-		_, msg, err := conn.ReadMessage()
-		if err != nil {
-			log.Printf("failed to read message %v", err)
-			conn.Close()
-			return
+		select {
+		case msg := <-ch:
+			log.Println("Received msg from redis pubsub")
+			err := conn.WriteMessage(websocket.TextMessage, []byte(msg.Payload))
+			if err != nil {
+				log.Println(err)
+			}
 		}
-		log.Println(string(msg))
+	}
+
+}
+
+func SendMessage(conn *websocket.Conn) {
+	client := redis.NewClient(&redis.Options{
+		Addr:     "redis-18624.c228.us-central1-1.gce.cloud.redislabs.com:18624",
+		Password: "mBiW18GNIgPzQTbBMDEz71UVsAcNDOYF",
+		DB:       0,
+	})
+	for {
+		var req models.ChatMessage
+		err := conn.ReadJSON(&req)
+		if err != nil {
+			log.Println(err)
+		}
+		log.Println(req)
+		bytes, err := json.Marshal(req)
+		i := client.Publish(context.Background(), req.RoomId, bytes)
+		log.Println(i.String())
 	}
 }
 

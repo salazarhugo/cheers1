@@ -48,8 +48,10 @@ export class SigninComponent implements OnInit {
                 userForm["email"],
                 userForm["password"],
             ).then(res => {
+                console.log(res)
                 this.isLoading = false
             }).catch((err: FirebaseError) => {
+                console.log(err)
                 this.errorMessage = err.message
                 this.isLoading = false
             })

@@ -24,16 +24,13 @@ export class ChatComponent implements OnInit {
         this.chatService.getRooms().subscribe(rooms => {
             this.rooms = rooms
         })
-
-        this.route.firstChild?.paramMap.subscribe((params: ParamMap) => {
-            const roomId = params.get("id")
-            if (roomId) {
-                this.room = this.rooms?.find(rooms => rooms.id == roomId)
-            }
-        })
     }
 
     onImgError(event: any) {
         event.target.src = 'assets/default_profile_picture.png';
+    }
+
+    setRoom(roomId: string) {
+        this.room = this.rooms?.find(rooms => rooms.id == roomId)
     }
 }

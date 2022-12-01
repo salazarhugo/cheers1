@@ -13,6 +13,7 @@ import {RouterModule} from "@angular/router";
 import {UserChipModule} from "../users/ui/user-chip/user-chip.module";
 import {GrpcCoreModule} from "@ngx-grpc/core";
 import {GrpcWebClientModule} from "@ngx-grpc/grpc-web-client";
+import {ChatMessageItemModule} from "./ui/chat-message-item/chat-message-item.module";
 
 
 @NgModule({
@@ -21,16 +22,17 @@ import {GrpcWebClientModule} from "@ngx-grpc/grpc-web-client";
       RoomItemComponent,
       ChatContentComponent,
   ],
-  imports: [
-      CommonModule,
-      ChatsRoutingModule,
-      RouterModule,
-      MaterialModule,
-      UserChipModule,
-      GrpcCoreModule.forRoot(),
-      GrpcWebClientModule.forRoot({
-          settings: {host: 'https://chat-r3a2dr4u4a-nw.a.run.app:443'},
-      }),
-  ]
+    imports: [
+        CommonModule,
+        ChatsRoutingModule,
+        RouterModule,
+        MaterialModule,
+        UserChipModule,
+        GrpcCoreModule.forRoot(),
+        GrpcWebClientModule.forRoot({
+            settings: {host: 'https://chat-r3a2dr4u4a-nw.a.run.app:443'},
+        }),
+        ChatMessageItemModule,
+    ]
 })
 export class ChatsModule { }

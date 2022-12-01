@@ -169,6 +169,16 @@ export function typingEvent_TypeToJSON(object: TypingEvent_Type): string {
   }
 }
 
+export interface ListRoomMessagesRequest {
+  roomId: string;
+  pageSize: number;
+  page: number;
+}
+
+export interface ListRoomMessagesResponse {
+  messages: Message[];
+}
+
 export interface ListRoomRequest {
   pageSize: number;
   page: number;
@@ -237,6 +247,7 @@ export interface Room {
   lastMessageType: MessageType;
   created: Date | undefined;
   lastMessageTime: Date | undefined;
+  archived: boolean;
 }
 
 export interface LikeMessageReq {
@@ -377,6 +388,124 @@ export const TypingEvent = {
     message.roomId = object.roomId ?? "";
     message.userId = object.userId ?? "";
     message.type = object.type ?? 0;
+    return message;
+  },
+};
+
+function createBaseListRoomMessagesRequest(): ListRoomMessagesRequest {
+  return { roomId: "", pageSize: 0, page: 0 };
+}
+
+export const ListRoomMessagesRequest = {
+  encode(message: ListRoomMessagesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.roomId !== "") {
+      writer.uint32(10).string(message.roomId);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(16).int32(message.pageSize);
+    }
+    if (message.page !== 0) {
+      writer.uint32(24).int32(message.page);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListRoomMessagesRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListRoomMessagesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.roomId = reader.string();
+          break;
+        case 2:
+          message.pageSize = reader.int32();
+          break;
+        case 3:
+          message.page = reader.int32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListRoomMessagesRequest {
+    return {
+      roomId: isSet(object.roomId) ? String(object.roomId) : "",
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
+      page: isSet(object.page) ? Number(object.page) : 0,
+    };
+  },
+
+  toJSON(message: ListRoomMessagesRequest): unknown {
+    const obj: any = {};
+    message.roomId !== undefined && (obj.roomId = message.roomId);
+    message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
+    message.page !== undefined && (obj.page = Math.round(message.page));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListRoomMessagesRequest>, I>>(object: I): ListRoomMessagesRequest {
+    const message = createBaseListRoomMessagesRequest();
+    message.roomId = object.roomId ?? "";
+    message.pageSize = object.pageSize ?? 0;
+    message.page = object.page ?? 0;
+    return message;
+  },
+};
+
+function createBaseListRoomMessagesResponse(): ListRoomMessagesResponse {
+  return { messages: [] };
+}
+
+export const ListRoomMessagesResponse = {
+  encode(message: ListRoomMessagesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.messages) {
+      Message.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListRoomMessagesResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListRoomMessagesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.messages.push(Message.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListRoomMessagesResponse {
+    return { messages: Array.isArray(object?.messages) ? object.messages.map((e: any) => Message.fromJSON(e)) : [] };
+  },
+
+  toJSON(message: ListRoomMessagesResponse): unknown {
+    const obj: any = {};
+    if (message.messages) {
+      obj.messages = message.messages.map((e) => e ? Message.toJSON(e) : undefined);
+    } else {
+      obj.messages = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListRoomMessagesResponse>, I>>(object: I): ListRoomMessagesResponse {
+    const message = createBaseListRoomMessagesResponse();
+    message.messages = object.messages?.map((e) => Message.fromPartial(e)) || [];
     return message;
   },
 };
@@ -1027,6 +1156,7 @@ function createBaseRoom(): Room {
     lastMessageType: 0,
     created: undefined,
     lastMessageTime: undefined,
+    archived: false,
   };
 }
 
@@ -1073,6 +1203,9 @@ export const Room = {
     }
     if (message.lastMessageTime !== undefined) {
       Timestamp.encode(toTimestamp(message.lastMessageTime), writer.uint32(122).fork()).ldelim();
+    }
+    if (message.archived === true) {
+      writer.uint32(128).bool(message.archived);
     }
     return writer;
   },
@@ -1126,6 +1259,9 @@ export const Room = {
         case 15:
           message.lastMessageTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
           break;
+        case 16:
+          message.archived = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1150,6 +1286,7 @@ export const Room = {
       lastMessageType: isSet(object.lastMessageType) ? messageTypeFromJSON(object.lastMessageType) : 0,
       created: isSet(object.created) ? fromJsonTimestamp(object.created) : undefined,
       lastMessageTime: isSet(object.lastMessageTime) ? fromJsonTimestamp(object.lastMessageTime) : undefined,
+      archived: isSet(object.archived) ? Boolean(object.archived) : false,
     };
   },
 
@@ -1177,6 +1314,7 @@ export const Room = {
     message.lastMessageType !== undefined && (obj.lastMessageType = messageTypeToJSON(message.lastMessageType));
     message.created !== undefined && (obj.created = message.created.toISOString());
     message.lastMessageTime !== undefined && (obj.lastMessageTime = message.lastMessageTime.toISOString());
+    message.archived !== undefined && (obj.archived = message.archived);
     return obj;
   },
 
@@ -1196,6 +1334,7 @@ export const Room = {
     message.lastMessageType = object.lastMessageType ?? 0;
     message.created = object.created ?? undefined;
     message.lastMessageTime = object.lastMessageTime ?? undefined;
+    message.archived = object.archived ?? false;
     return message;
   },
 };
@@ -1470,6 +1609,7 @@ export interface ChatService {
   CreateChat(request: CreateChatReq): Promise<Room>;
   JoinRoom(request: JoinRoomRequest): Observable<Message>;
   ListRoom(request: ListRoomRequest): Promise<ListRoomResponse>;
+  ListRoomMessages(request: ListRoomMessagesRequest): Promise<ListRoomMessagesResponse>;
   DeleteRoom(request: RoomId): Promise<Empty>;
   GetRoomId(request: GetRoomIdReq): Promise<RoomId>;
   ListMembers(request: ListMembersRequest): Promise<ListMembersResponse>;
@@ -1493,6 +1633,7 @@ export class ChatServiceClientImpl implements ChatService {
     this.CreateChat = this.CreateChat.bind(this);
     this.JoinRoom = this.JoinRoom.bind(this);
     this.ListRoom = this.ListRoom.bind(this);
+    this.ListRoomMessages = this.ListRoomMessages.bind(this);
     this.DeleteRoom = this.DeleteRoom.bind(this);
     this.GetRoomId = this.GetRoomId.bind(this);
     this.ListMembers = this.ListMembers.bind(this);
@@ -1522,6 +1663,12 @@ export class ChatServiceClientImpl implements ChatService {
     const data = ListRoomRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListRoom", data);
     return promise.then((data) => ListRoomResponse.decode(new _m0.Reader(data)));
+  }
+
+  ListRoomMessages(request: ListRoomMessagesRequest): Promise<ListRoomMessagesResponse> {
+    const data = ListRoomMessagesRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ListRoomMessages", data);
+    return promise.then((data) => ListRoomMessagesResponse.decode(new _m0.Reader(data)));
   }
 
   DeleteRoom(request: RoomId): Promise<Empty> {

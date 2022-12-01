@@ -11,7 +11,7 @@
         </div>
         <mat-list role="list">
             <div *ngFor="let room of rooms" fxLayout="column">
-                <app-room-item [room]="room"></app-room-item>
+                <app-room-item [room]="room" (click)="setRoom(room.id)"></app-room-item>
             </div>
         </mat-list>
     </mat-sidenav>

@@ -25,6 +25,7 @@ type ChatServiceClient interface {
 	CreateChat(ctx context.Context, in *CreateChatReq, opts ...grpc.CallOption) (*Room, error)
 	JoinRoom(ctx context.Context, in *JoinRoomRequest, opts ...grpc.CallOption) (ChatService_JoinRoomClient, error)
 	ListRoom(ctx context.Context, in *ListRoomRequest, opts ...grpc.CallOption) (*ListRoomResponse, error)
+	ListRoomMessages(ctx context.Context, in *ListRoomMessagesRequest, opts ...grpc.CallOption) (*ListRoomMessagesResponse, error)
 	DeleteRoom(ctx context.Context, in *RoomId, opts ...grpc.CallOption) (*Empty, error)
 	GetRoomId(ctx context.Context, in *GetRoomIdReq, opts ...grpc.CallOption) (*RoomId, error)
 	ListMembers(ctx context.Context, in *ListMembersRequest, opts ...grpc.CallOption) (*ListMembersResponse, error)
@@ -91,6 +92,15 @@ func (x *chatServiceJoinRoomClient) Recv() (*Message, error) {
 func (c *chatServiceClient) ListRoom(ctx context.Context, in *ListRoomRequest, opts ...grpc.CallOption) (*ListRoomResponse, error) {
 	out := new(ListRoomResponse)
 	err := c.cc.Invoke(ctx, "/cheers.chat.v1.ChatService/ListRoom", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chatServiceClient) ListRoomMessages(ctx context.Context, in *ListRoomMessagesRequest, opts ...grpc.CallOption) (*ListRoomMessagesResponse, error) {
+	out := new(ListRoomMessagesResponse)
+	err := c.cc.Invoke(ctx, "/cheers.chat.v1.ChatService/ListRoomMessages", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -259,6 +269,7 @@ type ChatServiceServer interface {
 	CreateChat(context.Context, *CreateChatReq) (*Room, error)
 	JoinRoom(*JoinRoomRequest, ChatService_JoinRoomServer) error
 	ListRoom(context.Context, *ListRoomRequest) (*ListRoomResponse, error)
+	ListRoomMessages(context.Context, *ListRoomMessagesRequest) (*ListRoomMessagesResponse, error)
 	DeleteRoom(context.Context, *RoomId) (*Empty, error)
 	GetRoomId(context.Context, *GetRoomIdReq) (*RoomId, error)
 	ListMembers(context.Context, *ListMembersRequest) (*ListMembersResponse, error)
@@ -286,6 +297,9 @@ func (UnimplementedChatServiceServer) JoinRoom(*JoinRoomRequest, ChatService_Joi
 }
 func (UnimplementedChatServiceServer) ListRoom(context.Context, *ListRoomRequest) (*ListRoomResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListRoom not implemented")
+}
+func (UnimplementedChatServiceServer) ListRoomMessages(context.Context, *ListRoomMessagesRequest) (*ListRoomMessagesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListRoomMessages not implemented")
 }
 func (UnimplementedChatServiceServer) DeleteRoom(context.Context, *RoomId) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteRoom not implemented")
@@ -389,6 +403,24 @@ func _ChatService_ListRoom_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ChatServiceServer).ListRoom(ctx, req.(*ListRoomRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChatService_ListRoomMessages_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRoomMessagesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).ListRoomMessages(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.chat.v1.ChatService/ListRoomMessages",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).ListRoomMessages(ctx, req.(*ListRoomMessagesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -639,6 +671,10 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListRoom",
 			Handler:    _ChatService_ListRoom_Handler,
+		},
+		{
+			MethodName: "ListRoomMessages",
+			Handler:    _ChatService_ListRoomMessages_Handler,
 		},
 		{
 			MethodName: "DeleteRoom",

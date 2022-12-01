@@ -20,10 +20,18 @@
                  ngClass="avatar--extra-large" ngClass.lt-md="avatar--medium" ngClass.lt-sm="avatar--medium"/>
             <h2>{{room.name}}</h2>
         </div>
-        <div fxLayout="row">
-            <div class="search-bar" fxLayoutAlign="none center">
-                <input matInput #searchInput placeholder="Send a chat" type="text">
+        <div class="messages">
+            <div *ngFor="let message of messages" fxLayoutAlign="column" fxLayoutGap="8px">
+                <app-chat-message-item [message]="message"></app-chat-message-item>
             </div>
+        </div>
+        <div fxLayout="row" class="chat-footer">
+            <textarea aria-label="Add a comment…" placeholder="Send a chat" class="chat-input"
+                      autocomplete="off" style="height: 18px !important;"
+                      [(ngModel)]="text"></textarea>
+            <button class="outline" mat-icon-button [disabled]="text.length == 0" (click)="sendMessage()">
+                <mat-icon>send</mat-icon>
+            </button>
             <button class="chat-gallery-btn outline" mat-icon-button>
                 <mat-icon>image_outline</mat-icon>
             </button>

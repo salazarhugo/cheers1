@@ -51,13 +51,13 @@ export class AuthService {
         }
     }
 
-    signInWithEmailAndPassword(email: string, password: string) {
-        return new Promise<any>((resolve, reject) => {
-            this.afAuth.signInWithEmailAndPassword(email, password)
-                .then(res => {
-                    resolve(res);
-                }, err => reject(err))
-        })
+    async signInWithEmailAndPassword(email: string, password: string) {
+        try {
+            const res = await this.afAuth.signInWithEmailAndPassword(email, password)
+            await this.router.navigate(['profile'])
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     sendSignInLinkToEmail(email: string) {

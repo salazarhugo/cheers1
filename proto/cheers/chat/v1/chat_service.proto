@@ -11,12 +11,21 @@ option go_package = "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1;chat";
 
 service ChatService {
   rpc CreateChat(CreateChatReq) returns (Room) {}
+
   rpc JoinRoom(JoinRoomRequest) returns (stream Message) {}
+
   rpc ListRoom(ListRoomRequest) returns (ListRoomResponse) {
     option (google.api.http) = {
       get: "/v1/chats"
     };
   }
+
+  rpc ListRoomMessages(ListRoomMessagesRequest) returns (ListRoomMessagesResponse) {
+    option (google.api.http) = {
+      get: "/v1/chats/{room_id}/messages"
+    };
+  }
+
   rpc DeleteRoom(RoomId) returns (Empty) {}
 
   rpc GetRoomId(GetRoomIdReq) returns (RoomId) {}
@@ -44,6 +53,16 @@ message TypingEvent {
     STOP = 1;
   }
   Type type = 3;
+}
+
+message ListRoomMessagesRequest {
+  string room_id = 1;
+  int32 page_size = 2;
+  int32 page = 3;
+}
+
+message ListRoomMessagesResponse {
+  repeated Message messages = 1;
 }
 
 message ListRoomRequest {
