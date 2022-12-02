@@ -4,11 +4,13 @@ export class ChatMessage {
     id: string = ""
     text: string = ""
     roomId: string = ""
-    isCreator: boolean = false
+    sender: boolean = false
+    createTime: number = 0
 }
 
 export function toChatMessage(item: MessageItem): ChatMessage {
     let chatMessage = new ChatMessage()
     Object.assign(chatMessage, item.message)
+    chatMessage.sender = item.sender
     return chatMessage
 }

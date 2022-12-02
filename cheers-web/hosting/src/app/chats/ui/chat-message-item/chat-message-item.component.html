@@ -1,3 +1,5 @@
-<div class="chat-message" fxLayout [ngClass.gt-md]="message.isCreator ? 'chat-message--right' : 'chat-message'">
-    {{message.text}}
+<div [ngClass]="message.sender ? 'chat-message-container--right' : 'chat-message-container'">
+    <div fxLayout [ngClass]="message.sender ? 'chat-message--right' : 'chat-message'">
+        <span> {{message.text}} </span>
+    </div>
 </div>

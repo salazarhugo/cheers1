@@ -114,17 +114,23 @@ func SendMessage(conn *websocket.Conn) {
 	for {
 		var chatMessage chat.Message
 		_, b, err := conn.ReadMessage()
+		if err != nil {
+			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+				log.Printf("error: %v", err)
+			}
+			break
+		}
+
 		err = proto.Unmarshal(b, &chatMessage)
 		if err != nil {
 			log.Println(err)
+			return
 		}
 
-		log.Println(repo)
-		log.Println("DORA")
-		log.Println(&chatMessage)
 		err = repo.SendMessage(&chatMessage)
 		if err != nil {
 			log.Println(err)
+			return
 		}
 	}
 }

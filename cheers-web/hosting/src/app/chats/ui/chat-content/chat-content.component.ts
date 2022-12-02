@@ -1,8 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {Chat} from "../../../shared/data/models/chat.model";
 import {ChatMessage} from "../../../shared/data/models/chat-message.model";
 import {ChatService} from "../../data/chat.service";
 import {Message, Message_Status, MessageType} from "../../../../gen/ts/cheers/chat/v1/chat_service";
+import {UserService} from "../../../shared/data/services/user.service";
+import {firstValueFrom} from "rxjs";
+import {toUnixTimestamp} from "../../../parties/ui/party-form/party-form.component";
 
 @Component({
     selector: 'app-chat-content',
@@ -11,6 +14,7 @@ import {Message, Message_Status, MessageType} from "../../../../gen/ts/cheers/ch
 })
 export class ChatContentComponent implements OnInit {
 
+    @ViewChild('scrollMe') private myScrollContainer: ElementRef;
     @Input() room: Chat
     socket: WebSocket
     messages: ChatMessage[] = []
@@ -18,7 +22,15 @@ export class ChatContentComponent implements OnInit {
 
     constructor(
         private chatService: ChatService,
+        private userService: UserService,
     ) {
+    }
+
+    scrollToBottom(): void {
+        try {
+            this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+        } catch (err) {
+        }
     }
 
     ngOnInit(): void {
@@ -36,13 +48,18 @@ export class ChatContentComponent implements OnInit {
         })
     }
 
-    sendMessage() {
+    ngAfterViewChecked() {
+        this.scrollToBottom();
+    }
+
+    async sendMessage() {
+        const user = await firstValueFrom(this.userService.user$)
         const roomId = this.room.id.replace(':', '')
         const message: Message = {
-            createTime: 0,
+            createTime: toUnixTimestamp(new Date()),
             likeCount: 0,
             picture: "",
-            senderId: "55FEvHawinQCa9jgH7ZdWESR3ri2",
+            senderId: user.id,
             senderName: "Hugo",
             senderPicture: "",
             senderUsername: "",

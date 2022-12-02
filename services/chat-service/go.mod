@@ -55,6 +55,6 @@ require (
 	google.golang.org/genproto v0.0.0-20221024183307-1bc688fe9f3e // indirect
 )
 
-replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
+//replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
 
 //replace github.com/salazarhugo/cheers1/libs/utils  => ../../libs/utils

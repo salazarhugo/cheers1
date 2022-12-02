@@ -15,6 +15,7 @@ import {GrpcCoreModule} from "@ngx-grpc/core";
 import {GrpcWebClientModule} from "@ngx-grpc/grpc-web-client";
 import {ChatNewModule} from "./ui/chat-new/chat-new.module";
 import {ChatMessageItemModule} from "./ui/chat-message-item/chat-message-item.module";
+import {CheersSpinnerModule} from "../shared/ui/cheers-spinner/cheers-spinner.module";
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import {ChatMessageItemModule} from "./ui/chat-message-item/chat-message-item.mo
         }),
         ChatNewModule,
         ChatMessageItemModule,
+        CheersSpinnerModule,
     ]
 })
 export class ChatsModule { }

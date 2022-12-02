@@ -47,15 +47,12 @@ export class PartyFormComponent implements OnInit {
         this.$user = this.userService.user$
     }
 
-    toUnixTimestamp(date: Date): number {
-        return Math.floor(date.getTime() / 1000);
-    }
     submit() {
         const party = this.partyForm.getRawValue()
         const hours = party.startTime.split(":")[0]
         const minutes = party.startTime.split(":")[1]
-        party.startDate = this.toUnixTimestamp(party.startDate) + hours * 3600 + minutes * 60
-        party.endDate = this.toUnixTimestamp(party.endDate)
+        party.startDate = toUnixTimestamp(party.startDate) + hours * 3600 + minutes * 60
+        party.endDate = toUnixTimestamp(party.endDate)
         party.privacy = party.privacy.toUpperCase()
 
         this.onSubmit.emit(party);
@@ -98,3 +95,7 @@ export class PartyFormComponent implements OnInit {
     }
 
 }
+export function toUnixTimestamp(date: Date): number {
+    return Math.floor(date.getTime() / 1000);
+}
+

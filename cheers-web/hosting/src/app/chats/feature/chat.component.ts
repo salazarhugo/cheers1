@@ -11,6 +11,7 @@ import {Observable, of} from "rxjs";
 })
 export class ChatComponent implements OnInit {
 
+    isLoading = true
     rooms: Chat[] | null = null
     room: Chat | undefined  = undefined
 
@@ -23,6 +24,7 @@ export class ChatComponent implements OnInit {
     ngOnInit(): void {
         this.chatService.getRooms().subscribe(rooms => {
             this.rooms = rooms
+            this.isLoading = false
         })
     }
 
