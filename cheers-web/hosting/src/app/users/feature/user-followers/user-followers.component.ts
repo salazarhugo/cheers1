@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {User} from "../../../shared/data/models/user.model";
+import {UserService} from "../../../shared/data/services/user.service";
+import {firstValueFrom} from "rxjs";
+import {UserItem} from "../../../../gen/ts/cheers/type/user/user";
 
 @Component({
   selector: 'app-user-followers',
@@ -8,15 +11,19 @@ import {User} from "../../../shared/data/models/user.model";
 })
 export class UserFollowersComponent implements OnInit {
 
-    followers = [
-        new User(),
-        new User(),
-        new User(),
-        new User(),
-    ]
-  constructor() { }
+    followers: UserItem[] = []
+    following: UserItem[] = []
 
-  ngOnInit(): void {
+  constructor(
+      private userService: UserService,
+  ) { }
+
+  async ngOnInit()  {
+        const user = await firstValueFrom(this.userService.user$)
+     const followers = await firstValueFrom(this.userService.listFollowers(user.id))
+      this.followers = followers
+      const following = await firstValueFrom(this.userService.listFollowing(user.id))
+      this.following = following
   }
 
 }

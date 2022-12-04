@@ -153,8 +153,9 @@ message Room {
   string last_message_text = 11;
   string picture = 12;
   MessageType last_message_type = 13;
-  google.protobuf.Timestamp created = 14;
-  google.protobuf.Timestamp last_message_time = 15;
+  int64 created = 14;
+  int64 last_message_time = 15;
+  bool last_message_seen = 17;
   bool archived = 16;
 }
 

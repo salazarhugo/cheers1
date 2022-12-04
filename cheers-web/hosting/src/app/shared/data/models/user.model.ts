@@ -1,3 +1,6 @@
+import {UserItem} from "../../../../gen/ts/cheers/type/user/user";
+
+
 export class User {
     id: string = ""
     name: string = "Demo";

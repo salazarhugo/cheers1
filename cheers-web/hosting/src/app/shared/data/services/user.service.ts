@@ -1,8 +1,14 @@
 import {Injectable} from '@angular/core';
-import {Observable, ReplaySubject} from "rxjs";
+import {map, Observable, ReplaySubject} from "rxjs";
 import {ApiService} from "./api.service";
-import {User} from "../models/user.model";
+import {toUser, User} from "../models/user.model";
 import {PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
+import {HttpClient} from "@angular/common/http";
+import {Chat, toChat} from "../models/chat.model";
+import {CreateRoomResponse} from "../../../../gen/ts/cheers/chat/v1/chat_service";
+import {environment} from "../../../../environments/environment";
+import {ListFollowersResponse, ListFollowingResponse} from "../../../../gen/ts/cheers/user/v1/user_service";
+import {UserItem} from "../../../../gen/ts/cheers/type/user/user";
 
 @Injectable({
     providedIn: 'root'
@@ -13,8 +19,19 @@ export class UserService {
     user$: Observable<User> = this.userSubject.asObservable();
 
     constructor(
+        private http: HttpClient,
         private api: ApiService,
     ) {
+    }
+
+    listFollowers(userId: string): Observable<UserItem[]> {
+        return this.http.get<ListFollowersResponse>(`${environment.GATEWAY_URL}/v1/users/${userId}/followers`)
+            .pipe(map(res => res.users))
+    }
+
+    listFollowing(userId: string): Observable<UserItem[]> {
+        return this.http.get<ListFollowingResponse>(`${environment.GATEWAY_URL}/v1/users/${userId}/following`)
+            .pipe(map(res => res.users))
     }
 
     getUserTickets() {

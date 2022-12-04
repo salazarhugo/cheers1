@@ -1,12 +1,12 @@
 <div class="container">
     <mat-tab-group>
-        <mat-tab label="Followers">
+        <mat-tab [label]="'Followers '  + followers.length">
             <ng-container *ngFor="let user of followers">
                 <app-user-item [user]="user"></app-user-item>
             </ng-container>
         </mat-tab>
-        <mat-tab label="Following">
-            <ng-container *ngFor="let user of followers">
+        <mat-tab [label]="'Following ' + following.length">
+            <ng-container *ngFor="let user of following">
                 <app-user-item [user]="user"></app-user-item>
             </ng-container>
         </mat-tab>

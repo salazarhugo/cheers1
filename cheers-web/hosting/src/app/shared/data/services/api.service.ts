@@ -50,7 +50,7 @@ export class ApiService {
     }
 
     updateUser(user: User) {
-        return this.http.post(`${environment.GATEWAY_URL}/cheers.user.v1.UserService/UpdateUser`, user)
+        return this.http.post(`${environment.GATEWAY_URL}/v1/users`, user)
     }
 
     followUser(username: string) {
@@ -71,9 +71,8 @@ export class ApiService {
 }
 
     getUser(userIdOrUsername: string): Observable<User | null> {
-        return this.http.post<UserResponse>(`${environment.GATEWAY_URL}/cheers.user.v1.UserService/GetUser`, {
-            id: userIdOrUsername
-        }).pipe(map(res => toUser(res)))
+        return this.http.get<UserResponse>(`${environment.GATEWAY_URL}/v1/users/${userIdOrUsername}`)
+            .pipe(map(res => toUser(res)))
     }
 
     promoteToBusiness(uid: string): Observable<Empty> {

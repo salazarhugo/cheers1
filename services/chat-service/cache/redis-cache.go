@@ -11,7 +11,6 @@ import (
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"log"
 	"strings"
 	"time"
@@ -221,17 +220,19 @@ func (cache *redisCache) ListRoom(userId string) []*pb.Room {
 	return rooms
 }
 
-func (cache *redisCache) GetOtherUserId(roomId string, userId string) (string, error) {
-	arr := strings.Split(roomId, ":")
-
-	if len(arr) <= 1 {
-		return "", bytes.ErrTooLarge
+func (cache *redisCache) GetOtherUserId(
+	roomId string,
+	userId string,
+) (string, error) {
+	members, err := cache.client.SMembers(context.Background(), getKeyRoomMembers(roomId)).Result()
+	if err != nil {
+		return "", err
 	}
 
-	if arr[0] == userId {
-		return arr[1], nil
+	if members[0] == userId {
+		return members[1], nil
 	}
-	return arr[0], nil
+	return members[0], nil
 }
 
 func (cache *redisCache) GetUser(userId string) (interface{}, error) {
@@ -314,7 +315,7 @@ func (cache *redisCache) CreateGroup(name string, UUIDs []string) *pb.Room {
 
 	room := &pb.Room{
 		Id:              uuid.New().String(),
-		LastMessageTime: timestamppb.Now(),
+		LastMessageTime: 0,
 		Name:            name,
 		Status:          pb.RoomStatus_EMPTY,
 		Type:            pb.RoomType_GROUP,
@@ -355,7 +356,7 @@ func (cache *redisCache) GetOrCreateDirectRoom(
 	if exists == 0 {
 		room := pb.Room{
 			Id:              roomId,
-			LastMessageTime: timestamppb.Now(),
+			LastMessageTime: 0,
 			Status:          pb.RoomStatus_EMPTY,
 			Type:            pb.RoomType_DIRECT,
 		}
@@ -429,7 +430,6 @@ func (cache *redisCache) GetRoomWithId(
 	}
 
 	otherUserId, err := cache.GetOtherUserId(roomId, userId)
-	log.Println(otherUserId)
 
 	if room.Type == pb.RoomType_DIRECT {
 		user, err := cache.GetUser(otherUserId)
@@ -462,7 +462,7 @@ func (cache *redisCache) GetRoomWithId(
 
 	if lastMessage != nil {
 		room.LastMessageText = lastMessage.Text
-		room.LastMessageTime = timestamppb.Now()
+		room.LastMessageTime = lastMessage.CreateTime
 		room.LastMessageType = lastMessage.Type
 	}
 

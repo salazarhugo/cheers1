@@ -39,7 +39,7 @@ export class ChatContentComponent implements OnInit, OnChanges {
     async ngOnChanges(changes: SimpleChanges) {
         this.messages = []
         const user = await firstValueFrom(this.userService.user$)
-        const roomId = this.room.id.replace(':', '')
+        const roomId = this.room.id
 
         this.chatService.getRoomMessages(roomId).subscribe(messages => {
             this.messages = messages
@@ -67,7 +67,7 @@ export class ChatContentComponent implements OnInit, OnChanges {
 
     async sendMessage() {
         const user = await firstValueFrom(this.userService.user$)
-        const roomId = this.room.id.replace(':', '')
+        const roomId = this.room.id
         const item: MessageItem = {
             message: {
                 createTime: toUnixTimestamp(new Date()),

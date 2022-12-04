@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ChatService} from "../data/chat.service";
 import {ActivatedRoute, ParamMap} from "@angular/router";
 import {Chat} from "../../shared/data/models/chat.model";
-import {Observable, of} from "rxjs";
+import {firstValueFrom, Observable, of} from "rxjs";
 
 @Component({
     selector: 'app-chats',
@@ -16,15 +16,19 @@ export class ChatComponent implements OnInit {
     room: Chat | undefined  = undefined
 
     constructor(
-        private route: ActivatedRoute,
+        public route: ActivatedRoute,
         private chatService: ChatService,
     ) {
     }
 
-    ngOnInit(): void {
-        this.chatService.getRooms().subscribe(rooms => {
-            this.rooms = rooms
-            this.isLoading = false
+    async ngOnInit() {
+        const rooms = await firstValueFrom(this.chatService.getRooms())
+        this.rooms = rooms
+        this.isLoading = false
+        this.route.firstChild?.paramMap.subscribe(res => {
+            console.log(res)
+            if (res?.has("id"))
+                this.setRoom(res?.get("id")!)
         })
     }
 

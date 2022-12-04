@@ -1,5 +1,11 @@
 <div [ngClass]="message.sender ? 'chat-message-container--right' : 'chat-message-container'">
-    <div fxLayout [ngClass]="message.sender ? 'chat-message--right' : 'chat-message'">
+    <div fxLayout [ngClass]="message.sender ? 'chat-message--right' : 'chat-message'" fxLayoutAlign="none end" fxLayoutGap="8px">
         <span> {{message.text}} </span>
+        <div [matTooltip]="message.status" fxLayoutAlign="none center" fxLayoutGap="2px">
+            <span class="chat-message-time">{{message.createTime * 1000 | date: 'H:mm'}}</span>
+            <mat-icon *ngIf="message.status == 'SCHEDULED'" style="font-size: 13px; height: 13px; width: 13px">schedule</mat-icon>
+            <mat-icon *ngIf="message.status == 'SENT'" style="font-size: 13px; height: 13px; width: 13px">check</mat-icon>
+            <mat-icon *ngIf="message.status == 'DELIVERED'" style="font-size: 13px; height: 13px; width: 13px">done_all</mat-icon>
+        </div>
     </div>
 </div>

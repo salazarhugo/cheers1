@@ -1,4 +1,4 @@
-<div [routerLink]="['u', user.username]" class="user-item" fxLayoutAlign="none">
+<div [routerLink]="['/u', user.username]" class="user-item" fxLayoutAlign="none">
     <img (error)="onImgError($event)" [src]="user.picture" class="avatar--small">
     <div class="user-text" fxLayout="column">
         <span class="username">{{user.username}}</span>

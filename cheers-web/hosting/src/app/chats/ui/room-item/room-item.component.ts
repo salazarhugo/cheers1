@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-room-item',
@@ -9,7 +10,9 @@ export class RoomItemComponent implements OnInit {
 
   @Input() room: any
 
-  constructor() {
+  constructor(
+      public router: Router,
+  ) {
   }
 
   ngOnInit(): void {

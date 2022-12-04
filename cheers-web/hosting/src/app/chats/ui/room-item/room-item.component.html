@@ -1,4 +1,5 @@
-<div fxLayout="row" fxLayoutAlign="none center" class="room-item" [routerLink]="['/chats', room.id]" fxFlexFill>
+<div fxLayout="row" fxLayoutAlign="none center" [routerLink]="['/chats', room.id]" fxFlexFill
+     [ngClass]="router.url.includes(room.id) ? 'room-item--selected' : 'room-item'">
     <img (error)="onImgError($event)" [src]="room.picture" class="avatar--small">
     <div class="user-text" fxLayout="column" style="margin-left: 12px">
         <span class="name">{{room.name}}</span>

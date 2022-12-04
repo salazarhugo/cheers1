@@ -7,6 +7,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
 
+
 @Component({
     selector: 'app-user-edit',
     templateUrl: './edit.component.html',
@@ -41,24 +42,18 @@ export class EditComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    async uploadPicture(file: File): Promise<Observable<number | undefined>> {
-
+    async uploadFile(file: File): Promise<string> {
         const authUser = await firstValueFrom(this.afAuth.authState)
-        const filePath = `${authUser?.uid}/${file.name}`
-
+        const filePath = `${authUser!.uid}/${file.name}`;
         const storageRef = this.storage.ref(filePath);
-        const uploadTask = this.storage.upload(filePath, file);
+        let res = (await this.storage.upload(filePath, file));
+        return await res.ref.getDownloadURL()
+    }
 
-        uploadTask.snapshotChanges().pipe(
-            finalize(() => {
-                storageRef.getDownloadURL().subscribe(async downloadURL => {
-                    this.profileForm.get("picture")?.setValue(downloadURL)
-                    await this.userService.updateUser(this.profileForm.getRawValue()).toPromise()
-                });
-            })
-        ).subscribe();
-
-        return uploadTask.percentageChanges()
+    async uploadPicture(file: File) {
+        const url = await this.uploadFile(file)
+        this.profileForm.get("picture")?.setValue(url)
+        await this.userService.updateUser(this.profileForm.getRawValue()).toPromise()
     }
 
     addAttachment(fileInput: any) {
@@ -66,11 +61,6 @@ export class EditComponent implements OnInit {
         const reader = new FileReader();
         reader.readAsDataURL(picture);
         this.uploadPicture(picture)
-
-        reader.addEventListener("load", () => {
-            const uploaded_image = reader.result;
-            this.profileForm.get("picture")?.setValue(uploaded_image)
-        });
     }
 
     openSnackBar(message: string, action: string) {

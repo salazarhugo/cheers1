@@ -3,7 +3,6 @@ import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import { Timestamp } from "../../../google/protobuf/timestamp";
 import { UserItem } from "../../type/user/user";
 
 export const protobufPackage = "cheers.chat.v1";
@@ -250,8 +249,9 @@ export interface Room {
   lastMessageText: string;
   picture: string;
   lastMessageType: MessageType;
-  created: Date | undefined;
-  lastMessageTime: Date | undefined;
+  created: number;
+  lastMessageTime: number;
+  lastMessageSeen: boolean;
   archived: boolean;
 }
 
@@ -1214,8 +1214,9 @@ function createBaseRoom(): Room {
     lastMessageText: "",
     picture: "",
     lastMessageType: 0,
-    created: undefined,
-    lastMessageTime: undefined,
+    created: 0,
+    lastMessageTime: 0,
+    lastMessageSeen: false,
     archived: false,
   };
 }
@@ -1258,11 +1259,14 @@ export const Room = {
     if (message.lastMessageType !== 0) {
       writer.uint32(104).int32(message.lastMessageType);
     }
-    if (message.created !== undefined) {
-      Timestamp.encode(toTimestamp(message.created), writer.uint32(114).fork()).ldelim();
+    if (message.created !== 0) {
+      writer.uint32(112).int64(message.created);
     }
-    if (message.lastMessageTime !== undefined) {
-      Timestamp.encode(toTimestamp(message.lastMessageTime), writer.uint32(122).fork()).ldelim();
+    if (message.lastMessageTime !== 0) {
+      writer.uint32(120).int64(message.lastMessageTime);
+    }
+    if (message.lastMessageSeen === true) {
+      writer.uint32(136).bool(message.lastMessageSeen);
     }
     if (message.archived === true) {
       writer.uint32(128).bool(message.archived);
@@ -1314,10 +1318,13 @@ export const Room = {
           message.lastMessageType = reader.int32() as any;
           break;
         case 14:
-          message.created = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.created = longToNumber(reader.int64() as Long);
           break;
         case 15:
-          message.lastMessageTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.lastMessageTime = longToNumber(reader.int64() as Long);
+          break;
+        case 17:
+          message.lastMessageSeen = reader.bool();
           break;
         case 16:
           message.archived = reader.bool();
@@ -1344,8 +1351,9 @@ export const Room = {
       lastMessageText: isSet(object.lastMessageText) ? String(object.lastMessageText) : "",
       picture: isSet(object.picture) ? String(object.picture) : "",
       lastMessageType: isSet(object.lastMessageType) ? messageTypeFromJSON(object.lastMessageType) : 0,
-      created: isSet(object.created) ? fromJsonTimestamp(object.created) : undefined,
-      lastMessageTime: isSet(object.lastMessageTime) ? fromJsonTimestamp(object.lastMessageTime) : undefined,
+      created: isSet(object.created) ? Number(object.created) : 0,
+      lastMessageTime: isSet(object.lastMessageTime) ? Number(object.lastMessageTime) : 0,
+      lastMessageSeen: isSet(object.lastMessageSeen) ? Boolean(object.lastMessageSeen) : false,
       archived: isSet(object.archived) ? Boolean(object.archived) : false,
     };
   },
@@ -1372,8 +1380,9 @@ export const Room = {
     message.lastMessageText !== undefined && (obj.lastMessageText = message.lastMessageText);
     message.picture !== undefined && (obj.picture = message.picture);
     message.lastMessageType !== undefined && (obj.lastMessageType = messageTypeToJSON(message.lastMessageType));
-    message.created !== undefined && (obj.created = message.created.toISOString());
-    message.lastMessageTime !== undefined && (obj.lastMessageTime = message.lastMessageTime.toISOString());
+    message.created !== undefined && (obj.created = Math.round(message.created));
+    message.lastMessageTime !== undefined && (obj.lastMessageTime = Math.round(message.lastMessageTime));
+    message.lastMessageSeen !== undefined && (obj.lastMessageSeen = message.lastMessageSeen);
     message.archived !== undefined && (obj.archived = message.archived);
     return obj;
   },
@@ -1392,8 +1401,9 @@ export const Room = {
     message.lastMessageText = object.lastMessageText ?? "";
     message.picture = object.picture ?? "";
     message.lastMessageType = object.lastMessageType ?? 0;
-    message.created = object.created ?? undefined;
-    message.lastMessageTime = object.lastMessageTime ?? undefined;
+    message.created = object.created ?? 0;
+    message.lastMessageTime = object.lastMessageTime ?? 0;
+    message.lastMessageSeen = object.lastMessageSeen ?? false;
     message.archived = object.archived ?? false;
     return message;
   },
@@ -1909,28 +1919,6 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function toTimestamp(date: Date): Timestamp {
-  const seconds = date.getTime() / 1_000;
-  const nanos = (date.getTime() % 1_000) * 1_000_000;
-  return { seconds, nanos };
-}
-
-function fromTimestamp(t: Timestamp): Date {
-  let millis = t.seconds * 1_000;
-  millis += t.nanos / 1_000_000;
-  return new Date(millis);
-}
-
-function fromJsonTimestamp(o: any): Date {
-  if (o instanceof Date) {
-    return o;
-  } else if (typeof o === "string") {
-    return new Date(o);
-  } else {
-    return fromTimestamp(Timestamp.fromJSON(o));
-  }
-}
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {
