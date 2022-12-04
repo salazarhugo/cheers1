@@ -1,7 +1,6 @@
 /* eslint-disable */
 import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
-import { Timestamp } from "../../../google/protobuf/timestamp";
 import { Privacy, privacyFromJSON, privacyToJSON } from "../privacy/privacy";
 
 export const protobufPackage = "cheers.type";
@@ -95,7 +94,7 @@ export interface Post {
   drink: string;
   drunkenness: number;
   type: PostType;
-  createTime: Date | undefined;
+  createTime: number;
   canComment: boolean;
   canShare: boolean;
   ratio: PostRatio;
@@ -113,7 +112,7 @@ function createBasePost(): Post {
     drink: "",
     drunkenness: 0,
     type: 0,
-    createTime: undefined,
+    createTime: 0,
     canComment: false,
     canShare: false,
     ratio: 0,
@@ -152,8 +151,8 @@ export const Post = {
     if (message.type !== 0) {
       writer.uint32(88).int32(message.type);
     }
-    if (message.createTime !== undefined) {
-      Timestamp.encode(toTimestamp(message.createTime), writer.uint32(98).fork()).ldelim();
+    if (message.createTime !== 0) {
+      writer.uint32(96).int64(message.createTime);
     }
     if (message.canComment === true) {
       writer.uint32(104).bool(message.canComment);
@@ -205,7 +204,7 @@ export const Post = {
           message.type = reader.int32() as any;
           break;
         case 12:
-          message.createTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.createTime = longToNumber(reader.int64() as Long);
           break;
         case 13:
           message.canComment = reader.bool();
@@ -236,7 +235,7 @@ export const Post = {
       drink: isSet(object.drink) ? String(object.drink) : "",
       drunkenness: isSet(object.drunkenness) ? Number(object.drunkenness) : 0,
       type: isSet(object.type) ? postTypeFromJSON(object.type) : 0,
-      createTime: isSet(object.createTime) ? fromJsonTimestamp(object.createTime) : undefined,
+      createTime: isSet(object.createTime) ? Number(object.createTime) : 0,
       canComment: isSet(object.canComment) ? Boolean(object.canComment) : false,
       canShare: isSet(object.canShare) ? Boolean(object.canShare) : false,
       ratio: isSet(object.ratio) ? postRatioFromJSON(object.ratio) : 0,
@@ -259,7 +258,7 @@ export const Post = {
     message.drink !== undefined && (obj.drink = message.drink);
     message.drunkenness !== undefined && (obj.drunkenness = Math.round(message.drunkenness));
     message.type !== undefined && (obj.type = postTypeToJSON(message.type));
-    message.createTime !== undefined && (obj.createTime = message.createTime.toISOString());
+    message.createTime !== undefined && (obj.createTime = Math.round(message.createTime));
     message.canComment !== undefined && (obj.canComment = message.canComment);
     message.canShare !== undefined && (obj.canShare = message.canShare);
     message.ratio !== undefined && (obj.ratio = postRatioToJSON(message.ratio));
@@ -278,7 +277,7 @@ export const Post = {
     message.drink = object.drink ?? "";
     message.drunkenness = object.drunkenness ?? 0;
     message.type = object.type ?? 0;
-    message.createTime = object.createTime ?? undefined;
+    message.createTime = object.createTime ?? 0;
     message.canComment = object.canComment ?? false;
     message.canShare = object.canShare ?? false;
     message.ratio = object.ratio ?? 0;
@@ -315,28 +314,6 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function toTimestamp(date: Date): Timestamp {
-  const seconds = date.getTime() / 1_000;
-  const nanos = (date.getTime() % 1_000) * 1_000_000;
-  return { seconds, nanos };
-}
-
-function fromTimestamp(t: Timestamp): Date {
-  let millis = t.seconds * 1_000;
-  millis += t.nanos / 1_000_000;
-  return new Date(millis);
-}
-
-function fromJsonTimestamp(o: any): Date {
-  if (o instanceof Date) {
-    return o;
-  } else if (typeof o === "string") {
-    return new Date(o);
-  } else {
-    return fromTimestamp(Timestamp.fromJSON(o));
-  }
-}
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {

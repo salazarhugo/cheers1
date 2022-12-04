@@ -6,7 +6,7 @@
         <div>
             <span class="room-status-label">Delivered</span>
             <span class="dot">·</span>
-            <span class="room-status-label">1m</span>
+            <span class="room-status-label">{{room.latestMessageTime * 1000 | relativeTime}}</span>
         </div>
     </div>
 </div>

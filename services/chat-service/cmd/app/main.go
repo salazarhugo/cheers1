@@ -37,7 +37,7 @@ func main() {
 	}
 
 	httpMux := http.NewServeMux()
-	httpMux.HandleFunc("/ws", serveWs)
+	httpMux.HandleFunc("/chat", serveWs)
 
 	grpcS := grpc.NewServer(
 		grpc.UnaryInterceptor(auth.UnaryInterceptor),

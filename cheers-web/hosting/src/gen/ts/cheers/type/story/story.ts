@@ -1,7 +1,6 @@
 /* eslint-disable */
 import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
-import { Timestamp } from "../../../google/protobuf/timestamp";
 import { Privacy, privacyFromJSON, privacyToJSON } from "../privacy/privacy";
 
 export const protobufPackage = "cheers.type";
@@ -14,7 +13,7 @@ export interface Story {
   isReactionEnabled: boolean;
   locationName: string;
   type: Story_StoryType;
-  createTime: Date | undefined;
+  createTime: number;
   shareEnabled: boolean;
 }
 
@@ -60,7 +59,7 @@ function createBaseStory(): Story {
     isReactionEnabled: false,
     locationName: "",
     type: 0,
-    createTime: undefined,
+    createTime: 0,
     shareEnabled: false,
   };
 }
@@ -88,8 +87,8 @@ export const Story = {
     if (message.type !== 0) {
       writer.uint32(88).int32(message.type);
     }
-    if (message.createTime !== undefined) {
-      Timestamp.encode(toTimestamp(message.createTime), writer.uint32(98).fork()).ldelim();
+    if (message.createTime !== 0) {
+      writer.uint32(96).int64(message.createTime);
     }
     if (message.shareEnabled === true) {
       writer.uint32(112).bool(message.shareEnabled);
@@ -126,7 +125,7 @@ export const Story = {
           message.type = reader.int32() as any;
           break;
         case 12:
-          message.createTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.createTime = longToNumber(reader.int64() as Long);
           break;
         case 14:
           message.shareEnabled = reader.bool();
@@ -148,7 +147,7 @@ export const Story = {
       isReactionEnabled: isSet(object.isReactionEnabled) ? Boolean(object.isReactionEnabled) : false,
       locationName: isSet(object.locationName) ? String(object.locationName) : "",
       type: isSet(object.type) ? story_StoryTypeFromJSON(object.type) : 0,
-      createTime: isSet(object.createTime) ? fromJsonTimestamp(object.createTime) : undefined,
+      createTime: isSet(object.createTime) ? Number(object.createTime) : 0,
       shareEnabled: isSet(object.shareEnabled) ? Boolean(object.shareEnabled) : false,
     };
   },
@@ -162,7 +161,7 @@ export const Story = {
     message.isReactionEnabled !== undefined && (obj.isReactionEnabled = message.isReactionEnabled);
     message.locationName !== undefined && (obj.locationName = message.locationName);
     message.type !== undefined && (obj.type = story_StoryTypeToJSON(message.type));
-    message.createTime !== undefined && (obj.createTime = message.createTime.toISOString());
+    message.createTime !== undefined && (obj.createTime = Math.round(message.createTime));
     message.shareEnabled !== undefined && (obj.shareEnabled = message.shareEnabled);
     return obj;
   },
@@ -176,7 +175,7 @@ export const Story = {
     message.isReactionEnabled = object.isReactionEnabled ?? false;
     message.locationName = object.locationName ?? "";
     message.type = object.type ?? 0;
-    message.createTime = object.createTime ?? undefined;
+    message.createTime = object.createTime ?? 0;
     message.shareEnabled = object.shareEnabled ?? false;
     return message;
   },
@@ -212,26 +211,11 @@ type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
 
-function toTimestamp(date: Date): Timestamp {
-  const seconds = date.getTime() / 1_000;
-  const nanos = (date.getTime() % 1_000) * 1_000_000;
-  return { seconds, nanos };
-}
-
-function fromTimestamp(t: Timestamp): Date {
-  let millis = t.seconds * 1_000;
-  millis += t.nanos / 1_000_000;
-  return new Date(millis);
-}
-
-function fromJsonTimestamp(o: any): Date {
-  if (o instanceof Date) {
-    return o;
-  } else if (typeof o === "string") {
-    return new Date(o);
-  } else {
-    return fromTimestamp(Timestamp.fromJSON(o));
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
+  return long.toNumber();
 }
 
 // If you get a compile-error about 'Constructor<Long> and ... have no overlap',

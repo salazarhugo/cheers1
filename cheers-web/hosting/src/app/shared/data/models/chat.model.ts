@@ -5,6 +5,7 @@ export class Chat {
     name: string = ""
     username: string = ""
     picture: string = ""
+    latestMessageTime: number = 0
 }
 
 export function toChat(room: Room): Chat {

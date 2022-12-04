@@ -4,7 +4,7 @@ package cheers.type;
 
 option go_package = "github.com/salazarhugo/cheers1/gen/go/cheers/type/post;postpb";
 
-import "google/protobuf/timestamp.proto";
+
 import "cheers/type/privacy/privacy.proto";
 
 message Post {
@@ -18,7 +18,7 @@ message Post {
   string drink = 9;
   int64 drunkenness = 10;
   PostType type = 11;
-  google.protobuf.Timestamp create_time = 12;
+  int64 create_time = 12;
   bool can_comment = 13;
   bool can_share = 14;
   PostRatio ratio = 15;

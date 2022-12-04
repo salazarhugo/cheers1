@@ -4,8 +4,8 @@ import {Pipe, PipeTransform} from '@angular/core';
     name: 'relativeTime'
 })
 export class RelativeTimePipe implements PipeTransform {
-    transform(value: Date) {
-        const date = new Date(value)
+    transform(unix: number) {
+        const date = new Date(unix * 1000)
         let seconds: number = Math.floor(((new Date()).getTime() - date.getTime()) / 1000);
         let interval: number = Math.floor(seconds / 31536000);
 

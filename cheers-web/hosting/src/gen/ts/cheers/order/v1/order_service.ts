@@ -1,7 +1,6 @@
 /* eslint-disable */
 import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
-import { Timestamp } from "../../../google/protobuf/timestamp";
 import { Ticket } from "../../ticket/v1/ticket";
 
 export const protobufPackage = "cheers.order.v1";
@@ -12,7 +11,7 @@ export interface Order {
   amount: number;
   customerId: string;
   userId: string;
-  createTime: Date | undefined;
+  createTime: number;
   tickets: Ticket[];
   partyId: string;
   partyName: string;
@@ -73,7 +72,7 @@ function createBaseOrder(): Order {
     amount: 0,
     customerId: "",
     userId: "",
-    createTime: undefined,
+    createTime: 0,
     tickets: [],
     partyId: "",
     partyName: "",
@@ -103,8 +102,8 @@ export const Order = {
     if (message.userId !== "") {
       writer.uint32(50).string(message.userId);
     }
-    if (message.createTime !== undefined) {
-      Timestamp.encode(toTimestamp(message.createTime), writer.uint32(58).fork()).ldelim();
+    if (message.createTime !== 0) {
+      writer.uint32(56).int64(message.createTime);
     }
     for (const v of message.tickets) {
       Ticket.encode(v!, writer.uint32(66).fork()).ldelim();
@@ -159,7 +158,7 @@ export const Order = {
           message.userId = reader.string();
           break;
         case 7:
-          message.createTime = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.createTime = longToNumber(reader.int64() as Long);
           break;
         case 8:
           message.tickets.push(Ticket.decode(reader, reader.uint32()));
@@ -203,7 +202,7 @@ export const Order = {
       amount: isSet(object.amount) ? Number(object.amount) : 0,
       customerId: isSet(object.customerId) ? String(object.customerId) : "",
       userId: isSet(object.userId) ? String(object.userId) : "",
-      createTime: isSet(object.createTime) ? fromJsonTimestamp(object.createTime) : undefined,
+      createTime: isSet(object.createTime) ? Number(object.createTime) : 0,
       tickets: Array.isArray(object?.tickets) ? object.tickets.map((e: any) => Ticket.fromJSON(e)) : [],
       partyId: isSet(object.partyId) ? String(object.partyId) : "",
       partyName: isSet(object.partyName) ? String(object.partyName) : "",
@@ -225,7 +224,7 @@ export const Order = {
     message.amount !== undefined && (obj.amount = Math.round(message.amount));
     message.customerId !== undefined && (obj.customerId = message.customerId);
     message.userId !== undefined && (obj.userId = message.userId);
-    message.createTime !== undefined && (obj.createTime = message.createTime.toISOString());
+    message.createTime !== undefined && (obj.createTime = Math.round(message.createTime));
     if (message.tickets) {
       obj.tickets = message.tickets.map((e) => e ? Ticket.toJSON(e) : undefined);
     } else {
@@ -253,7 +252,7 @@ export const Order = {
     message.amount = object.amount ?? 0;
     message.customerId = object.customerId ?? "";
     message.userId = object.userId ?? "";
-    message.createTime = object.createTime ?? undefined;
+    message.createTime = object.createTime ?? 0;
     message.tickets = object.tickets?.map((e) => Ticket.fromPartial(e)) || [];
     message.partyId = object.partyId ?? "";
     message.partyName = object.partyName ?? "";
@@ -828,28 +827,6 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function toTimestamp(date: Date): Timestamp {
-  const seconds = date.getTime() / 1_000;
-  const nanos = (date.getTime() % 1_000) * 1_000_000;
-  return { seconds, nanos };
-}
-
-function fromTimestamp(t: Timestamp): Date {
-  let millis = t.seconds * 1_000;
-  millis += t.nanos / 1_000_000;
-  return new Date(millis);
-}
-
-function fromJsonTimestamp(o: any): Date {
-  if (o instanceof Date) {
-    return o;
-  } else if (typeof o === "string") {
-    return new Date(o);
-  } else {
-    return fromTimestamp(Timestamp.fromJSON(o));
-  }
-}
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {

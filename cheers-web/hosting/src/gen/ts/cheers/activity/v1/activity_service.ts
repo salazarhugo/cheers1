@@ -1,6 +1,6 @@
 /* eslint-disable */
+import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
-import { Timestamp } from "../../../google/protobuf/timestamp";
 
 export const protobufPackage = "cheers.activity.v1";
 
@@ -18,7 +18,7 @@ export interface Activity {
   text: string;
   picture: string;
   userId: string;
-  timestamp: Date | undefined;
+  timestamp: number;
   mediaPicture: string;
   mediaId: string;
 }
@@ -175,7 +175,7 @@ export const ListActivityResponse = {
 };
 
 function createBaseActivity(): Activity {
-  return { id: "", type: 0, text: "", picture: "", userId: "", timestamp: undefined, mediaPicture: "", mediaId: "" };
+  return { id: "", type: 0, text: "", picture: "", userId: "", timestamp: 0, mediaPicture: "", mediaId: "" };
 }
 
 export const Activity = {
@@ -195,8 +195,8 @@ export const Activity = {
     if (message.userId !== "") {
       writer.uint32(34).string(message.userId);
     }
-    if (message.timestamp !== undefined) {
-      Timestamp.encode(toTimestamp(message.timestamp), writer.uint32(42).fork()).ldelim();
+    if (message.timestamp !== 0) {
+      writer.uint32(40).int64(message.timestamp);
     }
     if (message.mediaPicture !== "") {
       writer.uint32(50).string(message.mediaPicture);
@@ -230,7 +230,7 @@ export const Activity = {
           message.userId = reader.string();
           break;
         case 5:
-          message.timestamp = fromTimestamp(Timestamp.decode(reader, reader.uint32()));
+          message.timestamp = longToNumber(reader.int64() as Long);
           break;
         case 6:
           message.mediaPicture = reader.string();
@@ -253,7 +253,7 @@ export const Activity = {
       text: isSet(object.text) ? String(object.text) : "",
       picture: isSet(object.picture) ? String(object.picture) : "",
       userId: isSet(object.userId) ? String(object.userId) : "",
-      timestamp: isSet(object.timestamp) ? fromJsonTimestamp(object.timestamp) : undefined,
+      timestamp: isSet(object.timestamp) ? Number(object.timestamp) : 0,
       mediaPicture: isSet(object.mediaPicture) ? String(object.mediaPicture) : "",
       mediaId: isSet(object.mediaId) ? String(object.mediaId) : "",
     };
@@ -266,7 +266,7 @@ export const Activity = {
     message.text !== undefined && (obj.text = message.text);
     message.picture !== undefined && (obj.picture = message.picture);
     message.userId !== undefined && (obj.userId = message.userId);
-    message.timestamp !== undefined && (obj.timestamp = message.timestamp.toISOString());
+    message.timestamp !== undefined && (obj.timestamp = Math.round(message.timestamp));
     message.mediaPicture !== undefined && (obj.mediaPicture = message.mediaPicture);
     message.mediaId !== undefined && (obj.mediaId = message.mediaId);
     return obj;
@@ -279,7 +279,7 @@ export const Activity = {
     message.text = object.text ?? "";
     message.picture = object.picture ?? "";
     message.userId = object.userId ?? "";
-    message.timestamp = object.timestamp ?? undefined;
+    message.timestamp = object.timestamp ?? 0;
     message.mediaPicture = object.mediaPicture ?? "";
     message.mediaId = object.mediaId ?? "";
     return message;
@@ -309,6 +309,25 @@ interface Rpc {
   request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
 }
 
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") {
+    return globalThis;
+  }
+  if (typeof self !== "undefined") {
+    return self;
+  }
+  if (typeof window !== "undefined") {
+    return window;
+  }
+  if (typeof global !== "undefined") {
+    return global;
+  }
+  throw "Unable to locate global object";
+})();
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
@@ -320,26 +339,18 @@ type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
 
-function toTimestamp(date: Date): Timestamp {
-  const seconds = date.getTime() / 1_000;
-  const nanos = (date.getTime() % 1_000) * 1_000_000;
-  return { seconds, nanos };
-}
-
-function fromTimestamp(t: Timestamp): Date {
-  let millis = t.seconds * 1_000;
-  millis += t.nanos / 1_000_000;
-  return new Date(millis);
-}
-
-function fromJsonTimestamp(o: any): Date {
-  if (o instanceof Date) {
-    return o;
-  } else if (typeof o === "string") {
-    return new Date(o);
-  } else {
-    return fromTimestamp(Timestamp.fromJSON(o));
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
+  return long.toNumber();
+}
+
+// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
+// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
+if (_m0.util.Long !== Long) {
+  _m0.util.Long = Long as any;
+  _m0.configure();
 }
 
 function isSet(value: any): boolean {

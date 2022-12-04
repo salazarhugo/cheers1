@@ -6,6 +6,7 @@ import {Message, Message_Status, MessageItem, MessageType} from "../../../../gen
 import {UserService} from "../../../shared/data/services/user.service";
 import {firstValueFrom} from "rxjs";
 import {toUnixTimestamp} from "../../../parties/ui/party-form/party-form.component";
+import {AngularFireAuth} from "@angular/fire/compat/auth";
 
 @Component({
     selector: 'app-chat-content',
@@ -22,6 +23,7 @@ export class ChatContentComponent implements OnInit, OnChanges {
 
     constructor(
         private chatService: ChatService,
+        private authService: AngularFireAuth,
         private userService: UserService,
     ) {
     }
@@ -45,7 +47,8 @@ export class ChatContentComponent implements OnInit, OnChanges {
             this.messages = messages
         })
 
-        this.socket = new WebSocket('ws://localhost:8000/ws', roomId);
+        const result = await firstValueFrom(this.authService.idTokenResult)
+        this.socket = new WebSocket('ws://localhost:8000/chat', [roomId, result?.token!]);
 
         this.socket.addEventListener('message', (message) => {
             const msg = JSON.parse(message.data)

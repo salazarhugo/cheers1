@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
+import {Chat} from "../../../shared/data/models/chat.model";
 
 @Component({
   selector: 'app-room-item',
@@ -8,7 +9,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class RoomItemComponent implements OnInit {
 
-  @Input() room: any
+  @Input() room: Chat
 
   constructor(
       public router: Router,

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package cheers.chat.v1;
 
-import "google/protobuf/timestamp.proto";
+
 import "cheers/type/user/user.proto";
 import "google/api/annotations.proto";
 

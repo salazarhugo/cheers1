@@ -4,7 +4,7 @@ package cheers.type;
 
 option go_package = "github.com/salazarhugo/cheers1/gen/go/cheers/type/party;partypb";
 
-import "google/protobuf/timestamp.proto";
+
 import "cheers/type/privacy/privacy.proto";
 
 message Party {
@@ -21,7 +21,7 @@ message Party {
   // The location name
   string location_name = 12;
   // The time when the party was created.
-  google.protobuf.Timestamp create_time = 13;
+  int64 create_time = 13;
   // The latitude in degrees. It must be in the range [-90.0, +90.0].
   double latitude = 14;
   // The longitude in degrees. It must be in the range [-180.0, +180.0].
