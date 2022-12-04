@@ -5,6 +5,7 @@ export class Chat {
     name: string = ""
     username: string = ""
     picture: string = ""
+    members: string[] = []
     latestMessageTime: number = 0
 }
 

@@ -48,7 +48,8 @@ export class ChatContentComponent implements OnInit, OnChanges {
         })
 
         const result = await firstValueFrom(this.authService.idTokenResult)
-        this.socket = new WebSocket('ws://localhost:8000/chat', [roomId, result?.token!]);
+        // this.socket = new WebSocket('ws://localhost:8000/chat', [roomId]);
+        this.socket = new WebSocket('wss://chat-service-r3a2dr4u4a-nw.a.run.app/chat', [roomId]);
 
         this.socket.addEventListener('message', (message) => {
             const msg = JSON.parse(message.data)

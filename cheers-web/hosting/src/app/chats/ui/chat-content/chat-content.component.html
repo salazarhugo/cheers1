@@ -5,7 +5,7 @@
                 <mat-icon>chevron_left</mat-icon>
             </button>
             <div>
-                <app-user-chip [user]="{name: room.name, picture: room.picture}"></app-user-chip>
+                <app-user-chip [routerLink]="['/u', room.members[1]]" [user]="{name: room.name, picture: room.picture}"></app-user-chip>
             </div>
         </div>
 

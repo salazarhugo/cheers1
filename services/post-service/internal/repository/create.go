@@ -8,8 +8,8 @@ import (
 	postpb "github.com/salazarhugo/cheers1/gen/go/cheers/type/post"
 	utils "github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/protobuf/encoding/protojson"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"log"
+	"time"
 )
 
 func (p *postRepository) CreatePost(
@@ -26,7 +26,7 @@ func (p *postRepository) CreatePost(
 
 	post.Id = uuid.NewString()
 	post.CreatorId = userID
-	post.CreateTime = timestamppb.Now()
+	post.CreateTime = time.Now().Unix()
 
 	bytes, err := protojson.Marshal(post)
 	if err != nil {
