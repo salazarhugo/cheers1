@@ -331,7 +331,10 @@ func (cache *redisCache) CreateGroup(name string, UUIDs []string) *pb.Room {
 	return room
 }
 
-func (cache *redisCache) GetOrCreateDirectRoom(userId string, otherUserId string) (*pb.Room, error) {
+func (cache *redisCache) GetOrCreateDirectRoom(
+	userId string,
+	otherUserId string,
+) (*pb.Room, error) {
 	client := cache.client
 
 	ctx := context.Background()
@@ -404,7 +407,10 @@ func (cache *redisCache) CreateRoom(roomId string, room *pb.Room) {
 	client.Set(context.Background(), getKeyRoom(roomId), json, cache.expires*time.Second)
 }
 
-func (cache *redisCache) GetRoomWithId(userId string, roomId string) (*pb.Room, error) {
+func (cache *redisCache) GetRoomWithId(
+	userId string,
+	roomId string,
+) (*pb.Room, error) {
 	client := cache.client
 
 	val, err := client.Get(context.Background(), getKeyRoom(roomId)).Result()

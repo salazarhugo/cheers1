@@ -22,7 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ChatServiceClient interface {
-	CreateChat(ctx context.Context, in *CreateChatReq, opts ...grpc.CallOption) (*Room, error)
+	CreateRoom(ctx context.Context, in *CreateRoomRequest, opts ...grpc.CallOption) (*CreateRoomResponse, error)
 	JoinRoom(ctx context.Context, in *JoinRoomRequest, opts ...grpc.CallOption) (ChatService_JoinRoomClient, error)
 	ListRoom(ctx context.Context, in *ListRoomRequest, opts ...grpc.CallOption) (*ListRoomResponse, error)
 	ListRoomMessages(ctx context.Context, in *ListRoomMessagesRequest, opts ...grpc.CallOption) (*ListRoomMessagesResponse, error)
@@ -48,9 +48,9 @@ func NewChatServiceClient(cc grpc.ClientConnInterface) ChatServiceClient {
 	return &chatServiceClient{cc}
 }
 
-func (c *chatServiceClient) CreateChat(ctx context.Context, in *CreateChatReq, opts ...grpc.CallOption) (*Room, error) {
-	out := new(Room)
-	err := c.cc.Invoke(ctx, "/cheers.chat.v1.ChatService/CreateChat", in, out, opts...)
+func (c *chatServiceClient) CreateRoom(ctx context.Context, in *CreateRoomRequest, opts ...grpc.CallOption) (*CreateRoomResponse, error) {
+	out := new(CreateRoomResponse)
+	err := c.cc.Invoke(ctx, "/cheers.chat.v1.ChatService/CreateRoom", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -266,7 +266,7 @@ func (c *chatServiceClient) DeleteUser(ctx context.Context, in *UserIdReq, opts 
 // All implementations must embed UnimplementedChatServiceServer
 // for forward compatibility
 type ChatServiceServer interface {
-	CreateChat(context.Context, *CreateChatReq) (*Room, error)
+	CreateRoom(context.Context, *CreateRoomRequest) (*CreateRoomResponse, error)
 	JoinRoom(*JoinRoomRequest, ChatService_JoinRoomServer) error
 	ListRoom(context.Context, *ListRoomRequest) (*ListRoomResponse, error)
 	ListRoomMessages(context.Context, *ListRoomMessagesRequest) (*ListRoomMessagesResponse, error)
@@ -289,8 +289,8 @@ type ChatServiceServer interface {
 type UnimplementedChatServiceServer struct {
 }
 
-func (UnimplementedChatServiceServer) CreateChat(context.Context, *CreateChatReq) (*Room, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateChat not implemented")
+func (UnimplementedChatServiceServer) CreateRoom(context.Context, *CreateRoomRequest) (*CreateRoomResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateRoom not implemented")
 }
 func (UnimplementedChatServiceServer) JoinRoom(*JoinRoomRequest, ChatService_JoinRoomServer) error {
 	return status.Errorf(codes.Unimplemented, "method JoinRoom not implemented")
@@ -350,20 +350,20 @@ func RegisterChatServiceServer(s grpc.ServiceRegistrar, srv ChatServiceServer) {
 	s.RegisterService(&ChatService_ServiceDesc, srv)
 }
 
-func _ChatService_CreateChat_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateChatReq)
+func _ChatService_CreateRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateRoomRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ChatServiceServer).CreateChat(ctx, in)
+		return srv.(ChatServiceServer).CreateRoom(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/cheers.chat.v1.ChatService/CreateChat",
+		FullMethod: "/cheers.chat.v1.ChatService/CreateRoom",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChatServiceServer).CreateChat(ctx, req.(*CreateChatReq))
+		return srv.(ChatServiceServer).CreateRoom(ctx, req.(*CreateRoomRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -665,8 +665,8 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*ChatServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "CreateChat",
-			Handler:    _ChatService_CreateChat_Handler,
+			MethodName: "CreateRoom",
+			Handler:    _ChatService_CreateRoom_Handler,
 		},
 		{
 			MethodName: "ListRoom",

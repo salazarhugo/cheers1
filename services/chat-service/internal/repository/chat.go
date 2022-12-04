@@ -18,7 +18,7 @@ type ChatRepository interface {
 	ListRoomMessages(roomID string, userID string) ([]*pb.MessageItem, error)
 	ListMembers(context context.Context, request *pb.ListMembersRequest) ([]*user.UserItem, error)
 
-	SendMessage(msg *pb.Message) error
+	SendMessage(msg *pb.Message) (*pb.Message, error)
 }
 
 type chatRepository struct {

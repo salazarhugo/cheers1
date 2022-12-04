@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../../shared/data/services/user.service";
-import {ActivatedRoute, ParamMap} from "@angular/router";
+import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {firstValueFrom, Observable, of} from "rxjs";
 import {User} from "../../../shared/data/models/user.model";
 import {PostService} from "../../../posts/data/post.service";
@@ -8,6 +8,7 @@ import {Post} from "../../../shared/data/models/post.model";
 import {PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {AuthService} from "../../../shared/data/services/auth.service";
+import {ChatService} from "../../../chats/data/chat.service";
 
 @Component({
     selector: 'app-user-profile',
@@ -24,12 +25,13 @@ export class OtherProfileComponent implements OnInit {
     constructor(
         private userService: UserService,
         private route: ActivatedRoute,
+        private router: Router,
         private postService: PostService,
         private auth: AngularFireAuth,
-        private authService: AuthService
+        private authService: AuthService,
+        private chatService: ChatService,
     ) {
     }
-
 
     async ngOnInit() {
         const token = await firstValueFrom(this.auth.idTokenResult)
@@ -47,6 +49,12 @@ export class OtherProfileComponent implements OnInit {
         })
     }
 
+    async onMessageClick() {
+        const otherUser = await firstValueFrom(this.$user)
+        const room = await firstValueFrom(this.chatService.createRoom([otherUser?.id!]))
+        await this.router.navigate(['chats', room.id])
+    }
+
     async unfollowUser(username: string) {
         await firstValueFrom(this.userService.unfollowUser(username))
     }
@@ -62,4 +70,5 @@ export class OtherProfileComponent implements OnInit {
     promoteToBusinessAccount(uid: string) {
         this.authService.promoteToBusiness(uid).subscribe()
     }
+
 }

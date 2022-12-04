@@ -1,8 +1,8 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {Chat} from "../../../shared/data/models/chat.model";
-import {ChatMessage} from "../../../shared/data/models/chat-message.model";
+import {ChatMessage, toChatMessage} from "../../../shared/data/models/chat-message.model";
 import {ChatService} from "../../data/chat.service";
-import {Message, Message_Status, MessageType} from "../../../../gen/ts/cheers/chat/v1/chat_service";
+import {Message, Message_Status, MessageItem, MessageType} from "../../../../gen/ts/cheers/chat/v1/chat_service";
 import {UserService} from "../../../shared/data/services/user.service";
 import {firstValueFrom} from "rxjs";
 import {toUnixTimestamp} from "../../../parties/ui/party-form/party-form.component";
@@ -12,7 +12,7 @@ import {toUnixTimestamp} from "../../../parties/ui/party-form/party-form.compone
     templateUrl: './chat-content.component.html',
     styleUrls: ['./chat-content.component.sass']
 })
-export class ChatContentComponent implements OnInit {
+export class ChatContentComponent implements OnInit, OnChanges {
 
     @ViewChild('scrollMe') private myScrollContainer: ElementRef;
     @Input() room: Chat
@@ -26,6 +26,9 @@ export class ChatContentComponent implements OnInit {
     ) {
     }
 
+    ngOnInit(): void {
+    }
+
     scrollToBottom(): void {
         try {
             this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
@@ -33,8 +36,11 @@ export class ChatContentComponent implements OnInit {
         }
     }
 
-    ngOnInit(): void {
+    async ngOnChanges(changes: SimpleChanges) {
+        this.messages = []
+        const user = await firstValueFrom(this.userService.user$)
         const roomId = this.room.id.replace(':', '')
+
         this.chatService.getRoomMessages(roomId).subscribe(messages => {
             this.messages = messages
         })
@@ -43,8 +49,15 @@ export class ChatContentComponent implements OnInit {
 
         this.socket.addEventListener('message', (message) => {
             const msg = JSON.parse(message.data)
-            this.messages.push(msg)
-            console.log(msg)
+            msg.sender = user.id == msg.senderId
+            const a = this.messages.find(m => m.text == msg.text)
+            if (a != undefined) {
+                const index = this.messages.indexOf(a)
+                this.messages[index] = msg
+            }
+            else {
+                this.messages.push(msg)
+            }
         })
     }
 
@@ -55,21 +68,29 @@ export class ChatContentComponent implements OnInit {
     async sendMessage() {
         const user = await firstValueFrom(this.userService.user$)
         const roomId = this.room.id.replace(':', '')
-        const message: Message = {
-            createTime: toUnixTimestamp(new Date()),
-            likeCount: 0,
-            picture: "",
-            senderId: user.id,
-            senderName: "Hugo",
-            senderPicture: "",
-            senderUsername: "",
-            status: Message_Status.DELIVERED,
-            type: MessageType.TEXT,
-            id: "",
-            roomId: roomId,
-            text: this.text
+        const item: MessageItem = {
+            message: {
+                createTime: toUnixTimestamp(new Date()),
+                likeCount: 0,
+                picture: "",
+                senderId: user.id,
+                senderName: "Hugo",
+                senderPicture: "",
+                senderUsername: "",
+                status: Message_Status.EMPTY,
+                type: MessageType.TEXT,
+                id: "",
+                roomId: roomId,
+                text: this.text
+            },
+            sender: true,
+            liked: false,
         }
-        const bytes = Message.encode(message).finish()
+
+        const chatMessage = toChatMessage(item, "SCHEDULED")
+        this.messages.push(chatMessage)
+        const bytes = Message.encode(item.message!).finish()
+        console.log(bytes)
         this.socket.send(bytes);
         this.text = ""
     }

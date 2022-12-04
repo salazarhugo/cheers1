@@ -1,4 +1,5 @@
 /* eslint-disable */
+import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
@@ -169,6 +170,15 @@ export function typingEvent_TypeToJSON(object: TypingEvent_Type): string {
   }
 }
 
+export interface CreateRoomRequest {
+  groupName: string;
+  recipientUsers: string[];
+}
+
+export interface CreateRoomResponse {
+  room: Room | undefined;
+}
+
 export interface ListRoomMessagesRequest {
   roomId: string;
   pageSize: number;
@@ -207,11 +217,6 @@ export interface Empty {
 
 export interface AddTokenReq {
   token: string;
-}
-
-export interface CreateChatReq {
-  userIds: string[];
-  groupName: string;
 }
 
 export interface TypingReq {
@@ -394,6 +399,115 @@ export const TypingEvent = {
     message.roomId = object.roomId ?? "";
     message.userId = object.userId ?? "";
     message.type = object.type ?? 0;
+    return message;
+  },
+};
+
+function createBaseCreateRoomRequest(): CreateRoomRequest {
+  return { groupName: "", recipientUsers: [] };
+}
+
+export const CreateRoomRequest = {
+  encode(message: CreateRoomRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.groupName !== "") {
+      writer.uint32(10).string(message.groupName);
+    }
+    for (const v of message.recipientUsers) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateRoomRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateRoomRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.groupName = reader.string();
+          break;
+        case 2:
+          message.recipientUsers.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateRoomRequest {
+    return {
+      groupName: isSet(object.groupName) ? String(object.groupName) : "",
+      recipientUsers: Array.isArray(object?.recipientUsers) ? object.recipientUsers.map((e: any) => String(e)) : [],
+    };
+  },
+
+  toJSON(message: CreateRoomRequest): unknown {
+    const obj: any = {};
+    message.groupName !== undefined && (obj.groupName = message.groupName);
+    if (message.recipientUsers) {
+      obj.recipientUsers = message.recipientUsers.map((e) => e);
+    } else {
+      obj.recipientUsers = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CreateRoomRequest>, I>>(object: I): CreateRoomRequest {
+    const message = createBaseCreateRoomRequest();
+    message.groupName = object.groupName ?? "";
+    message.recipientUsers = object.recipientUsers?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBaseCreateRoomResponse(): CreateRoomResponse {
+  return { room: undefined };
+}
+
+export const CreateRoomResponse = {
+  encode(message: CreateRoomResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.room !== undefined) {
+      Room.encode(message.room, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateRoomResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateRoomResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.room = Room.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateRoomResponse {
+    return { room: isSet(object.room) ? Room.fromJSON(object.room) : undefined };
+  },
+
+  toJSON(message: CreateRoomResponse): unknown {
+    const obj: any = {};
+    message.room !== undefined && (obj.room = message.room ? Room.toJSON(message.room) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CreateRoomResponse>, I>>(object: I): CreateRoomResponse {
+    const message = createBaseCreateRoomResponse();
+    message.room = (object.room !== undefined && object.room !== null) ? Room.fromPartial(object.room) : undefined;
     return message;
   },
 };
@@ -874,68 +988,6 @@ export const AddTokenReq = {
   fromPartial<I extends Exact<DeepPartial<AddTokenReq>, I>>(object: I): AddTokenReq {
     const message = createBaseAddTokenReq();
     message.token = object.token ?? "";
-    return message;
-  },
-};
-
-function createBaseCreateChatReq(): CreateChatReq {
-  return { userIds: [], groupName: "" };
-}
-
-export const CreateChatReq = {
-  encode(message: CreateChatReq, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.userIds) {
-      writer.uint32(10).string(v!);
-    }
-    if (message.groupName !== "") {
-      writer.uint32(18).string(message.groupName);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): CreateChatReq {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCreateChatReq();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.userIds.push(reader.string());
-          break;
-        case 2:
-          message.groupName = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): CreateChatReq {
-    return {
-      userIds: Array.isArray(object?.userIds) ? object.userIds.map((e: any) => String(e)) : [],
-      groupName: isSet(object.groupName) ? String(object.groupName) : "",
-    };
-  },
-
-  toJSON(message: CreateChatReq): unknown {
-    const obj: any = {};
-    if (message.userIds) {
-      obj.userIds = message.userIds.map((e) => e);
-    } else {
-      obj.userIds = [];
-    }
-    message.groupName !== undefined && (obj.groupName = message.groupName);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<CreateChatReq>, I>>(object: I): CreateChatReq {
-    const message = createBaseCreateChatReq();
-    message.userIds = object.userIds?.map((e) => e) || [];
-    message.groupName = object.groupName ?? "";
     return message;
   },
 };
@@ -1458,7 +1510,7 @@ export const Message = {
       writer.uint32(88).int32(message.status);
     }
     if (message.createTime !== 0) {
-      writer.uint32(96).int32(message.createTime);
+      writer.uint32(96).int64(message.createTime);
     }
     return writer;
   },
@@ -1504,7 +1556,7 @@ export const Message = {
           message.status = reader.int32() as any;
           break;
         case 12:
-          message.createTime = reader.int32();
+          message.createTime = longToNumber(reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -1683,7 +1735,7 @@ export const SendMessageResponse = {
 };
 
 export interface ChatService {
-  CreateChat(request: CreateChatReq): Promise<Room>;
+  CreateRoom(request: CreateRoomRequest): Promise<CreateRoomResponse>;
   JoinRoom(request: JoinRoomRequest): Observable<Message>;
   ListRoom(request: ListRoomRequest): Promise<ListRoomResponse>;
   ListRoomMessages(request: ListRoomMessagesRequest): Promise<ListRoomMessagesResponse>;
@@ -1707,7 +1759,7 @@ export class ChatServiceClientImpl implements ChatService {
   constructor(rpc: Rpc, opts?: { service?: string }) {
     this.service = opts?.service || "cheers.chat.v1.ChatService";
     this.rpc = rpc;
-    this.CreateChat = this.CreateChat.bind(this);
+    this.CreateRoom = this.CreateRoom.bind(this);
     this.JoinRoom = this.JoinRoom.bind(this);
     this.ListRoom = this.ListRoom.bind(this);
     this.ListRoomMessages = this.ListRoomMessages.bind(this);
@@ -1724,10 +1776,10 @@ export class ChatServiceClientImpl implements ChatService {
     this.AddToken = this.AddToken.bind(this);
     this.DeleteUser = this.DeleteUser.bind(this);
   }
-  CreateChat(request: CreateChatReq): Promise<Room> {
-    const data = CreateChatReq.encode(request).finish();
-    const promise = this.rpc.request(this.service, "CreateChat", data);
-    return promise.then((data) => Room.decode(new _m0.Reader(data)));
+  CreateRoom(request: CreateRoomRequest): Promise<CreateRoomResponse> {
+    const data = CreateRoomRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "CreateRoom", data);
+    return promise.then((data) => CreateRoomResponse.decode(new _m0.Reader(data)));
   }
 
   JoinRoom(request: JoinRoomRequest): Observable<Message> {
@@ -1828,6 +1880,25 @@ interface Rpc {
   bidirectionalStreamingRequest(service: string, method: string, data: Observable<Uint8Array>): Observable<Uint8Array>;
 }
 
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") {
+    return globalThis;
+  }
+  if (typeof self !== "undefined") {
+    return self;
+  }
+  if (typeof window !== "undefined") {
+    return window;
+  }
+  if (typeof global !== "undefined") {
+    return global;
+  }
+  throw "Unable to locate global object";
+})();
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
@@ -1859,6 +1930,20 @@ function fromJsonTimestamp(o: any): Date {
   } else {
     return fromTimestamp(Timestamp.fromJSON(o));
   }
+}
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
+// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
+if (_m0.util.Long !== Long) {
+  _m0.util.Long = Long as any;
+  _m0.configure();
 }
 
 function isSet(value: any): boolean {

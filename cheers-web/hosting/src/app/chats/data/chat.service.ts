@@ -3,6 +3,7 @@ import {map, Observable, of} from "rxjs";
 import {Chat, toChat} from "../../shared/data/models/chat.model";
 import {HttpClient} from "@angular/common/http";
 import {
+    CreateRoomRequest, CreateRoomResponse,
     ListRoomMessagesRequest,
     ListRoomMessagesResponse,
     ListRoomResponse,
@@ -24,6 +25,11 @@ export class ChatService {
     ) {
     }
 
+    createRoom(users: string[]): Observable<Chat> {
+        return this.http.post<CreateRoomResponse>(`${environment.GATEWAY_URL}/v1/chats`, {
+            recipient_users: users
+        }).pipe(map(room => toChat(room.room!)))
+    }
 
     getRooms(): Observable<Chat[]> {
         return this.http.get<ListRoomResponse>(`${environment.GATEWAY_URL}/v1/chats?page=0&page_size=10`)

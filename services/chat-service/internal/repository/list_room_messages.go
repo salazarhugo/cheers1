@@ -12,6 +12,7 @@ func (c chatRepository) ListRoomMessages(
 
 	messages := c.cache.GetMessages(roomID)
 	for _, msg := range messages {
+		msg.Status = chat.Message_DELIVERED
 		items = append(items, &chat.MessageItem{
 			Message: msg,
 			Sender:  userID == msg.SenderId,

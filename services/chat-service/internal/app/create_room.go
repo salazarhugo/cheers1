@@ -8,25 +8,27 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (s *Server) CreateChat(
+func (s *Server) CreateRoom(
 	ctx context.Context,
-	request *pb.CreateChatReq,
-) (*pb.Room, error) {
+	request *pb.CreateRoomRequest,
+) (*pb.CreateRoomResponse, error) {
 	userID, err := utils.GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to retrieve userID")
 	}
 
-	members := append([]string{userID}, request.UserIds...)
-
-	if len(members) < 2 {
-		return nil, status.Error(codes.InvalidArgument, "chats must have at least 2 users")
+	if len(request.RecipientUsers) < 1 {
+		return nil, status.Error(codes.InvalidArgument, "empty parameter recipient_users")
 	}
+
+	members := append([]string{userID}, request.RecipientUsers...)
 
 	room, err := s.chatRepository.CreateRoom(request.GroupName, members)
 	if err != nil {
 		return nil, err
 	}
 
-	return room, nil
+	return &pb.CreateRoomResponse{
+		Room: room,
+	}, nil
 }

@@ -10,7 +10,7 @@
             <button (click)="user.followBack = true;user.followers = user.followers + 1; followUser(user.username)" *ngIf="!user.followBack" color="primary" mat-flat-button>
                 Follow
             </button>
-            <button color="primary" mat-flat-button style="border-radius: 12px">
+            <button color="primary" mat-flat-button style="border-radius: 12px" (click)="onMessageClick()">
                 Message
             </button>
             <button *ngIf="isAdmin" (click)="promoteToBusinessAccount(user.id)" color="primary" mat-flat-button>

@@ -15,7 +15,7 @@
     </div>
 
     <mat-card class="chat-body-container outline" fxLayout="column" fxLayoutAlign="space-between">
-        <div class="chat-body-list" #scrollMe [scrollTop]="scrollMe.scrollHeight">
+        <div class="chat-body-list" #scrollMe>
             <div fxLayout="column" fxLayoutAlign="center center">
                 <img [src]="room.picture ? room.picture : 'assets/default_profile_picture.png' "
                      ngClass="avatar--extra-large" ngClass.lt-md="avatar--medium" ngClass.lt-sm="avatar--medium"/>

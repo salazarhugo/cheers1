@@ -15,12 +15,14 @@ import (
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health/grpc_health_v1"
+	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"log"
 	"net"
 	"net/http"
 	"os"
 	"strings"
+	"sync"
 )
 
 func init() {
@@ -81,12 +83,13 @@ func serveWs(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
-
-	go ListenMessages(conn, roomId)
-	go SendMessage(conn)
+	connection := new(Connection)
+	connection.Socket = conn
+	go ListenMessages(connection, roomId)
+	go SendMessage(connection)
 }
 
-func ListenMessages(conn *websocket.Conn, roomId string) {
+func ListenMessages(conn *Connection, roomId string) {
 	client := redis.NewClient(&redis.Options{
 		Addr:     "redis-18624.c228.us-central1-1.gce.cloud.redislabs.com:18624",
 		Password: "mBiW18GNIgPzQTbBMDEz71UVsAcNDOYF",
@@ -98,7 +101,12 @@ func ListenMessages(conn *websocket.Conn, roomId string) {
 		select {
 		case msg := <-ch:
 			log.Println("Received msg from redis pubsub")
-			err := conn.WriteMessage(websocket.TextMessage, []byte(msg.Payload))
+			var chatMessage chat.Message
+			err := protojson.Unmarshal([]byte(msg.Payload), &chatMessage)
+			chatMessage.Status = chat.Message_DELIVERED
+			bytes, err := protojson.Marshal(&chatMessage)
+
+			err = conn.Send(bytes)
 			if err != nil {
 				log.Println(err)
 			}
@@ -107,13 +115,12 @@ func ListenMessages(conn *websocket.Conn, roomId string) {
 
 }
 
-func SendMessage(conn *websocket.Conn) {
+func SendMessage(conn *Connection) {
 	repo := repository.NewChatRepository()
-	log.Println(repo)
 
 	for {
 		var chatMessage chat.Message
-		_, b, err := conn.ReadMessage()
+		_, b, err := conn.Socket.ReadMessage()
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
 				log.Printf("error: %v", err)
@@ -127,12 +134,31 @@ func SendMessage(conn *websocket.Conn) {
 			return
 		}
 
-		err = repo.SendMessage(&chatMessage)
+		msg, err := repo.SendMessage(&chatMessage)
 		if err != nil {
 			log.Println(err)
 			return
 		}
+		// Acknowledge message
+		msg.Status = chat.Message_SENT
+		bytes, err := protojson.Marshal(msg)
+		err = conn.Send(bytes)
+		if err != nil {
+			log.Println(err)
+		}
 	}
+}
+
+type Connection struct {
+	Socket *websocket.Conn
+	mu     sync.Mutex
+}
+
+// Concurrency handling - sending messages
+func (c *Connection) Send(data []byte) error {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	return c.Socket.WriteMessage(websocket.TextMessage, data)
 }
 
 func newHTTPandGRPCMux(httpHand http.Handler, grpcHandler http.Handler) http.Handler {
