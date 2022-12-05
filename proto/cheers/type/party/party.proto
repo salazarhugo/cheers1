@@ -14,8 +14,8 @@ message Party {
   string address = 4;
   Privacy privacy = 6;
   string banner_url = 7;
-  int32 start_date = 8;
-  int32 end_date = 9;
+  int64 start_date = 8;
+  int64 end_date = 9;
   // The user_id of the creator
   string host_id = 10;
   // The location name

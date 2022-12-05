@@ -65,10 +65,10 @@ export const Party = {
       writer.uint32(58).string(message.bannerUrl);
     }
     if (message.startDate !== 0) {
-      writer.uint32(64).int32(message.startDate);
+      writer.uint32(64).int64(message.startDate);
     }
     if (message.endDate !== 0) {
-      writer.uint32(72).int32(message.endDate);
+      writer.uint32(72).int64(message.endDate);
     }
     if (message.hostId !== "") {
       writer.uint32(82).string(message.hostId);
@@ -114,10 +114,10 @@ export const Party = {
           message.bannerUrl = reader.string();
           break;
         case 8:
-          message.startDate = reader.int32();
+          message.startDate = longToNumber(reader.int64() as Long);
           break;
         case 9:
-          message.endDate = reader.int32();
+          message.endDate = longToNumber(reader.int64() as Long);
           break;
         case 10:
           message.hostId = reader.string();
