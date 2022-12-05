@@ -103,7 +103,7 @@ export const Order = {
       writer.uint32(50).string(message.userId);
     }
     if (message.createTime !== 0) {
-      writer.uint32(56).int64(message.createTime);
+      writer.uint32(56).int32(message.createTime);
     }
     for (const v of message.tickets) {
       Ticket.encode(v!, writer.uint32(66).fork()).ldelim();
@@ -158,7 +158,7 @@ export const Order = {
           message.userId = reader.string();
           break;
         case 7:
-          message.createTime = longToNumber(reader.int64() as Long);
+          message.createTime = reader.int32();
           break;
         case 8:
           message.tickets.push(Ticket.decode(reader, reader.uint32()));

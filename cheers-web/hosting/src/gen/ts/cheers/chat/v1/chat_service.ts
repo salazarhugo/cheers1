@@ -249,7 +249,7 @@ export interface Room {
   lastMessageText: string;
   picture: string;
   lastMessageType: MessageType;
-  created: number;
+  createTime: number;
   lastMessageTime: number;
   lastMessageSeen: boolean;
   archived: boolean;
@@ -1214,7 +1214,7 @@ function createBaseRoom(): Room {
     lastMessageText: "",
     picture: "",
     lastMessageType: 0,
-    created: 0,
+    createTime: 0,
     lastMessageTime: 0,
     lastMessageSeen: false,
     archived: false,
@@ -1259,8 +1259,8 @@ export const Room = {
     if (message.lastMessageType !== 0) {
       writer.uint32(104).int32(message.lastMessageType);
     }
-    if (message.created !== 0) {
-      writer.uint32(112).int64(message.created);
+    if (message.createTime !== 0) {
+      writer.uint32(112).int32(message.createTime);
     }
     if (message.lastMessageTime !== 0) {
       writer.uint32(120).int64(message.lastMessageTime);
@@ -1318,7 +1318,7 @@ export const Room = {
           message.lastMessageType = reader.int32() as any;
           break;
         case 14:
-          message.created = longToNumber(reader.int64() as Long);
+          message.createTime = reader.int32();
           break;
         case 15:
           message.lastMessageTime = longToNumber(reader.int64() as Long);
@@ -1351,7 +1351,7 @@ export const Room = {
       lastMessageText: isSet(object.lastMessageText) ? String(object.lastMessageText) : "",
       picture: isSet(object.picture) ? String(object.picture) : "",
       lastMessageType: isSet(object.lastMessageType) ? messageTypeFromJSON(object.lastMessageType) : 0,
-      created: isSet(object.created) ? Number(object.created) : 0,
+      createTime: isSet(object.createTime) ? Number(object.createTime) : 0,
       lastMessageTime: isSet(object.lastMessageTime) ? Number(object.lastMessageTime) : 0,
       lastMessageSeen: isSet(object.lastMessageSeen) ? Boolean(object.lastMessageSeen) : false,
       archived: isSet(object.archived) ? Boolean(object.archived) : false,
@@ -1380,7 +1380,7 @@ export const Room = {
     message.lastMessageText !== undefined && (obj.lastMessageText = message.lastMessageText);
     message.picture !== undefined && (obj.picture = message.picture);
     message.lastMessageType !== undefined && (obj.lastMessageType = messageTypeToJSON(message.lastMessageType));
-    message.created !== undefined && (obj.created = Math.round(message.created));
+    message.createTime !== undefined && (obj.createTime = Math.round(message.createTime));
     message.lastMessageTime !== undefined && (obj.lastMessageTime = Math.round(message.lastMessageTime));
     message.lastMessageSeen !== undefined && (obj.lastMessageSeen = message.lastMessageSeen);
     message.archived !== undefined && (obj.archived = message.archived);
@@ -1401,7 +1401,7 @@ export const Room = {
     message.lastMessageText = object.lastMessageText ?? "";
     message.picture = object.picture ?? "";
     message.lastMessageType = object.lastMessageType ?? 0;
-    message.created = object.created ?? 0;
+    message.createTime = object.createTime ?? 0;
     message.lastMessageTime = object.lastMessageTime ?? 0;
     message.lastMessageSeen = object.lastMessageSeen ?? false;
     message.archived = object.archived ?? false;
@@ -1520,7 +1520,7 @@ export const Message = {
       writer.uint32(88).int32(message.status);
     }
     if (message.createTime !== 0) {
-      writer.uint32(96).int64(message.createTime);
+      writer.uint32(96).int32(message.createTime);
     }
     return writer;
   },
@@ -1566,7 +1566,7 @@ export const Message = {
           message.status = reader.int32() as any;
           break;
         case 12:
-          message.createTime = longToNumber(reader.int64() as Long);
+          message.createTime = reader.int32();
           break;
         default:
           reader.skipType(tag & 7);

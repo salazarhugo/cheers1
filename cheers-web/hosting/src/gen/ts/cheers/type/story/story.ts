@@ -88,7 +88,7 @@ export const Story = {
       writer.uint32(88).int32(message.type);
     }
     if (message.createTime !== 0) {
-      writer.uint32(96).int64(message.createTime);
+      writer.uint32(96).int32(message.createTime);
     }
     if (message.shareEnabled === true) {
       writer.uint32(112).bool(message.shareEnabled);
@@ -125,7 +125,7 @@ export const Story = {
           message.type = reader.int32() as any;
           break;
         case 12:
-          message.createTime = longToNumber(reader.int64() as Long);
+          message.createTime = reader.int32();
           break;
         case 14:
           message.shareEnabled = reader.bool();
@@ -210,13 +210,6 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  return long.toNumber();
-}
 
 // If you get a compile-error about 'Constructor<Long> and ... have no overlap',
 // add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
