@@ -34,7 +34,7 @@ export class PartiesComponent implements OnInit {
                 console.log(party.hostId)
                 return party
             })),
-            map(results => results.sort((a, b) => (a.created < b.created) ? 1 : -1))
+            map(results => results.sort((a, b) => (a.createTime < b.createTime) ? 1 : -1))
         )
     }
 

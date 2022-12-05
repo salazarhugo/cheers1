@@ -22,7 +22,7 @@ export class Party {
     address: string = ""
     locationName: string = ""
     going: boolean = false
-    created: number = 0
+    createTime: number = 0
     hostId: string = ""
     name: string = ""
     interested: boolean = false

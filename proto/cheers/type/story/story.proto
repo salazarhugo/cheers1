@@ -19,6 +19,6 @@ message Story {
     VIDEO = 1;
   }
   StoryType type = 11;
-  int64 create_time = 12;
+  int32 create_time = 12;
   bool share_enabled = 14;
 }

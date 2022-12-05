@@ -8,7 +8,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/gorilla/websocket v1.5.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221204183118-9aa627ae4f5c
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221204215127-ae34b7fa9079
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221018182022-91ddac90c15e
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221022084305-122f971a4fa0
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221026133808-a7afb0950d56
