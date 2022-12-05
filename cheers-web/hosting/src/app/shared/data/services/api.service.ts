@@ -50,7 +50,7 @@ export class ApiService {
     }
 
     updateUser(user: User) {
-        return this.http.post(`${environment.GATEWAY_URL}/v1/users`, user)
+        return this.http.patch(`${environment.GATEWAY_URL}/v1/users`, user)
     }
 
     followUser(username: string) {

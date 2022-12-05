@@ -18,12 +18,7 @@ func (s *Server) CreateUser(
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")
 	}
 
-	partyReq := request.GetUser()
-	if partyReq == nil {
-		return nil, status.Error(codes.InvalidArgument, "post parameter can't be nil")
-	}
-
-	userID, err = s.userRepository.CreateUser(userID, partyReq)
+	userID, err = s.userRepository.CreateUser(userID, request)
 	if err != nil {
 		log.Error(err)
 		return nil, status.Error(codes.Internal, "failed to create user")

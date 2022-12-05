@@ -7,7 +7,11 @@ import {HttpClient} from "@angular/common/http";
 import {Chat, toChat} from "../models/chat.model";
 import {CreateRoomResponse} from "../../../../gen/ts/cheers/chat/v1/chat_service";
 import {environment} from "../../../../environments/environment";
-import {ListFollowersResponse, ListFollowingResponse} from "../../../../gen/ts/cheers/user/v1/user_service";
+import {
+    CreateUserRequest, CreateUserResponse,
+    ListFollowersResponse,
+    ListFollowingResponse
+} from "../../../../gen/ts/cheers/user/v1/user_service";
 import {UserItem} from "../../../../gen/ts/cheers/type/user/user";
 
 @Injectable({
@@ -71,7 +75,7 @@ export class UserService {
         return this.api.usernameAvailability(username)
     }
 
-    register(userReq: any): Observable<User> {
-        return this.api.register(userReq)
+    register(userReq: any): Observable<any> {
+        return this.http.post<CreateUserResponse>(`${environment.GATEWAY_URL}/v1/users`, userReq)
     }
 }

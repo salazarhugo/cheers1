@@ -55,12 +55,11 @@ export class FinishSignUpComponent implements OnInit {
             name: userForm.name,
             email: afUser.email!,
             username: userForm.username,
-            emailVerified: afUser.emailVerified,
-            profilePictureUrl: afUser.photoURL,
+            email_verified: afUser.emailVerified,
+            picture: afUser.photoURL,
         }
         try {
-            const user = await firstValueFrom(this.userService.register(userReq))
-            console.log(user)
+            await firstValueFrom(this.userService.register(userReq))
             await this.router.navigate(['profile'])
         } catch (e: any) {
             this.errorMessage = e

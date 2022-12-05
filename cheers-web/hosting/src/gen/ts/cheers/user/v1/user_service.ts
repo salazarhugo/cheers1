@@ -6,6 +6,14 @@ import { StoryState, storyStateFromJSON, storyStateToJSON, User, UserItem } from
 export const protobufPackage = "cheers.user.v1";
 
 export interface CreateUserRequest {
+  email: string;
+  name: string;
+  emailVerified: string;
+  picture: string;
+  username: string;
+}
+
+export interface CreateUserResponse {
   user: User | undefined;
 }
 
@@ -102,13 +110,25 @@ export interface DeleteUserRequest {
 }
 
 function createBaseCreateUserRequest(): CreateUserRequest {
-  return { user: undefined };
+  return { email: "", name: "", emailVerified: "", picture: "", username: "" };
 }
 
 export const CreateUserRequest = {
   encode(message: CreateUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.user !== undefined) {
-      User.encode(message.user, writer.uint32(10).fork()).ldelim();
+    if (message.email !== "") {
+      writer.uint32(10).string(message.email);
+    }
+    if (message.name !== "") {
+      writer.uint32(18).string(message.name);
+    }
+    if (message.emailVerified !== "") {
+      writer.uint32(26).string(message.emailVerified);
+    }
+    if (message.picture !== "") {
+      writer.uint32(34).string(message.picture);
+    }
+    if (message.username !== "") {
+      writer.uint32(42).string(message.username);
     }
     return writer;
   },
@@ -117,6 +137,79 @@ export const CreateUserRequest = {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateUserRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.email = reader.string();
+          break;
+        case 2:
+          message.name = reader.string();
+          break;
+        case 3:
+          message.emailVerified = reader.string();
+          break;
+        case 4:
+          message.picture = reader.string();
+          break;
+        case 5:
+          message.username = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateUserRequest {
+    return {
+      email: isSet(object.email) ? String(object.email) : "",
+      name: isSet(object.name) ? String(object.name) : "",
+      emailVerified: isSet(object.emailVerified) ? String(object.emailVerified) : "",
+      picture: isSet(object.picture) ? String(object.picture) : "",
+      username: isSet(object.username) ? String(object.username) : "",
+    };
+  },
+
+  toJSON(message: CreateUserRequest): unknown {
+    const obj: any = {};
+    message.email !== undefined && (obj.email = message.email);
+    message.name !== undefined && (obj.name = message.name);
+    message.emailVerified !== undefined && (obj.emailVerified = message.emailVerified);
+    message.picture !== undefined && (obj.picture = message.picture);
+    message.username !== undefined && (obj.username = message.username);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CreateUserRequest>, I>>(object: I): CreateUserRequest {
+    const message = createBaseCreateUserRequest();
+    message.email = object.email ?? "";
+    message.name = object.name ?? "";
+    message.emailVerified = object.emailVerified ?? "";
+    message.picture = object.picture ?? "";
+    message.username = object.username ?? "";
+    return message;
+  },
+};
+
+function createBaseCreateUserResponse(): CreateUserResponse {
+  return { user: undefined };
+}
+
+export const CreateUserResponse = {
+  encode(message: CreateUserResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.user !== undefined) {
+      User.encode(message.user, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateUserResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateUserResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -131,18 +224,18 @@ export const CreateUserRequest = {
     return message;
   },
 
-  fromJSON(object: any): CreateUserRequest {
+  fromJSON(object: any): CreateUserResponse {
     return { user: isSet(object.user) ? User.fromJSON(object.user) : undefined };
   },
 
-  toJSON(message: CreateUserRequest): unknown {
+  toJSON(message: CreateUserResponse): unknown {
     const obj: any = {};
     message.user !== undefined && (obj.user = message.user ? User.toJSON(message.user) : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<CreateUserRequest>, I>>(object: I): CreateUserRequest {
-    const message = createBaseCreateUserRequest();
+  fromPartial<I extends Exact<DeepPartial<CreateUserResponse>, I>>(object: I): CreateUserResponse {
+    const message = createBaseCreateUserResponse();
     message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
     return message;
   },
@@ -1235,7 +1328,7 @@ export const DeleteUserRequest = {
 };
 
 export interface UserService {
-  CreateUser(request: CreateUserRequest): Promise<User>;
+  CreateUser(request: CreateUserRequest): Promise<CreateUserResponse>;
   GetUser(request: GetUserRequest): Promise<GetUserResponse>;
   UpdateUser(request: UpdateUserRequest): Promise<User>;
   DeleteUser(request: DeleteUserRequest): Promise<Empty>;
@@ -1270,10 +1363,10 @@ export class UserServiceClientImpl implements UserService {
     this.ListFollowers = this.ListFollowers.bind(this);
     this.ListFollowing = this.ListFollowing.bind(this);
   }
-  CreateUser(request: CreateUserRequest): Promise<User> {
+  CreateUser(request: CreateUserRequest): Promise<CreateUserResponse> {
     const data = CreateUserRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateUser", data);
-    return promise.then((data) => User.decode(new _m0.Reader(data)));
+    return promise.then((data) => CreateUserResponse.decode(new _m0.Reader(data)));
   }
 
   GetUser(request: GetUserRequest): Promise<GetUserResponse> {

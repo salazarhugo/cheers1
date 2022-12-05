@@ -4,8 +4,8 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	"github.com/salazarhugo/cheers1/libs/utils"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"log"
+	"time"
 )
 
 func (p *userRepository) CreateUser(
@@ -21,7 +21,7 @@ func (p *userRepository) CreateUser(
 	}
 
 	user.Id = userID
-	user.CreateTime = timestamppb.Now()
+	user.CreateTime = time.Now().Unix()
 
 	m, err := utils.ProtoToMap(user)
 	if err != nil {
