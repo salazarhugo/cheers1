@@ -152,7 +152,7 @@ export const Post = {
       writer.uint32(88).int32(message.type);
     }
     if (message.createTime !== 0) {
-      writer.uint32(96).int32(message.createTime);
+      writer.uint32(96).int64(message.createTime);
     }
     if (message.canComment === true) {
       writer.uint32(104).bool(message.canComment);
@@ -204,7 +204,7 @@ export const Post = {
           message.type = reader.int32() as any;
           break;
         case 12:
-          message.createTime = reader.int32();
+          message.createTime = longToNumber(reader.int64() as Long);
           break;
         case 13:
           message.canComment = reader.bool();

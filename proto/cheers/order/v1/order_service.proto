@@ -49,7 +49,7 @@ message Order {
   int64 amount = 3;
   string customer_id = 4;
   string user_id = 6;
-  int32 create_time = 7;
+  int64 create_time = 7;
   repeated cheers.ticket.v1.Ticket tickets = 8;
   string party_id = 9;
   string party_name = 10;

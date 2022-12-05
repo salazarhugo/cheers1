@@ -36,7 +36,7 @@ export function toParty(value: PartyItem): Party {
     party.invitedCount = value.invitedCount
     party.isHost = value.isCreator
     party.hostName = value.user?.name  || ""
-    party.startDate = value.party?.startDate || 0
-    party.endDate = value.party?.endDate || 0
+    party.startDate = Number(value.party?.startDate)
+    party.endDate = Number(value.party?.endDate)
     return party
 }

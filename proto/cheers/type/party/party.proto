@@ -21,7 +21,7 @@ message Party {
   // The location name
   string location_name = 12;
   // The time when the party was created.
-  int32 create_time = 13;
+  int64 create_time = 13;
   // The latitude in degrees. It must be in the range [-90.0, +90.0].
   double latitude = 14;
   // The longitude in degrees. It must be in the range [-180.0, +180.0].

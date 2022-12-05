@@ -9,6 +9,7 @@ import {PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {AuthService} from "../../../shared/data/services/auth.service";
 import {ChatService} from "../../../chats/data/chat.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-user-profile',
@@ -30,6 +31,7 @@ export class OtherProfileComponent implements OnInit {
         private auth: AngularFireAuth,
         private authService: AuthService,
         private chatService: ChatService,
+        private snackbar: MatSnackBar,
     ) {
     }
 
@@ -51,8 +53,12 @@ export class OtherProfileComponent implements OnInit {
 
     async onMessageClick() {
         const otherUser = await firstValueFrom(this.$user)
-        const room = await firstValueFrom(this.chatService.createRoom([otherUser?.id!]))
-        await this.router.navigate(['chats', room.id])
+        try {
+            const room = await firstValueFrom(this.chatService.createRoom([otherUser?.id!]))
+            await this.router.navigate(['chats', room.id])
+        } catch (e) {
+            this.snackbar.open("Failed to create room")
+        }
     }
 
     async unfollowUser(username: string) {

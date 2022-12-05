@@ -1,4 +1,5 @@
 /* eslint-disable */
+import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "cheers.type";
@@ -161,7 +162,7 @@ export const User = {
       writer.uint32(74).string(message.phoneNumber);
     }
     if (message.createTime !== 0) {
-      writer.uint32(80).int32(message.createTime);
+      writer.uint32(80).int64(message.createTime);
     }
     for (const v of message.registrationTokens) {
       writer.uint32(90).string(v!);
@@ -210,7 +211,7 @@ export const User = {
           message.phoneNumber = reader.string();
           break;
         case 10:
-          message.createTime = reader.int32();
+          message.createTime = longToNumber(reader.int64() as Long);
           break;
         case 11:
           message.registrationTokens.push(reader.string());
@@ -387,6 +388,25 @@ export const UserItem = {
   },
 };
 
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var globalThis: any = (() => {
+  if (typeof globalThis !== "undefined") {
+    return globalThis;
+  }
+  if (typeof self !== "undefined") {
+    return self;
+  }
+  if (typeof window !== "undefined") {
+    return window;
+  }
+  if (typeof global !== "undefined") {
+    return global;
+  }
+  throw "Unable to locate global object";
+})();
+
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
@@ -397,6 +417,20 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
+// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
+if (_m0.util.Long !== Long) {
+  _m0.util.Long = Long as any;
+  _m0.configure();
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

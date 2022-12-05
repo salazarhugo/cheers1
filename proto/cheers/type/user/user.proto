@@ -18,7 +18,7 @@ message User {
   string birthday = 12;
   Gender gender = 13;
   string phone_number = 9;
-  int32 create_time = 10;
+  int64 create_time = 10;
   repeated string registration_tokens = 11;
 }
 

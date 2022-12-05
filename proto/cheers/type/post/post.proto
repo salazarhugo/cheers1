@@ -18,7 +18,7 @@ message Post {
   string drink = 9;
   int64 drunkenness = 10;
   PostType type = 11;
-  int32 create_time = 12;
+  int64 create_time = 12;
   bool can_comment = 13;
   bool can_share = 14;
   PostRatio ratio = 15;
