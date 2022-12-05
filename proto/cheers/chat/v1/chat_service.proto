@@ -154,7 +154,7 @@ message Room {
   string picture = 12;
   MessageType last_message_type = 13;
   int32 create_time = 14;
-  int64 last_message_time = 15;
+  int32 last_message_time = 15;
   bool last_message_seen = 17;
   bool archived = 16;
 }

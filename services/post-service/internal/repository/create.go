@@ -1,13 +1,11 @@
 package repository
 
 import (
-	"encoding/json"
 	uuid "github.com/google/uuid"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	postpb "github.com/salazarhugo/cheers1/gen/go/cheers/type/post"
 	utils "github.com/salazarhugo/cheers1/libs/utils"
-	"google.golang.org/protobuf/encoding/protojson"
 	"log"
 	"time"
 )
@@ -26,16 +24,9 @@ func (p *postRepository) CreatePost(
 
 	post.Id = uuid.NewString()
 	post.CreatorId = userID
-	post.CreateTime = time.Now().Unix()
+	post.CreateTime = int32(time.Now().Unix())
 
-	bytes, err := protojson.Marshal(post)
-	if err != nil {
-		return "", err
-	}
-
-	var m = make(map[string]interface{}, 0)
-
-	err = json.Unmarshal(bytes, &m)
+	m, err := utils.ProtoToMap(post)
 	if err != nil {
 		return "", err
 	}

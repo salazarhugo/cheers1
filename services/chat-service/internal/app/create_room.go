@@ -21,6 +21,10 @@ func (s *Server) CreateRoom(
 		return nil, status.Error(codes.InvalidArgument, "empty parameter recipient_users")
 	}
 
+	if request.RecipientUsers[0] == userID {
+		return nil, status.Error(codes.InvalidArgument, "cannot create room with yourself")
+	}
+
 	members := append([]string{userID}, request.RecipientUsers...)
 
 	room, err := s.chatRepository.CreateRoom(request.GroupName, members)
