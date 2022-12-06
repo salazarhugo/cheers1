@@ -14,7 +14,7 @@ export class PostCreateDialogComponent implements OnInit {
     ) {
     }
 
-    files: string[] = []
+    files: File[] = []
 
     onNoClick(): void {
         this.dialogRef.close();

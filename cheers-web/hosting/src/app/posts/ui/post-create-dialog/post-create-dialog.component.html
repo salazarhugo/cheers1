@@ -6,15 +6,11 @@
                 Upload Cover Photo
             </button>
         </ngx-dropzone-label>
-        <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+        <ngx-dropzone-image-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
             <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
-        </ngx-dropzone-preview>
-        <!--        <ngx-dropzone-image-preview *ngIf="this.files.length > 0" ngProjectAs="ngx-dropzone-preview" [file]="banner">-->
-        <!--            <ngx-dropzone-label>-->
-        <!--                &lt;!&ndash;                    {{ f.name }} ({{ f.type }})&ndash;&gt;-->
-        <!--            </ngx-dropzone-label>-->
-        <!--        </ngx-dropzone-image-preview>-->
+        </ngx-dropzone-image-preview>
     </ngx-dropzone>
+    <p> Recommended image size: 2160 x 1080px Maximum file size: 10MB Supported image files: JPEG or PNG </p>
 </div>
 <div>
     <button mat-button (click)="onNoClick()">Cancel</button>

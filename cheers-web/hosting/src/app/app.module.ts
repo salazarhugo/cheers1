@@ -26,6 +26,7 @@ import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from "@angular/material/snack-bar";
 import {ManagePartyModule} from "./manage-parties/feature/manage-party/manage-party.module";
 import { RefundPaymentDialogComponent } from './business/ui/refund-payment-dialog/refund-payment-dialog.component';
 import {MapModule} from "./map/map.module";
+import {PostCreateDialogModule} from "./posts/ui/post-create-dialog/post-create-dialog.module";
 
 
 export function playerFactory(): any {
@@ -64,6 +65,7 @@ if (!environment.production)
         ManagePartyModule,
         PartyShellModule,
         MapModule,
+        PostCreateDialogModule,
     ],
     providers: [
         httpInterceptorProviders,
