@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
-import {environment} from "../../environments/environment.prod";
 
 @Component({
     selector: 'app-map',
@@ -17,15 +16,6 @@ export class MapComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // (mapboxgl as any).accessToken = environment.mapbox.accessToken;
-        // this.map = new mapboxgl.Map({
-        //     container: 'map',
-        //     style: this.style,
-        //     zoom: 13,
-        //     center: [this.lng, this.lat]
-        // });
-        // // Add map controls
-        // this.map.addControl(new mapboxgl.NavigationControl());
     }
 
     onMapLoad(map: mapboxgl.Map) {
