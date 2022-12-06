@@ -8,6 +8,8 @@ import {User} from "../../../shared/data/models/user.model";
 import {UntypedFormControl, Validators} from "@angular/forms";
 import {PostService} from "../../../posts/data/post.service";
 import {PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
+import {MatDialog} from "@angular/material/dialog";
+import {PostCreateDialogComponent} from "../../../posts/ui/post-create-dialog/post-create-dialog.component";
 
 @Component({
     selector: 'app-home',
@@ -34,6 +36,7 @@ export class HomeComponent implements OnInit {
         private userService: UserService,
         private storyService: StoryService,
         private postService: PostService,
+        public dialog: MatDialog,
     ) {
         this.$user = this.userService.user$
     }
@@ -67,9 +70,18 @@ export class HomeComponent implements OnInit {
     onDelete(postResponse: PostResponse) {
         if (this.posts == undefined) return
 
-        const index = this.posts.indexOf(postResponse, 0);
+        const index = this.posts.indexOf(postResponse, 0)
         if (index > -1) {
-            this.posts.splice(index, 1);
+            this.posts.splice(index, 1)
         }
+    }
+
+    openCreatePostDialog() {
+        const dialogRef = this.dialog.open(PostCreateDialogComponent, {
+            panelClass: 'cheers-dialog'
+        })
+
+        dialogRef.afterClosed().subscribe(result => {
+        })
     }
 }

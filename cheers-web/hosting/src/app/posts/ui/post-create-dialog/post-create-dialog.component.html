@@ -1,0 +1,22 @@
+<div>
+    <ngx-dropzone (change)="onSelect($event)" [multiple]="false" accept="image/jpeg,image/jpg,image/png,image/gif"
+                  [maxFileSize]="10000000">
+        <ngx-dropzone-label>
+            <button mat-flat-button type="button">
+                Upload Cover Photo
+            </button>
+        </ngx-dropzone-label>
+        <ngx-dropzone-preview *ngFor="let f of files" [removable]="true" (removed)="onRemove(f)">
+            <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+        </ngx-dropzone-preview>
+        <!--        <ngx-dropzone-image-preview *ngIf="this.files.length > 0" ngProjectAs="ngx-dropzone-preview" [file]="banner">-->
+        <!--            <ngx-dropzone-label>-->
+        <!--                &lt;!&ndash;                    {{ f.name }} ({{ f.type }})&ndash;&gt;-->
+        <!--            </ngx-dropzone-label>-->
+        <!--        </ngx-dropzone-image-preview>-->
+    </ngx-dropzone>
+</div>
+<div>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button color="warn">Delete</button>
+</div>

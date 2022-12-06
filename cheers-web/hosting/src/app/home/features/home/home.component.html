@@ -24,8 +24,8 @@
                 <img (error)="onImgError($event)" [routerLink]="['/u', user.id]" [src]="user.picture"
                      class="avatar--small">
                 <input [formControl]="tweet" class="form-control" placeholder="What's happening?" style="margin: 0"
-                       type="text">
-                <button mat-icon-button>
+                       type="text" fxFlex>
+                <button mat-icon-button (click)="openCreatePostDialog()">
                     <mat-icon>photo_library</mat-icon>
                 </button>
             </div>
