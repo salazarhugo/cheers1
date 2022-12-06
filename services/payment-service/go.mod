@@ -5,7 +5,7 @@ go 1.19
 require (
 	cloud.google.com/go/firestore v1.6.1
 	github.com/labstack/echo/v4 v4.9.1
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221128185556-362dbf7cf8a4
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221206084144-cb9ffcf7d2ad
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221123144834-0743a8aa4edb
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221123144834-0743a8aa4edb
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221123144834-0743a8aa4edb

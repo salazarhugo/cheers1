@@ -62,7 +62,7 @@ export class AuthService {
 
     sendSignInLinkToEmail(email: string) {
         const actionCodeSettings = {
-            url: "https://web-cheers.web.app/sign-in",
+            url: window.location.origin + "/sign-in",
             handleCodeInApp: true,
             iOS: {
                 bundleId: "com.salazar.cheers"
@@ -87,7 +87,8 @@ export class AuthService {
 
     sendSignUpLinkToEmail(email: string) {
         const actionCodeSettings = {
-            url: "https://web-cheers.web.app/finish-sign-up",
+            url: window.location.origin + "/finish-sign-up",
+            // url: "https://web-cheers.web.app/finish-sign-up",
             handleCodeInApp: true,
             iOS: {
                 bundleId: "com.salazar.cheers"

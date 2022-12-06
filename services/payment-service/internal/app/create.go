@@ -12,10 +12,7 @@ import (
 	"github.com/stripe/stripe-go/v72/paymentintent"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"log"
-	"os"
-	"time"
 )
 
 type StripeCustomer struct {
@@ -31,14 +28,11 @@ func (s *Server) CreatePayment(
 		return nil, status.Error(codes.Internal, "failed retrieving userID")
 	}
 
-	log.Println(request)
+	// Validate payment intent request
 	err = ValidateCreatePaymentRequest(request)
 	if err != nil {
 		return nil, err
 	}
-
-	secret := os.Getenv("STRIPE_SK")
-	stripe.Key = secret
 
 	client, err := firestore.NewClient(ctx, "cheers-a275e")
 	if err != nil {
@@ -46,9 +40,7 @@ func (s *Server) CreatePayment(
 	}
 
 	tickets, err := getTickets(client, request.GetTickets(), request.GetPartyId())
-	log.Println(tickets)
 	amount, err := calculateTotalPrice(tickets)
-	log.Println(amount)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -104,7 +96,7 @@ func (s *Server) CreatePayment(
 		Email:              request.Email,
 		PartyId:            request.PartyId,
 		PartyHostId:        party.HostId,
-		CreateTime:         timestamppb.New(time.Unix(paymentIntent.Created, 0)),
+		CreateTime:         paymentIntent.Created,
 		Tickets:            tickets,
 	}
 

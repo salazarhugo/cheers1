@@ -7,7 +7,6 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {Clipboard} from '@angular/cdk/clipboard';
 import {PaymentService} from "../../../payments/data/payment.service";
 import {MatDialog} from "@angular/material/dialog";
-import {RefundPaymentResponse} from "../../../../gen/ts/cheers/payment/v1/payment_service";
 import {RefundPaymentDialogComponent} from "../../ui/refund-payment-dialog/refund-payment-dialog.component";
 
 @Component({
@@ -16,7 +15,7 @@ import {RefundPaymentDialogComponent} from "../../ui/refund-payment-dialog/refun
     styleUrls: ['./business-orders.component.sass']
 })
 export class BusinessOrdersComponent implements OnInit {
-    displayedColumns: string[] = ['status', 'date', 'amount', 'party', 'firstName', 'lastName', 'email', 'more'];
+    displayedColumns: string[] = ['status', 'date', 'amount', 'firstName', 'lastName', 'email', 'more'];
     dataSource: MatTableDataSource<Order> = new MatTableDataSource();
 
     constructor(

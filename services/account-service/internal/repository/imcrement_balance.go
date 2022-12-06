@@ -18,7 +18,7 @@ func (p *accountRepository) IncrementBalance(
 
 	doc, err := client.Collection("accounts").Doc(accountID).Get(ctx)
 
-	if doc.Exists() {
+	if doc != nil && doc.Exists() {
 		_, err = client.Collection("accounts").Doc(accountID).Update(ctx,
 			[]firestore.Update{
 				{Path: "balance", Value: firestore.Increment(value)},

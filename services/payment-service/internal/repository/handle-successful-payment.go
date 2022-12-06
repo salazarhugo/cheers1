@@ -38,6 +38,18 @@ func HandlePaymentSuccess(paymentIntent stripe.PaymentIntent) {
 		log.Println(err)
 		return
 	}
+
+	go func() {
+		err = utils2.PublishProtoMessages("payment-topic", &payment.PaymentEvent{
+			PaymentIntentId: paymentIntent.ID,
+			CustomerId:      customerId,
+			Type:            payment.PaymentEvent_PAYMENT_SUCCESS,
+			FirstName:       order.FirstName,
+			LastName:        order.LastName,
+			Email:           order.Email,
+		})
+	}()
+
 	for _, ticket := range order.Tickets {
 		doc := client.Collection("tickets").NewDoc()
 		ticket.Id = doc.ID
@@ -48,15 +60,6 @@ func HandlePaymentSuccess(paymentIntent stripe.PaymentIntent) {
 		_, err = doc.Set(ctx, m)
 		_, err = client.Collection("users").Doc(stripeCustomerRef.ID).Collection("tickets").Doc(doc.ID).Set(ctx, m)
 	}
-
-	err = utils2.PublishProtoMessages("payment-topic", &payment.PaymentEvent{
-		PaymentIntentId: paymentIntent.ID,
-		CustomerId:      customerId,
-		Type:            payment.PaymentEvent_PAYMENT_SUCCESS,
-		FirstName:       order.FirstName,
-		LastName:        order.LastName,
-		Email:           order.Email,
-	})
 
 	if err != nil {
 		log.Println(err)

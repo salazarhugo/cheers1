@@ -14,7 +14,7 @@
         <!-- Date Column -->
         <ng-container matColumnDef="date">
             <th mat-header-cell mat-sort-header="createTime" *matHeaderCellDef> Date</th>
-            <td mat-cell *matCellDef="let order"> {{order.createTime | date}} </td>
+            <td mat-cell *matCellDef="let order"> {{order.createTime | relativeTime}} </td>
         </ng-container>
 
         <!-- Party Column -->

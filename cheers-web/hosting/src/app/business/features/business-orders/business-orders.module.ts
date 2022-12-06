@@ -10,6 +10,7 @@ import {MatChipsModule} from "@angular/material/chips";
 import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
+import {RelativeTimeModule} from "../../../shared/data/pipes/relative-time/relative-time.module";
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import {MatMenuModule} from "@angular/material/menu";
         MatChipsModule,
         MatButtonModule,
         MatIconModule,
-        MatMenuModule
+        MatMenuModule,
+        RelativeTimeModule
     ]
 })
 export class BusinessOrdersModule { }
