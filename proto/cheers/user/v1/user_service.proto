@@ -56,7 +56,6 @@ service UserService {
 message CreateUserRequest {
   string email = 1;
   string name = 2;
-  string email_verified = 3;
   string picture = 4;
   string username = 5;
 }

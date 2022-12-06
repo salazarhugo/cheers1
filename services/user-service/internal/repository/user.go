@@ -7,7 +7,7 @@ import (
 )
 
 type UserRepository interface {
-	CreateUser(userID string, post *user.User) (string, error)
+	CreateUser(userID string, user *user.User) (string, error)
 	GetUser(userID string, otherUserID string) (*pb.GetUserResponse, error)
 	UpdateUser(userID string, user *pb.UpdateUserRequest) error
 	DeleteUser(id string) error

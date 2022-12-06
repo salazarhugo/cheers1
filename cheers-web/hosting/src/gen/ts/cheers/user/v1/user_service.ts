@@ -8,7 +8,6 @@ export const protobufPackage = "cheers.user.v1";
 export interface CreateUserRequest {
   email: string;
   name: string;
-  emailVerified: string;
   picture: string;
   username: string;
 }
@@ -110,7 +109,7 @@ export interface DeleteUserRequest {
 }
 
 function createBaseCreateUserRequest(): CreateUserRequest {
-  return { email: "", name: "", emailVerified: "", picture: "", username: "" };
+  return { email: "", name: "", picture: "", username: "" };
 }
 
 export const CreateUserRequest = {
@@ -120,9 +119,6 @@ export const CreateUserRequest = {
     }
     if (message.name !== "") {
       writer.uint32(18).string(message.name);
-    }
-    if (message.emailVerified !== "") {
-      writer.uint32(26).string(message.emailVerified);
     }
     if (message.picture !== "") {
       writer.uint32(34).string(message.picture);
@@ -146,9 +142,6 @@ export const CreateUserRequest = {
         case 2:
           message.name = reader.string();
           break;
-        case 3:
-          message.emailVerified = reader.string();
-          break;
         case 4:
           message.picture = reader.string();
           break;
@@ -167,7 +160,6 @@ export const CreateUserRequest = {
     return {
       email: isSet(object.email) ? String(object.email) : "",
       name: isSet(object.name) ? String(object.name) : "",
-      emailVerified: isSet(object.emailVerified) ? String(object.emailVerified) : "",
       picture: isSet(object.picture) ? String(object.picture) : "",
       username: isSet(object.username) ? String(object.username) : "",
     };
@@ -177,7 +169,6 @@ export const CreateUserRequest = {
     const obj: any = {};
     message.email !== undefined && (obj.email = message.email);
     message.name !== undefined && (obj.name = message.name);
-    message.emailVerified !== undefined && (obj.emailVerified = message.emailVerified);
     message.picture !== undefined && (obj.picture = message.picture);
     message.username !== undefined && (obj.username = message.username);
     return obj;
@@ -187,7 +178,6 @@ export const CreateUserRequest = {
     const message = createBaseCreateUserRequest();
     message.email = object.email ?? "";
     message.name = object.name ?? "";
-    message.emailVerified = object.emailVerified ?? "";
     message.picture = object.picture ?? "";
     message.username = object.username ?? "";
     return message;

@@ -12,23 +12,30 @@ import (
 func (s *Server) CreateUser(
 	ctx context.Context,
 	request *pb.CreateUserRequest,
-) (*user.User, error) {
+) (*pb.CreateUserResponse, error) {
 	userID, err := GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")
 	}
 
-	userID, err = s.userRepository.CreateUser(userID, request)
+	userID, err = s.userRepository.CreateUser(userID, &user.User{
+		Username: request.Username,
+		Name:     request.Name,
+		Picture:  request.Picture,
+		Email:    request.Email,
+	})
 	if err != nil {
 		log.Error(err)
 		return nil, status.Error(codes.Internal, "failed to create user")
 	}
 
-	user, err := s.userRepository.GetUser(userID, userID)
+	response, err := s.userRepository.GetUser(userID, userID)
 	if err != nil {
 		log.Error(err)
 		return nil, status.Error(codes.Internal, "failed to get user")
 	}
 
-	return user.User, nil
+	return &pb.CreateUserResponse{
+		User: response.User,
+	}, nil
 }
