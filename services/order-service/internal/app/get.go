@@ -18,7 +18,7 @@ func (s *Server) GetOrder(
 		return nil, err
 	}
 
-	order, err := s.orderRepository.GetOrder(request.GetOrderId())
+	order, err := s.orderRepository.GetOrder(request.OrderId)
 	if err != nil {
 		log.Println(err)
 		return nil, err

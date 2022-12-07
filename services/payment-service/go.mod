@@ -6,13 +6,12 @@ require (
 	cloud.google.com/go/firestore v1.6.1
 	github.com/labstack/echo/v4 v4.9.1
 	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221206084144-cb9ffcf7d2ad
-	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221123144834-0743a8aa4edb
+	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221113151338-1ae307745902
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221123144834-0743a8aa4edb
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221123144834-0743a8aa4edb
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221128141251-eceb95775b05
 	github.com/stripe/stripe-go/v72 v72.122.0
 	golang.org/x/net v0.1.0
 	google.golang.org/grpc v1.50.1
-	google.golang.org/protobuf v1.28.1
 )
 
 require (
@@ -51,6 +50,7 @@ require (
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/appengine/v2 v2.0.2 // indirect
 	google.golang.org/genproto v0.0.0-20221027153422-115e99e71e1c // indirect
+	google.golang.org/protobuf v1.28.1 // indirect
 )
 
 //replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go

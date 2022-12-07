@@ -1,11 +1,8 @@
 package app
 
 import (
-	"cloud.google.com/go/firestore"
 	"context"
-	"github.com/salazarhugo/cheers1/gen/go/cheers/order/v1"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/payment/v1"
-	ticketpb "github.com/salazarhugo/cheers1/gen/go/cheers/ticket/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/services/payment-service/internal/repository"
 	"github.com/stripe/stripe-go/v72"
@@ -15,17 +12,19 @@ import (
 	"log"
 )
 
-type StripeCustomer struct {
-	Id string `firestore:"customer_id"`
-}
-
 func (s *Server) CreatePayment(
 	ctx context.Context,
 	request *pb.CreatePaymentRequest,
 ) (*pb.CreatePaymentResponse, error) {
 	userId, err := utils.GetUserId(ctx)
+	var customerID *string = nil
+
+	// If user is logged in, get the associated customer
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed retrieving userID")
+		customer, _ := repository.GetCustomer(userId)
+		if customer != nil {
+			customerID = &customer.Id
+		}
 	}
 
 	// Validate payment intent request
@@ -34,26 +33,17 @@ func (s *Server) CreatePayment(
 		return nil, err
 	}
 
-	client, err := firestore.NewClient(ctx, "cheers-a275e")
-	if err != nil {
-		return nil, err
-	}
+	// Get tickets
+	tickets, err := repository.GetTickets(
+		request.GetTickets(),
+		request.GetPartyId(),
+	)
 
-	tickets, err := getTickets(client, request.GetTickets(), request.GetPartyId())
-	amount, err := calculateTotalPrice(tickets)
+	// Calculate the total amount
+	amount, err := repository.CalculateAmount(tickets)
 	if err != nil {
 		log.Println(err)
 		return nil, err
-	}
-
-	userDoc, err := client.Collection("stripe_customers").Doc(userId).Get(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	var customer StripeCustomer
-	if err := userDoc.DataTo(&customer); err != nil {
-		return nil, status.Error(codes.NotFound, "customer not found")
 	}
 
 	params := &stripe.PaymentIntentParams{
@@ -62,7 +52,7 @@ func (s *Server) CreatePayment(
 		PaymentMethodTypes: []*string{
 			stripe.String("card"),
 		},
-		Customer: &customer.Id,
+		Customer: customerID,
 	}
 
 	// Create stripe payment intent
@@ -72,88 +62,31 @@ func (s *Server) CreatePayment(
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	party, err := repository.GetParty(request.GetPartyId())
+	party, err := repository.GetParty(request.PartyId)
+	if err != nil {
+		return nil, err
+	}
+
+	// Store the order in firestore
+	err = repository.CreateOrder(
+		paymentIntent,
+		request,
+		party.HostId,
+		tickets,
+	)
 	if err != nil {
 		return nil, err
 	}
 
 	// Store payment intent
-	ref := client.Collection("orders").Doc(paymentIntent.ID)
-	paymentMethodType := ""
-	if paymentIntent.PaymentMethod != nil {
-		paymentMethodType = string(paymentIntent.PaymentMethod.Type)
-	}
-
-	order := &order.Order{
-		Id:                 paymentIntent.ID,
-		PaymentMethodTypes: paymentIntent.PaymentMethodTypes,
-		PaymentMethodType:  paymentMethodType,
-		Status:             string(paymentIntent.Status),
-		Amount:             paymentIntent.Amount,
-		CustomerId:         paymentIntent.Customer.ID,
-		FirstName:          request.FirstName,
-		LastName:           request.LastName,
-		Email:              request.Email,
-		PartyId:            request.PartyId,
-		PartyHostId:        party.HostId,
-		CreateTime:         paymentIntent.Created,
-		Tickets:            tickets,
-	}
-
-	m, err := utils.ProtoToMap(order)
-	if err != nil {
-		log.Println(err)
-	}
-
-	_, err = ref.Set(ctx, m)
-	if err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
-	}
-
 	return &pb.CreatePaymentResponse{
 		ClientSecret: paymentIntent.ClientSecret,
 	}, nil
 }
 
-func getTickets(
-	client *firestore.Client,
-	paymentIntentReq map[string]uint32,
-	partyId string,
-) ([]*ticketpb.Ticket, error) {
-	tickets := make([]*ticketpb.Ticket, 0, 0)
-
-	for ticketId, quantity := range paymentIntentReq {
-		doc, err := client.Collection("ticketing").Doc(partyId).Collection("tickets").Doc(ticketId).Get(context.Background())
-		if err != nil {
-			return nil, err
-		}
-		ticket := &ticketpb.Ticket{}
-		err = utils.MapToProto(ticket, doc.Data())
-		if err != nil {
-			return nil, err
-		}
-		var i uint32
-		for i = 0; i < quantity; i++ {
-			tickets = append(tickets, ticket)
-		}
-	}
-
-	return tickets, nil
-}
-
-func calculateTotalPrice(
-	tickets []*ticketpb.Ticket,
-) (int64, error) {
-	var amount int64 = 0
-
-	for _, ticket := range tickets {
-		amount += ticket.Price
-	}
-
-	return amount, nil
-}
-
-func ValidateCreatePaymentRequest(request *pb.CreatePaymentRequest) error {
+func ValidateCreatePaymentRequest(
+	request *pb.CreatePaymentRequest,
+) error {
 	if request.GetFirstName() == "" {
 		return status.Error(codes.InvalidArgument, "missing parameter first_name")
 	}

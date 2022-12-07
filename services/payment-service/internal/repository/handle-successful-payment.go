@@ -16,27 +16,16 @@ func HandlePaymentSuccess(paymentIntent stripe.PaymentIntent) {
 		return
 	}
 
-	customerId := paymentIntent.Customer.ID
-	snapshot := client.Collection("stripe_customers").Where("customer_id", "==", customerId).Snapshots(ctx)
-
-	docs, err := snapshot.Next()
-	stripeCustomerDoc, err := docs.Documents.Next()
-	stripeCustomerRef := stripeCustomerDoc.Ref
-
-	// Store payment details into firestore
-	_, _, err = stripeCustomerRef.Collection("payments").Add(ctx, map[string]interface{}{
-		"id":         paymentIntent.ID,
-		"amount":     paymentIntent.Amount,
-		"created":    paymentIntent.Created,
-		"customerId": paymentIntent.Customer.ID,
-		"status":     paymentIntent.Status,
-	})
-
 	// Retrieve the order of that payment
 	order, err := GetOrder(paymentIntent.ID)
 	if err != nil {
 		log.Println(err)
 		return
+	}
+
+	customerId := ""
+	if paymentIntent.Customer != nil {
+		customerId = paymentIntent.Customer.ID
 	}
 
 	go func() {
@@ -50,19 +39,35 @@ func HandlePaymentSuccess(paymentIntent stripe.PaymentIntent) {
 		})
 	}()
 
-	for _, ticket := range order.Tickets {
-		doc := client.Collection("tickets").NewDoc()
-		ticket.Id = doc.ID
-		ticket.PaymentIntentId = paymentIntent.ID
-		ticket.UserId = stripeCustomerRef.ID
-		ticket.Validated = false
-		m, _ := utils2.ProtoToMap(ticket)
-		_, err = doc.Set(ctx, m)
-		_, err = client.Collection("users").Doc(stripeCustomerRef.ID).Collection("tickets").Doc(doc.ID).Set(ctx, m)
-	}
+	if paymentIntent.Customer != nil {
+		snapshot := client.Collection("stripe_customers").Where("customer_id", "==", customerId).Snapshots(ctx)
+		docs, err := snapshot.Next()
+		stripeCustomerDoc, err := docs.Documents.Next()
+		stripeCustomerRef := stripeCustomerDoc.Ref
 
-	if err != nil {
-		log.Println(err)
-		return
+		// Store payment details into firestore
+		_, _, err = stripeCustomerRef.Collection("payments").Add(ctx, map[string]interface{}{
+			"id":         paymentIntent.ID,
+			"amount":     paymentIntent.Amount,
+			"created":    paymentIntent.Created,
+			"customerId": paymentIntent.Customer.ID,
+			"status":     paymentIntent.Status,
+		})
+
+		for _, ticket := range order.Tickets {
+			doc := client.Collection("tickets").NewDoc()
+			ticket.Id = doc.ID
+			ticket.PaymentIntentId = paymentIntent.ID
+			ticket.UserId = stripeCustomerRef.ID
+			ticket.Validated = false
+			m, _ := utils2.ProtoToMap(ticket)
+			_, err = doc.Set(ctx, m)
+			_, err = client.Collection("users").Doc(stripeCustomerRef.ID).Collection("tickets").Doc(doc.ID).Set(ctx, m)
+		}
+
+		if err != nil {
+			log.Println(err)
+			return
+		}
 	}
 }
