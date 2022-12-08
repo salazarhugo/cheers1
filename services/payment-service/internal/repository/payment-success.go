@@ -10,6 +10,7 @@ import (
 )
 
 func HandlePaymentSuccess(paymentIntent stripe.PaymentIntent) {
+	log.Printf("Successful payment for %d.", paymentIntent.Amount)
 	ctx := context.Background()
 	client, err := firestore.NewClient(ctx, "cheers-a275e")
 	if err != nil {

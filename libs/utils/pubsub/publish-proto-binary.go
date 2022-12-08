@@ -1,4 +1,4 @@
-package utils
+package pubsub
 
 import (
 	"cloud.google.com/go/pubsub"
@@ -7,8 +7,8 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-// PublishProtoMessages Publish Proto Message with BINARY encoding
-func PublishProtoMessages(topicID string, message proto.Message) error {
+// PublishProtoWithBinaryEncoding Publish Proto Message with BINARY encoding
+func PublishProtoWithBinaryEncoding(topicID string, message proto.Message) error {
 	ctx := context.Background()
 	client, err := pubsub.NewClient(ctx, "cheers-a275e")
 	if err != nil {

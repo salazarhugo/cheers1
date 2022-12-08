@@ -7,7 +7,6 @@ import (
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/services/payment-service/internal/repository"
 	"github.com/stripe/stripe-go/v72"
-	"log"
 	"net/http"
 	"os"
 )
@@ -31,17 +30,15 @@ func HandleStripeEvent(c echo.Context) error {
 		if err != nil {
 			return cc.NoContent(http.StatusInternalServerError)
 		}
-		log.Printf("Successful payment for %d.", paymentIntent.Amount)
 		repository.HandlePaymentSuccess(paymentIntent)
 
 	case "charge.refunded":
-		var refund stripe.Refund
-		err := parseEvent(event, &refund)
+		var charge stripe.Charge
+		err := parseEvent(event, &charge)
 		if err != nil {
 			return cc.NoContent(http.StatusInternalServerError)
 		}
-		log.Printf("Successful refund of %d.", refund.Amount)
-		//repository.HandlePaymentSuccess(paymentIntent)
+		repository.HandleChargeRefunded(charge)
 
 	case "payment_method.attached":
 		var paymentMethod stripe.PaymentMethod

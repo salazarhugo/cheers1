@@ -3,12 +3,14 @@ package repository
 import (
 	"cloud.google.com/go/firestore"
 	"context"
+	"github.com/labstack/gommon/log"
 )
 
 func (p *accountRepository) IncrementBalance(
 	accountID string,
 	value int64,
 ) error {
+	log.Printf("Incrementing balance by: %d", value)
 	ctx := context.Background()
 	client, err := firestore.NewClient(ctx, "cheers-a275e")
 	if err != nil {
