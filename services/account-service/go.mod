@@ -5,14 +5,13 @@ go 1.19
 require (
 	cloud.google.com/go/firestore v1.6.1
 	github.com/labstack/gommon v0.4.0
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221206084144-cb9ffcf7d2ad
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221208094612-0cd8a5fa5c43
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221004084225-130de449e1a1
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221122090911-414c85936dd0
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221208094612-0cd8a5fa5c43
 	github.com/sirupsen/logrus v1.9.0
 	golang.org/x/net v0.0.0-20221014081412-f15817d10f9b
 	google.golang.org/grpc v1.50.1
-	google.golang.org/protobuf v1.28.1
 )
 
 require (
@@ -49,6 +48,7 @@ require (
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/appengine/v2 v2.0.2 // indirect
 	google.golang.org/genproto v0.0.0-20221027153422-115e99e71e1c // indirect
+	google.golang.org/protobuf v1.28.1 // indirect
 )
 
 //replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go

@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	ticketpb "github.com/salazarhugo/cheers1/gen/go/cheers/ticket/v1"
+	"github.com/salazarhugo/cheers1/services/email-service/internal/repository"
 	"html/template"
 	"log"
 	"mime/multipart"
@@ -50,6 +51,11 @@ func NewMessage(s, b string) *Message {
 	return &Message{Subject: s, Body: b, Attachments: make(map[string][]byte)}
 }
 
+func (m *Message) AttachFileBytes(fileName string, b []byte) error {
+	m.Attachments[fileName] = b
+	return nil
+}
+
 func (m *Message) AttachFile(src string) error {
 	b, err := os.ReadFile(src)
 	if err != nil {
@@ -81,10 +87,12 @@ func (m *Message) ToBytes() []byte {
 		buf.WriteString(fmt.Sprintf("Content-Type: multipart/mixed; boundary=%s\n", boundary))
 		buf.WriteString(fmt.Sprintf("--%s\n", boundary))
 	} else {
-		buf.WriteString("Content-Type: text/plain; charset=utf-8\n")
+		buf.WriteString("Content-Type: text/html; charset=utf-8\n")
 	}
 
+	buf.WriteString("Content-Type: text/html; charset=utf-8\n")
 	buf.WriteString(m.Body)
+
 	if withAttachments {
 		for k, v := range m.Attachments {
 			buf.WriteString(fmt.Sprintf("\n\n--%s\n", boundary))
@@ -122,7 +130,16 @@ func SendEmail(
 	m.To = []string{email}
 	m.CC = []string{"hugobrock74@gmail.com"}
 	m.BCC = []string{}
-	m.AttachFile("")
+
+	// Generate each ticket qrcode and attach it to email
+	for i, ticket := range tickets {
+		qrcode, err := repository.GenerateQRCodePng(ticket.Id)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		m.AttachFileBytes(fmt.Sprintf("%s_%d", ticket.Name, i+1), qrcode)
+	}
 
 	err = sender.Send(m)
 	if err != nil {

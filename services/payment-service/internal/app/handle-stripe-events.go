@@ -48,6 +48,7 @@ func HandleStripeEvent(c echo.Context) error {
 		}
 	default:
 		fmt.Fprintf(os.Stderr, "Unhandled event type: %s\n", event.Type)
+		return cc.NoContent(http.StatusNotImplemented)
 	}
 
 	return cc.NoContent(http.StatusOK)

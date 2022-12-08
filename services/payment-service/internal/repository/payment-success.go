@@ -5,6 +5,7 @@ import (
 	"context"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/payment/v1"
 	utils2 "github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"github.com/stripe/stripe-go/v72"
 	"log"
 )
@@ -30,7 +31,7 @@ func HandlePaymentSuccess(paymentIntent stripe.PaymentIntent) {
 	}
 
 	go func() {
-		err = utils2.PublishProtoMessages("payment-topic", &payment.PaymentEvent{
+		err = pubsub.PublishProtoWithBinaryEncoding("payment-topic", &payment.PaymentEvent{
 			PaymentIntentId: paymentIntent.ID,
 			CustomerId:      customerId,
 			Type:            payment.PaymentEvent_PAYMENT_SUCCESS,
