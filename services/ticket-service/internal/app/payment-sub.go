@@ -21,7 +21,9 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 
 	switch event.Type {
 	case payment.PaymentEvent_PAYMENT_SUCCESS:
-		repo.CreateTicket(event.CustomerId, event.)
+		for _, ticket := range event.Order.Tickets {
+			repo.CreateTicket(event.Order.UserId, ticket)
+		}
 	case payment.PaymentEvent_REFUND:
 	}
 

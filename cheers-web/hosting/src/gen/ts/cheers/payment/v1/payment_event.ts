@@ -7,11 +7,7 @@ export const protobufPackage = "cheers.payment.v1";
 
 export interface PaymentEvent {
   paymentIntentId: string;
-  customerId: string;
   type: PaymentEvent_EventType;
-  firstName: string;
-  lastName: string;
-  email: string;
   order: Order | undefined;
 }
 
@@ -49,7 +45,7 @@ export function paymentEvent_EventTypeToJSON(object: PaymentEvent_EventType): st
 }
 
 function createBasePaymentEvent(): PaymentEvent {
-  return { paymentIntentId: "", customerId: "", type: 0, firstName: "", lastName: "", email: "", order: undefined };
+  return { paymentIntentId: "", type: 0, order: undefined };
 }
 
 export const PaymentEvent = {
@@ -57,23 +53,11 @@ export const PaymentEvent = {
     if (message.paymentIntentId !== "") {
       writer.uint32(10).string(message.paymentIntentId);
     }
-    if (message.customerId !== "") {
-      writer.uint32(18).string(message.customerId);
-    }
     if (message.type !== 0) {
-      writer.uint32(24).int32(message.type);
-    }
-    if (message.firstName !== "") {
-      writer.uint32(34).string(message.firstName);
-    }
-    if (message.lastName !== "") {
-      writer.uint32(42).string(message.lastName);
-    }
-    if (message.email !== "") {
-      writer.uint32(50).string(message.email);
+      writer.uint32(16).int32(message.type);
     }
     if (message.order !== undefined) {
-      Order.encode(message.order, writer.uint32(58).fork()).ldelim();
+      Order.encode(message.order, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -89,21 +73,9 @@ export const PaymentEvent = {
           message.paymentIntentId = reader.string();
           break;
         case 2:
-          message.customerId = reader.string();
-          break;
-        case 3:
           message.type = reader.int32() as any;
           break;
-        case 4:
-          message.firstName = reader.string();
-          break;
-        case 5:
-          message.lastName = reader.string();
-          break;
-        case 6:
-          message.email = reader.string();
-          break;
-        case 7:
+        case 3:
           message.order = Order.decode(reader, reader.uint32());
           break;
         default:
@@ -117,11 +89,7 @@ export const PaymentEvent = {
   fromJSON(object: any): PaymentEvent {
     return {
       paymentIntentId: isSet(object.paymentIntentId) ? String(object.paymentIntentId) : "",
-      customerId: isSet(object.customerId) ? String(object.customerId) : "",
       type: isSet(object.type) ? paymentEvent_EventTypeFromJSON(object.type) : 0,
-      firstName: isSet(object.firstName) ? String(object.firstName) : "",
-      lastName: isSet(object.lastName) ? String(object.lastName) : "",
-      email: isSet(object.email) ? String(object.email) : "",
       order: isSet(object.order) ? Order.fromJSON(object.order) : undefined,
     };
   },
@@ -129,11 +97,7 @@ export const PaymentEvent = {
   toJSON(message: PaymentEvent): unknown {
     const obj: any = {};
     message.paymentIntentId !== undefined && (obj.paymentIntentId = message.paymentIntentId);
-    message.customerId !== undefined && (obj.customerId = message.customerId);
     message.type !== undefined && (obj.type = paymentEvent_EventTypeToJSON(message.type));
-    message.firstName !== undefined && (obj.firstName = message.firstName);
-    message.lastName !== undefined && (obj.lastName = message.lastName);
-    message.email !== undefined && (obj.email = message.email);
     message.order !== undefined && (obj.order = message.order ? Order.toJSON(message.order) : undefined);
     return obj;
   },
@@ -141,11 +105,7 @@ export const PaymentEvent = {
   fromPartial<I extends Exact<DeepPartial<PaymentEvent>, I>>(object: I): PaymentEvent {
     const message = createBasePaymentEvent();
     message.paymentIntentId = object.paymentIntentId ?? "";
-    message.customerId = object.customerId ?? "";
     message.type = object.type ?? 0;
-    message.firstName = object.firstName ?? "";
-    message.lastName = object.lastName ?? "";
-    message.email = object.email ?? "";
     message.order = (object.order !== undefined && object.order !== null) ? Order.fromPartial(object.order) : undefined;
     return message;
   },
