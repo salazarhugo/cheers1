@@ -1,6 +1,7 @@
 /* eslint-disable */
 import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
+import { Order } from "../../order/v1/order_service";
 
 export const protobufPackage = "cheers.payment.v1";
 
@@ -11,6 +12,7 @@ export interface PaymentEvent {
   firstName: string;
   lastName: string;
   email: string;
+  order: Order | undefined;
 }
 
 export enum PaymentEvent_EventType {
@@ -47,7 +49,7 @@ export function paymentEvent_EventTypeToJSON(object: PaymentEvent_EventType): st
 }
 
 function createBasePaymentEvent(): PaymentEvent {
-  return { paymentIntentId: "", customerId: "", type: 0, firstName: "", lastName: "", email: "" };
+  return { paymentIntentId: "", customerId: "", type: 0, firstName: "", lastName: "", email: "", order: undefined };
 }
 
 export const PaymentEvent = {
@@ -69,6 +71,9 @@ export const PaymentEvent = {
     }
     if (message.email !== "") {
       writer.uint32(50).string(message.email);
+    }
+    if (message.order !== undefined) {
+      Order.encode(message.order, writer.uint32(58).fork()).ldelim();
     }
     return writer;
   },
@@ -98,6 +103,9 @@ export const PaymentEvent = {
         case 6:
           message.email = reader.string();
           break;
+        case 7:
+          message.order = Order.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -114,6 +122,7 @@ export const PaymentEvent = {
       firstName: isSet(object.firstName) ? String(object.firstName) : "",
       lastName: isSet(object.lastName) ? String(object.lastName) : "",
       email: isSet(object.email) ? String(object.email) : "",
+      order: isSet(object.order) ? Order.fromJSON(object.order) : undefined,
     };
   },
 
@@ -125,6 +134,7 @@ export const PaymentEvent = {
     message.firstName !== undefined && (obj.firstName = message.firstName);
     message.lastName !== undefined && (obj.lastName = message.lastName);
     message.email !== undefined && (obj.email = message.email);
+    message.order !== undefined && (obj.order = message.order ? Order.toJSON(message.order) : undefined);
     return obj;
   },
 
@@ -136,6 +146,7 @@ export const PaymentEvent = {
     message.firstName = object.firstName ?? "";
     message.lastName = object.lastName ?? "";
     message.email = object.email ?? "";
+    message.order = (object.order !== undefined && object.order !== null) ? Order.fromPartial(object.order) : undefined;
     return message;
   },
 };

@@ -3,11 +3,11 @@ package main
 import (
 	"errors"
 	"fmt"
-	pb "github.com/salazarhugo/cheers1/gen/go/cheers/order/v1"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/ticket/v1"
 	auth "github.com/salazarhugo/cheers1/libs/auth"
 	"github.com/salazarhugo/cheers1/libs/profiler"
 	"github.com/salazarhugo/cheers1/libs/utils"
-	"github.com/salazarhugo/cheers1/services/order-service/internal/app"
+	"github.com/salazarhugo/cheers1/services/ticket-service/internal/app"
 	"github.com/sirupsen/logrus"
 	"github.com/stripe/stripe-go/v72"
 	"golang.org/x/net/http2"
@@ -26,7 +26,7 @@ func init() {
 	log = utils.InitLogrus()
 	secret := os.Getenv("STRIPE_SK")
 	stripe.Key = secret
-	go profiler.InitProfiling("order-service", "1.0.0")
+	go profiler.InitProfiling("ticket-service", "1.0.0")
 }
 
 func main() {
@@ -47,7 +47,7 @@ func main() {
 	server := app.NewServer()
 
 	grpc_health_v1.RegisterHealthServer(grpcS, server)
-	pb.RegisterOrderServiceServer(grpcS, server)
+	pb.RegisterTicketServiceServer(grpcS, server)
 
 	mixedHandler := newHTTPandGRPCMux(httpMux, grpcS)
 	http2Server := &http2.Server{}

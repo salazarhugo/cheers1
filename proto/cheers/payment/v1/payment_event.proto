@@ -5,6 +5,8 @@ package cheers.payment.v1;
 option java_multiple_files = true;
 option go_package = "github.com/salazarhugo/cheers1/go/gen/cheers/payment/v1;payment";
 
+import "cheers/order/v1/order_service.proto";
+
 message PaymentEvent {
   string payment_intent_id = 1;
   string customer_id = 2;
@@ -16,4 +18,5 @@ message PaymentEvent {
   string first_name = 4;
   string last_name = 5;
   string email = 6;
+  cheers.order.v1.Order order = 7;
 }
