@@ -16,11 +16,8 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Println(event)
 
-	order, err := repository.GetOrder(event.PaymentIntentId)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	order := event.Order
+
 	repo := repository.NewAccountRepository()
 
 	switch event.Type {

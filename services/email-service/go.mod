@@ -5,7 +5,7 @@ go 1.19
 require google.golang.org/protobuf v1.28.1
 
 require (
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221208094612-0cd8a5fa5c43
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221209142646-301101629442
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221208094612-0cd8a5fa5c43
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e

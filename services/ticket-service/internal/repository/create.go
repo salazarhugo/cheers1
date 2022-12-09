@@ -20,11 +20,10 @@ func (o ticketRepository) CreateTicket(
 
 	doc := client.Collection("tickets").NewDoc()
 	ticket.Id = doc.ID
-	ticket.PaymentIntentId = paymentIntent.ID
-	ticket.UserId = stripeCustomerRef.ID
-	ticket.Validated = false
 
 	m, _ := utils.ProtoToMap(ticket)
 	_, err = doc.Set(ctx, m)
-	_, err = client.Collection("users").Doc(stripeCustomerRef.ID).Collection("tickets").Doc(doc.ID).Set(ctx, m)
+	_, err = client.Collection("users").Doc(ticket.UserId).Collection("tickets").Doc(doc.ID).Set(ctx, m)
+
+	return ticket, nil
 }

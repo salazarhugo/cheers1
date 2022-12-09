@@ -71,6 +71,7 @@ func (s *Server) CreatePayment(
 	err = repository.CreateOrder(
 		paymentIntent,
 		request,
+		userId,
 		party.HostId,
 		tickets,
 	)

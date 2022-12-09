@@ -8,7 +8,7 @@ type TicketRepository interface {
 	CreateTicket(userID string, pb *pb.Ticket) (*pb.Ticket, error)
 	GetTicket(id string) (*pb.Ticket, error)
 	UpdateTicket(pb *pb.Ticket) error
-	DeleteTicket(id string) error
+	DeleteTicket(userID string, orderID string) error
 
 	ListTicket(userID string) ([]*pb.Ticket, error)
 }

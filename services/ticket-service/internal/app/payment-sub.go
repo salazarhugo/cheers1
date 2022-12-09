@@ -15,16 +15,21 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 		return
 	}
-	log.Println(event)
 
+	log.Println(event)
 	repo := repository.NewTicketRepository()
+	order := event.Order
 
 	switch event.Type {
 	case payment.PaymentEvent_PAYMENT_SUCCESS:
-		for _, ticket := range event.Order.Tickets {
-			repo.CreateTicket(event.Order.UserId, ticket)
+		for _, ticket := range order.Tickets {
+			ticket.PaymentIntentId = order.Id
+			ticket.UserId = order.UserId
+			ticket.Validated = false
+			repo.CreateTicket(order.UserId, ticket)
 		}
 	case payment.PaymentEvent_REFUND:
+		repo.DeleteTicket(order.UserId, order.Id)
 	}
 
 	if err != nil {

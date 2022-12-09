@@ -16,19 +16,14 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	order, err := repository.GetOrder(event.PaymentIntentId)
-	if err != nil {
-		log.Println(err)
-		http.Error(w, "Failed to get user tickets", http.StatusInternalServerError)
-		return
-	}
-
+	order := event.Order
 	totalPrice, err := repository.CalculateTotalPrice(order.Tickets)
+
 	if err != nil {
 		log.Println(err)
 		http.Error(w, "failed to calculate amount", http.StatusInternalServerError)
 		return
 	}
 
-	SendEmail(event.Email, event.FirstName, order.Tickets, totalPrice)
+	SendEmail(order.Email, order.FirstName, order.Tickets, totalPrice)
 }

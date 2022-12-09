@@ -247,6 +247,8 @@ github.com/salazarhugo/cheers1/gen/go v0.0.0-20221128185556-362dbf7cf8a4 h1:GUJF
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20221128185556-362dbf7cf8a4/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20221208094612-0cd8a5fa5c43 h1:pAaPxmlfL4p6xufTRqvaGLGGie3c5Ew+EmYgruslUa4=
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20221208094612-0cd8a5fa5c43/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
+github.com/salazarhugo/cheers1/gen/go v0.0.0-20221209142646-301101629442 h1:ioxbtKvTLvTShwXS5zaGGt3IyE9i74IjBZegTxQgss4=
+github.com/salazarhugo/cheers1/gen/go v0.0.0-20221209142646-301101629442/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
 github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a h1:TBgSOeX4eqxpmUYNYVMGVHy5peXZ0A6mMwpXnvBOo/0=
 github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a/go.mod h1:r9VVw/Y+1GW5JrqrRZLxVctRHwXEqB6DZEWHCgnx//k=
 github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221105090922-7db1c47202c4 h1:1eX2tzOJlZlmBkIgO8npBjWTsg0WjIsxX+S7tobwwcE=

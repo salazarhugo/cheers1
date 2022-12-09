@@ -16,6 +16,7 @@ import (
 func CreateOrder(
 	paymentIntent *stripe.PaymentIntent,
 	request *payment.CreatePaymentRequest,
+	userID string,
 	partyHostId string,
 	tickets []*ticketpb.Ticket,
 ) error {
@@ -44,6 +45,7 @@ func CreateOrder(
 		Status:             string(paymentIntent.Status),
 		Amount:             paymentIntent.Amount,
 		CustomerId:         customerId,
+		UserId:             userID,
 		FirstName:          request.FirstName,
 		LastName:           request.LastName,
 		Email:              request.Email,

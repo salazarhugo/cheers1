@@ -12,15 +12,17 @@ func HandleChargeRefunded(charge stripe.Charge) {
 
 	paymentIntent := charge.PaymentIntent
 
-	customerId := ""
-	if paymentIntent.Customer != nil {
-		customerId = paymentIntent.Customer.ID
+	// Retrieve the order of that payment
+	order, err := GetOrder(paymentIntent.ID)
+	if err != nil {
+		log.Println(err)
+		return
 	}
 
-	err := pubsub.PublishProtoWithBinaryEncoding("payment-topic", &payment.PaymentEvent{
+	err = pubsub.PublishProtoWithBinaryEncoding("payment-topic", &payment.PaymentEvent{
 		PaymentIntentId: paymentIntent.ID,
-		CustomerId:      customerId,
 		Type:            payment.PaymentEvent_REFUND,
+		Order:           order,
 	})
 	if err != nil {
 		log.Println(err)
