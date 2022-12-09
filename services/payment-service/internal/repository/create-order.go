@@ -6,6 +6,7 @@ import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/order/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/payment/v1"
 	ticketpb "github.com/salazarhugo/cheers1/gen/go/cheers/ticket/v1"
+	partypb "github.com/salazarhugo/cheers1/gen/go/cheers/type/party"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/stripe/stripe-go/v72"
 	"google.golang.org/grpc/codes"
@@ -17,7 +18,7 @@ func CreateOrder(
 	paymentIntent *stripe.PaymentIntent,
 	request *payment.CreatePaymentRequest,
 	userID string,
-	partyHostId string,
+	party *partypb.Party,
 	tickets []*ticketpb.Ticket,
 ) error {
 	ctx := context.Background()
@@ -50,7 +51,8 @@ func CreateOrder(
 		LastName:           request.LastName,
 		Email:              request.Email,
 		PartyId:            request.PartyId,
-		PartyHostId:        partyHostId,
+		PartyName:          party.Name,
+		PartyHostId:        party.HostId,
 		CreateTime:         paymentIntent.Created,
 		Tickets:            tickets,
 	}

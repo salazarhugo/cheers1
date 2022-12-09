@@ -26,6 +26,7 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 			ticket.PaymentIntentId = order.Id
 			ticket.UserId = order.UserId
 			ticket.Validated = false
+			ticket.PartyName = order.PartyName
 			repo.CreateTicket(order.UserId, ticket)
 		}
 	case payment.PaymentEvent_REFUND:

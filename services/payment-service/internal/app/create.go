@@ -72,7 +72,7 @@ func (s *Server) CreatePayment(
 		paymentIntent,
 		request,
 		userId,
-		party.HostId,
+		party,
 		tickets,
 	)
 	if err != nil {
