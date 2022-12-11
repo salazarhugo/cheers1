@@ -10,8 +10,9 @@ type OrderRepository interface {
 	UpdateOrder(pb *pb.Order) error
 	DeleteOrder(id string) error
 
-	ListOrderWithPartyId(partyID string) ([]*pb.Order, error)
-	ListOrderWithUserId(userID string) ([]*pb.Order, error)
+	ListOrganizationOrders(organizationID string, query string) ([]*pb.Order, error)
+	ListPartyOrders(partyID string) ([]*pb.Order, error)
+	ListUserOrders(userID string) ([]*pb.Order, error)
 }
 
 type orderRepository struct {

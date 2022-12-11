@@ -20,11 +20,12 @@ import (
 var (
 	host     = "smtp.gmail.com"
 	username = "admin@maparty.fr"
-	password = os.Getenv("EMAIL_PASSWORD")
+	password = "pjjRVscRWmsZrwYb" //os.Getenv("EMAIL_PASSWORD")
 	port     = "587"
 )
 
 type Message struct {
+	FromName    string
 	To          []string
 	CC          []string
 	BCC         []string
@@ -71,6 +72,7 @@ func (m *Message) ToBytes() []byte {
 	buf := bytes.NewBuffer(nil)
 	withAttachments := len(m.Attachments) > 0
 	buf.WriteString(fmt.Sprintf("Subject: %s\n", m.Subject))
+	buf.WriteString(fmt.Sprintf("From: %s <%s>\n", m.FromName, username))
 	buf.WriteString(fmt.Sprintf("To: %s\n", strings.Join(m.To, ",")))
 	if len(m.CC) > 0 {
 		buf.WriteString(fmt.Sprintf("Cc: %s\n", strings.Join(m.CC, ",")))
@@ -117,16 +119,19 @@ func SendEmail(
 	firstName string,
 	tickets []*ticketpb.Ticket,
 	totalPrice int64,
-) {
+) error {
 	amount := strconv.Itoa(int(totalPrice) / 100)
-	body, err := ParseTemplate("internal/templates/payment-receipt.html", firstName, "", amount)
+	//templatePath := "internal/templates/payment-receipt.html"
+	templatePath := "/mnt/c/Users/hugob/GolandProjects/cheers1/services/email-service/internal/templates/payment-receipt.html"
+	body, err := ParseTemplate(templatePath, firstName, "DevFest Hellas", amount)
 	if err != nil {
 		log.Println(err)
-		return
+		return err
 	}
 
 	sender := New()
 	m := NewMessage("Thank you for your payment", body)
+	m.FromName = "MaParty"
 	m.To = []string{email}
 	m.CC = []string{"hugobrock74@gmail.com"}
 	m.BCC = []string{}
@@ -136,7 +141,7 @@ func SendEmail(
 		qrcode, err := repository.GenerateQRCodePng(ticket.Id)
 		if err != nil {
 			log.Println(err)
-			return
+			return err
 		}
 		m.AttachFileBytes(fmt.Sprintf("%s_%d", ticket.Name, i+1), qrcode)
 	}
@@ -144,10 +149,11 @@ func SendEmail(
 	err = sender.Send(m)
 	if err != nil {
 		log.Println(err)
-		return
+		return err
 	}
 
 	fmt.Printf("Email Sent Successfully to %s!", email)
+	return nil
 }
 
 func ParseTemplate(

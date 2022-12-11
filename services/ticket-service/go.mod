@@ -13,7 +13,6 @@ require (
 	golang.org/x/net v0.2.0
 	google.golang.org/api v0.103.0
 	google.golang.org/grpc v1.50.1
-	google.golang.org/protobuf v1.28.1
 )
 
 require (
@@ -52,6 +51,7 @@ require (
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/appengine/v2 v2.0.2 // indirect
 	google.golang.org/genproto v0.0.0-20221109142239-94d6d90a7d66 // indirect
+	google.golang.org/protobuf v1.28.1 // indirect
 )
 
 //replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go

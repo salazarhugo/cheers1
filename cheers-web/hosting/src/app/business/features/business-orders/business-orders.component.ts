@@ -17,6 +17,7 @@ import {RefundPaymentDialogComponent} from "../../ui/refund-payment-dialog/refun
 export class BusinessOrdersComponent implements OnInit {
     displayedColumns: string[] = ['status', 'date', 'amount', 'firstName', 'lastName', 'email', 'more'];
     dataSource: MatTableDataSource<Order> = new MatTableDataSource();
+    searchTerm = '';
 
     constructor(
         public dialog: MatDialog,

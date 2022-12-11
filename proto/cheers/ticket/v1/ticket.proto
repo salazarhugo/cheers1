@@ -37,7 +37,7 @@ service TicketService {
 
   rpc ListTicket (ListTicketRequest) returns (ListTicketResponse) {
     option (google.api.http) = {
-      get: "/v1/tickets/list"
+      get: "/v1/tickets"
     };
   }
 }

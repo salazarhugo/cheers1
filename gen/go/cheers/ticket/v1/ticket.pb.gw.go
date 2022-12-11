@@ -353,7 +353,7 @@ func RegisterTicketServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/cheers.ticket.v1.TicketService/ListTicket", runtime.WithHTTPPathPattern("/v1/tickets/list"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/cheers.ticket.v1.TicketService/ListTicket", runtime.WithHTTPPathPattern("/v1/tickets"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -505,7 +505,7 @@ func RegisterTicketServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/cheers.ticket.v1.TicketService/ListTicket", runtime.WithHTTPPathPattern("/v1/tickets/list"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/cheers.ticket.v1.TicketService/ListTicket", runtime.WithHTTPPathPattern("/v1/tickets"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -533,7 +533,7 @@ var (
 
 	pattern_TicketService_DeleteTicket_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "tickets", "ticket_id"}, ""))
 
-	pattern_TicketService_ListTicket_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "tickets", "list"}, ""))
+	pattern_TicketService_ListTicket_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "tickets"}, ""))
 )
 
 var (

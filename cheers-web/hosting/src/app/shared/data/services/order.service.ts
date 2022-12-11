@@ -15,6 +15,6 @@ export class OrderService {
 
   async getCurrentUserOrders() {
     const user = await firstValueFrom(this.auth.user)
-    return this.api.listOrders(user?.uid!)
+    return this.api.listUserOrders(user?.uid!)
   }
 }

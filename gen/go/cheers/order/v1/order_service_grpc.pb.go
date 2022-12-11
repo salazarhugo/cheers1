@@ -26,7 +26,9 @@ type OrderServiceClient interface {
 	GetOrder(ctx context.Context, in *GetOrderRequest, opts ...grpc.CallOption) (*GetOrderResponse, error)
 	UpdateOrder(ctx context.Context, in *UpdateOrderRequest, opts ...grpc.CallOption) (*UpdateOrderResponse, error)
 	DeleteOrder(ctx context.Context, in *DeleteOrderRequest, opts ...grpc.CallOption) (*DeleteOrderResponse, error)
-	ListOrder(ctx context.Context, in *ListOrderRequest, opts ...grpc.CallOption) (*ListOrderResponse, error)
+	ListUserOrders(ctx context.Context, in *ListUserOrdersRequest, opts ...grpc.CallOption) (*ListUserOrdersResponse, error)
+	ListOrganizerOrders(ctx context.Context, in *ListOrganizerOrdersRequest, opts ...grpc.CallOption) (*ListOrganizerOrdersResponse, error)
+	ListPartyOrders(ctx context.Context, in *ListPartyOrdersRequest, opts ...grpc.CallOption) (*ListPartyOrdersResponse, error)
 }
 
 type orderServiceClient struct {
@@ -73,9 +75,27 @@ func (c *orderServiceClient) DeleteOrder(ctx context.Context, in *DeleteOrderReq
 	return out, nil
 }
 
-func (c *orderServiceClient) ListOrder(ctx context.Context, in *ListOrderRequest, opts ...grpc.CallOption) (*ListOrderResponse, error) {
-	out := new(ListOrderResponse)
-	err := c.cc.Invoke(ctx, "/cheers.order.v1.OrderService/ListOrder", in, out, opts...)
+func (c *orderServiceClient) ListUserOrders(ctx context.Context, in *ListUserOrdersRequest, opts ...grpc.CallOption) (*ListUserOrdersResponse, error) {
+	out := new(ListUserOrdersResponse)
+	err := c.cc.Invoke(ctx, "/cheers.order.v1.OrderService/ListUserOrders", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orderServiceClient) ListOrganizerOrders(ctx context.Context, in *ListOrganizerOrdersRequest, opts ...grpc.CallOption) (*ListOrganizerOrdersResponse, error) {
+	out := new(ListOrganizerOrdersResponse)
+	err := c.cc.Invoke(ctx, "/cheers.order.v1.OrderService/ListOrganizerOrders", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *orderServiceClient) ListPartyOrders(ctx context.Context, in *ListPartyOrdersRequest, opts ...grpc.CallOption) (*ListPartyOrdersResponse, error) {
+	out := new(ListPartyOrdersResponse)
+	err := c.cc.Invoke(ctx, "/cheers.order.v1.OrderService/ListPartyOrders", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +110,9 @@ type OrderServiceServer interface {
 	GetOrder(context.Context, *GetOrderRequest) (*GetOrderResponse, error)
 	UpdateOrder(context.Context, *UpdateOrderRequest) (*UpdateOrderResponse, error)
 	DeleteOrder(context.Context, *DeleteOrderRequest) (*DeleteOrderResponse, error)
-	ListOrder(context.Context, *ListOrderRequest) (*ListOrderResponse, error)
+	ListUserOrders(context.Context, *ListUserOrdersRequest) (*ListUserOrdersResponse, error)
+	ListOrganizerOrders(context.Context, *ListOrganizerOrdersRequest) (*ListOrganizerOrdersResponse, error)
+	ListPartyOrders(context.Context, *ListPartyOrdersRequest) (*ListPartyOrdersResponse, error)
 	mustEmbedUnimplementedOrderServiceServer()
 }
 
@@ -110,8 +132,14 @@ func (UnimplementedOrderServiceServer) UpdateOrder(context.Context, *UpdateOrder
 func (UnimplementedOrderServiceServer) DeleteOrder(context.Context, *DeleteOrderRequest) (*DeleteOrderResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteOrder not implemented")
 }
-func (UnimplementedOrderServiceServer) ListOrder(context.Context, *ListOrderRequest) (*ListOrderResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListOrder not implemented")
+func (UnimplementedOrderServiceServer) ListUserOrders(context.Context, *ListUserOrdersRequest) (*ListUserOrdersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListUserOrders not implemented")
+}
+func (UnimplementedOrderServiceServer) ListOrganizerOrders(context.Context, *ListOrganizerOrdersRequest) (*ListOrganizerOrdersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListOrganizerOrders not implemented")
+}
+func (UnimplementedOrderServiceServer) ListPartyOrders(context.Context, *ListPartyOrdersRequest) (*ListPartyOrdersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListPartyOrders not implemented")
 }
 func (UnimplementedOrderServiceServer) mustEmbedUnimplementedOrderServiceServer() {}
 
@@ -198,20 +226,56 @@ func _OrderService_DeleteOrder_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _OrderService_ListOrder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListOrderRequest)
+func _OrderService_ListUserOrders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListUserOrdersRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrderServiceServer).ListOrder(ctx, in)
+		return srv.(OrderServiceServer).ListUserOrders(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/cheers.order.v1.OrderService/ListOrder",
+		FullMethod: "/cheers.order.v1.OrderService/ListUserOrders",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrderServiceServer).ListOrder(ctx, req.(*ListOrderRequest))
+		return srv.(OrderServiceServer).ListUserOrders(ctx, req.(*ListUserOrdersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrderService_ListOrganizerOrders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListOrganizerOrdersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServiceServer).ListOrganizerOrders(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.order.v1.OrderService/ListOrganizerOrders",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServiceServer).ListOrganizerOrders(ctx, req.(*ListOrganizerOrdersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _OrderService_ListPartyOrders_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPartyOrdersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(OrderServiceServer).ListPartyOrders(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.order.v1.OrderService/ListPartyOrders",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(OrderServiceServer).ListPartyOrders(ctx, req.(*ListPartyOrdersRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -240,8 +304,16 @@ var OrderService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _OrderService_DeleteOrder_Handler,
 		},
 		{
-			MethodName: "ListOrder",
-			Handler:    _OrderService_ListOrder_Handler,
+			MethodName: "ListUserOrders",
+			Handler:    _OrderService_ListUserOrders_Handler,
+		},
+		{
+			MethodName: "ListOrganizerOrders",
+			Handler:    _OrderService_ListOrganizerOrders_Handler,
+		},
+		{
+			MethodName: "ListPartyOrders",
+			Handler:    _OrderService_ListPartyOrders_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -4,13 +4,14 @@ import {map, Observable} from "rxjs";
 import {StoryState, toUser, User, UserResponse} from "../models/user.model";
 import {Post} from "../models/post.model";
 import {Story} from "../models/story.model";
-import {Ticket} from "../models/ticket.model";
+import {Ticket, toTicket} from "../models/ticket.model";
 import {FeedPostResponse, ListPostResponse, PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
 import {Empty} from "../../../../gen/ts/google/protobuf/empty";
 import {environment} from "../../../../environments/environment";
 import {CreateRegistrationTokenResponse} from "../../../../gen/ts/cheers/notification/v1/notification_service";
 import {Account, GetAccountResponse} from "../../../../gen/ts/cheers/account/v1/account_service";
-import {ListOrderResponse, Order} from "../../../../gen/ts/cheers/order/v1/order_service";
+import {ListUserOrdersResponse, Order} from "../../../../gen/ts/cheers/order/v1/order_service";
+import {ListTicketResponse} from "../../../../gen/ts/cheers/ticket/v1/ticket";
 
 @Injectable({
     providedIn: 'root'
@@ -24,13 +25,14 @@ export class ApiService {
     ) {
     }
 
-    listOrders(userId: string): Observable<Order[]> {
-        return this.http.get<ListOrderResponse>(`${environment.GATEWAY_URL}/v1/orders/list?user_id=${userId}`)
+    listUserOrders(userId: string): Observable<Order[]> {
+        return this.http.get<ListUserOrdersResponse>(`${environment.GATEWAY_URL}/v1/orders/user`)
             .pipe(map(r => r.orders))
     }
 
     getUserTickets(): Observable<Ticket[]> {
-        return this.http.get<Ticket[]>(`${this.BASE_URL}/users/tickets`)
+        return this.http.get<ListTicketResponse>(`${environment.GATEWAY_URL}/v1/tickets`)
+            .pipe(map(res => res.tickets.map(ticket => toTicket(ticket))))
     }
 
     usernameAvailability(username: string): Observable<boolean> {

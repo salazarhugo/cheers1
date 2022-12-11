@@ -16,6 +16,7 @@ import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/payment/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/story/v1"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/ticket/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -81,6 +82,7 @@ func main() {
 	auth.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, "auth-service-r3a2dr4u4a-nw.a.run.app:443", options)
 	account.RegisterAccountServiceHandlerFromEndpoint(ctx, mux, "account-service-r3a2dr4u4a-nw.a.run.app:443", options)
 	payment.RegisterPaymentServiceHandlerFromEndpoint(ctx, mux, "payment-service-r3a2dr4u4a-nw.a.run.app:443", options)
+	ticket.RegisterTicketServiceHandlerFromEndpoint(ctx, mux, "ticket-service-r3a2dr4u4a-nw.a.run.app:443", options)
 
 	// Creating a normal HTTP server
 	server := http.Server{

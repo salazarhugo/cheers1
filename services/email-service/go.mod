@@ -2,7 +2,7 @@ module github.com/salazarhugo/cheers1/services/email-service
 
 go 1.19
 
-require google.golang.org/protobuf v1.28.1
+require google.golang.org/protobuf v1.28.1 // indirect
 
 require (
 	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221209142646-301101629442

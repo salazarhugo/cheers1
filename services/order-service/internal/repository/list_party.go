@@ -8,8 +8,8 @@ import (
 	"google.golang.org/api/iterator"
 )
 
-func (o orderRepository) ListOrderWithUserId(
-	userID string,
+func (o orderRepository) ListPartyOrders(
+	partyID string,
 ) ([]*pb.Order, error) {
 	ctx := context.Background()
 	client, err := firestore.NewClient(ctx, "cheers-a275e")
@@ -18,7 +18,7 @@ func (o orderRepository) ListOrderWithUserId(
 	}
 	defer client.Close()
 
-	docs := client.Collection("orders").Where("partyHostId", "==", userID).Documents(ctx)
+	docs := client.Collection("orders").Where("partyId", "==", partyID).Documents(ctx)
 
 	orderList := make([]*pb.Order, 0)
 
