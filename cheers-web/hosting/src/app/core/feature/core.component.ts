@@ -41,8 +41,6 @@ export class CoreComponent implements OnInit, AfterViewInit {
             this.mode = "side"
         } else if(this.breakpointObserver.isMatched(Breakpoints.Small)) {
             this.mode = "over"
-        } else if(this.breakpointObserver.isMatched('(min-width: 500px)')) {
-            this.mode = "over"
         }
     }
 

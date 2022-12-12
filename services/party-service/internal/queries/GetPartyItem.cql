@@ -13,6 +13,7 @@ WITH
   user,
   me.id = user.id AS is_creator,
   exists((me)-[:GOING]->(party)) AS is_going,
+  exists((me)-[:INTERESTED]->(party)) AS is_interested,
   count(DISTINCT going) AS going_count,
   count(DISTINCT interest) AS interested_count,
   count(DISTINCT invited) AS invited_count
@@ -24,6 +25,10 @@ RETURN
     interested_count: interested_count,
     invited_count:    invited_count,
     is_creator:       is_creator,
-    user_response:    'GOING'
+    answer:           CASE
+                        WHEN is_going THEN 'GOING'
+                        WHEN is_interested THEN 'INTERESTED'
+                        ELSE 'NOT_INTERESTED'
+                        END
   }
   ORDER BY party.createTime DESC

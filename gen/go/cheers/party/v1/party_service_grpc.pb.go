@@ -28,6 +28,7 @@ type PartyServiceClient interface {
 	DeleteParty(ctx context.Context, in *DeletePartyRequest, opts ...grpc.CallOption) (*DeletePartyResponse, error)
 	GetPartyItem(ctx context.Context, in *GetPartyItemRequest, opts ...grpc.CallOption) (*GetPartyItemResponse, error)
 	FeedParty(ctx context.Context, in *FeedPartyRequest, opts ...grpc.CallOption) (*FeedPartyResponse, error)
+	AnswerParty(ctx context.Context, in *AnswerPartyRequest, opts ...grpc.CallOption) (*AnswerPartyResponse, error)
 }
 
 type partyServiceClient struct {
@@ -92,6 +93,15 @@ func (c *partyServiceClient) FeedParty(ctx context.Context, in *FeedPartyRequest
 	return out, nil
 }
 
+func (c *partyServiceClient) AnswerParty(ctx context.Context, in *AnswerPartyRequest, opts ...grpc.CallOption) (*AnswerPartyResponse, error) {
+	out := new(AnswerPartyResponse)
+	err := c.cc.Invoke(ctx, "/cheers.party.v1.PartyService/AnswerParty", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PartyServiceServer is the server API for PartyService service.
 // All implementations must embed UnimplementedPartyServiceServer
 // for forward compatibility
@@ -102,6 +112,7 @@ type PartyServiceServer interface {
 	DeleteParty(context.Context, *DeletePartyRequest) (*DeletePartyResponse, error)
 	GetPartyItem(context.Context, *GetPartyItemRequest) (*GetPartyItemResponse, error)
 	FeedParty(context.Context, *FeedPartyRequest) (*FeedPartyResponse, error)
+	AnswerParty(context.Context, *AnswerPartyRequest) (*AnswerPartyResponse, error)
 	mustEmbedUnimplementedPartyServiceServer()
 }
 
@@ -126,6 +137,9 @@ func (UnimplementedPartyServiceServer) GetPartyItem(context.Context, *GetPartyIt
 }
 func (UnimplementedPartyServiceServer) FeedParty(context.Context, *FeedPartyRequest) (*FeedPartyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FeedParty not implemented")
+}
+func (UnimplementedPartyServiceServer) AnswerParty(context.Context, *AnswerPartyRequest) (*AnswerPartyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AnswerParty not implemented")
 }
 func (UnimplementedPartyServiceServer) mustEmbedUnimplementedPartyServiceServer() {}
 
@@ -248,6 +262,24 @@ func _PartyService_FeedParty_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PartyService_AnswerParty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AnswerPartyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PartyServiceServer).AnswerParty(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.party.v1.PartyService/AnswerParty",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PartyServiceServer).AnswerParty(ctx, req.(*AnswerPartyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PartyService_ServiceDesc is the grpc.ServiceDesc for PartyService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -278,6 +310,10 @@ var PartyService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FeedParty",
 			Handler:    _PartyService_FeedParty_Handler,
+		},
+		{
+			MethodName: "AnswerParty",
+			Handler:    _PartyService_AnswerParty_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

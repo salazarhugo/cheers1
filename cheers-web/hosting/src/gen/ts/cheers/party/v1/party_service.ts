@@ -6,43 +6,57 @@ import { User } from "../../type/user/user";
 
 export const protobufPackage = "cheers.party.v1";
 
-export enum PartyUserResponse {
+export enum PartyAnswer {
   GOING = 0,
   INTERESTED = 1,
   NOT_INTERESTED = 2,
+  MAYBE = 3,
   UNRECOGNIZED = -1,
 }
 
-export function partyUserResponseFromJSON(object: any): PartyUserResponse {
+export function partyAnswerFromJSON(object: any): PartyAnswer {
   switch (object) {
     case 0:
     case "GOING":
-      return PartyUserResponse.GOING;
+      return PartyAnswer.GOING;
     case 1:
     case "INTERESTED":
-      return PartyUserResponse.INTERESTED;
+      return PartyAnswer.INTERESTED;
     case 2:
     case "NOT_INTERESTED":
-      return PartyUserResponse.NOT_INTERESTED;
+      return PartyAnswer.NOT_INTERESTED;
+    case 3:
+    case "MAYBE":
+      return PartyAnswer.MAYBE;
     case -1:
     case "UNRECOGNIZED":
     default:
-      return PartyUserResponse.UNRECOGNIZED;
+      return PartyAnswer.UNRECOGNIZED;
   }
 }
 
-export function partyUserResponseToJSON(object: PartyUserResponse): string {
+export function partyAnswerToJSON(object: PartyAnswer): string {
   switch (object) {
-    case PartyUserResponse.GOING:
+    case PartyAnswer.GOING:
       return "GOING";
-    case PartyUserResponse.INTERESTED:
+    case PartyAnswer.INTERESTED:
       return "INTERESTED";
-    case PartyUserResponse.NOT_INTERESTED:
+    case PartyAnswer.NOT_INTERESTED:
       return "NOT_INTERESTED";
-    case PartyUserResponse.UNRECOGNIZED:
+    case PartyAnswer.MAYBE:
+      return "MAYBE";
+    case PartyAnswer.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
+}
+
+export interface AnswerPartyRequest {
+  partyId: string;
+  answer: PartyAnswer;
+}
+
+export interface AnswerPartyResponse {
 }
 
 export interface CreatePartyRequest {
@@ -102,8 +116,105 @@ export interface PartyItem {
   interestedCount: number;
   invitedCount: number;
   isCreator: boolean;
-  userResponse: PartyUserResponse;
+  answer: PartyAnswer;
 }
+
+function createBaseAnswerPartyRequest(): AnswerPartyRequest {
+  return { partyId: "", answer: 0 };
+}
+
+export const AnswerPartyRequest = {
+  encode(message: AnswerPartyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.partyId !== "") {
+      writer.uint32(10).string(message.partyId);
+    }
+    if (message.answer !== 0) {
+      writer.uint32(16).int32(message.answer);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): AnswerPartyRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAnswerPartyRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.partyId = reader.string();
+          break;
+        case 2:
+          message.answer = reader.int32() as any;
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AnswerPartyRequest {
+    return {
+      partyId: isSet(object.partyId) ? String(object.partyId) : "",
+      answer: isSet(object.answer) ? partyAnswerFromJSON(object.answer) : 0,
+    };
+  },
+
+  toJSON(message: AnswerPartyRequest): unknown {
+    const obj: any = {};
+    message.partyId !== undefined && (obj.partyId = message.partyId);
+    message.answer !== undefined && (obj.answer = partyAnswerToJSON(message.answer));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AnswerPartyRequest>, I>>(object: I): AnswerPartyRequest {
+    const message = createBaseAnswerPartyRequest();
+    message.partyId = object.partyId ?? "";
+    message.answer = object.answer ?? 0;
+    return message;
+  },
+};
+
+function createBaseAnswerPartyResponse(): AnswerPartyResponse {
+  return {};
+}
+
+export const AnswerPartyResponse = {
+  encode(_: AnswerPartyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): AnswerPartyResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAnswerPartyResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): AnswerPartyResponse {
+    return {};
+  },
+
+  toJSON(_: AnswerPartyResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AnswerPartyResponse>, I>>(_: I): AnswerPartyResponse {
+    const message = createBaseAnswerPartyResponse();
+    return message;
+  },
+};
 
 function createBaseCreatePartyRequest(): CreatePartyRequest {
   return { party: undefined };
@@ -704,7 +815,7 @@ function createBasePartyItem(): PartyItem {
     interestedCount: 0,
     invitedCount: 0,
     isCreator: false,
-    userResponse: 0,
+    answer: 0,
   };
 }
 
@@ -728,8 +839,8 @@ export const PartyItem = {
     if (message.isCreator === true) {
       writer.uint32(64).bool(message.isCreator);
     }
-    if (message.userResponse !== 0) {
-      writer.uint32(72).int32(message.userResponse);
+    if (message.answer !== 0) {
+      writer.uint32(72).int32(message.answer);
     }
     return writer;
   },
@@ -760,7 +871,7 @@ export const PartyItem = {
           message.isCreator = reader.bool();
           break;
         case 9:
-          message.userResponse = reader.int32() as any;
+          message.answer = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -778,7 +889,7 @@ export const PartyItem = {
       interestedCount: isSet(object.interestedCount) ? Number(object.interestedCount) : 0,
       invitedCount: isSet(object.invitedCount) ? Number(object.invitedCount) : 0,
       isCreator: isSet(object.isCreator) ? Boolean(object.isCreator) : false,
-      userResponse: isSet(object.userResponse) ? partyUserResponseFromJSON(object.userResponse) : 0,
+      answer: isSet(object.answer) ? partyAnswerFromJSON(object.answer) : 0,
     };
   },
 
@@ -790,7 +901,7 @@ export const PartyItem = {
     message.interestedCount !== undefined && (obj.interestedCount = Math.round(message.interestedCount));
     message.invitedCount !== undefined && (obj.invitedCount = Math.round(message.invitedCount));
     message.isCreator !== undefined && (obj.isCreator = message.isCreator);
-    message.userResponse !== undefined && (obj.userResponse = partyUserResponseToJSON(message.userResponse));
+    message.answer !== undefined && (obj.answer = partyAnswerToJSON(message.answer));
     return obj;
   },
 
@@ -802,7 +913,7 @@ export const PartyItem = {
     message.interestedCount = object.interestedCount ?? 0;
     message.invitedCount = object.invitedCount ?? 0;
     message.isCreator = object.isCreator ?? false;
-    message.userResponse = object.userResponse ?? 0;
+    message.answer = object.answer ?? 0;
     return message;
   },
 };
@@ -814,6 +925,7 @@ export interface PartyService {
   DeleteParty(request: DeletePartyRequest): Promise<DeletePartyResponse>;
   GetPartyItem(request: GetPartyItemRequest): Promise<GetPartyItemResponse>;
   FeedParty(request: FeedPartyRequest): Promise<FeedPartyResponse>;
+  AnswerParty(request: AnswerPartyRequest): Promise<AnswerPartyResponse>;
 }
 
 export class PartyServiceClientImpl implements PartyService {
@@ -828,6 +940,7 @@ export class PartyServiceClientImpl implements PartyService {
     this.DeleteParty = this.DeleteParty.bind(this);
     this.GetPartyItem = this.GetPartyItem.bind(this);
     this.FeedParty = this.FeedParty.bind(this);
+    this.AnswerParty = this.AnswerParty.bind(this);
   }
   CreateParty(request: CreatePartyRequest): Promise<CreatePartyResponse> {
     const data = CreatePartyRequest.encode(request).finish();
@@ -863,6 +976,12 @@ export class PartyServiceClientImpl implements PartyService {
     const data = FeedPartyRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "FeedParty", data);
     return promise.then((data) => FeedPartyResponse.decode(new _m0.Reader(data)));
+  }
+
+  AnswerParty(request: AnswerPartyRequest): Promise<AnswerPartyResponse> {
+    const data = AnswerPartyRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "AnswerParty", data);
+    return promise.then((data) => AnswerPartyResponse.decode(new _m0.Reader(data)));
   }
 }
 
