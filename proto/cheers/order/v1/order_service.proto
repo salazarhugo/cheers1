@@ -44,7 +44,7 @@ service OrderService {
 
   rpc ListOrganizerOrders (ListOrganizerOrdersRequest) returns (ListOrganizerOrdersResponse) {
     option (google.api.http) = {
-      get: "/v1/orders/organizer"
+      get: "/v1/orders/organization"
     };
   }
 

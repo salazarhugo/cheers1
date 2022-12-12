@@ -17,7 +17,6 @@ import {RefundPaymentDialogComponent} from "../../ui/refund-payment-dialog/refun
 export class BusinessOrdersComponent implements OnInit {
     displayedColumns: string[] = ['status', 'date', 'amount', 'firstName', 'lastName', 'email', 'more'];
     dataSource: MatTableDataSource<Order> = new MatTableDataSource();
-    searchTerm = '';
 
     constructor(
         public dialog: MatDialog,
@@ -35,7 +34,7 @@ export class BusinessOrdersComponent implements OnInit {
     }
 
     async ngOnInit() {
-        const res = await this.orderService.getCurrentUserOrders()
+        const res = await this.orderService.getOrganizationOrders("")
         res.subscribe(data => {
             this.dataSource.data = data
         })
@@ -68,5 +67,12 @@ export class BusinessOrdersComponent implements OnInit {
     /** Gets the total amount of all orders. */
     getTotalCost() {
         return this.dataSource.data.map(t => t.amount).reduce((acc, value) => acc + value, 0);
+    }
+
+    async onSearch(query: string) {
+        const res = await this.orderService.getOrganizationOrders(query)
+        res.subscribe(data => {
+            this.dataSource.data = data
+        })
     }
 }

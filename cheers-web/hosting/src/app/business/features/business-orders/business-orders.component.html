@@ -1,10 +1,6 @@
 <main>
     <h2>Orders</h2>
-    <mat-form-field appearance="fill">
-        <mat-label>Search by name or email</mat-label>
-        <input matInput [(ngModel)]="searchTerm" />
-        <mat-icon matPrefix>search</mat-icon>
-    </mat-form-field>
+    <app-searchbar style="margin-top: 16px" (onSearch)="onSearch($event)"></app-searchbar>
     <table matSort mat-table [dataSource]="dataSource" matSortActive="createTime" matSortDirection="desc">
         <!-- Status Column -->
         <ng-container matColumnDef="status">

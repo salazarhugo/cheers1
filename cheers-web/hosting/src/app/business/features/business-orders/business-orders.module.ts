@@ -14,6 +14,7 @@ import {RelativeTimeModule} from "../../../shared/data/pipes/relative-time/relat
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {FormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
+import {SearchbarModule} from "../../../shared/ui/searchbar/searchbar.module";
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import {MatInputModule} from "@angular/material/input";
         RelativeTimeModule,
         MatFormFieldModule,
         FormsModule,
-        MatInputModule
+        MatInputModule,
+        SearchbarModule
     ]
 })
 export class BusinessOrdersModule { }

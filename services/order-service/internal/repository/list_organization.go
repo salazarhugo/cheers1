@@ -6,6 +6,7 @@ import (
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/order/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/api/iterator"
+	"log"
 )
 
 func (o orderRepository) ListOrganizationOrders(
@@ -19,8 +20,7 @@ func (o orderRepository) ListOrganizationOrders(
 	}
 	defer client.Close()
 
-	ref := client.Collection("orders").Where("partyHostId", "==", organizationID).Where("lastName", ">=", query)
-	docs := ref.Limit(25).Documents(ctx)
+	docs := client.Collection("orders").Where("partyHostId", "==", organizationID).Where("lastName", ">=", query).Where("lastName", "<=", query+"~").Limit(25).Documents(ctx)
 
 	orderList := make([]*pb.Order, 0)
 
@@ -32,6 +32,7 @@ func (o orderRepository) ListOrganizationOrders(
 		order := &pb.Order{}
 		err = utils.MapToProto(order, doc.Data())
 		if err != nil {
+			log.Println(err)
 			return nil, err
 		}
 		orderList = append(orderList, order)
