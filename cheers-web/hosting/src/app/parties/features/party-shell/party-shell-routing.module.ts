@@ -15,7 +15,7 @@ const routes: Routes = [
         loadChildren: () => import('../party-edit/party-edit.module').then(m => m.PartyEditModule)
     },
     {
-        path: ':id/guestlist',
+        path: ':id/guest-list',
         loadChildren: () => import('../party-guest-list/party-guest-list.module').then(m => m.PartyGuestListModule)
     },
 ];

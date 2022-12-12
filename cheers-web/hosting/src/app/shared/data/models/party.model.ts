@@ -1,4 +1,4 @@
-import {PartyItem} from "../../../../gen/ts/cheers/party/v1/party_service";
+import {PartyAnswer, PartyItem} from "../../../../gen/ts/cheers/party/v1/party_service";
 
 export class Party {
     isHost: boolean = false
@@ -31,6 +31,8 @@ export class Party {
 export function toParty(value: PartyItem): Party {
     const party = new Party()
     Object.assign(party, value.party)
+    party.going = value.answer.toString() == "GOING"
+    party.interested = value.answer == PartyAnswer.INTERESTED
     party.goingCount = value.goingCount
     party.interestedCount = value.interestedCount
     party.invitedCount = value.invitedCount

@@ -4,6 +4,7 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
 	party "github.com/salazarhugo/cheers1/gen/go/cheers/type/party"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 )
 
 type PartyRepository interface {
@@ -16,6 +17,7 @@ type PartyRepository interface {
 	GetPartyItemPublic(partyID string) (*pb.PartyItem, error)
 	FeedParty(userID string, request *pb.FeedPartyRequest) (*pb.FeedPartyResponse, error)
 	GoingParty(userID string, partyID string) error
+	ListGoing(userID string, partyID string) ([]*user.UserItem, error)
 	UnGoingParty(userID string, partyID string) error
 }
 

@@ -6,10 +6,10 @@ const routes: Routes = [
     path: ':id/dashboard',
     loadChildren: () => import('../manage-party-dashboard/manage-party-dashboard.module').then(m => m.ManagePartyDashboardModule)
   },
-  // {
-    // path: ':id/guestlist',
-    // loadChildren: () => import('../manage-party-gue/manage-party-basicinfo.module').then(m => m.ManagePartyBasicinfoModule)
-  // },
+  {
+    path: ':id/guest-list',
+    loadChildren: () => import('../manage-party-guest-list/manage-party-guest-list.module').then(m => m.ManagePartyGuestListModule)
+  },
   {
     path: ':id/basicinfo',
     loadChildren: () => import('../manage-party-basicinfo/manage-party-basicinfo.module').then(m => m.ManagePartyBasicinfoModule)

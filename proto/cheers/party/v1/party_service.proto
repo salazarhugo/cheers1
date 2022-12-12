@@ -54,6 +54,20 @@ service PartyService {
       body: "*"
     };
   }
+
+  rpc ListGoing (ListGoingRequest) returns (ListGoingResponse) {
+    option (google.api.http) = {
+      get: "/v1/parties/{party_id}/going"
+    };
+  }
+}
+
+message ListGoingRequest {
+  string party_id = 1;
+}
+
+message ListGoingResponse {
+  repeated cheers.type.UserItem users = 1;
 }
 
 message AnswerPartyRequest {

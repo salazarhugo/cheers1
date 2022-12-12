@@ -4,6 +4,7 @@ import {Party} from "../../../shared/data/models/party.model";
 import {PartyService} from "../../data/party.service";
 import {Clipboard} from '@angular/cdk/clipboard';
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {PartyAnswer} from "../../../../gen/ts/cheers/party/v1/party_service";
 
 @Component({
     selector: 'app-party-detail',
@@ -47,5 +48,17 @@ export class PartyComponent implements OnInit {
         this.snackBar.open("Link copied to clipboard", "Hide", {
             duration: 3000
         })
+    }
+
+    async onGoingToggle() {
+        const party = this.party!!
+        if (party.going) {
+            party.going = false
+            await this.partyService.answerParty(this.partyId!, PartyAnswer.NOT_INTERESTED)
+        }
+        else {
+            party.going = true
+            await this.partyService.answerParty(this.partyId!, PartyAnswer.GOING)
+        }
     }
 }

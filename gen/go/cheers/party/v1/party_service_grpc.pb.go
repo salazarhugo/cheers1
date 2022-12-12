@@ -29,6 +29,7 @@ type PartyServiceClient interface {
 	GetPartyItem(ctx context.Context, in *GetPartyItemRequest, opts ...grpc.CallOption) (*GetPartyItemResponse, error)
 	FeedParty(ctx context.Context, in *FeedPartyRequest, opts ...grpc.CallOption) (*FeedPartyResponse, error)
 	AnswerParty(ctx context.Context, in *AnswerPartyRequest, opts ...grpc.CallOption) (*AnswerPartyResponse, error)
+	ListGoing(ctx context.Context, in *ListGoingRequest, opts ...grpc.CallOption) (*ListGoingResponse, error)
 }
 
 type partyServiceClient struct {
@@ -102,6 +103,15 @@ func (c *partyServiceClient) AnswerParty(ctx context.Context, in *AnswerPartyReq
 	return out, nil
 }
 
+func (c *partyServiceClient) ListGoing(ctx context.Context, in *ListGoingRequest, opts ...grpc.CallOption) (*ListGoingResponse, error) {
+	out := new(ListGoingResponse)
+	err := c.cc.Invoke(ctx, "/cheers.party.v1.PartyService/ListGoing", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PartyServiceServer is the server API for PartyService service.
 // All implementations must embed UnimplementedPartyServiceServer
 // for forward compatibility
@@ -113,6 +123,7 @@ type PartyServiceServer interface {
 	GetPartyItem(context.Context, *GetPartyItemRequest) (*GetPartyItemResponse, error)
 	FeedParty(context.Context, *FeedPartyRequest) (*FeedPartyResponse, error)
 	AnswerParty(context.Context, *AnswerPartyRequest) (*AnswerPartyResponse, error)
+	ListGoing(context.Context, *ListGoingRequest) (*ListGoingResponse, error)
 	mustEmbedUnimplementedPartyServiceServer()
 }
 
@@ -140,6 +151,9 @@ func (UnimplementedPartyServiceServer) FeedParty(context.Context, *FeedPartyRequ
 }
 func (UnimplementedPartyServiceServer) AnswerParty(context.Context, *AnswerPartyRequest) (*AnswerPartyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AnswerParty not implemented")
+}
+func (UnimplementedPartyServiceServer) ListGoing(context.Context, *ListGoingRequest) (*ListGoingResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListGoing not implemented")
 }
 func (UnimplementedPartyServiceServer) mustEmbedUnimplementedPartyServiceServer() {}
 
@@ -280,6 +294,24 @@ func _PartyService_AnswerParty_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PartyService_ListGoing_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListGoingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PartyServiceServer).ListGoing(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.party.v1.PartyService/ListGoing",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PartyServiceServer).ListGoing(ctx, req.(*ListGoingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PartyService_ServiceDesc is the grpc.ServiceDesc for PartyService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -314,6 +346,10 @@ var PartyService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AnswerParty",
 			Handler:    _PartyService_AnswerParty_Handler,
+		},
+		{
+			MethodName: "ListGoing",
+			Handler:    _PartyService_ListGoing_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

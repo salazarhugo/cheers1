@@ -1,18 +1,18 @@
 import {Injectable} from '@angular/core';
 import {ApiService} from "../../shared/data/services/api.service";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
-import {BehaviorSubject, firstValueFrom, lastValueFrom, map, Observable, of} from "rxjs";
+import {BehaviorSubject, firstValueFrom, map, Observable} from "rxjs";
 import {Ticket} from "../../shared/data/models/ticket.model";
 import {
+    AnswerPartyResponse,
     CreatePartyResponse,
     FeedPartyResponse,
-    GetPartyItemResponse,
+    GetPartyItemResponse, PartyAnswer,
     PartyItem, UpdatePartyRequest, UpdatePartyResponse
 } from "../../../gen/ts/cheers/party/v1/party_service";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Party, toParty} from "../../shared/data/models/party.model";
-import {Order, toOrder} from "../../shared/data/models/order.model";
 import {ListPartyOrdersResponse, Order as OrderGen} from "../../../gen/ts/cheers/order/v1/order_service";
 
 @Injectable({
@@ -40,6 +40,12 @@ export class PartyService {
 
     deleteParty(id: string) {
         return this.api.deleteParty(id)
+    }
+
+    answerParty(id: string, answer: PartyAnswer): Promise<AnswerPartyResponse> {
+        return firstValueFrom(this.http.post<AnswerPartyResponse>(`${environment.GATEWAY_URL}/v1/parties/${id}/answer`, {
+            answer: answer
+        }))
     }
 
     updateParty(party: any): Observable<UpdatePartyResponse> {

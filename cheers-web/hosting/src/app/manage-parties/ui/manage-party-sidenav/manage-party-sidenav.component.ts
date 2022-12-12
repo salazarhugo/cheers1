@@ -21,7 +21,7 @@ export class ManagePartySidenavComponent implements OnInit {
         {
             title: "Guest list",
             icon: "group",
-            routerLink: "guestlist",
+            routerLink: "guest-list",
         },
     ]
 
