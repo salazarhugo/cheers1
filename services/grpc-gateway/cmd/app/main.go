@@ -18,6 +18,7 @@ import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/story/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/ticket/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
+	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"
@@ -36,20 +37,19 @@ func main() {
 				return nil
 			}
 			jwt := fields[1]
-			//app := utils.InitializeAppDefault()
-			//client, err := app.Auth(ctx)
-			//if err != nil {
-			//	log.Fatalf("error getting Auth client: %v\n", err)
-			//}
+			app := utils.InitializeAppDefault()
+			client, err := app.Auth(ctx)
+			if err != nil {
+				log.Printf("error getting Auth client: %v\n", err)
+			}
 
-			//token, err := client.VerifyIDToken(ctx, jwt)
-			//if err != nil {
-			//	log.Fatalf("error verifying ID token: %v\n", err)
-			//}
+			token, err := client.VerifyIDToken(ctx, jwt)
+			if err != nil {
+				log.Printf("error verifying ID token: %v\n", err)
+			}
+			log.Printf("Verified ID token: %v\n", token)
 
 			jwtPayload := strings.Split(jwt, ".")[1]
-
-			//log.Printf("Verified ID token: %v\n", token)
 
 			md := metadata.Pairs("x-apigateway-api-userinfo", jwtPayload)
 			return md

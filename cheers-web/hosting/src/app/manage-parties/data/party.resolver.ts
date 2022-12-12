@@ -28,6 +28,12 @@ export class PartyResolver implements Resolve<Party> {
         return reject();
 
       const party = await firstValueFrom(this.partyService.getParty(partyId))
+
+      // Only the host of the party can edit it
+      if (!party.isHost) {
+        return reject("You are not the host of the party");
+      }
+
       this.partyService.setParty(party)
       console.log(party)
       resolve(party)

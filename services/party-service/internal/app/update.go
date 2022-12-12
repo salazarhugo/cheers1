@@ -4,35 +4,35 @@ import (
 	"context"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/services/party-service/internal/repository"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"log"
 )
 
 func (s *Server) UpdateParty(
 	ctx context.Context,
 	request *pb.UpdatePartyRequest,
 ) (*pb.UpdatePartyResponse, error) {
-	userID, err := utils.GetUserId(ctx)
-	if err != nil {
-		return nil, status.Error(codes.Internal, "failed retrieving userID")
-	}
-
-	err = ValidateUpdatePartyRequest(request)
+	err := ValidateUpdatePartyRequest(request)
 	if err != nil {
 		return nil, err
 	}
 
-	partyReq := request.GetParty()
-	partyReq.HostId = userID
+	err = AuthorizeUpdatePartyRequest(s.partyRepository, request)
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
 
-	partyID, err := s.partyRepository.UpdateParty(partyReq)
+	_, err = s.partyRepository.UpdateParty(request.Party)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to create party")
 	}
 
-	party, err := s.partyRepository.GetParty(partyID)
+	party, err := s.partyRepository.GetParty(request.Party.Id)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to get party")
+		return nil, err
 	}
 
 	return &pb.UpdatePartyResponse{
@@ -40,12 +40,52 @@ func (s *Server) UpdateParty(
 	}, nil
 }
 
+func AuthorizeUpdatePartyRequest(
+	repository repository.PartyRepository,
+	request *pb.UpdatePartyRequest,
+) error {
+	ctx := context.Background()
+	userID, err := utils.GetUserId(ctx)
+	if err != nil {
+		return status.Error(codes.Internal, "failed retrieving userID")
+	}
+
+	party, err := repository.GetParty(request.Party.Id)
+	if err != nil {
+		return err
+	}
+
+	app := utils.InitializeAppDefault()
+	client, err := app.Auth(ctx)
+	if err != nil {
+		return err
+	}
+
+	user, err := client.GetUser(ctx, userID)
+	isAdmin := user.CustomClaims["admin"] != nil
+
+	if isAdmin == true {
+		return nil
+	}
+
+	// Check if user is the party host
+	if party.HostId != userID {
+		return status.Error(codes.PermissionDenied, "insufficient permissions")
+	}
+
+	return nil
+}
+
 func ValidateUpdatePartyRequest(request *pb.UpdatePartyRequest) error {
 	if request == nil {
-		return status.Error(codes.InvalidArgument, "party parameter can't be nil")
+		return status.Error(codes.InvalidArgument, "request can't be nil")
 	}
 
 	party := request.GetParty()
+
+	if request.Party == nil {
+		return status.Error(codes.InvalidArgument, "party parameter can't be nil")
+	}
 
 	if party.Id == "" {
 		return status.Error(codes.InvalidArgument, "missing party id")

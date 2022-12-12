@@ -7,13 +7,14 @@ import {
     AnswerPartyResponse,
     CreatePartyResponse,
     FeedPartyResponse,
-    GetPartyItemResponse, PartyAnswer,
+    GetPartyItemResponse, ListGoingRequest, ListGoingResponse, PartyAnswer,
     PartyItem, UpdatePartyRequest, UpdatePartyResponse
 } from "../../../gen/ts/cheers/party/v1/party_service";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Party, toParty} from "../../shared/data/models/party.model";
 import {ListPartyOrdersResponse, Order as OrderGen} from "../../../gen/ts/cheers/order/v1/order_service";
+import {UserItem} from "../../../gen/ts/cheers/type/user/user";
 
 @Injectable({
     providedIn: 'root'
@@ -40,6 +41,11 @@ export class PartyService {
 
     deleteParty(id: string) {
         return this.api.deleteParty(id)
+    }
+
+    listGoing(partyId: string): Promise<UserItem[]> {
+        return firstValueFrom(this.http.get<ListGoingResponse>(`${environment.GATEWAY_URL}/v1/parties/${partyId}/going`)
+            .pipe(map(r => r.users)))
     }
 
     answerParty(id: string, answer: PartyAnswer): Promise<AnswerPartyResponse> {
