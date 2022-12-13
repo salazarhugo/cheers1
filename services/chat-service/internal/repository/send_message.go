@@ -16,7 +16,7 @@ func (c chatRepository) SendMessage(
 	ctx := context.Background()
 	msg.Id = uuid.NewString()
 	now := time.Now()
-	msg.CreateTime = float32(now.Unix())
+	msg.CreateTime = now.Unix()
 
 	// Store message in cache
 	err := c.cache.SetMessage(msg)
