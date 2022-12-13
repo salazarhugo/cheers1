@@ -6,7 +6,7 @@ require (
 	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221122090911-414c85936dd0
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221116205822-91c0d9c12e5a
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221213134422-aa6e73eb6dc9
 	github.com/sirupsen/logrus v1.9.0
 	google.golang.org/grpc v1.50.1
 )

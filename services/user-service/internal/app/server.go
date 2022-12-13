@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
-	"github.com/salazarhugo/cheers1/libs/auth/utils"
 	"github.com/salazarhugo/cheers1/services/user-service/internal/repository"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/health/grpc_health_v1"
@@ -24,7 +23,7 @@ func NewServer() *Server {
 		pb.UnimplementedUserServiceServer{},
 		grpc_health_v1.UnimplementedHealthServer{},
 		sync.Mutex{},
-		repository.NewUserRepository(utils.GetDriver()),
+		repository.NewUserRepository(),
 	}
 }
 

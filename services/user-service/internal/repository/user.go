@@ -4,6 +4,7 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
+	"github.com/salazarhugo/cheers1/libs/utils"
 )
 
 type UserRepository interface {
@@ -12,6 +13,8 @@ type UserRepository interface {
 	UpdateUser(userID string, user *pb.UpdateUserRequest) error
 	DeleteUser(id string) error
 
+	VerifyUser(userID string) error
+	UnVerifyUser(userID string) error
 	GetUsersIn(userIDs []string) ([]*user.User, error)
 	GetUserItemsIn(userID string, userIDs []string) ([]*user.UserItem, error)
 	FollowUser(userID string, otherUserID string) error
@@ -29,6 +32,6 @@ type userRepository struct {
 	driver neo4j.Driver
 }
 
-func NewUserRepository(driver neo4j.Driver) UserRepository {
-	return &userRepository{driver: driver}
+func NewUserRepository() UserRepository {
+	return &userRepository{driver: utils.GetDriver()}
 }
