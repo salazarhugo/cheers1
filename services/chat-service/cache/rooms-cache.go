@@ -16,7 +16,7 @@ type RoomCache interface {
 	GetOrCreateDirectRoom(userId string, otherUserId string) (*pb.Room, error)
 	LeaveRoom(userId string, roomId string)
 	IsMember(userId string, roomId string) bool
-	DeleteRoom(roomId string)
+	DeleteRoom(roomId string) error
 	GetRoomWithId(userId string, roomId string) (*pb.Room, error)
 	ListRoom(userId string) []*pb.Room
 	GetRoomMembers(roomId string) []string

@@ -65,23 +65,30 @@ func (cache *redisCache) LeaveRoom(userId string, roomId string) {
 	}
 }
 
-func (cache *redisCache) DeleteRoom(roomId string) {
+func (cache *redisCache) DeleteRoom(roomId string) error {
 	var ctx = context.Background()
 	client := cache.client
 
 	members, err := client.SMembers(ctx, getKeyRoomMembers(roomId)).Result()
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	for _, uid := range members {
+		// Delete user rooms
 		client.SRem(ctx, getKeyUserRooms(uid), roomId)
 	}
 
+	// Delete room
 	client.Del(ctx, getKeyRoom(roomId))
+	// Delete room seen
 	client.Del(ctx, getKeyRoomSeen(roomId))
+	// Delete room members
 	client.Del(ctx, getKeyRoomMembers(roomId))
+	// Delete room messages
 	client.Del(ctx, getKeyRoomMessages(roomId))
+
+	return nil
 }
 
 func (cache *redisCache) SetSeen(roomId string, userId string) {
@@ -359,6 +366,7 @@ func (cache *redisCache) GetOrCreateDirectRoom(
 			LastMessageTime: 0,
 			Status:          pb.RoomStatus_EMPTY,
 			Type:            pb.RoomType_DIRECT,
+			Admins:          []string{userId, otherUserId},
 		}
 		cache.CreateRoom(roomId, &room)
 		client.SAdd(ctx, getKeyUserRooms(userId), roomId)

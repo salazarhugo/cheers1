@@ -130,6 +130,13 @@ export function messageTypeToJSON(object: MessageType): string {
   }
 }
 
+export interface DeleteRoomRequest {
+  roomId: string;
+}
+
+export interface DeleteRoomResponse {
+}
+
 export interface TypingEvent {
   roomId: string;
   userId: string;
@@ -335,6 +342,92 @@ export interface MessageItem {
 export interface SendMessageResponse {
   status: Message_Status;
 }
+
+function createBaseDeleteRoomRequest(): DeleteRoomRequest {
+  return { roomId: "" };
+}
+
+export const DeleteRoomRequest = {
+  encode(message: DeleteRoomRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.roomId !== "") {
+      writer.uint32(10).string(message.roomId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteRoomRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteRoomRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.roomId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteRoomRequest {
+    return { roomId: isSet(object.roomId) ? String(object.roomId) : "" };
+  },
+
+  toJSON(message: DeleteRoomRequest): unknown {
+    const obj: any = {};
+    message.roomId !== undefined && (obj.roomId = message.roomId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeleteRoomRequest>, I>>(object: I): DeleteRoomRequest {
+    const message = createBaseDeleteRoomRequest();
+    message.roomId = object.roomId ?? "";
+    return message;
+  },
+};
+
+function createBaseDeleteRoomResponse(): DeleteRoomResponse {
+  return {};
+}
+
+export const DeleteRoomResponse = {
+  encode(_: DeleteRoomResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteRoomResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteRoomResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): DeleteRoomResponse {
+    return {};
+  },
+
+  toJSON(_: DeleteRoomResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeleteRoomResponse>, I>>(_: I): DeleteRoomResponse {
+    const message = createBaseDeleteRoomResponse();
+    return message;
+  },
+};
 
 function createBaseTypingEvent(): TypingEvent {
   return { roomId: "", userId: "", type: 0 };
@@ -1749,7 +1842,7 @@ export interface ChatService {
   JoinRoom(request: JoinRoomRequest): Observable<Message>;
   ListRoom(request: ListRoomRequest): Promise<ListRoomResponse>;
   ListRoomMessages(request: ListRoomMessagesRequest): Promise<ListRoomMessagesResponse>;
-  DeleteRoom(request: RoomId): Promise<Empty>;
+  DeleteRoom(request: DeleteRoomRequest): Promise<DeleteRoomResponse>;
   GetRoomId(request: GetRoomIdReq): Promise<RoomId>;
   ListMembers(request: ListMembersRequest): Promise<ListMembersResponse>;
   LeaveRoom(request: RoomId): Promise<Empty>;
@@ -1810,10 +1903,10 @@ export class ChatServiceClientImpl implements ChatService {
     return promise.then((data) => ListRoomMessagesResponse.decode(new _m0.Reader(data)));
   }
 
-  DeleteRoom(request: RoomId): Promise<Empty> {
-    const data = RoomId.encode(request).finish();
+  DeleteRoom(request: DeleteRoomRequest): Promise<DeleteRoomResponse> {
+    const data = DeleteRoomRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteRoom", data);
-    return promise.then((data) => Empty.decode(new _m0.Reader(data)));
+    return promise.then((data) => DeleteRoomResponse.decode(new _m0.Reader(data)));
   }
 
   GetRoomId(request: GetRoomIdReq): Promise<RoomId> {

@@ -41,13 +41,13 @@ func main() {
 			client, err := app.Auth(ctx)
 			if err != nil {
 				log.Printf("error getting Auth client: %v\n", err)
+			} else {
+				token, err := client.VerifyIDToken(ctx, jwt)
+				if err != nil {
+					log.Printf("error verifying ID token: %v\n", err)
+				}
+				log.Printf("Verified ID token: %v\n", token)
 			}
-
-			token, err := client.VerifyIDToken(ctx, jwt)
-			if err != nil {
-				log.Printf("error verifying ID token: %v\n", err)
-			}
-			log.Printf("Verified ID token: %v\n", token)
 
 			jwtPayload := strings.Split(jwt, ".")[1]
 
