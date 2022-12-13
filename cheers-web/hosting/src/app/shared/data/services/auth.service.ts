@@ -111,6 +111,10 @@ export class AuthService {
             });
     }
 
+    verifyUser(uid: string) {
+        return this.api.verifyUser(uid)
+    }
+
     promoteToBusiness(uid: string) {
         return this.api.promoteToBusiness(uid)
     }

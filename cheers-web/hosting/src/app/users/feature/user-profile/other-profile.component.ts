@@ -77,4 +77,7 @@ export class OtherProfileComponent implements OnInit {
         this.authService.promoteToBusiness(uid).subscribe()
     }
 
+    verifyUser(userId: string) {
+        this.authService.verifyUser(userId).subscribe()
+    }
 }

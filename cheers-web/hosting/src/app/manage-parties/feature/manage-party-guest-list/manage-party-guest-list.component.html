@@ -1,6 +1,8 @@
 <div class="guest-list-container">
     <h2>Guest List ({{party.goingCount}}) </h2>
-    <ng-container *ngFor="let user of users">
-        <app-user-item [user]="user"></app-user-item>
-    </ng-container>
+    <div class="guest-list-main">
+        <ng-container *ngFor="let user of users">
+            <app-user-item [user]="user"></app-user-item>
+        </ng-container>
+    </div>
 </div>

@@ -1,5 +1,4 @@
 <div class="container" fxLayout="column">
-
     <div *ngIf="$user | async as user">
         <app-profile-header [user]="user">
         </app-profile-header>
@@ -13,9 +12,17 @@
             <button color="primary" mat-flat-button style="border-radius: 12px" (click)="onMessageClick()">
                 Message
             </button>
-            <button *ngIf="isAdmin" (click)="promoteToBusinessAccount(user.id)" color="primary" mat-flat-button>
-                Promote to Business Account
+            <button *ngIf="isAdmin" [mat-menu-trigger-for]="adminMenu" mat-icon-button color="primary">
+                <mat-icon>more_vert</mat-icon>
             </button>
+            <mat-menu #adminMenu>
+                <button mat-menu-item (click)="promoteToBusinessAccount(user.id)" >
+                    Promote to Business Account
+                </button>
+                <button mat-menu-item (click)="verifyUser(user.id)" >
+                    Verify
+                </button>
+            </mat-menu>
         </div>
     </div>
 

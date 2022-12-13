@@ -4,6 +4,13 @@ import * as _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "cheers.auth.v1";
 
+export interface VerifyUserRequest {
+  userId: string;
+}
+
+export interface VerifyUserResponse {
+}
+
 export interface CreateModeratorRequest {
   userId: string;
 }
@@ -17,6 +24,92 @@ export interface CreateBusinessAccountRequest {
 
 export interface CreateBusinessAccountResponse {
 }
+
+function createBaseVerifyUserRequest(): VerifyUserRequest {
+  return { userId: "" };
+}
+
+export const VerifyUserRequest = {
+  encode(message: VerifyUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): VerifyUserRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseVerifyUserRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.userId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): VerifyUserRequest {
+    return { userId: isSet(object.userId) ? String(object.userId) : "" };
+  },
+
+  toJSON(message: VerifyUserRequest): unknown {
+    const obj: any = {};
+    message.userId !== undefined && (obj.userId = message.userId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<VerifyUserRequest>, I>>(object: I): VerifyUserRequest {
+    const message = createBaseVerifyUserRequest();
+    message.userId = object.userId ?? "";
+    return message;
+  },
+};
+
+function createBaseVerifyUserResponse(): VerifyUserResponse {
+  return {};
+}
+
+export const VerifyUserResponse = {
+  encode(_: VerifyUserResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): VerifyUserResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseVerifyUserResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): VerifyUserResponse {
+    return {};
+  },
+
+  toJSON(_: VerifyUserResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<VerifyUserResponse>, I>>(_: I): VerifyUserResponse {
+    const message = createBaseVerifyUserResponse();
+    return message;
+  },
+};
 
 function createBaseCreateModeratorRequest(): CreateModeratorRequest {
   return { userId: "" };
@@ -193,6 +286,7 @@ export const CreateBusinessAccountResponse = {
 export interface AuthService {
   CreateModerator(request: CreateModeratorRequest): Promise<CreateModeratorResponse>;
   CreateBusinessAccount(request: CreateBusinessAccountRequest): Promise<CreateBusinessAccountResponse>;
+  VerifyUser(request: VerifyUserRequest): Promise<VerifyUserResponse>;
 }
 
 export class AuthServiceClientImpl implements AuthService {
@@ -203,6 +297,7 @@ export class AuthServiceClientImpl implements AuthService {
     this.rpc = rpc;
     this.CreateModerator = this.CreateModerator.bind(this);
     this.CreateBusinessAccount = this.CreateBusinessAccount.bind(this);
+    this.VerifyUser = this.VerifyUser.bind(this);
   }
   CreateModerator(request: CreateModeratorRequest): Promise<CreateModeratorResponse> {
     const data = CreateModeratorRequest.encode(request).finish();
@@ -214,6 +309,12 @@ export class AuthServiceClientImpl implements AuthService {
     const data = CreateBusinessAccountRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateBusinessAccount", data);
     return promise.then((data) => CreateBusinessAccountResponse.decode(new _m0.Reader(data)));
+  }
+
+  VerifyUser(request: VerifyUserRequest): Promise<VerifyUserResponse> {
+    const data = VerifyUserRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "VerifyUser", data);
+    return promise.then((data) => VerifyUserResponse.decode(new _m0.Reader(data)));
   }
 }
 

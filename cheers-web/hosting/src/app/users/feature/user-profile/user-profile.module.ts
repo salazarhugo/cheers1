@@ -8,6 +8,8 @@ import {ProfileHeaderModule} from "../../ui/profile-header/profile-header.module
 import {PostItemModule} from "../../../posts/ui/post-item/post-item.module";
 import {MatButtonModule} from "@angular/material/button";
 import {FlexModule} from "@angular/flex-layout";
+import {MatIconModule} from "@angular/material/icon";
+import {MatMenuModule} from "@angular/material/menu";
 
 
 @NgModule({
@@ -20,6 +22,8 @@ import {FlexModule} from "@angular/flex-layout";
         ProfileHeaderModule,
         MatButtonModule,
         FlexModule,
+        MatIconModule,
+        MatMenuModule,
     ],
     exports: [OtherProfileComponent],
 })

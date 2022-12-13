@@ -77,6 +77,12 @@ export class ApiService {
             .pipe(map(res => toUser(res)))
     }
 
+    verifyUser(uid: string): Observable<Empty> {
+        return this.http.post(`${environment.GATEWAY_URL}/v1/auths/verify`, {
+            user_id: uid
+        })
+    }
+
     promoteToBusiness(uid: string): Observable<Empty> {
         return this.http.post(`${environment.GATEWAY_URL}/v1/auths/business`, {
             user_id: uid

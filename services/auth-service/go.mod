@@ -50,6 +50,6 @@ require (
 	google.golang.org/protobuf v1.28.1 // indirect
 )
 
-//replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
+replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
 
 //replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils

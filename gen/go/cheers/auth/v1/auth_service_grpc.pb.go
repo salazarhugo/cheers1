@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type AuthServiceClient interface {
 	CreateModerator(ctx context.Context, in *CreateModeratorRequest, opts ...grpc.CallOption) (*CreateModeratorResponse, error)
 	CreateBusinessAccount(ctx context.Context, in *CreateBusinessAccountRequest, opts ...grpc.CallOption) (*CreateBusinessAccountResponse, error)
+	VerifyUser(ctx context.Context, in *VerifyUserRequest, opts ...grpc.CallOption) (*VerifyUserResponse, error)
 }
 
 type authServiceClient struct {
@@ -52,12 +53,22 @@ func (c *authServiceClient) CreateBusinessAccount(ctx context.Context, in *Creat
 	return out, nil
 }
 
+func (c *authServiceClient) VerifyUser(ctx context.Context, in *VerifyUserRequest, opts ...grpc.CallOption) (*VerifyUserResponse, error) {
+	out := new(VerifyUserResponse)
+	err := c.cc.Invoke(ctx, "/cheers.auth.v1.AuthService/VerifyUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthServiceServer is the server API for AuthService service.
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility
 type AuthServiceServer interface {
 	CreateModerator(context.Context, *CreateModeratorRequest) (*CreateModeratorResponse, error)
 	CreateBusinessAccount(context.Context, *CreateBusinessAccountRequest) (*CreateBusinessAccountResponse, error)
+	VerifyUser(context.Context, *VerifyUserRequest) (*VerifyUserResponse, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -70,6 +81,9 @@ func (UnimplementedAuthServiceServer) CreateModerator(context.Context, *CreateMo
 }
 func (UnimplementedAuthServiceServer) CreateBusinessAccount(context.Context, *CreateBusinessAccountRequest) (*CreateBusinessAccountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateBusinessAccount not implemented")
+}
+func (UnimplementedAuthServiceServer) VerifyUser(context.Context, *VerifyUserRequest) (*VerifyUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method VerifyUser not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
 
@@ -120,6 +134,24 @@ func _AuthService_CreateBusinessAccount_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthService_VerifyUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VerifyUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).VerifyUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.auth.v1.AuthService/VerifyUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).VerifyUser(ctx, req.(*VerifyUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthService_ServiceDesc is the grpc.ServiceDesc for AuthService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +166,10 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateBusinessAccount",
 			Handler:    _AuthService_CreateBusinessAccount_Handler,
+		},
+		{
+			MethodName: "VerifyUser",
+			Handler:    _AuthService_VerifyUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -5,6 +5,9 @@ import {PartyService} from "../../data/party.service";
 import {Clipboard} from '@angular/cdk/clipboard';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {PartyAnswer} from "../../../../gen/ts/cheers/party/v1/party_service";
+import {UserService} from "../../../shared/data/services/user.service";
+import {firstValueFrom} from "rxjs";
+import {AngularFireAuth} from "@angular/fire/compat/auth";
 
 @Component({
     selector: 'app-party-detail',
@@ -22,6 +25,8 @@ export class PartyComponent implements OnInit {
         private partyService: PartyService,
         private clipboard: Clipboard,
         private snackBar: MatSnackBar,
+        private userService: UserService,
+        private afAuth: AngularFireAuth,
     ) {
     }
 
@@ -51,6 +56,10 @@ export class PartyComponent implements OnInit {
     }
 
     async onGoingToggle() {
+        const user = await firstValueFrom(this.afAuth.authState)
+        if (user == null) {
+            await this.router.navigate(['sign-in'])
+        }
         const party = this.party!!
         if (party.going) {
             party.going = false
