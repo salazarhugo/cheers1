@@ -32,10 +32,20 @@ func (s *Server) VerifyUser(
 		return nil, status.Error(codes.PermissionDenied, "insufficient permissions")
 	}
 
-	// Set business account privilege on the user corresponding to uid.
-	claims := user.CustomClaims
+	otherUser, err := client.GetUser(ctx, request.UserId)
+	if err != nil {
+		log.Println(err)
+		return nil, status.Error(codes.Internal, "failed to get auth user")
+	}
+
+	claims := otherUser.CustomClaims
+	if claims == nil {
+		claims = make(map[string]interface{}, 0)
+	}
+
 	claims["verified"] = true
-	err = client.SetCustomUserClaims(ctx, request.GetUserId(), claims)
+
+	err = client.SetCustomUserClaims(ctx, request.UserId, claims)
 	if err != nil {
 		log.Println(err)
 		return nil, status.Error(codes.Internal, "error setting custom claims")
@@ -44,11 +54,16 @@ func (s *Server) VerifyUser(
 	err = pubsub.PublishProtoWithBinaryEncoding("claim-topic", &claim.ClaimEvent{
 		Event: &claim.ClaimEvent_Created{
 			Created: &claim.CreatedClaim{
-				UserId: userID,
+				UserId: request.UserId,
 				Claim:  "verified",
 			},
 		},
 	})
+
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
 
 	return &auth.VerifyUserResponse{}, nil
 }
