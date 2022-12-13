@@ -3,7 +3,7 @@ module github.com/salazarhugo/cheers1/services/auth-service
 go 1.19
 
 require (
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221122090911-414c85936dd0
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221213154324-daf6f46d8a21
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221213134422-aa6e73eb6dc9
@@ -50,6 +50,6 @@ require (
 	google.golang.org/protobuf v1.28.1 // indirect
 )
 
-replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
+//replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
 
 //replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils
