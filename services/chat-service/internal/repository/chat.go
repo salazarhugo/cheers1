@@ -13,7 +13,7 @@ import (
 type ChatRepository interface {
 	CreateRoom(name string, members []string) (*pb.Room, error)
 	JoinRoom(request *pb.JoinRoomRequest, server pb.ChatService_JoinRoomServer) error
-	ListRoom(userID string) ([]*pb.Room, error)
+	GetInbox(userID string) ([]*pb.RoomWithMessages, error)
 	DeleteRoom(userID string, roomID string) error
 
 	ListRoomMessages(roomID string, userID string) ([]*pb.MessageItem, error)

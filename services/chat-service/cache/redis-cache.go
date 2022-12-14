@@ -159,10 +159,10 @@ func (cache *redisCache) AddToken(userId string, token string) {
 	client.SAdd(context.Background(), GetKeyUserTokens(userId), token)
 }
 
-func (cache *redisCache) GetMessages(roomId string) []*pb.Message {
+func (cache *redisCache) ListMessage(roomId string, pageSize int64) []*pb.Message {
 	client := cache.client
 
-	values, err := client.ZRevRange(context.Background(), getKeyRoomMessages(roomId), 0, 50).Result()
+	values, err := client.ZRevRange(context.Background(), getKeyRoomMessages(roomId), 0, pageSize).Result()
 	if err != nil {
 		panic(err)
 	}
@@ -212,17 +212,21 @@ func (cache *redisCache) SetMessage(msg *pb.Message) error {
 	return err
 }
 
-func (cache *redisCache) ListRoom(userId string) []*pb.Room {
+func (cache *redisCache) ListRoomWithMessages(userId string) []*pb.RoomWithMessages {
 	client := cache.client
 	values, err := client.SMembers(context.Background(), getKeyUserRooms(userId)).Result()
 	if err != nil {
 		panic(err)
 	}
 
-	var rooms []*pb.Room
+	var rooms []*pb.RoomWithMessages
 	for _, roomId := range values {
 		room, _ := cache.GetRoomWithId(userId, roomId)
-		rooms = append(rooms, room)
+		messages := cache.ListMessage(roomId, 10)
+		rooms = append(rooms, &pb.RoomWithMessages{
+			Room:     room,
+			Messages: messages,
+		})
 	}
 	return rooms
 }

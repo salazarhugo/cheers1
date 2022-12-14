@@ -179,7 +179,7 @@ package archived
 //
 //	go roomCache.SetSeen(request.GetRoomId(), userId)
 //
-//	messages := roomCache.GetMessages(request.GetRoomId())
+//	messages := roomCache.ListMessage(request.GetRoomId())
 //
 //	for _, msg := range messages {
 //		if err := msgStream.Send(msg); err != nil {

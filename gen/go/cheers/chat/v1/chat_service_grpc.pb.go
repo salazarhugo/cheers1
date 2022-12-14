@@ -24,7 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type ChatServiceClient interface {
 	CreateRoom(ctx context.Context, in *CreateRoomRequest, opts ...grpc.CallOption) (*CreateRoomResponse, error)
 	JoinRoom(ctx context.Context, in *JoinRoomRequest, opts ...grpc.CallOption) (ChatService_JoinRoomClient, error)
-	ListRoom(ctx context.Context, in *ListRoomRequest, opts ...grpc.CallOption) (*ListRoomResponse, error)
+	GetInbox(ctx context.Context, in *GetInboxRequest, opts ...grpc.CallOption) (*GetInboxResponse, error)
 	ListRoomMessages(ctx context.Context, in *ListRoomMessagesRequest, opts ...grpc.CallOption) (*ListRoomMessagesResponse, error)
 	DeleteRoom(ctx context.Context, in *DeleteRoomRequest, opts ...grpc.CallOption) (*DeleteRoomResponse, error)
 	GetRoomId(ctx context.Context, in *GetRoomIdReq, opts ...grpc.CallOption) (*RoomId, error)
@@ -89,9 +89,9 @@ func (x *chatServiceJoinRoomClient) Recv() (*Message, error) {
 	return m, nil
 }
 
-func (c *chatServiceClient) ListRoom(ctx context.Context, in *ListRoomRequest, opts ...grpc.CallOption) (*ListRoomResponse, error) {
-	out := new(ListRoomResponse)
-	err := c.cc.Invoke(ctx, "/cheers.chat.v1.ChatService/ListRoom", in, out, opts...)
+func (c *chatServiceClient) GetInbox(ctx context.Context, in *GetInboxRequest, opts ...grpc.CallOption) (*GetInboxResponse, error) {
+	out := new(GetInboxResponse)
+	err := c.cc.Invoke(ctx, "/cheers.chat.v1.ChatService/GetInbox", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -268,7 +268,7 @@ func (c *chatServiceClient) DeleteUser(ctx context.Context, in *UserIdReq, opts 
 type ChatServiceServer interface {
 	CreateRoom(context.Context, *CreateRoomRequest) (*CreateRoomResponse, error)
 	JoinRoom(*JoinRoomRequest, ChatService_JoinRoomServer) error
-	ListRoom(context.Context, *ListRoomRequest) (*ListRoomResponse, error)
+	GetInbox(context.Context, *GetInboxRequest) (*GetInboxResponse, error)
 	ListRoomMessages(context.Context, *ListRoomMessagesRequest) (*ListRoomMessagesResponse, error)
 	DeleteRoom(context.Context, *DeleteRoomRequest) (*DeleteRoomResponse, error)
 	GetRoomId(context.Context, *GetRoomIdReq) (*RoomId, error)
@@ -295,8 +295,8 @@ func (UnimplementedChatServiceServer) CreateRoom(context.Context, *CreateRoomReq
 func (UnimplementedChatServiceServer) JoinRoom(*JoinRoomRequest, ChatService_JoinRoomServer) error {
 	return status.Errorf(codes.Unimplemented, "method JoinRoom not implemented")
 }
-func (UnimplementedChatServiceServer) ListRoom(context.Context, *ListRoomRequest) (*ListRoomResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ListRoom not implemented")
+func (UnimplementedChatServiceServer) GetInbox(context.Context, *GetInboxRequest) (*GetInboxResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetInbox not implemented")
 }
 func (UnimplementedChatServiceServer) ListRoomMessages(context.Context, *ListRoomMessagesRequest) (*ListRoomMessagesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListRoomMessages not implemented")
@@ -389,20 +389,20 @@ func (x *chatServiceJoinRoomServer) Send(m *Message) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func _ChatService_ListRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListRoomRequest)
+func _ChatService_GetInbox_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetInboxRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ChatServiceServer).ListRoom(ctx, in)
+		return srv.(ChatServiceServer).GetInbox(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/cheers.chat.v1.ChatService/ListRoom",
+		FullMethod: "/cheers.chat.v1.ChatService/GetInbox",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChatServiceServer).ListRoom(ctx, req.(*ListRoomRequest))
+		return srv.(ChatServiceServer).GetInbox(ctx, req.(*GetInboxRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -669,8 +669,8 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ChatService_CreateRoom_Handler,
 		},
 		{
-			MethodName: "ListRoom",
-			Handler:    _ChatService_ListRoom_Handler,
+			MethodName: "GetInbox",
+			Handler:    _ChatService_GetInbox_Handler,
 		},
 		{
 			MethodName: "ListRoomMessages",

@@ -130,6 +130,15 @@ export function messageTypeToJSON(object: MessageType): string {
   }
 }
 
+export interface GetInboxRequest {
+  page: number;
+  pageSize: number;
+}
+
+export interface GetInboxResponse {
+  inbox: RoomWithMessages[];
+}
+
 export interface DeleteRoomRequest {
   roomId: string;
 }
@@ -243,6 +252,11 @@ export interface GetRoomIdReq {
   recipientId: string;
 }
 
+export interface RoomWithMessages {
+  room: Room | undefined;
+  messages: Message[];
+}
+
 export interface Room {
   id: string;
   name: string;
@@ -342,6 +356,115 @@ export interface MessageItem {
 export interface SendMessageResponse {
   status: Message_Status;
 }
+
+function createBaseGetInboxRequest(): GetInboxRequest {
+  return { page: 0, pageSize: 0 };
+}
+
+export const GetInboxRequest = {
+  encode(message: GetInboxRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.page !== 0) {
+      writer.uint32(8).int32(message.page);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(16).int32(message.pageSize);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetInboxRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetInboxRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.page = reader.int32();
+          break;
+        case 2:
+          message.pageSize = reader.int32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetInboxRequest {
+    return {
+      page: isSet(object.page) ? Number(object.page) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
+    };
+  },
+
+  toJSON(message: GetInboxRequest): unknown {
+    const obj: any = {};
+    message.page !== undefined && (obj.page = Math.round(message.page));
+    message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetInboxRequest>, I>>(object: I): GetInboxRequest {
+    const message = createBaseGetInboxRequest();
+    message.page = object.page ?? 0;
+    message.pageSize = object.pageSize ?? 0;
+    return message;
+  },
+};
+
+function createBaseGetInboxResponse(): GetInboxResponse {
+  return { inbox: [] };
+}
+
+export const GetInboxResponse = {
+  encode(message: GetInboxResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.inbox) {
+      RoomWithMessages.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetInboxResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetInboxResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.inbox.push(RoomWithMessages.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetInboxResponse {
+    return { inbox: Array.isArray(object?.inbox) ? object.inbox.map((e: any) => RoomWithMessages.fromJSON(e)) : [] };
+  },
+
+  toJSON(message: GetInboxResponse): unknown {
+    const obj: any = {};
+    if (message.inbox) {
+      obj.inbox = message.inbox.map((e) => e ? RoomWithMessages.toJSON(e) : undefined);
+    } else {
+      obj.inbox = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetInboxResponse>, I>>(object: I): GetInboxResponse {
+    const message = createBaseGetInboxResponse();
+    message.inbox = object.inbox?.map((e) => RoomWithMessages.fromPartial(e)) || [];
+    return message;
+  },
+};
 
 function createBaseDeleteRoomRequest(): DeleteRoomRequest {
   return { roomId: "" };
@@ -1293,6 +1416,68 @@ export const GetRoomIdReq = {
   },
 };
 
+function createBaseRoomWithMessages(): RoomWithMessages {
+  return { room: undefined, messages: [] };
+}
+
+export const RoomWithMessages = {
+  encode(message: RoomWithMessages, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.room !== undefined) {
+      Room.encode(message.room, writer.uint32(10).fork()).ldelim();
+    }
+    for (const v of message.messages) {
+      Message.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): RoomWithMessages {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseRoomWithMessages();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.room = Room.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.messages.push(Message.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): RoomWithMessages {
+    return {
+      room: isSet(object.room) ? Room.fromJSON(object.room) : undefined,
+      messages: Array.isArray(object?.messages) ? object.messages.map((e: any) => Message.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: RoomWithMessages): unknown {
+    const obj: any = {};
+    message.room !== undefined && (obj.room = message.room ? Room.toJSON(message.room) : undefined);
+    if (message.messages) {
+      obj.messages = message.messages.map((e) => e ? Message.toJSON(e) : undefined);
+    } else {
+      obj.messages = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<RoomWithMessages>, I>>(object: I): RoomWithMessages {
+    const message = createBaseRoomWithMessages();
+    message.room = (object.room !== undefined && object.room !== null) ? Room.fromPartial(object.room) : undefined;
+    message.messages = object.messages?.map((e) => Message.fromPartial(e)) || [];
+    return message;
+  },
+};
+
 function createBaseRoom(): Room {
   return {
     id: "",
@@ -1840,7 +2025,7 @@ export const SendMessageResponse = {
 export interface ChatService {
   CreateRoom(request: CreateRoomRequest): Promise<CreateRoomResponse>;
   JoinRoom(request: JoinRoomRequest): Observable<Message>;
-  ListRoom(request: ListRoomRequest): Promise<ListRoomResponse>;
+  GetInbox(request: GetInboxRequest): Promise<GetInboxResponse>;
   ListRoomMessages(request: ListRoomMessagesRequest): Promise<ListRoomMessagesResponse>;
   DeleteRoom(request: DeleteRoomRequest): Promise<DeleteRoomResponse>;
   GetRoomId(request: GetRoomIdReq): Promise<RoomId>;
@@ -1864,7 +2049,7 @@ export class ChatServiceClientImpl implements ChatService {
     this.rpc = rpc;
     this.CreateRoom = this.CreateRoom.bind(this);
     this.JoinRoom = this.JoinRoom.bind(this);
-    this.ListRoom = this.ListRoom.bind(this);
+    this.GetInbox = this.GetInbox.bind(this);
     this.ListRoomMessages = this.ListRoomMessages.bind(this);
     this.DeleteRoom = this.DeleteRoom.bind(this);
     this.GetRoomId = this.GetRoomId.bind(this);
@@ -1891,10 +2076,10 @@ export class ChatServiceClientImpl implements ChatService {
     return result.pipe(map((data) => Message.decode(new _m0.Reader(data))));
   }
 
-  ListRoom(request: ListRoomRequest): Promise<ListRoomResponse> {
-    const data = ListRoomRequest.encode(request).finish();
-    const promise = this.rpc.request(this.service, "ListRoom", data);
-    return promise.then((data) => ListRoomResponse.decode(new _m0.Reader(data)));
+  GetInbox(request: GetInboxRequest): Promise<GetInboxResponse> {
+    const data = GetInboxRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetInbox", data);
+    return promise.then((data) => GetInboxResponse.decode(new _m0.Reader(data)));
   }
 
   ListRoomMessages(request: ListRoomMessagesRequest): Promise<ListRoomMessagesResponse> {

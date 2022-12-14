@@ -10,7 +10,7 @@ func (c chatRepository) ListRoomMessages(
 ) ([]*chat.MessageItem, error) {
 	items := make([]*chat.MessageItem, 0)
 
-	messages := c.cache.GetMessages(roomID)
+	messages := c.cache.ListMessage(roomID, 10)
 	for _, msg := range messages {
 		msg.Status = chat.Message_DELIVERED
 		items = append(items, &chat.MessageItem{
