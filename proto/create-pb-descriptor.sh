@@ -7,7 +7,7 @@ protoc \
   --include_imports \
   --include_source_info \
   --proto_path=. \
-  --descriptor_set_out=../api-gateway/api_descriptor.pb \
+  --descriptor_set_out=api_descriptor.pb \
   --experimental_allow_proto3_optional \
   cheers/type/party/party.proto \
   cheers/type/privacy/privacy.proto \

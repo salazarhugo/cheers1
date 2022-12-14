@@ -2,10 +2,12 @@ package repository
 
 import (
 	"context"
+	"errors"
 	"github.com/google/uuid"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
 	"google.golang.org/protobuf/encoding/protojson"
 	"log"
+	"strings"
 	"time"
 )
 
@@ -13,12 +15,18 @@ func (c chatRepository) SendMessage(
 	msg *chat.Message,
 ) (*chat.Message, error) {
 	ctx := context.Background()
-	msg.Id = uuid.NewString()
 	now := time.Now()
+
+	err := ValidateMessage(msg)
+	if err != nil {
+		return nil, err
+	}
+
+	msg.Id = uuid.NewString()
 	msg.CreateTime = now.Unix()
 
 	// Store message in cache
-	err := c.cache.SetMessage(msg)
+	err = c.cache.SetMessage(msg)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -31,4 +39,17 @@ func (c chatRepository) SendMessage(
 	//go PublishToPubSub(msg.SenderId, msg.RoomId)
 
 	return msg, nil
+}
+
+func ValidateMessage(msg *chat.Message) error {
+	if msg == nil {
+		return errors.New("nil message")
+	}
+
+	blank := strings.TrimSpace(msg.Text) == ""
+	if blank {
+		return errors.New("message text is blank")
+	}
+
+	return nil
 }

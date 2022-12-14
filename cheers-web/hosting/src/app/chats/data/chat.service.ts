@@ -3,7 +3,7 @@ import {map, Observable, of} from "rxjs";
 import {Chat, toChat} from "../../shared/data/models/chat.model";
 import {HttpClient} from "@angular/common/http";
 import {
-    CreateRoomRequest, CreateRoomResponse,
+    CreateRoomRequest, CreateRoomResponse, GetInboxResponse,
     ListRoomMessagesRequest,
     ListRoomMessagesResponse,
     ListRoomResponse,
@@ -11,14 +11,11 @@ import {
 } from "../../../gen/ts/cheers/chat/v1/chat_service";
 import {environment} from "../../../environments/environment";
 import {ChatMessage, toChatMessage} from "../../shared/data/models/chat-message.model";
-import {sortDescendingPriority} from "@angular/flex-layout";
 
 @Injectable({
     providedIn: 'root'
 })
 export class ChatService {
-
-    socket: WebSocket
 
     constructor(
         private http: HttpClient,
@@ -31,9 +28,9 @@ export class ChatService {
         }).pipe(map(room => toChat(room.room!)))
     }
 
-    getRooms(): Observable<Chat[]> {
-        return this.http.get<ListRoomResponse>(`${environment.GATEWAY_URL}/v1/chats?page=0&page_size=10`)
-            .pipe(map(res => res.rooms.map(room => toChat(room))))
+    getInbox(): Observable<Chat[]> {
+        return this.http.get<GetInboxResponse>(`${environment.GATEWAY_URL}/v1/chats/inbox?page=0&page_size=10`)
+            .pipe(map(res => res.inbox.map(inbox => toChat(inbox.room!))))
     }
 
     getRoomMessages(roomId: string): Observable<ChatMessage[]> {

@@ -22,7 +22,7 @@ export class ChatComponent implements OnInit {
     }
 
     async ngOnInit() {
-        const rooms = await firstValueFrom(this.chatService.getRooms())
+        const rooms = await firstValueFrom(this.chatService.getInbox())
         this.rooms = rooms
         this.isLoading = false
         this.route.firstChild?.paramMap.subscribe(res => {
