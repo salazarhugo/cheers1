@@ -67,11 +67,11 @@ func main() {
 
 // serveWs handles websocket requests from the peer.
 func serveWs(w http.ResponseWriter, r *http.Request) {
-	var roomId string
+	var userID string
 	h := http.Header{}
 	for _, sub := range websocket.Subprotocols(r) {
 		h.Set("Sec-WebSocket-Protocol", sub)
-		roomId = sub
+		userID = sub
 	}
 
 	upgrader := websocket.Upgrader{
@@ -85,16 +85,27 @@ func serveWs(w http.ResponseWriter, r *http.Request) {
 	}
 	connection := new(Connection)
 	connection.Socket = conn
-	go ListenMessages(connection, roomId)
+	go ListenMessages(connection, userID)
 	go SendMessage(connection)
 }
 
-func ListenMessages(conn *Connection, roomId string) {
+func ListenMessages(conn *Connection, userID string) {
+	repo := repository.NewChatRepository()
+	rooms, _ := repo.GetInbox(userID)
+
+	for _, room := range rooms {
+		roomId := room.Room.Id
+		go ListenRoom(conn, roomId)
+	}
+}
+
+func ListenRoom(conn *Connection, roomId string) {
 	client := redis.NewClient(&redis.Options{
 		Addr:     "redis-18624.c228.us-central1-1.gce.cloud.redislabs.com:18624",
 		Password: "mBiW18GNIgPzQTbBMDEz71UVsAcNDOYF",
 		DB:       0,
 	})
+
 	sub := client.Subscribe(context.Background(), roomId)
 	ch := sub.Channel()
 	for {
@@ -112,7 +123,6 @@ func ListenMessages(conn *Connection, roomId string) {
 			}
 		}
 	}
-
 }
 
 func SendMessage(conn *Connection) {
