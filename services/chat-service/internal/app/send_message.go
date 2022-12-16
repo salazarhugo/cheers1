@@ -2,16 +2,17 @@ package app
 
 import (
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
+	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"log"
 )
 
 func (s *Server) SendMessage(server pb.ChatService_SendMessageServer) error {
-	//_, err := utils.GetUserId(server.Context())
-	//if err != nil {
-	//	return status.Error(codes.Internal, "failed to retrieve userID")
-	//}
+	_, err := utils.GetUserId(server.Context())
+	if err != nil {
+		return status.Error(codes.Internal, "failed to retrieve userID")
+	}
 
 	msg, err := server.Recv()
 	if err != nil {
@@ -24,13 +25,6 @@ func (s *Server) SendMessage(server pb.ChatService_SendMessageServer) error {
 	}
 
 	msg, err = s.chatRepository.SendMessage(msg)
-
-	//go func() {
-	//	streams := s.channel[msg.Room.GetId()]
-	//	for _, msgChan := range streams {
-	//		msgChan <- msg
-	//	}
-	//}()
 
 	return nil
 }

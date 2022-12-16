@@ -30,7 +30,7 @@ type ChatServiceClient interface {
 	GetRoomId(ctx context.Context, in *GetRoomIdReq, opts ...grpc.CallOption) (*RoomId, error)
 	ListMembers(ctx context.Context, in *ListMembersRequest, opts ...grpc.CallOption) (*ListMembersResponse, error)
 	LeaveRoom(ctx context.Context, in *RoomId, opts ...grpc.CallOption) (*Empty, error)
-	SendMessage(ctx context.Context, opts ...grpc.CallOption) (ChatService_SendMessageClient, error)
+	SendMessage(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*SendMessageResponse, error)
 	LikeMessage(ctx context.Context, in *LikeMessageReq, opts ...grpc.CallOption) (*Empty, error)
 	UnlikeMessage(ctx context.Context, in *LikeMessageReq, opts ...grpc.CallOption) (*Empty, error)
 	TypingChannel(ctx context.Context, opts ...grpc.CallOption) (ChatService_TypingChannelClient, error)
@@ -143,38 +143,13 @@ func (c *chatServiceClient) LeaveRoom(ctx context.Context, in *RoomId, opts ...g
 	return out, nil
 }
 
-func (c *chatServiceClient) SendMessage(ctx context.Context, opts ...grpc.CallOption) (ChatService_SendMessageClient, error) {
-	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[1], "/cheers.chat.v1.ChatService/SendMessage", opts...)
+func (c *chatServiceClient) SendMessage(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*SendMessageResponse, error) {
+	out := new(SendMessageResponse)
+	err := c.cc.Invoke(ctx, "/cheers.chat.v1.ChatService/SendMessage", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &chatServiceSendMessageClient{stream}
-	return x, nil
-}
-
-type ChatService_SendMessageClient interface {
-	Send(*Message) error
-	CloseAndRecv() (*SendMessageResponse, error)
-	grpc.ClientStream
-}
-
-type chatServiceSendMessageClient struct {
-	grpc.ClientStream
-}
-
-func (x *chatServiceSendMessageClient) Send(m *Message) error {
-	return x.ClientStream.SendMsg(m)
-}
-
-func (x *chatServiceSendMessageClient) CloseAndRecv() (*SendMessageResponse, error) {
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
-	m := new(SendMessageResponse)
-	if err := x.ClientStream.RecvMsg(m); err != nil {
-		return nil, err
-	}
-	return m, nil
+	return out, nil
 }
 
 func (c *chatServiceClient) LikeMessage(ctx context.Context, in *LikeMessageReq, opts ...grpc.CallOption) (*Empty, error) {
@@ -196,7 +171,7 @@ func (c *chatServiceClient) UnlikeMessage(ctx context.Context, in *LikeMessageRe
 }
 
 func (c *chatServiceClient) TypingChannel(ctx context.Context, opts ...grpc.CallOption) (ChatService_TypingChannelClient, error) {
-	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[2], "/cheers.chat.v1.ChatService/TypingChannel", opts...)
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[1], "/cheers.chat.v1.ChatService/TypingChannel", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -274,7 +249,7 @@ type ChatServiceServer interface {
 	GetRoomId(context.Context, *GetRoomIdReq) (*RoomId, error)
 	ListMembers(context.Context, *ListMembersRequest) (*ListMembersResponse, error)
 	LeaveRoom(context.Context, *RoomId) (*Empty, error)
-	SendMessage(ChatService_SendMessageServer) error
+	SendMessage(context.Context, *SendMessageRequest) (*SendMessageResponse, error)
 	LikeMessage(context.Context, *LikeMessageReq) (*Empty, error)
 	UnlikeMessage(context.Context, *LikeMessageReq) (*Empty, error)
 	TypingChannel(ChatService_TypingChannelServer) error
@@ -313,8 +288,8 @@ func (UnimplementedChatServiceServer) ListMembers(context.Context, *ListMembersR
 func (UnimplementedChatServiceServer) LeaveRoom(context.Context, *RoomId) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LeaveRoom not implemented")
 }
-func (UnimplementedChatServiceServer) SendMessage(ChatService_SendMessageServer) error {
-	return status.Errorf(codes.Unimplemented, "method SendMessage not implemented")
+func (UnimplementedChatServiceServer) SendMessage(context.Context, *SendMessageRequest) (*SendMessageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendMessage not implemented")
 }
 func (UnimplementedChatServiceServer) LikeMessage(context.Context, *LikeMessageReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LikeMessage not implemented")
@@ -497,30 +472,22 @@ func _ChatService_LeaveRoom_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ChatService_SendMessage_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(ChatServiceServer).SendMessage(&chatServiceSendMessageServer{stream})
-}
-
-type ChatService_SendMessageServer interface {
-	SendAndClose(*SendMessageResponse) error
-	Recv() (*Message, error)
-	grpc.ServerStream
-}
-
-type chatServiceSendMessageServer struct {
-	grpc.ServerStream
-}
-
-func (x *chatServiceSendMessageServer) SendAndClose(m *SendMessageResponse) error {
-	return x.ServerStream.SendMsg(m)
-}
-
-func (x *chatServiceSendMessageServer) Recv() (*Message, error) {
-	m := new(Message)
-	if err := x.ServerStream.RecvMsg(m); err != nil {
+func _ChatService_SendMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendMessageRequest)
+	if err := dec(in); err != nil {
 		return nil, err
 	}
-	return m, nil
+	if interceptor == nil {
+		return srv.(ChatServiceServer).SendMessage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.chat.v1.ChatService/SendMessage",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).SendMessage(ctx, req.(*SendMessageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _ChatService_LikeMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -693,6 +660,10 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ChatService_LeaveRoom_Handler,
 		},
 		{
+			MethodName: "SendMessage",
+			Handler:    _ChatService_SendMessage_Handler,
+		},
+		{
 			MethodName: "LikeMessage",
 			Handler:    _ChatService_LikeMessage_Handler,
 		},
@@ -722,11 +693,6 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 			StreamName:    "JoinRoom",
 			Handler:       _ChatService_JoinRoom_Handler,
 			ServerStreams: true,
-		},
-		{
-			StreamName:    "SendMessage",
-			Handler:       _ChatService_SendMessage_Handler,
-			ClientStreams: true,
 		},
 		{
 			StreamName:    "TypingChannel",
