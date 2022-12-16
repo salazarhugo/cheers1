@@ -1,32 +1,31 @@
 package app
 
 import (
-	pb "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
+	"context"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"log"
 )
 
-func (s *Server) SendMessage(server pb.ChatService_SendMessageServer) error {
-	_, err := utils.GetUserId(server.Context())
+func (s *Server) SendMessage(
+	ctx context.Context,
+	request *chat.SendMessageRequest,
+) (*chat.SendMessageResponse, error) {
+	userID, err := utils.GetUserId(ctx)
 	if err != nil {
-		return status.Error(codes.Internal, "failed to retrieve userID")
-	}
-
-	msg, err := server.Recv()
-	if err != nil {
-		return err
+		return nil, status.Error(codes.Internal, "failed to retrieve userID")
 	}
 
 	err = CheckPermissions()
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	msg, err = s.chatRepository.SendMessage(msg)
+	msg, err := s.chatRepository.SendMessage(userID, request.RoomId, request.Text)
 
-	return nil
+	return &chat.SendMessageResponse{Message: msg}, nil
 }
 
 func CheckPermissions() error {

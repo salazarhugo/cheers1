@@ -130,6 +130,12 @@ export function messageTypeToJSON(object: MessageType): string {
   }
 }
 
+export interface SendMessageRequest {
+  text: string;
+  roomId: string;
+  replyTo: string;
+}
+
 export interface GetInboxRequest {
   page: number;
   pageSize: number;
@@ -354,8 +360,75 @@ export interface MessageItem {
 }
 
 export interface SendMessageResponse {
-  status: Message_Status;
+  message: Message | undefined;
 }
+
+function createBaseSendMessageRequest(): SendMessageRequest {
+  return { text: "", roomId: "", replyTo: "" };
+}
+
+export const SendMessageRequest = {
+  encode(message: SendMessageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.text !== "") {
+      writer.uint32(10).string(message.text);
+    }
+    if (message.roomId !== "") {
+      writer.uint32(18).string(message.roomId);
+    }
+    if (message.replyTo !== "") {
+      writer.uint32(26).string(message.replyTo);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SendMessageRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSendMessageRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.text = reader.string();
+          break;
+        case 2:
+          message.roomId = reader.string();
+          break;
+        case 3:
+          message.replyTo = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SendMessageRequest {
+    return {
+      text: isSet(object.text) ? String(object.text) : "",
+      roomId: isSet(object.roomId) ? String(object.roomId) : "",
+      replyTo: isSet(object.replyTo) ? String(object.replyTo) : "",
+    };
+  },
+
+  toJSON(message: SendMessageRequest): unknown {
+    const obj: any = {};
+    message.text !== undefined && (obj.text = message.text);
+    message.roomId !== undefined && (obj.roomId = message.roomId);
+    message.replyTo !== undefined && (obj.replyTo = message.replyTo);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<SendMessageRequest>, I>>(object: I): SendMessageRequest {
+    const message = createBaseSendMessageRequest();
+    message.text = object.text ?? "";
+    message.roomId = object.roomId ?? "";
+    message.replyTo = object.replyTo ?? "";
+    return message;
+  },
+};
 
 function createBaseGetInboxRequest(): GetInboxRequest {
   return { page: 0, pageSize: 0 };
@@ -1976,13 +2049,13 @@ export const MessageItem = {
 };
 
 function createBaseSendMessageResponse(): SendMessageResponse {
-  return { status: 0 };
+  return { message: undefined };
 }
 
 export const SendMessageResponse = {
   encode(message: SendMessageResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.status !== 0) {
-      writer.uint32(8).int32(message.status);
+    if (message.message !== undefined) {
+      Message.encode(message.message, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -1995,7 +2068,7 @@ export const SendMessageResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.status = reader.int32() as any;
+          message.message = Message.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -2006,18 +2079,20 @@ export const SendMessageResponse = {
   },
 
   fromJSON(object: any): SendMessageResponse {
-    return { status: isSet(object.status) ? message_StatusFromJSON(object.status) : 0 };
+    return { message: isSet(object.message) ? Message.fromJSON(object.message) : undefined };
   },
 
   toJSON(message: SendMessageResponse): unknown {
     const obj: any = {};
-    message.status !== undefined && (obj.status = message_StatusToJSON(message.status));
+    message.message !== undefined && (obj.message = message.message ? Message.toJSON(message.message) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<SendMessageResponse>, I>>(object: I): SendMessageResponse {
     const message = createBaseSendMessageResponse();
-    message.status = object.status ?? 0;
+    message.message = (object.message !== undefined && object.message !== null)
+      ? Message.fromPartial(object.message)
+      : undefined;
     return message;
   },
 };
@@ -2031,7 +2106,7 @@ export interface ChatService {
   GetRoomId(request: GetRoomIdReq): Promise<RoomId>;
   ListMembers(request: ListMembersRequest): Promise<ListMembersResponse>;
   LeaveRoom(request: RoomId): Promise<Empty>;
-  SendMessage(request: Observable<Message>): Promise<SendMessageResponse>;
+  SendMessage(request: SendMessageRequest): Promise<SendMessageResponse>;
   LikeMessage(request: LikeMessageReq): Promise<Empty>;
   UnlikeMessage(request: LikeMessageReq): Promise<Empty>;
   TypingChannel(request: Observable<TypingEvent>): Observable<TypingEvent>;
@@ -2112,9 +2187,9 @@ export class ChatServiceClientImpl implements ChatService {
     return promise.then((data) => Empty.decode(new _m0.Reader(data)));
   }
 
-  SendMessage(request: Observable<Message>): Promise<SendMessageResponse> {
-    const data = request.pipe(map((request) => Message.encode(request).finish()));
-    const promise = this.rpc.clientStreamingRequest(this.service, "SendMessage", data);
+  SendMessage(request: SendMessageRequest): Promise<SendMessageResponse> {
+    const data = SendMessageRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "SendMessage", data);
     return promise.then((data) => SendMessageResponse.decode(new _m0.Reader(data)));
   }
 

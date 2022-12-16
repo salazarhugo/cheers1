@@ -12,10 +12,20 @@ import (
 )
 
 func (c chatRepository) SendMessage(
-	msg *chat.Message,
+	senderID string,
+	roomID string,
+	text string,
 ) (*chat.Message, error) {
 	ctx := context.Background()
 	now := time.Now()
+
+	msg := &chat.Message{
+		Id:         uuid.NewString(),
+		Text:       text,
+		RoomId:     roomID,
+		SenderId:   senderID,
+		CreateTime: time.Now().Unix(),
+	}
 
 	err := ValidateMessage(msg)
 	if err != nil {

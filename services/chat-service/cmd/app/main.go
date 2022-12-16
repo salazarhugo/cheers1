@@ -144,7 +144,7 @@ func SendMessage(conn *Connection) {
 			return
 		}
 
-		msg, err := repo.SendMessage(&chatMessage)
+		msg, err := repo.SendMessage(chatMessage.SenderId, chatMessage.RoomId, chatMessage.Text)
 		if err != nil {
 			log.Println(err)
 			return
