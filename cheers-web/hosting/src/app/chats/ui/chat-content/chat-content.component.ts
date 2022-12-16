@@ -2,7 +2,13 @@ import {Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChil
 import {Chat} from "../../../shared/data/models/chat.model";
 import {ChatMessage, toChatMessage} from "../../../shared/data/models/chat-message.model";
 import {ChatService} from "../../data/chat.service";
-import {Message, Message_Status, MessageItem, MessageType} from "../../../../gen/ts/cheers/chat/v1/chat_service";
+import {
+    Message,
+    Message_Status,
+    MessageItem,
+    MessageType,
+    SendMessageRequest
+} from "../../../../gen/ts/cheers/chat/v1/chat_service";
 import {UserService} from "../../../shared/data/services/user.service";
 import {firstValueFrom} from "rxjs";
 import {toUnixTimestamp} from "../../../parties/ui/party-form/party-form.component";
@@ -57,8 +63,7 @@ export class ChatContentComponent implements OnInit, OnChanges {
             if (a != undefined) {
                 const index = this.messages.indexOf(a)
                 this.messages[index] = msg
-            }
-            else {
+            } else {
                 this.messages.push(msg)
             }
         })
@@ -71,30 +76,13 @@ export class ChatContentComponent implements OnInit, OnChanges {
     async sendMessage() {
         const user = await firstValueFrom(this.userService.user$)
         const roomId = this.room.id
-        const item: MessageItem = {
-            message: {
-                createTime: toUnixTimestamp(new Date()),
-                likeCount: 0,
-                picture: "",
-                senderId: user.id,
-                senderName: "Hugo",
-                senderPicture: "",
-                senderUsername: "",
-                status: Message_Status.EMPTY,
-                type: MessageType.TEXT,
-                id: "",
-                roomId: roomId,
-                text: this.text
-            },
-            sender: true,
-            liked: false,
-        }
 
-        const chatMessage = toChatMessage(item, "SCHEDULED")
-        this.messages.push(chatMessage)
-        const bytes = Message.encode(item.message!).finish()
-        console.log(bytes)
-        this.socket.send(bytes);
+        // const chatMessage = toChatMessage(item, "SCHEDULED")
+        // this.messages.push(chatMessage)
+        const request: SendMessageRequest = {
+            replyTo: "", roomId: roomId, text: this.text
+        }
+        this.chatService.sendMessage(request).subscribe()
         this.text = ""
     }
 }

@@ -7,7 +7,7 @@ import {
     ListRoomMessagesRequest,
     ListRoomMessagesResponse,
     ListRoomResponse,
-    Room
+    Room, SendMessageRequest, SendMessageResponse
 } from "../../../gen/ts/cheers/chat/v1/chat_service";
 import {environment} from "../../../environments/environment";
 import {ChatMessage, toChatMessage} from "../../shared/data/models/chat-message.model";
@@ -42,5 +42,9 @@ export class ChatService {
 
     joinRoom(roomId: string) {
         // this.client.joinRoom(new RoomId({roomId: }))
+    }
+
+    sendMessage(request: SendMessageRequest) {
+        return this.http.post<SendMessageResponse>(`${environment.GATEWAY_URL}/v1/chats/${request.roomId}/send`, request)
     }
 }
