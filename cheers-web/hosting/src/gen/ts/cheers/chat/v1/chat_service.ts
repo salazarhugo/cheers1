@@ -134,6 +134,11 @@ export interface SendMessageRequest {
   text: string;
   roomId: string;
   replyTo: string;
+  clientId: string;
+}
+
+export interface SendMessageResponse {
+  message: Message | undefined;
 }
 
 export interface GetInboxRequest {
@@ -359,12 +364,8 @@ export interface MessageItem {
   liked: boolean;
 }
 
-export interface SendMessageResponse {
-  message: Message | undefined;
-}
-
 function createBaseSendMessageRequest(): SendMessageRequest {
-  return { text: "", roomId: "", replyTo: "" };
+  return { text: "", roomId: "", replyTo: "", clientId: "" };
 }
 
 export const SendMessageRequest = {
@@ -377,6 +378,9 @@ export const SendMessageRequest = {
     }
     if (message.replyTo !== "") {
       writer.uint32(26).string(message.replyTo);
+    }
+    if (message.clientId !== "") {
+      writer.uint32(34).string(message.clientId);
     }
     return writer;
   },
@@ -397,6 +401,9 @@ export const SendMessageRequest = {
         case 3:
           message.replyTo = reader.string();
           break;
+        case 4:
+          message.clientId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -410,6 +417,7 @@ export const SendMessageRequest = {
       text: isSet(object.text) ? String(object.text) : "",
       roomId: isSet(object.roomId) ? String(object.roomId) : "",
       replyTo: isSet(object.replyTo) ? String(object.replyTo) : "",
+      clientId: isSet(object.clientId) ? String(object.clientId) : "",
     };
   },
 
@@ -418,6 +426,7 @@ export const SendMessageRequest = {
     message.text !== undefined && (obj.text = message.text);
     message.roomId !== undefined && (obj.roomId = message.roomId);
     message.replyTo !== undefined && (obj.replyTo = message.replyTo);
+    message.clientId !== undefined && (obj.clientId = message.clientId);
     return obj;
   },
 
@@ -426,6 +435,56 @@ export const SendMessageRequest = {
     message.text = object.text ?? "";
     message.roomId = object.roomId ?? "";
     message.replyTo = object.replyTo ?? "";
+    message.clientId = object.clientId ?? "";
+    return message;
+  },
+};
+
+function createBaseSendMessageResponse(): SendMessageResponse {
+  return { message: undefined };
+}
+
+export const SendMessageResponse = {
+  encode(message: SendMessageResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.message !== undefined) {
+      Message.encode(message.message, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SendMessageResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseSendMessageResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.message = Message.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): SendMessageResponse {
+    return { message: isSet(object.message) ? Message.fromJSON(object.message) : undefined };
+  },
+
+  toJSON(message: SendMessageResponse): unknown {
+    const obj: any = {};
+    message.message !== undefined && (obj.message = message.message ? Message.toJSON(message.message) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<SendMessageResponse>, I>>(object: I): SendMessageResponse {
+    const message = createBaseSendMessageResponse();
+    message.message = (object.message !== undefined && object.message !== null)
+      ? Message.fromPartial(object.message)
+      : undefined;
     return message;
   },
 };
@@ -2048,55 +2107,6 @@ export const MessageItem = {
   },
 };
 
-function createBaseSendMessageResponse(): SendMessageResponse {
-  return { message: undefined };
-}
-
-export const SendMessageResponse = {
-  encode(message: SendMessageResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.message !== undefined) {
-      Message.encode(message.message, writer.uint32(10).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): SendMessageResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseSendMessageResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.message = Message.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): SendMessageResponse {
-    return { message: isSet(object.message) ? Message.fromJSON(object.message) : undefined };
-  },
-
-  toJSON(message: SendMessageResponse): unknown {
-    const obj: any = {};
-    message.message !== undefined && (obj.message = message.message ? Message.toJSON(message.message) : undefined);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<SendMessageResponse>, I>>(object: I): SendMessageResponse {
-    const message = createBaseSendMessageResponse();
-    message.message = (object.message !== undefined && object.message !== null)
-      ? Message.fromPartial(object.message)
-      : undefined;
-    return message;
-  },
-};
-
 export interface ChatService {
   CreateRoom(request: CreateRoomRequest): Promise<CreateRoomResponse>;
   JoinRoom(request: JoinRoomRequest): Observable<Message>;
@@ -2246,7 +2256,7 @@ interface Rpc {
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
-var globalThis: any = (() => {
+var tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
@@ -2275,7 +2285,7 @@ export type Exact<P, I extends P> = P extends Builtin ? P
 
 function longToNumber(long: Long): number {
   if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new globalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
   }
   return long.toNumber();
 }

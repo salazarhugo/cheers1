@@ -12,6 +12,7 @@ import (
 )
 
 func (c chatRepository) SendMessage(
+	messageID string,
 	senderID string,
 	roomID string,
 	text string,
@@ -20,7 +21,7 @@ func (c chatRepository) SendMessage(
 	now := time.Now()
 
 	msg := &chat.Message{
-		Id:         uuid.NewString(),
+		Id:         messageID,
 		Text:       text,
 		RoomId:     roomID,
 		SenderId:   senderID,

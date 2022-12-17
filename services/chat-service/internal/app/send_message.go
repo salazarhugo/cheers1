@@ -23,7 +23,8 @@ func (s *Server) SendMessage(
 		return nil, err
 	}
 
-	msg, err := s.chatRepository.SendMessage(userID, request.RoomId, request.Text)
+	msg, err := s.chatRepository.SendMessage(request.ClientId, userID, request.RoomId, request.Text)
+	msg.Status = chat.Message_SENT
 
 	return &chat.SendMessageResponse{Message: msg}, nil
 }

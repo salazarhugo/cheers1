@@ -175,6 +175,7 @@ func (cache *redisCache) ListMessage(roomId string, pageSize int64) []*pb.Messag
 		if err != nil {
 			panic(err)
 		}
+		message.Status = pb.Message_DELIVERED
 		messages = append(messages, message)
 	}
 

@@ -16,7 +16,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health/grpc_health_v1"
 	"google.golang.org/protobuf/encoding/protojson"
-	"google.golang.org/protobuf/proto"
 	"log"
 	"net"
 	"net/http"
@@ -86,7 +85,7 @@ func serveWs(w http.ResponseWriter, r *http.Request) {
 	connection := new(Connection)
 	connection.Socket = conn
 	go ListenMessages(connection, userID)
-	go SendMessage(connection)
+	//go SendMessage(connection)
 }
 
 func ListenMessages(conn *Connection, userID string) {
@@ -125,39 +124,39 @@ func ListenRoom(conn *Connection, roomId string) {
 	}
 }
 
-func SendMessage(conn *Connection) {
-	repo := repository.NewChatRepository()
-
-	for {
-		var chatMessage chat.Message
-		_, b, err := conn.Socket.ReadMessage()
-		if err != nil {
-			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
-				log.Printf("error: %v", err)
-			}
-			break
-		}
-
-		err = proto.Unmarshal(b, &chatMessage)
-		if err != nil {
-			log.Println(err)
-			return
-		}
-
-		msg, err := repo.SendMessage(chatMessage.SenderId, chatMessage.RoomId, chatMessage.Text)
-		if err != nil {
-			log.Println(err)
-			return
-		}
-		// Acknowledge message
-		msg.Status = chat.Message_SENT
-		bytes, err := protojson.Marshal(msg)
-		err = conn.Send(bytes)
-		if err != nil {
-			log.Println(err)
-		}
-	}
-}
+//func SendMessage(conn *Connection) {
+//	repo := repository.NewChatRepository()
+//
+//	for {
+//		var chatMessage chat.Message
+//		_, b, err := conn.Socket.ReadMessage()
+//		if err != nil {
+//			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+//				log.Printf("error: %v", err)
+//			}
+//			break
+//		}
+//
+//		err = proto.Unmarshal(b, &chatMessage)
+//		if err != nil {
+//			log.Println(err)
+//			return
+//		}
+//
+//		msg, err := repo.SendMessage(chatMessage.SenderId, chatMessage.RoomId, chatMessage.Text)
+//		if err != nil {
+//			log.Println(err)
+//			return
+//		}
+//		// Acknowledge message
+//		msg.Status = chat.Message_SENT
+//		bytes, err := protojson.Marshal(msg)
+//		err = conn.Send(bytes)
+//		if err != nil {
+//			log.Println(err)
+//		}
+//	}
+//}
 
 type Connection struct {
 	Socket *websocket.Conn
