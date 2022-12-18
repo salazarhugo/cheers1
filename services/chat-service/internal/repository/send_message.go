@@ -3,7 +3,6 @@ package repository
 import (
 	"context"
 	"errors"
-	"github.com/google/uuid"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
 	"google.golang.org/protobuf/encoding/protojson"
 	"log"
@@ -18,7 +17,6 @@ func (c chatRepository) SendMessage(
 	text string,
 ) (*chat.Message, error) {
 	ctx := context.Background()
-	now := time.Now()
 
 	msg := &chat.Message{
 		Id:         messageID,
@@ -32,9 +30,6 @@ func (c chatRepository) SendMessage(
 	if err != nil {
 		return nil, err
 	}
-
-	msg.Id = uuid.NewString()
-	msg.CreateTime = now.Unix()
 
 	// Store message in cache
 	err = c.cache.SetMessage(msg)

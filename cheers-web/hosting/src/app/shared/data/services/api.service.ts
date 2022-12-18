@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {map, Observable} from "rxjs";
 import {StoryState, toUser, User, UserResponse} from "../models/user.model";
 import {Post} from "../models/post.model";
-import {Story} from "../models/story.model";
+import {Story, toStory} from "../models/story.model";
 import {Ticket, toTicket} from "../models/ticket.model";
 import {FeedPostResponse, ListPostResponse, PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
 import {Empty} from "../../../../gen/ts/google/protobuf/empty";
@@ -12,6 +12,7 @@ import {CreateRegistrationTokenResponse} from "../../../../gen/ts/cheers/notific
 import {Account, GetAccountResponse} from "../../../../gen/ts/cheers/account/v1/account_service";
 import {ListUserOrdersResponse, Order} from "../../../../gen/ts/cheers/order/v1/order_service";
 import {ListTicketResponse} from "../../../../gen/ts/cheers/ticket/v1/ticket";
+import {FeedStoryResponse} from "../../../../gen/ts/cheers/story/v1/story_service";
 
 @Injectable({
     providedIn: 'root'
@@ -130,7 +131,11 @@ export class ApiService {
     }
 
     getStoryFeed(): Observable<Story[]> {
-        return this.http.get<Story[]>(`${this.BASE_URL}/stories/feed?pageSize=10&page=0`)
+        return this.http.get<FeedStoryResponse>(`${environment.GATEWAY_URL}/v1/stories/feed?pageSize=10&page=0`)
+            .pipe(
+                map(r => r.items.flatMap(uws => uws.stories)),
+                map(a => a.map(a => toStory(a.story!)))
+            )
     }
 
     seenStory(storyId: string) {

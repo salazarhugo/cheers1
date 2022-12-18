@@ -1,3 +1,8 @@
+import {PartyAnswer, PartyItem} from "../../../../gen/ts/cheers/party/v1/party_service";
+import {Party} from "./party.model";
+import {Story as StoryPb} from "../../../../gen/ts/cheers/type/story/story";
+
+
 export class Story {
     id: string = ""
     authorId: string = ""
@@ -16,4 +21,10 @@ export class Story {
     locationName: string = ""
     tagUsersId: string[] = []
     type: string = ""
+}
+
+export function toStory(value: StoryPb): Story {
+    const story = new Story()
+    Object.assign(story, value)
+    return story
 }

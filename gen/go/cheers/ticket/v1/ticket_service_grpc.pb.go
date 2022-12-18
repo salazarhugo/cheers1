@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             (unknown)
-// source: cheers/ticket/v1/ticket.proto
+// source: cheers/ticket/v1/ticket_service.proto
 
 package ticket
 
@@ -245,5 +245,5 @@ var TicketService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "cheers/ticket/v1/ticket.proto",
+	Metadata: "cheers/ticket/v1/ticket_service.proto",
 }

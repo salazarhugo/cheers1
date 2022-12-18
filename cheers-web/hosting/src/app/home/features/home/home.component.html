@@ -7,7 +7,8 @@
 
         <mat-card *ngIf="story$ | async as stories" class="story-container" fxLayout="row" fxLayoutGap="16px">
           <a class="story" fxLayout="column" fxLayoutAlign="none center">
-            <img (error)="onImgError($event)" src="../../../../assets/default_profile_picture.png" class="story-avatar">
+              <img [src]="user?.picture ? user?.picture : 'assets/default_profile_picture.png' "
+                   class="story-avatar"/>
             <span class="story-username">Your story</span>
           </a>
             <ng-container *ngFor="let story of stories">
@@ -19,7 +20,7 @@
             </ng-container>
         </mat-card>
 
-        <mat-card *ngIf="this.$user | async as user" class="home-post-input">
+        <mat-card *ngIf="user" class="home-post-input">
             <div fxLayoutAlign="none center" fxLayoutGap="16px" style="padding-bottom: 16px">
                 <img (error)="onImgError($event)" [routerLink]="['/u', user.id]" [src]="user.picture"
                      class="avatar--small">

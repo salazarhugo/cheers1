@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UserService} from "../../../shared/data/services/user.service";
-import {Observable, of} from "rxjs";
+import {Observable, of, Subscription} from "rxjs";
 import {Post} from "../../../shared/data/models/post.model";
 import {Story} from "../../../shared/data/models/story.model";
 import {StoryService} from "../../../stories/data/story.service";
@@ -16,12 +16,12 @@ import {PostCreateDialogComponent} from "../../../posts/ui/post-create-dialog/po
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.sass']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
     isPosting = false
-    private sub: any;
+    private subs: Subscription[] = [];
 
-    $user: Observable<User | null> = of(null)
+    user: User | null = null
     posts: PostResponse[] | null = null
     story$: Observable<Story[] | null> = of(null)
 
@@ -38,18 +38,19 @@ export class HomeComponent implements OnInit {
         private postService: PostService,
         public dialog: MatDialog,
     ) {
-        this.$user = this.userService.user$
+        this.subs.push(this.userService.user$.subscribe( user => this.user = user))
     }
 
+
     ngOnInit(): void {
-        this.sub = this.postService.getPostFeed().subscribe(posts => {
+        this.subs.push(this.postService.getPostFeed().subscribe(posts => {
             this.posts = posts
-        })
+        }))
         this.story$ = this.storyService.getStoryFeed()
     }
 
     ngOnDestroy() {
-        this.sub.unsubscribe();
+        this.subs.forEach(sub => sub.unsubscribe())
     }
 
     onImgError(event: any) {

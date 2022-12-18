@@ -11,7 +11,6 @@ import {
 } from "../../../../gen/ts/cheers/chat/v1/chat_service";
 import {UserService} from "../../../shared/data/services/user.service";
 import {firstValueFrom} from "rxjs";
-import {toUnixTimestamp} from "../../../parties/ui/party-form/party-form.component";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 
 @Component({
@@ -77,10 +76,11 @@ export class ChatContentComponent implements OnInit, OnChanges {
         const user = await firstValueFrom(this.userService.user$)
         const roomId = this.room.id
 
-        // const chatMessage = toChatMessage(item, "SCHEDULED")
-        // this.messages.push(chatMessage)
         const request: SendMessageRequest = {
-            replyTo: "", roomId: roomId, text: this.text
+            clientId: new Date().getTime().toString(),
+            replyTo: "",
+            roomId: roomId,
+            text: this.text
         }
         this.chatService.sendMessage(request).subscribe()
         this.text = ""
