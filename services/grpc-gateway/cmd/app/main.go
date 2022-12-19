@@ -53,7 +53,11 @@ func main() {
 
 			jwtPayload := strings.Split(jwt, ".")[1]
 
-			md := metadata.Pairs("x-apigateway-api-userinfo", jwtPayload)
+			md := metadata.Pairs(
+				"x-apigateway-api-userinfo", jwtPayload,
+				"authorization", header,
+			)
+			log.Println(md)
 			return md
 		},
 		))
@@ -69,7 +73,12 @@ func main() {
 	transportCredentials := credentials.NewTLS(&tls.Config{
 		RootCAs: systemRoots,
 	})
-	perRPC, _ := oauth.NewServiceAccountFromFile("../../api-gateway-service-account.json", "https://www.googleapis.com/auth/cloud-platform")
+
+	perRPC, err := oauth.NewServiceAccountFromFile("../../api-gateway-service-account.json", "https://www.googleapis.com/auth/cloud-platform")
+
+	if err != nil {
+		log.Println(err)
+	}
 
 	ctx := context.Background()
 	options := []grpc.DialOption{

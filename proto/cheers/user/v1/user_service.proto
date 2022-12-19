@@ -19,7 +19,7 @@ service UserService {
 
   rpc GetUser (GetUserRequest) returns (GetUserResponse) {
     option (google.api.http) = {
-      get: "/v1/users/{id}"
+      get: "/v1/users/{user_id}"
     };
   };
 
@@ -35,8 +35,20 @@ service UserService {
   rpc GetUsersIn (GetUsersInRequest) returns (GetUsersInResponse);
   rpc GetUserItemsIn (GetUserItemsInRequest) returns (GetUserItemsInResponse);
   rpc SearchUser (SearchUserRequest) returns (SearchUserResponse);
-  rpc FollowUser (FollowUserRequest) returns (google.protobuf.Empty);
-  rpc UnfollowUser (UnfollowUserRequest) returns (google.protobuf.Empty);
+
+  rpc FollowUser (FollowUserRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/v1/users/{user_id}/follow"
+      body: "*"
+    };
+  };
+
+  rpc UnfollowUser (UnfollowUserRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/users/{user_id}/unfollow"
+    };
+  };
+
   rpc BlockUser (BlockUserRequest) returns (BlockUserResponse);
   rpc UnblockUser (UnblockUserRequest) returns (UnblockUserResponse);
 
@@ -120,19 +132,19 @@ message GetUserResponse {
 }
 
 message BlockUserRequest {
-  string id = 1;
+  string user_id = 1;
 }
 
 message UnblockUserRequest {
-  string id = 1;
+  string user_id = 1;
 }
 
 message UnfollowUserRequest {
-  string id = 1;
+  string user_id = 1;
 }
 
 message FollowUserRequest {
-  string id = 1;
+  string user_id = 1;
 }
 
 message SearchUserRequest {
@@ -140,7 +152,7 @@ message SearchUserRequest {
 }
 
 message GetUserRequest {
-  string id = 1;
+  string user_id = 1;
 }
 
 message UpdateUserRequest {
@@ -153,5 +165,5 @@ message UpdateUserRequest {
 }
 
 message DeleteUserRequest {
-  string id = 1;
+  string user_id = 1;
 }

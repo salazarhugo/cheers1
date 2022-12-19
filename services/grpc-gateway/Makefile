@@ -1,5 +1,6 @@
 run:
-	cd cmd/app; GOOGLE_APPLICATION_CREDENTIALS=/mnt/c/Users/HugoSalazar/GolandProjects/cheers1/services/grpc-gateway/api-gateway-service-account.json go run main.go cors.go
+	export GOOGLE_APPLICATION_CREDENTIALS="/mnt/c/Users/HugoSalazar/GolandProjects/cheers1/services/grpc-gateway/api-gateway-service-account.json";
+	cd cmd/app;  go run main.go cors.go
 
 deploy:
 	./deploy.sh

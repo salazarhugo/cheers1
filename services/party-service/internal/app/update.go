@@ -19,7 +19,7 @@ func (s *Server) UpdateParty(
 		return nil, err
 	}
 
-	err = AuthorizeUpdatePartyRequest(s.partyRepository, request)
+	err = AuthorizeUpdatePartyRequest(ctx, s.partyRepository, request)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -27,7 +27,7 @@ func (s *Server) UpdateParty(
 
 	_, err = s.partyRepository.UpdateParty(request.Party)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to create party")
+		return nil, status.Error(codes.Internal, "failed to update party")
 	}
 
 	party, err := s.partyRepository.GetParty(request.Party.Id)
@@ -41,10 +41,10 @@ func (s *Server) UpdateParty(
 }
 
 func AuthorizeUpdatePartyRequest(
+	ctx context.Context,
 	repository repository.PartyRepository,
 	request *pb.UpdatePartyRequest,
 ) error {
-	ctx := context.Background()
 	userID, err := utils.GetUserId(ctx)
 	if err != nil {
 		return status.Error(codes.Internal, "failed retrieving userID")

@@ -8,4 +8,4 @@ clean:
 	rm -rf pkg
 
 update:
-	go get github.com/salazarhugo/cheers1/genproto@
+	go get github.com/salazarhugo/cheers1/genproto@main
