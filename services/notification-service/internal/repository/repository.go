@@ -3,6 +3,7 @@ package repository
 import (
 	"firebase.google.com/go/v4/messaging"
 	"github.com/go-redis/redis/v9"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	"os"
 )
 
@@ -10,6 +11,10 @@ type Repository interface {
 	SendNotification(
 		userWithToken map[string][]string,
 		data map[string]string,
+	) error
+	FollowUserNotification(
+		user *user.User,
+		followedUser *user.User,
 	) error
 	CreateRegistrationToken(userID string, token string) error
 	GetUserTokens(userID string) ([]string, error)

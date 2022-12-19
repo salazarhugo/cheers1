@@ -1,44 +1,32 @@
 package app
 
 import (
-	"encoding/json"
-	"io"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
+	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
+	"github.com/salazarhugo/cheers1/services/notification-service/internal/repository"
 	"log"
 	"net/http"
 )
 
 func UserTopicSub(w http.ResponseWriter, r *http.Request) {
-	var m PubSubMessage
-	body, err := io.ReadAll(r.Body)
+	userEvent := &user.UserEvent{}
+
+	err := pubsub.UnmarshalPubSubMessage(r, userEvent)
 	if err != nil {
-		log.Printf("ioutil.ReadAll: %v", err)
-		http.Error(w, "Bad Request", http.StatusBadRequest)
 		return
 	}
 
-	// byte slice unmarshalling handles base64 decoding.
-	if err := json.Unmarshal(body, &m); err != nil {
-		log.Printf("json.Unmarshal: %v", err)
-		http.Error(w, "Bad Request", http.StatusBadRequest)
-		return
+	repo := repository.NewRepository()
+
+	switch event := userEvent.Event.(type) {
+	case *user.UserEvent_Follow:
+		err = repo.FollowUserNotification(event.Follow.User, event.Follow.FollowedUser)
+	case *user.UserEvent_Create:
+	default:
 	}
 
-	//userevent := &user.UserEvent{}
-	//err = proto.Unmarshal(m.Message.Data, userevent)
-	//if err != nil {
-	//	log.Fatal(err)
-	//	return err
-	//}
-	//
-	//switch userevent.Type {
-	//case usereventpb.UserEventType_POST_LIKE:
-	//	likePostNotification(c, userevent)
-	//case usereventpb.UserEventType_CREATE_POST:
-	//	postNotification(c, userevent)
-	//case usereventpb.UserEventType_FOLLOW:
-	//	followNotification(c, userevent)
-	//case usereventpb.UserEventType_COMMENT:
-	//	commentNotification(c, userevent)
-	//default:
-	//}
+	if err != nil {
+		log.Println(err)
+		return
+	}
 }

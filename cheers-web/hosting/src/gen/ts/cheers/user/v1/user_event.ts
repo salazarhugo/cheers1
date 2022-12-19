@@ -1,129 +1,35 @@
 /* eslint-disable */
 import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
+import { User } from "../../type/user/user";
 
 export const protobufPackage = "cheers.user.v1";
 
 export interface UserEvent {
-  userId: string;
-  creatorId: string;
-  caption: string;
-  address: string;
-  photos: string[];
-  isCommentEnabled: boolean;
-  locationName: string;
-  drink: string;
-  drunkenness: number;
-  commentsEnabled: boolean;
-  shareEnabled: boolean;
-  type: UserEvent_EventType;
+  create?: CreateUser | undefined;
+  follow?: FollowUser | undefined;
 }
 
-export enum UserEvent_EventType {
-  CREATE = 0,
-  UPDATE = 1,
-  DELETE = 2,
-  LIKE = 3,
-  COMMENT = 4,
-  UNRECOGNIZED = -1,
+export interface CreateUser {
+  user: User | undefined;
 }
 
-export function userEvent_EventTypeFromJSON(object: any): UserEvent_EventType {
-  switch (object) {
-    case 0:
-    case "CREATE":
-      return UserEvent_EventType.CREATE;
-    case 1:
-    case "UPDATE":
-      return UserEvent_EventType.UPDATE;
-    case 2:
-    case "DELETE":
-      return UserEvent_EventType.DELETE;
-    case 3:
-    case "LIKE":
-      return UserEvent_EventType.LIKE;
-    case 4:
-    case "COMMENT":
-      return UserEvent_EventType.COMMENT;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return UserEvent_EventType.UNRECOGNIZED;
-  }
-}
-
-export function userEvent_EventTypeToJSON(object: UserEvent_EventType): string {
-  switch (object) {
-    case UserEvent_EventType.CREATE:
-      return "CREATE";
-    case UserEvent_EventType.UPDATE:
-      return "UPDATE";
-    case UserEvent_EventType.DELETE:
-      return "DELETE";
-    case UserEvent_EventType.LIKE:
-      return "LIKE";
-    case UserEvent_EventType.COMMENT:
-      return "COMMENT";
-    case UserEvent_EventType.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
+export interface FollowUser {
+  user: User | undefined;
+  followedUser: User | undefined;
 }
 
 function createBaseUserEvent(): UserEvent {
-  return {
-    userId: "",
-    creatorId: "",
-    caption: "",
-    address: "",
-    photos: [],
-    isCommentEnabled: false,
-    locationName: "",
-    drink: "",
-    drunkenness: 0,
-    commentsEnabled: false,
-    shareEnabled: false,
-    type: 0,
-  };
+  return { create: undefined, follow: undefined };
 }
 
 export const UserEvent = {
   encode(message: UserEvent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
+    if (message.create !== undefined) {
+      CreateUser.encode(message.create, writer.uint32(10).fork()).ldelim();
     }
-    if (message.creatorId !== "") {
-      writer.uint32(18).string(message.creatorId);
-    }
-    if (message.caption !== "") {
-      writer.uint32(26).string(message.caption);
-    }
-    if (message.address !== "") {
-      writer.uint32(34).string(message.address);
-    }
-    for (const v of message.photos) {
-      writer.uint32(50).string(v!);
-    }
-    if (message.isCommentEnabled === true) {
-      writer.uint32(56).bool(message.isCommentEnabled);
-    }
-    if (message.locationName !== "") {
-      writer.uint32(66).string(message.locationName);
-    }
-    if (message.drink !== "") {
-      writer.uint32(74).string(message.drink);
-    }
-    if (message.drunkenness !== 0) {
-      writer.uint32(80).int64(message.drunkenness);
-    }
-    if (message.commentsEnabled === true) {
-      writer.uint32(104).bool(message.commentsEnabled);
-    }
-    if (message.shareEnabled === true) {
-      writer.uint32(112).bool(message.shareEnabled);
-    }
-    if (message.type !== 0) {
-      writer.uint32(96).int32(message.type);
+    if (message.follow !== undefined) {
+      FollowUser.encode(message.follow, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -136,40 +42,10 @@ export const UserEvent = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.userId = reader.string();
+          message.create = CreateUser.decode(reader, reader.uint32());
           break;
         case 2:
-          message.creatorId = reader.string();
-          break;
-        case 3:
-          message.caption = reader.string();
-          break;
-        case 4:
-          message.address = reader.string();
-          break;
-        case 6:
-          message.photos.push(reader.string());
-          break;
-        case 7:
-          message.isCommentEnabled = reader.bool();
-          break;
-        case 8:
-          message.locationName = reader.string();
-          break;
-        case 9:
-          message.drink = reader.string();
-          break;
-        case 10:
-          message.drunkenness = longToNumber(reader.int64() as Long);
-          break;
-        case 13:
-          message.commentsEnabled = reader.bool();
-          break;
-        case 14:
-          message.shareEnabled = reader.bool();
-          break;
-        case 12:
-          message.type = reader.int32() as any;
+          message.follow = FollowUser.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -181,56 +57,134 @@ export const UserEvent = {
 
   fromJSON(object: any): UserEvent {
     return {
-      userId: isSet(object.userId) ? String(object.userId) : "",
-      creatorId: isSet(object.creatorId) ? String(object.creatorId) : "",
-      caption: isSet(object.caption) ? String(object.caption) : "",
-      address: isSet(object.address) ? String(object.address) : "",
-      photos: Array.isArray(object?.photos) ? object.photos.map((e: any) => String(e)) : [],
-      isCommentEnabled: isSet(object.isCommentEnabled) ? Boolean(object.isCommentEnabled) : false,
-      locationName: isSet(object.locationName) ? String(object.locationName) : "",
-      drink: isSet(object.drink) ? String(object.drink) : "",
-      drunkenness: isSet(object.drunkenness) ? Number(object.drunkenness) : 0,
-      commentsEnabled: isSet(object.commentsEnabled) ? Boolean(object.commentsEnabled) : false,
-      shareEnabled: isSet(object.shareEnabled) ? Boolean(object.shareEnabled) : false,
-      type: isSet(object.type) ? userEvent_EventTypeFromJSON(object.type) : 0,
+      create: isSet(object.create) ? CreateUser.fromJSON(object.create) : undefined,
+      follow: isSet(object.follow) ? FollowUser.fromJSON(object.follow) : undefined,
     };
   },
 
   toJSON(message: UserEvent): unknown {
     const obj: any = {};
-    message.userId !== undefined && (obj.userId = message.userId);
-    message.creatorId !== undefined && (obj.creatorId = message.creatorId);
-    message.caption !== undefined && (obj.caption = message.caption);
-    message.address !== undefined && (obj.address = message.address);
-    if (message.photos) {
-      obj.photos = message.photos.map((e) => e);
-    } else {
-      obj.photos = [];
-    }
-    message.isCommentEnabled !== undefined && (obj.isCommentEnabled = message.isCommentEnabled);
-    message.locationName !== undefined && (obj.locationName = message.locationName);
-    message.drink !== undefined && (obj.drink = message.drink);
-    message.drunkenness !== undefined && (obj.drunkenness = Math.round(message.drunkenness));
-    message.commentsEnabled !== undefined && (obj.commentsEnabled = message.commentsEnabled);
-    message.shareEnabled !== undefined && (obj.shareEnabled = message.shareEnabled);
-    message.type !== undefined && (obj.type = userEvent_EventTypeToJSON(message.type));
+    message.create !== undefined && (obj.create = message.create ? CreateUser.toJSON(message.create) : undefined);
+    message.follow !== undefined && (obj.follow = message.follow ? FollowUser.toJSON(message.follow) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<UserEvent>, I>>(object: I): UserEvent {
     const message = createBaseUserEvent();
-    message.userId = object.userId ?? "";
-    message.creatorId = object.creatorId ?? "";
-    message.caption = object.caption ?? "";
-    message.address = object.address ?? "";
-    message.photos = object.photos?.map((e) => e) || [];
-    message.isCommentEnabled = object.isCommentEnabled ?? false;
-    message.locationName = object.locationName ?? "";
-    message.drink = object.drink ?? "";
-    message.drunkenness = object.drunkenness ?? 0;
-    message.commentsEnabled = object.commentsEnabled ?? false;
-    message.shareEnabled = object.shareEnabled ?? false;
-    message.type = object.type ?? 0;
+    message.create = (object.create !== undefined && object.create !== null)
+      ? CreateUser.fromPartial(object.create)
+      : undefined;
+    message.follow = (object.follow !== undefined && object.follow !== null)
+      ? FollowUser.fromPartial(object.follow)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseCreateUser(): CreateUser {
+  return { user: undefined };
+}
+
+export const CreateUser = {
+  encode(message: CreateUser, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.user !== undefined) {
+      User.encode(message.user, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateUser {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateUser();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.user = User.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateUser {
+    return { user: isSet(object.user) ? User.fromJSON(object.user) : undefined };
+  },
+
+  toJSON(message: CreateUser): unknown {
+    const obj: any = {};
+    message.user !== undefined && (obj.user = message.user ? User.toJSON(message.user) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CreateUser>, I>>(object: I): CreateUser {
+    const message = createBaseCreateUser();
+    message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
+    return message;
+  },
+};
+
+function createBaseFollowUser(): FollowUser {
+  return { user: undefined, followedUser: undefined };
+}
+
+export const FollowUser = {
+  encode(message: FollowUser, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.user !== undefined) {
+      User.encode(message.user, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.followedUser !== undefined) {
+      User.encode(message.followedUser, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): FollowUser {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseFollowUser();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.user = User.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.followedUser = User.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): FollowUser {
+    return {
+      user: isSet(object.user) ? User.fromJSON(object.user) : undefined,
+      followedUser: isSet(object.followedUser) ? User.fromJSON(object.followedUser) : undefined,
+    };
+  },
+
+  toJSON(message: FollowUser): unknown {
+    const obj: any = {};
+    message.user !== undefined && (obj.user = message.user ? User.toJSON(message.user) : undefined);
+    message.followedUser !== undefined &&
+      (obj.followedUser = message.followedUser ? User.toJSON(message.followedUser) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<FollowUser>, I>>(object: I): FollowUser {
+    const message = createBaseFollowUser();
+    message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
+    message.followedUser = (object.followedUser !== undefined && object.followedUser !== null)
+      ? User.fromPartial(object.followedUser)
+      : undefined;
     return message;
   },
 };
@@ -264,13 +218,6 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  return long.toNumber();
-}
 
 // If you get a compile-error about 'Constructor<Long> and ... have no overlap',
 // add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.

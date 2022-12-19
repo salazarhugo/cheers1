@@ -21,10 +21,12 @@ import (
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/credentials/oauth"
 	"google.golang.org/grpc/metadata"
 	"log"
 	"net"
 	"net/http"
+	"os"
 	"strings"
 )
 
@@ -61,13 +63,18 @@ func main() {
 		log.Println(err)
 	}
 
+	cred := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
+	log.Println(cred)
+
 	transportCredentials := credentials.NewTLS(&tls.Config{
 		RootCAs: systemRoots,
 	})
+	perRPC, _ := oauth.NewServiceAccountFromFile("../../api-gateway-service-account.json", "https://www.googleapis.com/auth/cloud-platform")
 
 	ctx := context.Background()
 	options := []grpc.DialOption{
 		grpc.WithTransportCredentials(transportCredentials),
+		grpc.WithPerRPCCredentials(perRPC),
 	}
 
 	err = chat.RegisterChatServiceHandlerFromEndpoint(ctx, mux, "chat-service-r3a2dr4u4a-nw.a.run.app:443", options)

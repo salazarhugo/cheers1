@@ -41,7 +41,7 @@ export class ApiService {
     }
 
     register(userReq: any): Observable<User> {
-        return this.http.post<User>(`${this.BASE_URL}/users/create`, userReq)
+        return this.http.post<User>(`${environment.GATEWAY_URL}/users/create`, userReq)
     }
 
     likePost(postId: string) {
