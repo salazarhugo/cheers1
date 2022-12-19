@@ -20,14 +20,16 @@ import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc/credentials/oauth"
 	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
 	"log"
 	"net"
 	"net/http"
 	"os"
 	"strings"
+	"time"
 )
 
 func main() {
@@ -55,9 +57,9 @@ func main() {
 
 			md := metadata.Pairs(
 				"x-apigateway-api-userinfo", jwtPayload,
-				"authorization", header,
+				//"authorization", header,
 			)
-			log.Println(md)
+
 			return md
 		},
 		))
@@ -74,7 +76,7 @@ func main() {
 		RootCAs: systemRoots,
 	})
 
-	perRPC, err := oauth.NewServiceAccountFromFile("../../api-gateway-service-account.json", "https://www.googleapis.com/auth/cloud-platform")
+	//perRPC, err := oauth.NewServiceAccountFromFile("../../api-gateway-service-account.json", "https://www.googleapis.com/auth/cloud-platform")
 
 	if err != nil {
 		log.Println(err)
@@ -83,7 +85,8 @@ func main() {
 	ctx := context.Background()
 	options := []grpc.DialOption{
 		grpc.WithTransportCredentials(transportCredentials),
-		grpc.WithPerRPCCredentials(perRPC),
+		//grpc.WithPerRPCCredentials(perRPC),
+		grpc.WithUnaryInterceptor(clientInterceptor),
 	}
 
 	err = chat.RegisterChatServiceHandlerFromEndpoint(ctx, mux, "chat-service-r3a2dr4u4a-nw.a.run.app:443", options)
@@ -120,4 +123,30 @@ func withLogger(handler http.Handler) http.Handler {
 		m := httpsnoop.CaptureMetrics(handler, writer, request)
 		log.Printf("http[%d]-- %s -- %s\n", m.Code, m.Duration, request.URL.Path)
 	})
+}
+
+func clientInterceptor(
+	ctx context.Context,
+	method string,
+	req interface{},
+	reply interface{},
+	cc *grpc.ClientConn,
+	invoker grpc.UnaryInvoker,
+	opts ...grpc.CallOption,
+) error {
+	// Logic before invoking the invoker
+	start := time.Now()
+	md, ok := metadata.FromOutgoingContext(ctx)
+	if !ok {
+		return status.Errorf(codes.InvalidArgument, "Failed retrieving metadata")
+	}
+
+	log.Println(md)
+
+	// Calls the invoker to execute RPC
+	err := invoker(ctx, method, req, reply, cc, opts...)
+	// Logic after invoking the invoker
+	log.Printf("Invoked RPC method=%s; Duration=%s; Error=%v", method, time.Since(start), err)
+
+	return err
 }
