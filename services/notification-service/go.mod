@@ -5,7 +5,7 @@ go 1.19
 require (
 	firebase.google.com/go/v4 v4.9.0
 	github.com/go-redis/redis/v9 v9.0.0-rc.1
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221218220856-ccee71af4142
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221219110459-3c99bc109883
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221114163206-2897b5f5263a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221218220856-ccee71af4142
@@ -55,4 +55,4 @@ require (
 	google.golang.org/genproto v0.0.0-20221027153422-115e99e71e1c // indirect
 )
 
-replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
+//replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go

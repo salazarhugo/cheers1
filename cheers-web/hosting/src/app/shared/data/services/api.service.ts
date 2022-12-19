@@ -57,11 +57,11 @@ export class ApiService {
     }
 
     followUser(username: string) {
-        return this.http.post(`${this.BASE_URL}/follow?username=${username}`, {})
+        return this.http.post(`${environment.GATEWAY_URL}/v1/users/${username}/follow`, {})
     }
 
     unfollowUser(username: string) {
-        return this.http.post(`${this.BASE_URL}/unfollow?username=${username}`, {})
+        return this.http.delete(`${environment.GATEWAY_URL}/v1/users/${username}/unfollow`)
     }
 
     searchUser(query: string): Observable<User[]> {

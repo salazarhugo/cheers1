@@ -72,19 +72,19 @@ export interface GetUserResponse {
 }
 
 export interface BlockUserRequest {
-  id: string;
+  userId: string;
 }
 
 export interface UnblockUserRequest {
-  id: string;
+  userId: string;
 }
 
 export interface UnfollowUserRequest {
-  id: string;
+  userId: string;
 }
 
 export interface FollowUserRequest {
-  id: string;
+  userId: string;
 }
 
 export interface SearchUserRequest {
@@ -92,7 +92,7 @@ export interface SearchUserRequest {
 }
 
 export interface GetUserRequest {
-  id: string;
+  userId: string;
 }
 
 export interface UpdateUserRequest {
@@ -105,7 +105,7 @@ export interface UpdateUserRequest {
 }
 
 export interface DeleteUserRequest {
-  id: string;
+  userId: string;
 }
 
 function createBaseCreateUserRequest(): CreateUserRequest {
@@ -895,13 +895,13 @@ export const GetUserResponse = {
 };
 
 function createBaseBlockUserRequest(): BlockUserRequest {
-  return { id: "" };
+  return { userId: "" };
 }
 
 export const BlockUserRequest = {
   encode(message: BlockUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
     }
     return writer;
   },
@@ -914,7 +914,7 @@ export const BlockUserRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.string();
+          message.userId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -925,30 +925,30 @@ export const BlockUserRequest = {
   },
 
   fromJSON(object: any): BlockUserRequest {
-    return { id: isSet(object.id) ? String(object.id) : "" };
+    return { userId: isSet(object.userId) ? String(object.userId) : "" };
   },
 
   toJSON(message: BlockUserRequest): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    message.userId !== undefined && (obj.userId = message.userId);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<BlockUserRequest>, I>>(object: I): BlockUserRequest {
     const message = createBaseBlockUserRequest();
-    message.id = object.id ?? "";
+    message.userId = object.userId ?? "";
     return message;
   },
 };
 
 function createBaseUnblockUserRequest(): UnblockUserRequest {
-  return { id: "" };
+  return { userId: "" };
 }
 
 export const UnblockUserRequest = {
   encode(message: UnblockUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
     }
     return writer;
   },
@@ -961,7 +961,7 @@ export const UnblockUserRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.string();
+          message.userId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -972,30 +972,30 @@ export const UnblockUserRequest = {
   },
 
   fromJSON(object: any): UnblockUserRequest {
-    return { id: isSet(object.id) ? String(object.id) : "" };
+    return { userId: isSet(object.userId) ? String(object.userId) : "" };
   },
 
   toJSON(message: UnblockUserRequest): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    message.userId !== undefined && (obj.userId = message.userId);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<UnblockUserRequest>, I>>(object: I): UnblockUserRequest {
     const message = createBaseUnblockUserRequest();
-    message.id = object.id ?? "";
+    message.userId = object.userId ?? "";
     return message;
   },
 };
 
 function createBaseUnfollowUserRequest(): UnfollowUserRequest {
-  return { id: "" };
+  return { userId: "" };
 }
 
 export const UnfollowUserRequest = {
   encode(message: UnfollowUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
     }
     return writer;
   },
@@ -1008,7 +1008,7 @@ export const UnfollowUserRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.string();
+          message.userId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1019,30 +1019,30 @@ export const UnfollowUserRequest = {
   },
 
   fromJSON(object: any): UnfollowUserRequest {
-    return { id: isSet(object.id) ? String(object.id) : "" };
+    return { userId: isSet(object.userId) ? String(object.userId) : "" };
   },
 
   toJSON(message: UnfollowUserRequest): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    message.userId !== undefined && (obj.userId = message.userId);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<UnfollowUserRequest>, I>>(object: I): UnfollowUserRequest {
     const message = createBaseUnfollowUserRequest();
-    message.id = object.id ?? "";
+    message.userId = object.userId ?? "";
     return message;
   },
 };
 
 function createBaseFollowUserRequest(): FollowUserRequest {
-  return { id: "" };
+  return { userId: "" };
 }
 
 export const FollowUserRequest = {
   encode(message: FollowUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
     }
     return writer;
   },
@@ -1055,7 +1055,7 @@ export const FollowUserRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.string();
+          message.userId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1066,18 +1066,18 @@ export const FollowUserRequest = {
   },
 
   fromJSON(object: any): FollowUserRequest {
-    return { id: isSet(object.id) ? String(object.id) : "" };
+    return { userId: isSet(object.userId) ? String(object.userId) : "" };
   },
 
   toJSON(message: FollowUserRequest): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    message.userId !== undefined && (obj.userId = message.userId);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<FollowUserRequest>, I>>(object: I): FollowUserRequest {
     const message = createBaseFollowUserRequest();
-    message.id = object.id ?? "";
+    message.userId = object.userId ?? "";
     return message;
   },
 };
@@ -1130,13 +1130,13 @@ export const SearchUserRequest = {
 };
 
 function createBaseGetUserRequest(): GetUserRequest {
-  return { id: "" };
+  return { userId: "" };
 }
 
 export const GetUserRequest = {
   encode(message: GetUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
     }
     return writer;
   },
@@ -1149,7 +1149,7 @@ export const GetUserRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.string();
+          message.userId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1160,18 +1160,18 @@ export const GetUserRequest = {
   },
 
   fromJSON(object: any): GetUserRequest {
-    return { id: isSet(object.id) ? String(object.id) : "" };
+    return { userId: isSet(object.userId) ? String(object.userId) : "" };
   },
 
   toJSON(message: GetUserRequest): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    message.userId !== undefined && (obj.userId = message.userId);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<GetUserRequest>, I>>(object: I): GetUserRequest {
     const message = createBaseGetUserRequest();
-    message.id = object.id ?? "";
+    message.userId = object.userId ?? "";
     return message;
   },
 };
@@ -1271,13 +1271,13 @@ export const UpdateUserRequest = {
 };
 
 function createBaseDeleteUserRequest(): DeleteUserRequest {
-  return { id: "" };
+  return { userId: "" };
 }
 
 export const DeleteUserRequest = {
   encode(message: DeleteUserRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
     }
     return writer;
   },
@@ -1290,7 +1290,7 @@ export const DeleteUserRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.string();
+          message.userId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -1301,18 +1301,18 @@ export const DeleteUserRequest = {
   },
 
   fromJSON(object: any): DeleteUserRequest {
-    return { id: isSet(object.id) ? String(object.id) : "" };
+    return { userId: isSet(object.userId) ? String(object.userId) : "" };
   },
 
   toJSON(message: DeleteUserRequest): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    message.userId !== undefined && (obj.userId = message.userId);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<DeleteUserRequest>, I>>(object: I): DeleteUserRequest {
     const message = createBaseDeleteUserRequest();
-    message.id = object.id ?? "";
+    message.userId = object.userId ?? "";
     return message;
   },
 };

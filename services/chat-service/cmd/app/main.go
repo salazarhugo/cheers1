@@ -84,6 +84,7 @@ func serveWs(w http.ResponseWriter, r *http.Request) {
 	}
 	connection := new(Connection)
 	connection.Socket = conn
+
 	go ListenMessages(connection, userID)
 	//go SendMessage(connection)
 }
