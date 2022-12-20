@@ -13,6 +13,7 @@ apis:
   - name: cheers.story.v1.StoryService
   - name: cheers.activity.v1.ActivityService
   - name: cheers.notification.v1.NotificationService
+  - name: cheers.ticket.v1.TicketService
 usage:
   rules:
     # All methods can be called without an API Key.
@@ -57,3 +58,7 @@ backend:
     # Notification Service methods
     - selector: cheers.notification.v1.*
       address: grpcs://notification-service-r3a2dr4u4a-nw.a.run.app
+
+    # Ticket Service methods
+    - selector: cheers.ticket.v1.*
+      address: grpcs://ticket-service-r3a2dr4u4a-nw.a.run.app

@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"crypto/x509"
+	"fmt"
 	"github.com/felixge/httpsnoop"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/account/v1"
@@ -19,6 +20,7 @@ import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/ticket/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"google.golang.org/api/idtoken"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
@@ -55,9 +57,10 @@ func main() {
 
 			jwtPayload := strings.Split(jwt, ".")[1]
 
-			md := metadata.Pairs(
-				"x-apigateway-api-userinfo", jwtPayload,
-				//"authorization", header,
+			md := metadata.New(
+				map[string]string{
+					"x-apigateway-api-userinfo": jwtPayload,
+				},
 			)
 
 			return md
@@ -141,10 +144,17 @@ func clientInterceptor(
 		return status.Errorf(codes.InvalidArgument, "Failed retrieving metadata")
 	}
 
+	option := idtoken.WithCredentialsFile("../../api-gateway-service-account.json")
+	res, err := idtoken.NewTokenSource(ctx, "https://story-service-r3a2dr4u4a-nw.a.run.app", option)
+	token, err := res.Token()
+	md.Delete("authorization")
+
+	md.Set("Authorization", fmt.Sprintf("Bearer %s", token.AccessToken))
+
 	log.Println(md)
 
 	// Calls the invoker to execute RPC
-	err := invoker(ctx, method, req, reply, cc, opts...)
+	err = invoker(ctx, method, req, reply, cc, opts...)
 	// Logic after invoking the invoker
 	log.Printf("Invoked RPC method=%s; Duration=%s; Error=%v", method, time.Since(start), err)
 
