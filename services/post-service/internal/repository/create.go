@@ -24,7 +24,7 @@ func (p *postRepository) CreatePost(
 
 	post.Id = uuid.NewString()
 	post.CreatorId = userID
-	post.CreateTime = int32(time.Now().Unix())
+	post.CreateTime = time.Now().Unix()
 
 	m, err := utils.ProtoToMap(post)
 	if err != nil {

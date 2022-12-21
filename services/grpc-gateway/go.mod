@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/felixge/httpsnoop v1.0.3
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.12.0
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221217195353-8fd7d771cb04
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221220164209-8907ee2c5c87
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221212124142-487686407e9e
 	google.golang.org/grpc v1.50.1
 )
