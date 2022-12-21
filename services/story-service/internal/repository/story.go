@@ -2,8 +2,8 @@ package repository
 
 import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
-	pb "github.com/salazarhugo/cheers1/genproto/cheers/story/v1"
-	storypb "github.com/salazarhugo/cheers1/genproto/cheers/type/story"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/story/v1"
+	storypb "github.com/salazarhugo/cheers1/gen/go/cheers/type/story"
 )
 
 type StoryRepository interface {

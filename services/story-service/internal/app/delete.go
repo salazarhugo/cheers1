@@ -2,7 +2,7 @@ package app
 
 import (
 	"context"
-	pb "github.com/salazarhugo/cheers1/genproto/cheers/story/v1"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/story/v1"
 	"github.com/salazarhugo/cheers1/libs/auth/utils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

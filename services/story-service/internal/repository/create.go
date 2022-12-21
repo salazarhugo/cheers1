@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"github.com/google/uuid"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
-	storypb "github.com/salazarhugo/cheers1/genproto/cheers/type/story"
+	storypb "github.com/salazarhugo/cheers1/gen/go/cheers/type/story"
 	utils "github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/protobuf/encoding/protojson"
-	"google.golang.org/protobuf/types/known/timestamppb"
 	"log"
+	"time"
 )
 
 func (p *storyRepository) CreateStory(
@@ -24,7 +24,7 @@ func (p *storyRepository) CreateStory(
 	}
 
 	story.Id = uuid.NewString()
-	story.CreateTime = timestamppb.Now()
+	story.CreateTime = time.Now().Unix()
 
 	bytes, err := protojson.Marshal(story)
 	if err != nil {
