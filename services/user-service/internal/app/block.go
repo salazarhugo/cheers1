@@ -16,7 +16,7 @@ func (s *Server) BlockUser(
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")
 	}
 
-	err = s.userRepository.BlockUser(userID, request.GetId())
+	err = s.userRepository.BlockUser(userID, request.GetUserId())
 	if err != nil {
 		return nil, err
 	}

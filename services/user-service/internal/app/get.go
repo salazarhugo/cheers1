@@ -17,7 +17,7 @@ func (s *Server) GetUser(
 		return nil, status.Error(codes.Internal, "failed retrieving userID")
 	}
 
-	otherUserID := request.GetId()
+	otherUserID := request.GetUserId()
 
 	response, err := s.userRepository.GetUser(userID, otherUserID)
 	if err != nil {

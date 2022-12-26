@@ -8,9 +8,14 @@ export const protobufPackage = "cheers.user.v1";
 export interface UserEvent {
   create?: CreateUser | undefined;
   follow?: FollowUser | undefined;
+  update?: UpdateUser | undefined;
 }
 
 export interface CreateUser {
+  user: User | undefined;
+}
+
+export interface UpdateUser {
   user: User | undefined;
 }
 
@@ -20,7 +25,7 @@ export interface FollowUser {
 }
 
 function createBaseUserEvent(): UserEvent {
-  return { create: undefined, follow: undefined };
+  return { create: undefined, follow: undefined, update: undefined };
 }
 
 export const UserEvent = {
@@ -30,6 +35,9 @@ export const UserEvent = {
     }
     if (message.follow !== undefined) {
       FollowUser.encode(message.follow, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.update !== undefined) {
+      UpdateUser.encode(message.update, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -47,6 +55,9 @@ export const UserEvent = {
         case 2:
           message.follow = FollowUser.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.update = UpdateUser.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -59,6 +70,7 @@ export const UserEvent = {
     return {
       create: isSet(object.create) ? CreateUser.fromJSON(object.create) : undefined,
       follow: isSet(object.follow) ? FollowUser.fromJSON(object.follow) : undefined,
+      update: isSet(object.update) ? UpdateUser.fromJSON(object.update) : undefined,
     };
   },
 
@@ -66,6 +78,7 @@ export const UserEvent = {
     const obj: any = {};
     message.create !== undefined && (obj.create = message.create ? CreateUser.toJSON(message.create) : undefined);
     message.follow !== undefined && (obj.follow = message.follow ? FollowUser.toJSON(message.follow) : undefined);
+    message.update !== undefined && (obj.update = message.update ? UpdateUser.toJSON(message.update) : undefined);
     return obj;
   },
 
@@ -76,6 +89,9 @@ export const UserEvent = {
       : undefined;
     message.follow = (object.follow !== undefined && object.follow !== null)
       ? FollowUser.fromPartial(object.follow)
+      : undefined;
+    message.update = (object.update !== undefined && object.update !== null)
+      ? UpdateUser.fromPartial(object.update)
       : undefined;
     return message;
   },
@@ -123,6 +139,53 @@ export const CreateUser = {
 
   fromPartial<I extends Exact<DeepPartial<CreateUser>, I>>(object: I): CreateUser {
     const message = createBaseCreateUser();
+    message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
+    return message;
+  },
+};
+
+function createBaseUpdateUser(): UpdateUser {
+  return { user: undefined };
+}
+
+export const UpdateUser = {
+  encode(message: UpdateUser, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.user !== undefined) {
+      User.encode(message.user, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): UpdateUser {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUpdateUser();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.user = User.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UpdateUser {
+    return { user: isSet(object.user) ? User.fromJSON(object.user) : undefined };
+  },
+
+  toJSON(message: UpdateUser): unknown {
+    const obj: any = {};
+    message.user !== undefined && (obj.user = message.user ? User.toJSON(message.user) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UpdateUser>, I>>(object: I): UpdateUser {
+    const message = createBaseUpdateUser();
     message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
     return message;
   },

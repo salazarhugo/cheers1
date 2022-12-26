@@ -7,6 +7,7 @@ import (
 
 func (cache *redisCache) UpdateUser(user *user.User) error {
 	err := cache.client.HSet(context.Background(), getKeyUser(user.Id), map[string]interface{}{
+		"id":       user.Id,
 		"name":     user.Name,
 		"username": user.Username,
 		"picture":  user.Picture,

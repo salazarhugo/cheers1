@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/gommon/log"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
+	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -26,5 +27,13 @@ func (s *Server) UpdateUser(
 
 	result, err := s.userRepository.GetUser(userID, userID)
 
-	return result.GetUser(), nil
+	err = pubsub.PublishProtoWithBinaryEncoding("user-topic", &pb.UserEvent{
+		Event: &pb.UserEvent_Update{
+			Update: &pb.UpdateUser{
+				User: result.User,
+			},
+		},
+	})
+
+	return result.User, err
 }

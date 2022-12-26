@@ -16,7 +16,7 @@ func (s *Server) UnblockUser(
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")
 	}
 
-	err = s.userRepository.UnblockUser(userID, request.GetId())
+	err = s.userRepository.UnblockUser(userID, request.UserId)
 	if err != nil {
 		return nil, err
 	}
