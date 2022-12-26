@@ -130,6 +130,20 @@ export function messageTypeToJSON(object: MessageType): string {
   }
 }
 
+export interface PinRoomRequest {
+  roomId: string;
+}
+
+export interface PinRoomResponse {
+}
+
+export interface UnPinRoomResponse {
+}
+
+export interface UnPinRoomRequest {
+  roomId: string;
+}
+
 export interface SendMessageRequest {
   text: string;
   roomId: string;
@@ -363,6 +377,178 @@ export interface MessageItem {
   sender: boolean;
   liked: boolean;
 }
+
+function createBasePinRoomRequest(): PinRoomRequest {
+  return { roomId: "" };
+}
+
+export const PinRoomRequest = {
+  encode(message: PinRoomRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.roomId !== "") {
+      writer.uint32(10).string(message.roomId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): PinRoomRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePinRoomRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.roomId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): PinRoomRequest {
+    return { roomId: isSet(object.roomId) ? String(object.roomId) : "" };
+  },
+
+  toJSON(message: PinRoomRequest): unknown {
+    const obj: any = {};
+    message.roomId !== undefined && (obj.roomId = message.roomId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<PinRoomRequest>, I>>(object: I): PinRoomRequest {
+    const message = createBasePinRoomRequest();
+    message.roomId = object.roomId ?? "";
+    return message;
+  },
+};
+
+function createBasePinRoomResponse(): PinRoomResponse {
+  return {};
+}
+
+export const PinRoomResponse = {
+  encode(_: PinRoomResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): PinRoomResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBasePinRoomResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): PinRoomResponse {
+    return {};
+  },
+
+  toJSON(_: PinRoomResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<PinRoomResponse>, I>>(_: I): PinRoomResponse {
+    const message = createBasePinRoomResponse();
+    return message;
+  },
+};
+
+function createBaseUnPinRoomResponse(): UnPinRoomResponse {
+  return {};
+}
+
+export const UnPinRoomResponse = {
+  encode(_: UnPinRoomResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): UnPinRoomResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUnPinRoomResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): UnPinRoomResponse {
+    return {};
+  },
+
+  toJSON(_: UnPinRoomResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UnPinRoomResponse>, I>>(_: I): UnPinRoomResponse {
+    const message = createBaseUnPinRoomResponse();
+    return message;
+  },
+};
+
+function createBaseUnPinRoomRequest(): UnPinRoomRequest {
+  return { roomId: "" };
+}
+
+export const UnPinRoomRequest = {
+  encode(message: UnPinRoomRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.roomId !== "") {
+      writer.uint32(10).string(message.roomId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): UnPinRoomRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseUnPinRoomRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.roomId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): UnPinRoomRequest {
+    return { roomId: isSet(object.roomId) ? String(object.roomId) : "" };
+  },
+
+  toJSON(message: UnPinRoomRequest): unknown {
+    const obj: any = {};
+    message.roomId !== undefined && (obj.roomId = message.roomId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<UnPinRoomRequest>, I>>(object: I): UnPinRoomRequest {
+    const message = createBaseUnPinRoomRequest();
+    message.roomId = object.roomId ?? "";
+    return message;
+  },
+};
 
 function createBaseSendMessageRequest(): SendMessageRequest {
   return { text: "", roomId: "", replyTo: "", clientId: "" };
@@ -2117,6 +2303,8 @@ export interface ChatService {
   ListMembers(request: ListMembersRequest): Promise<ListMembersResponse>;
   LeaveRoom(request: RoomId): Promise<Empty>;
   SendMessage(request: SendMessageRequest): Promise<SendMessageResponse>;
+  PinRoom(request: PinRoomRequest): Promise<PinRoomResponse>;
+  UnPinRoom(request: UnPinRoomRequest): Promise<UnPinRoomResponse>;
   LikeMessage(request: LikeMessageReq): Promise<Empty>;
   UnlikeMessage(request: LikeMessageReq): Promise<Empty>;
   TypingChannel(request: Observable<TypingEvent>): Observable<TypingEvent>;
@@ -2141,6 +2329,8 @@ export class ChatServiceClientImpl implements ChatService {
     this.ListMembers = this.ListMembers.bind(this);
     this.LeaveRoom = this.LeaveRoom.bind(this);
     this.SendMessage = this.SendMessage.bind(this);
+    this.PinRoom = this.PinRoom.bind(this);
+    this.UnPinRoom = this.UnPinRoom.bind(this);
     this.LikeMessage = this.LikeMessage.bind(this);
     this.UnlikeMessage = this.UnlikeMessage.bind(this);
     this.TypingChannel = this.TypingChannel.bind(this);
@@ -2201,6 +2391,18 @@ export class ChatServiceClientImpl implements ChatService {
     const data = SendMessageRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "SendMessage", data);
     return promise.then((data) => SendMessageResponse.decode(new _m0.Reader(data)));
+  }
+
+  PinRoom(request: PinRoomRequest): Promise<PinRoomResponse> {
+    const data = PinRoomRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "PinRoom", data);
+    return promise.then((data) => PinRoomResponse.decode(new _m0.Reader(data)));
+  }
+
+  UnPinRoom(request: UnPinRoomRequest): Promise<UnPinRoomResponse> {
+    const data = UnPinRoomRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "UnPinRoom", data);
+    return promise.then((data) => UnPinRoomResponse.decode(new _m0.Reader(data)));
   }
 
   LikeMessage(request: LikeMessageReq): Promise<Empty> {

@@ -42,7 +42,7 @@ func (p *userRepository) FollowUser(
 
 	err = pubsub.PublishProtoWithBinaryEncoding("user-topic", &user.UserEvent{
 		Event: &user.UserEvent_Follow{
-			&user.FollowUser{
+			Follow: &user.FollowUser{
 				User:         currentUser,
 				FollowedUser: otherUser,
 			},

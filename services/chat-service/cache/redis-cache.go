@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"github.com/go-redis/redis/v9"
 	"github.com/google/uuid"
-	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -17,6 +16,7 @@ import (
 )
 
 const (
+	keyUser                = "user"
 	keyRoomUsers           = "roomUsers"
 	keyRoom                = "room"
 	keyRoomSeen            = "roomSeen"
@@ -247,41 +247,19 @@ func (cache *redisCache) GetOtherUserId(
 	return members[0], nil
 }
 
-func (cache *redisCache) GetUser(userId string) (interface{}, error) {
-	driver, err := neo4j.NewDriver(
-		"neo4j+s://528a253a.databases.neo4j.io:7687",
-		neo4j.BasicAuth("neo4j", "XRoQ6Lmz9QlFFTcwCWIWwR1o88hLfzV_HnP9mzDJuwc", ""))
-
-	if err != nil {
-		return nil, err
-	}
-
-	defer driver.Close()
-
-	session := driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
-	defer session.Close()
-
-	user, err := session.ReadTransaction(func(transaction neo4j.Transaction) (interface{}, error) {
-		result, err := transaction.Run(
-			`MATCH (u:User { id: $userId })
-					RETURN properties(u)`,
-			map[string]interface{}{"userId": userId})
-		if err != nil {
-			return nil, err
-		}
-
-		if result.Next() {
-			return result.Record().Values[0], nil
-		}
-
-		return nil, result.Err()
-	})
-
+func (cache *redisCache) GetUser(
+	userId string,
+) (map[string]string, error) {
+	user, err := cache.client.HGetAll(context.Background(), getKeyUser(userId)).Result()
 	if err != nil {
 		return nil, err
 	}
 
 	return user, nil
+}
+
+func getKeyUser(userUUID string) string {
+	return fmt.Sprintf("%s:%s", keyUser, userUUID)
 }
 
 func getKeyRoomSeen(roomUUID string) string {
@@ -448,25 +426,23 @@ func (cache *redisCache) GetRoomWithId(
 		user, err := cache.GetUser(otherUserId)
 
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
 
 		if user == nil {
 			room.Name = "User not found"
 		} else {
-			userMap := user.(map[string]interface{})
-
-			name, ok := userMap["name"].(string)
+			name, ok := user["name"]
 			if ok {
 				room.Name = name
 			}
-			pp, ok := userMap["picture"].(string)
+			pp, ok := user["picture"]
 			if ok {
 				room.Picture = pp
 			}
-			verified, ok := userMap["verified"].(bool)
+			verified, ok := user["verified"]
 			if ok {
-				room.Verified = verified
+				room.Verified = verified == "true"
 			}
 		}
 	}

@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/go-redis/redis/v9"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	"time"
 )
 
@@ -20,7 +21,8 @@ type RoomCache interface {
 	GetRoomWithId(userId string, roomId string) (*pb.Room, error)
 	ListRoomWithMessages(userId string) []*pb.RoomWithMessages
 	GetRoomMembers(roomId string) []string
-	GetUser(userId string) (interface{}, error)
+	GetUser(userId string) (map[string]string, error)
+	UpdateUser(user *user.User) error
 	DeleteTokens(userId string) int64
 	AddToken(userId string, token string)
 	GetTokens(userId string) []string

@@ -31,6 +31,8 @@ type ChatServiceClient interface {
 	ListMembers(ctx context.Context, in *ListMembersRequest, opts ...grpc.CallOption) (*ListMembersResponse, error)
 	LeaveRoom(ctx context.Context, in *RoomId, opts ...grpc.CallOption) (*Empty, error)
 	SendMessage(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*SendMessageResponse, error)
+	PinRoom(ctx context.Context, in *PinRoomRequest, opts ...grpc.CallOption) (*PinRoomResponse, error)
+	UnPinRoom(ctx context.Context, in *UnPinRoomRequest, opts ...grpc.CallOption) (*UnPinRoomResponse, error)
 	LikeMessage(ctx context.Context, in *LikeMessageReq, opts ...grpc.CallOption) (*Empty, error)
 	UnlikeMessage(ctx context.Context, in *LikeMessageReq, opts ...grpc.CallOption) (*Empty, error)
 	TypingChannel(ctx context.Context, opts ...grpc.CallOption) (ChatService_TypingChannelClient, error)
@@ -152,6 +154,24 @@ func (c *chatServiceClient) SendMessage(ctx context.Context, in *SendMessageRequ
 	return out, nil
 }
 
+func (c *chatServiceClient) PinRoom(ctx context.Context, in *PinRoomRequest, opts ...grpc.CallOption) (*PinRoomResponse, error) {
+	out := new(PinRoomResponse)
+	err := c.cc.Invoke(ctx, "/cheers.chat.v1.ChatService/PinRoom", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chatServiceClient) UnPinRoom(ctx context.Context, in *UnPinRoomRequest, opts ...grpc.CallOption) (*UnPinRoomResponse, error) {
+	out := new(UnPinRoomResponse)
+	err := c.cc.Invoke(ctx, "/cheers.chat.v1.ChatService/UnPinRoom", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *chatServiceClient) LikeMessage(ctx context.Context, in *LikeMessageReq, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, "/cheers.chat.v1.ChatService/LikeMessage", in, out, opts...)
@@ -250,6 +270,8 @@ type ChatServiceServer interface {
 	ListMembers(context.Context, *ListMembersRequest) (*ListMembersResponse, error)
 	LeaveRoom(context.Context, *RoomId) (*Empty, error)
 	SendMessage(context.Context, *SendMessageRequest) (*SendMessageResponse, error)
+	PinRoom(context.Context, *PinRoomRequest) (*PinRoomResponse, error)
+	UnPinRoom(context.Context, *UnPinRoomRequest) (*UnPinRoomResponse, error)
 	LikeMessage(context.Context, *LikeMessageReq) (*Empty, error)
 	UnlikeMessage(context.Context, *LikeMessageReq) (*Empty, error)
 	TypingChannel(ChatService_TypingChannelServer) error
@@ -290,6 +312,12 @@ func (UnimplementedChatServiceServer) LeaveRoom(context.Context, *RoomId) (*Empt
 }
 func (UnimplementedChatServiceServer) SendMessage(context.Context, *SendMessageRequest) (*SendMessageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendMessage not implemented")
+}
+func (UnimplementedChatServiceServer) PinRoom(context.Context, *PinRoomRequest) (*PinRoomResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PinRoom not implemented")
+}
+func (UnimplementedChatServiceServer) UnPinRoom(context.Context, *UnPinRoomRequest) (*UnPinRoomResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnPinRoom not implemented")
 }
 func (UnimplementedChatServiceServer) LikeMessage(context.Context, *LikeMessageReq) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LikeMessage not implemented")
@@ -490,6 +518,42 @@ func _ChatService_SendMessage_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ChatService_PinRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PinRoomRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).PinRoom(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.chat.v1.ChatService/PinRoom",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).PinRoom(ctx, req.(*PinRoomRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChatService_UnPinRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UnPinRoomRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).UnPinRoom(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.chat.v1.ChatService/UnPinRoom",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).UnPinRoom(ctx, req.(*UnPinRoomRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ChatService_LikeMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(LikeMessageReq)
 	if err := dec(in); err != nil {
@@ -662,6 +726,14 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SendMessage",
 			Handler:    _ChatService_SendMessage_Handler,
+		},
+		{
+			MethodName: "PinRoom",
+			Handler:    _ChatService_PinRoom_Handler,
+		},
+		{
+			MethodName: "UnPinRoom",
+			Handler:    _ChatService_UnPinRoom_Handler,
 		},
 		{
 			MethodName: "LikeMessage",

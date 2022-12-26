@@ -215,7 +215,7 @@ func (x TypingEvent_Type) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TypingEvent_Type.Descriptor instead.
 func (TypingEvent_Type) EnumDescriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{6, 0}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{10, 0}
 }
 
 type Message_Status int32
@@ -270,7 +270,177 @@ func (x Message_Status) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use Message_Status.Descriptor instead.
 func (Message_Status) EnumDescriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{25, 0}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{29, 0}
+}
+
+type PinRoomRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	RoomId string `protobuf:"bytes,1,opt,name=room_id,json=roomId,proto3" json:"room_id,omitempty"`
+}
+
+func (x *PinRoomRequest) Reset() {
+	*x = PinRoomRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[0]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PinRoomRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PinRoomRequest) ProtoMessage() {}
+
+func (x *PinRoomRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[0]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PinRoomRequest.ProtoReflect.Descriptor instead.
+func (*PinRoomRequest) Descriptor() ([]byte, []int) {
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *PinRoomRequest) GetRoomId() string {
+	if x != nil {
+		return x.RoomId
+	}
+	return ""
+}
+
+type PinRoomResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *PinRoomResponse) Reset() {
+	*x = PinRoomResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *PinRoomResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PinRoomResponse) ProtoMessage() {}
+
+func (x *PinRoomResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PinRoomResponse.ProtoReflect.Descriptor instead.
+func (*PinRoomResponse) Descriptor() ([]byte, []int) {
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{1}
+}
+
+type UnPinRoomResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *UnPinRoomResponse) Reset() {
+	*x = UnPinRoomResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UnPinRoomResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UnPinRoomResponse) ProtoMessage() {}
+
+func (x *UnPinRoomResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UnPinRoomResponse.ProtoReflect.Descriptor instead.
+func (*UnPinRoomResponse) Descriptor() ([]byte, []int) {
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{2}
+}
+
+type UnPinRoomRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	RoomId string `protobuf:"bytes,1,opt,name=room_id,json=roomId,proto3" json:"room_id,omitempty"`
+}
+
+func (x *UnPinRoomRequest) Reset() {
+	*x = UnPinRoomRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UnPinRoomRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UnPinRoomRequest) ProtoMessage() {}
+
+func (x *UnPinRoomRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UnPinRoomRequest.ProtoReflect.Descriptor instead.
+func (*UnPinRoomRequest) Descriptor() ([]byte, []int) {
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *UnPinRoomRequest) GetRoomId() string {
+	if x != nil {
+		return x.RoomId
+	}
+	return ""
 }
 
 type SendMessageRequest struct {
@@ -287,7 +457,7 @@ type SendMessageRequest struct {
 func (x *SendMessageRequest) Reset() {
 	*x = SendMessageRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[0]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -300,7 +470,7 @@ func (x *SendMessageRequest) String() string {
 func (*SendMessageRequest) ProtoMessage() {}
 
 func (x *SendMessageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[0]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -313,7 +483,7 @@ func (x *SendMessageRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendMessageRequest.ProtoReflect.Descriptor instead.
 func (*SendMessageRequest) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{0}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *SendMessageRequest) GetText() string {
@@ -355,7 +525,7 @@ type SendMessageResponse struct {
 func (x *SendMessageResponse) Reset() {
 	*x = SendMessageResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[1]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -368,7 +538,7 @@ func (x *SendMessageResponse) String() string {
 func (*SendMessageResponse) ProtoMessage() {}
 
 func (x *SendMessageResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[1]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -381,7 +551,7 @@ func (x *SendMessageResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendMessageResponse.ProtoReflect.Descriptor instead.
 func (*SendMessageResponse) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{1}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *SendMessageResponse) GetMessage() *Message {
@@ -403,7 +573,7 @@ type GetInboxRequest struct {
 func (x *GetInboxRequest) Reset() {
 	*x = GetInboxRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[2]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -416,7 +586,7 @@ func (x *GetInboxRequest) String() string {
 func (*GetInboxRequest) ProtoMessage() {}
 
 func (x *GetInboxRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[2]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -429,7 +599,7 @@ func (x *GetInboxRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetInboxRequest.ProtoReflect.Descriptor instead.
 func (*GetInboxRequest) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{2}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *GetInboxRequest) GetPage() int32 {
@@ -457,7 +627,7 @@ type GetInboxResponse struct {
 func (x *GetInboxResponse) Reset() {
 	*x = GetInboxResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[3]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -470,7 +640,7 @@ func (x *GetInboxResponse) String() string {
 func (*GetInboxResponse) ProtoMessage() {}
 
 func (x *GetInboxResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[3]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -483,7 +653,7 @@ func (x *GetInboxResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetInboxResponse.ProtoReflect.Descriptor instead.
 func (*GetInboxResponse) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{3}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *GetInboxResponse) GetInbox() []*RoomWithMessages {
@@ -504,7 +674,7 @@ type DeleteRoomRequest struct {
 func (x *DeleteRoomRequest) Reset() {
 	*x = DeleteRoomRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[4]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -517,7 +687,7 @@ func (x *DeleteRoomRequest) String() string {
 func (*DeleteRoomRequest) ProtoMessage() {}
 
 func (x *DeleteRoomRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[4]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -530,7 +700,7 @@ func (x *DeleteRoomRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteRoomRequest.ProtoReflect.Descriptor instead.
 func (*DeleteRoomRequest) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{4}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *DeleteRoomRequest) GetRoomId() string {
@@ -549,7 +719,7 @@ type DeleteRoomResponse struct {
 func (x *DeleteRoomResponse) Reset() {
 	*x = DeleteRoomResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[5]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -562,7 +732,7 @@ func (x *DeleteRoomResponse) String() string {
 func (*DeleteRoomResponse) ProtoMessage() {}
 
 func (x *DeleteRoomResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[5]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -575,7 +745,7 @@ func (x *DeleteRoomResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteRoomResponse.ProtoReflect.Descriptor instead.
 func (*DeleteRoomResponse) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{5}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{9}
 }
 
 type TypingEvent struct {
@@ -591,7 +761,7 @@ type TypingEvent struct {
 func (x *TypingEvent) Reset() {
 	*x = TypingEvent{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[6]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -604,7 +774,7 @@ func (x *TypingEvent) String() string {
 func (*TypingEvent) ProtoMessage() {}
 
 func (x *TypingEvent) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[6]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -617,7 +787,7 @@ func (x *TypingEvent) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TypingEvent.ProtoReflect.Descriptor instead.
 func (*TypingEvent) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{6}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *TypingEvent) GetRoomId() string {
@@ -653,7 +823,7 @@ type CreateRoomRequest struct {
 func (x *CreateRoomRequest) Reset() {
 	*x = CreateRoomRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[7]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -666,7 +836,7 @@ func (x *CreateRoomRequest) String() string {
 func (*CreateRoomRequest) ProtoMessage() {}
 
 func (x *CreateRoomRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[7]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -679,7 +849,7 @@ func (x *CreateRoomRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateRoomRequest.ProtoReflect.Descriptor instead.
 func (*CreateRoomRequest) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{7}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *CreateRoomRequest) GetGroupName() string {
@@ -707,7 +877,7 @@ type CreateRoomResponse struct {
 func (x *CreateRoomResponse) Reset() {
 	*x = CreateRoomResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[8]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -720,7 +890,7 @@ func (x *CreateRoomResponse) String() string {
 func (*CreateRoomResponse) ProtoMessage() {}
 
 func (x *CreateRoomResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[8]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -733,7 +903,7 @@ func (x *CreateRoomResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateRoomResponse.ProtoReflect.Descriptor instead.
 func (*CreateRoomResponse) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{8}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *CreateRoomResponse) GetRoom() *Room {
@@ -756,7 +926,7 @@ type ListRoomMessagesRequest struct {
 func (x *ListRoomMessagesRequest) Reset() {
 	*x = ListRoomMessagesRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[9]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -769,7 +939,7 @@ func (x *ListRoomMessagesRequest) String() string {
 func (*ListRoomMessagesRequest) ProtoMessage() {}
 
 func (x *ListRoomMessagesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[9]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -782,7 +952,7 @@ func (x *ListRoomMessagesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRoomMessagesRequest.ProtoReflect.Descriptor instead.
 func (*ListRoomMessagesRequest) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{9}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ListRoomMessagesRequest) GetRoomId() string {
@@ -817,7 +987,7 @@ type ListRoomMessagesResponse struct {
 func (x *ListRoomMessagesResponse) Reset() {
 	*x = ListRoomMessagesResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[10]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -830,7 +1000,7 @@ func (x *ListRoomMessagesResponse) String() string {
 func (*ListRoomMessagesResponse) ProtoMessage() {}
 
 func (x *ListRoomMessagesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[10]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -843,7 +1013,7 @@ func (x *ListRoomMessagesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRoomMessagesResponse.ProtoReflect.Descriptor instead.
 func (*ListRoomMessagesResponse) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{10}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *ListRoomMessagesResponse) GetMessages() []*MessageItem {
@@ -865,7 +1035,7 @@ type ListRoomRequest struct {
 func (x *ListRoomRequest) Reset() {
 	*x = ListRoomRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[11]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -878,7 +1048,7 @@ func (x *ListRoomRequest) String() string {
 func (*ListRoomRequest) ProtoMessage() {}
 
 func (x *ListRoomRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[11]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -891,7 +1061,7 @@ func (x *ListRoomRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRoomRequest.ProtoReflect.Descriptor instead.
 func (*ListRoomRequest) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{11}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ListRoomRequest) GetPageSize() int32 {
@@ -919,7 +1089,7 @@ type ListRoomResponse struct {
 func (x *ListRoomResponse) Reset() {
 	*x = ListRoomResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[12]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -932,7 +1102,7 @@ func (x *ListRoomResponse) String() string {
 func (*ListRoomResponse) ProtoMessage() {}
 
 func (x *ListRoomResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[12]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -945,7 +1115,7 @@ func (x *ListRoomResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRoomResponse.ProtoReflect.Descriptor instead.
 func (*ListRoomResponse) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{12}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *ListRoomResponse) GetRooms() []*Room {
@@ -968,7 +1138,7 @@ type ListMembersRequest struct {
 func (x *ListMembersRequest) Reset() {
 	*x = ListMembersRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[13]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -981,7 +1151,7 @@ func (x *ListMembersRequest) String() string {
 func (*ListMembersRequest) ProtoMessage() {}
 
 func (x *ListMembersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[13]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -994,7 +1164,7 @@ func (x *ListMembersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMembersRequest.ProtoReflect.Descriptor instead.
 func (*ListMembersRequest) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{13}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *ListMembersRequest) GetRoomId() string {
@@ -1029,7 +1199,7 @@ type ListMembersResponse struct {
 func (x *ListMembersResponse) Reset() {
 	*x = ListMembersResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[14]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1042,7 +1212,7 @@ func (x *ListMembersResponse) String() string {
 func (*ListMembersResponse) ProtoMessage() {}
 
 func (x *ListMembersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[14]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1055,7 +1225,7 @@ func (x *ListMembersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMembersResponse.ProtoReflect.Descriptor instead.
 func (*ListMembersResponse) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{14}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *ListMembersResponse) GetUsers() []*user.UserItem {
@@ -1076,7 +1246,7 @@ type UserIdReq struct {
 func (x *UserIdReq) Reset() {
 	*x = UserIdReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[15]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1089,7 +1259,7 @@ func (x *UserIdReq) String() string {
 func (*UserIdReq) ProtoMessage() {}
 
 func (x *UserIdReq) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[15]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1102,7 +1272,7 @@ func (x *UserIdReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserIdReq.ProtoReflect.Descriptor instead.
 func (*UserIdReq) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{15}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *UserIdReq) GetUserId() string {
@@ -1121,7 +1291,7 @@ type Empty struct {
 func (x *Empty) Reset() {
 	*x = Empty{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[16]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1134,7 +1304,7 @@ func (x *Empty) String() string {
 func (*Empty) ProtoMessage() {}
 
 func (x *Empty) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[16]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1147,7 +1317,7 @@ func (x *Empty) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Empty.ProtoReflect.Descriptor instead.
 func (*Empty) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{16}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{20}
 }
 
 type AddTokenReq struct {
@@ -1161,7 +1331,7 @@ type AddTokenReq struct {
 func (x *AddTokenReq) Reset() {
 	*x = AddTokenReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[17]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1174,7 +1344,7 @@ func (x *AddTokenReq) String() string {
 func (*AddTokenReq) ProtoMessage() {}
 
 func (x *AddTokenReq) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[17]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1187,7 +1357,7 @@ func (x *AddTokenReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AddTokenReq.ProtoReflect.Descriptor instead.
 func (*AddTokenReq) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{17}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *AddTokenReq) GetToken() string {
@@ -1210,7 +1380,7 @@ type TypingReq struct {
 func (x *TypingReq) Reset() {
 	*x = TypingReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[18]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1223,7 +1393,7 @@ func (x *TypingReq) String() string {
 func (*TypingReq) ProtoMessage() {}
 
 func (x *TypingReq) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[18]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1236,7 +1406,7 @@ func (x *TypingReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TypingReq.ProtoReflect.Descriptor instead.
 func (*TypingReq) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{18}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *TypingReq) GetRoomId() string {
@@ -1271,7 +1441,7 @@ type JoinRoomRequest struct {
 func (x *JoinRoomRequest) Reset() {
 	*x = JoinRoomRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[19]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1284,7 +1454,7 @@ func (x *JoinRoomRequest) String() string {
 func (*JoinRoomRequest) ProtoMessage() {}
 
 func (x *JoinRoomRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[19]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1297,7 +1467,7 @@ func (x *JoinRoomRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JoinRoomRequest.ProtoReflect.Descriptor instead.
 func (*JoinRoomRequest) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{19}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *JoinRoomRequest) GetRoomId() string {
@@ -1318,7 +1488,7 @@ type RoomId struct {
 func (x *RoomId) Reset() {
 	*x = RoomId{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[20]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[24]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1331,7 +1501,7 @@ func (x *RoomId) String() string {
 func (*RoomId) ProtoMessage() {}
 
 func (x *RoomId) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[20]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[24]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1344,7 +1514,7 @@ func (x *RoomId) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoomId.ProtoReflect.Descriptor instead.
 func (*RoomId) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{20}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *RoomId) GetRoomId() string {
@@ -1365,7 +1535,7 @@ type GetRoomIdReq struct {
 func (x *GetRoomIdReq) Reset() {
 	*x = GetRoomIdReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[21]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[25]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1378,7 +1548,7 @@ func (x *GetRoomIdReq) String() string {
 func (*GetRoomIdReq) ProtoMessage() {}
 
 func (x *GetRoomIdReq) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[21]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[25]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1391,7 +1561,7 @@ func (x *GetRoomIdReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRoomIdReq.ProtoReflect.Descriptor instead.
 func (*GetRoomIdReq) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{21}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *GetRoomIdReq) GetRecipientId() string {
@@ -1413,7 +1583,7 @@ type RoomWithMessages struct {
 func (x *RoomWithMessages) Reset() {
 	*x = RoomWithMessages{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[22]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[26]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1426,7 +1596,7 @@ func (x *RoomWithMessages) String() string {
 func (*RoomWithMessages) ProtoMessage() {}
 
 func (x *RoomWithMessages) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[22]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[26]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1439,7 +1609,7 @@ func (x *RoomWithMessages) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RoomWithMessages.ProtoReflect.Descriptor instead.
 func (*RoomWithMessages) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{22}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *RoomWithMessages) GetRoom() *Room {
@@ -1482,7 +1652,7 @@ type Room struct {
 func (x *Room) Reset() {
 	*x = Room{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[23]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[27]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1495,7 +1665,7 @@ func (x *Room) String() string {
 func (*Room) ProtoMessage() {}
 
 func (x *Room) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[23]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[27]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1508,7 +1678,7 @@ func (x *Room) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Room.ProtoReflect.Descriptor instead.
 func (*Room) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{23}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *Room) GetId() string {
@@ -1635,7 +1805,7 @@ type LikeMessageReq struct {
 func (x *LikeMessageReq) Reset() {
 	*x = LikeMessageReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[24]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[28]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1648,7 +1818,7 @@ func (x *LikeMessageReq) String() string {
 func (*LikeMessageReq) ProtoMessage() {}
 
 func (x *LikeMessageReq) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[24]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[28]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1661,7 +1831,7 @@ func (x *LikeMessageReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LikeMessageReq.ProtoReflect.Descriptor instead.
 func (*LikeMessageReq) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{24}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *LikeMessageReq) GetRoomId() string {
@@ -1700,7 +1870,7 @@ type Message struct {
 func (x *Message) Reset() {
 	*x = Message{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[25]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[29]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1713,7 +1883,7 @@ func (x *Message) String() string {
 func (*Message) ProtoMessage() {}
 
 func (x *Message) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[25]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[29]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1726,7 +1896,7 @@ func (x *Message) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Message.ProtoReflect.Descriptor instead.
 func (*Message) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{25}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *Message) GetId() string {
@@ -1826,7 +1996,7 @@ type MessageItem struct {
 func (x *MessageItem) Reset() {
 	*x = MessageItem{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[26]
+		mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[30]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1839,7 +2009,7 @@ func (x *MessageItem) String() string {
 func (*MessageItem) ProtoMessage() {}
 
 func (x *MessageItem) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[26]
+	mi := &file_cheers_chat_v1_chat_service_proto_msgTypes[30]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1852,7 +2022,7 @@ func (x *MessageItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MessageItem.ProtoReflect.Descriptor instead.
 func (*MessageItem) Descriptor() ([]byte, []int) {
-	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{26}
+	return file_cheers_chat_v1_chat_service_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *MessageItem) GetMessage() *Message {
@@ -1885,7 +2055,15 @@ var file_cheers_chat_v1_chat_service_proto_rawDesc = []byte{
 	0x2e, 0x76, 0x31, 0x1a, 0x1b, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2f, 0x74, 0x79, 0x70, 0x65,
 	0x2f, 0x75, 0x73, 0x65, 0x72, 0x2f, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f,
 	0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x61, 0x6e, 0x6e,
-	0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x79,
+	0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x29,
+	0x0a, 0x0e, 0x50, 0x69, 0x6e, 0x52, 0x6f, 0x6f, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x12, 0x17, 0x0a, 0x07, 0x72, 0x6f, 0x6f, 0x6d, 0x5f, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x06, 0x72, 0x6f, 0x6f, 0x6d, 0x49, 0x64, 0x22, 0x11, 0x0a, 0x0f, 0x50, 0x69, 0x6e,
+	0x52, 0x6f, 0x6f, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x13, 0x0a, 0x11,
+	0x55, 0x6e, 0x50, 0x69, 0x6e, 0x52, 0x6f, 0x6f, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x22, 0x2b, 0x0a, 0x10, 0x55, 0x6e, 0x50, 0x69, 0x6e, 0x52, 0x6f, 0x6f, 0x6d, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x17, 0x0a, 0x07, 0x72, 0x6f, 0x6f, 0x6d, 0x5f, 0x69, 0x64,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x72, 0x6f, 0x6f, 0x6d, 0x49, 0x64, 0x22, 0x79,
 	0x0a, 0x12, 0x53, 0x65, 0x6e, 0x64, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71,
 	0x75, 0x65, 0x73, 0x74, 0x12, 0x12, 0x0a, 0x04, 0x74, 0x65, 0x78, 0x74, 0x18, 0x01, 0x20, 0x01,
 	0x28, 0x09, 0x52, 0x04, 0x74, 0x65, 0x78, 0x74, 0x12, 0x17, 0x0a, 0x07, 0x72, 0x6f, 0x6f, 0x6d,
@@ -2073,14 +2251,14 @@ var file_cheers_chat_v1_chat_service_proto_rawDesc = []byte{
 	0x55, 0x50, 0x10, 0x01, 0x2a, 0x2d, 0x0a, 0x0b, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x54,
 	0x79, 0x70, 0x65, 0x12, 0x08, 0x0a, 0x04, 0x54, 0x45, 0x58, 0x54, 0x10, 0x00, 0x12, 0x09, 0x0a,
 	0x05, 0x49, 0x4d, 0x41, 0x47, 0x45, 0x10, 0x01, 0x12, 0x09, 0x0a, 0x05, 0x56, 0x49, 0x44, 0x45,
-	0x4f, 0x10, 0x02, 0x32, 0xef, 0x0a, 0x0a, 0x0b, 0x43, 0x68, 0x61, 0x74, 0x53, 0x65, 0x72, 0x76,
+	0x4f, 0x10, 0x02, 0x32, 0xd7, 0x0c, 0x0a, 0x0b, 0x43, 0x68, 0x61, 0x74, 0x53, 0x65, 0x72, 0x76,
 	0x69, 0x63, 0x65, 0x12, 0x69, 0x0a, 0x0a, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x6f, 0x6f,
 	0x6d, 0x12, 0x21, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e,
 	0x76, 0x31, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x6f, 0x6f, 0x6d, 0x52, 0x65, 0x71,
 	0x75, 0x65, 0x73, 0x74, 0x1a, 0x22, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x68,
 	0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x6f, 0x6f, 0x6d,
 	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x14, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x0e,
-	0x22, 0x09, 0x2f, 0x76, 0x31, 0x2f, 0x63, 0x68, 0x61, 0x74, 0x73, 0x3a, 0x01, 0x2a, 0x12, 0x48,
+	0x3a, 0x01, 0x2a, 0x22, 0x09, 0x2f, 0x76, 0x31, 0x2f, 0x63, 0x68, 0x61, 0x74, 0x73, 0x12, 0x48,
 	0x0a, 0x08, 0x4a, 0x6f, 0x69, 0x6e, 0x52, 0x6f, 0x6f, 0x6d, 0x12, 0x1f, 0x2e, 0x63, 0x68, 0x65,
 	0x65, 0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x4a, 0x6f, 0x69, 0x6e,
 	0x52, 0x6f, 0x6f, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x17, 0x2e, 0x63, 0x68,
@@ -2127,44 +2305,59 @@ var file_cheers_chat_v1_chat_service_proto_rawDesc = []byte{
 	0x6e, 0x64, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
 	0x1a, 0x23, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x76,
 	0x31, 0x2e, 0x53, 0x65, 0x6e, 0x64, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x23, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1d, 0x22, 0x18, 0x2f,
-	0x76, 0x31, 0x2f, 0x63, 0x68, 0x61, 0x74, 0x73, 0x2f, 0x7b, 0x72, 0x6f, 0x6f, 0x6d, 0x5f, 0x69,
-	0x64, 0x7d, 0x2f, 0x73, 0x65, 0x6e, 0x64, 0x3a, 0x01, 0x2a, 0x12, 0x46, 0x0a, 0x0b, 0x4c, 0x69,
-	0x6b, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x1e, 0x2e, 0x63, 0x68, 0x65, 0x65,
-	0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x4c, 0x69, 0x6b, 0x65, 0x4d,
-	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x15, 0x2e, 0x63, 0x68, 0x65, 0x65,
-	0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79,
-	0x22, 0x00, 0x12, 0x48, 0x0a, 0x0d, 0x55, 0x6e, 0x6c, 0x69, 0x6b, 0x65, 0x4d, 0x65, 0x73, 0x73,
-	0x61, 0x67, 0x65, 0x12, 0x1e, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x68, 0x61,
-	0x74, 0x2e, 0x76, 0x31, 0x2e, 0x4c, 0x69, 0x6b, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
-	0x52, 0x65, 0x71, 0x1a, 0x15, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x68, 0x61,
-	0x74, 0x2e, 0x76, 0x31, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x00, 0x12, 0x4f, 0x0a, 0x0d,
-	0x54, 0x79, 0x70, 0x69, 0x6e, 0x67, 0x43, 0x68, 0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x12, 0x1b, 0x2e,
-	0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x54,
-	0x79, 0x70, 0x69, 0x6e, 0x67, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x1a, 0x1b, 0x2e, 0x63, 0x68, 0x65,
-	0x65, 0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x79, 0x70, 0x69,
-	0x6e, 0x67, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x22, 0x00, 0x28, 0x01, 0x30, 0x01, 0x12, 0x41, 0x0a,
-	0x0b, 0x54, 0x79, 0x70, 0x69, 0x6e, 0x67, 0x53, 0x74, 0x61, 0x72, 0x74, 0x12, 0x19, 0x2e, 0x63,
-	0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x79,
-	0x70, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x1a, 0x15, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73,
-	0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x00,
-	0x12, 0x3f, 0x0a, 0x09, 0x54, 0x79, 0x70, 0x69, 0x6e, 0x67, 0x45, 0x6e, 0x64, 0x12, 0x19, 0x2e,
-	0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x54,
-	0x79, 0x70, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x1a, 0x15, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72,
-	0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22,
-	0x00, 0x12, 0x40, 0x0a, 0x08, 0x41, 0x64, 0x64, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x1b, 0x2e,
-	0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x41,
-	0x64, 0x64, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x52, 0x65, 0x71, 0x1a, 0x15, 0x2e, 0x63, 0x68, 0x65,
-	0x65, 0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x45, 0x6d, 0x70, 0x74,
-	0x79, 0x22, 0x00, 0x12, 0x40, 0x0a, 0x0a, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x55, 0x73, 0x65,
-	0x72, 0x12, 0x19, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e,
-	0x76, 0x31, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x49, 0x64, 0x52, 0x65, 0x71, 0x1a, 0x15, 0x2e, 0x63,
-	0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x45, 0x6d,
-	0x70, 0x74, 0x79, 0x22, 0x00, 0x42, 0x3d, 0x50, 0x01, 0x5a, 0x39, 0x67, 0x69, 0x74, 0x68, 0x75,
-	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x73, 0x61, 0x6c, 0x61, 0x7a, 0x61, 0x72, 0x68, 0x75, 0x67,
-	0x6f, 0x2f, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x31, 0x2f, 0x67, 0x65, 0x6e, 0x2f, 0x67, 0x6f,
-	0x2f, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2f, 0x63, 0x68, 0x61, 0x74, 0x2f, 0x76, 0x31, 0x3b,
-	0x63, 0x68, 0x61, 0x74, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x23, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1d, 0x3a, 0x01, 0x2a,
+	0x22, 0x18, 0x2f, 0x76, 0x31, 0x2f, 0x63, 0x68, 0x61, 0x74, 0x73, 0x2f, 0x7b, 0x72, 0x6f, 0x6f,
+	0x6d, 0x5f, 0x69, 0x64, 0x7d, 0x2f, 0x73, 0x65, 0x6e, 0x64, 0x12, 0x6e, 0x0a, 0x07, 0x50, 0x69,
+	0x6e, 0x52, 0x6f, 0x6f, 0x6d, 0x12, 0x1e, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63,
+	0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x69, 0x6e, 0x52, 0x6f, 0x6f, 0x6d, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x1f, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63,
+	0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x50, 0x69, 0x6e, 0x52, 0x6f, 0x6f, 0x6d, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x22, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1c, 0x3a, 0x01,
+	0x2a, 0x1a, 0x17, 0x2f, 0x76, 0x31, 0x2f, 0x63, 0x68, 0x61, 0x74, 0x73, 0x2f, 0x7b, 0x72, 0x6f,
+	0x6f, 0x6d, 0x5f, 0x69, 0x64, 0x7d, 0x2f, 0x70, 0x69, 0x6e, 0x12, 0x76, 0x0a, 0x09, 0x55, 0x6e,
+	0x50, 0x69, 0x6e, 0x52, 0x6f, 0x6f, 0x6d, 0x12, 0x20, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73,
+	0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x6e, 0x50, 0x69, 0x6e, 0x52, 0x6f,
+	0x6f, 0x6d, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x21, 0x2e, 0x63, 0x68, 0x65, 0x65,
+	0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x6e, 0x50, 0x69, 0x6e,
+	0x52, 0x6f, 0x6f, 0x6d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x24, 0x82, 0xd3,
+	0xe4, 0x93, 0x02, 0x1e, 0x3a, 0x01, 0x2a, 0x1a, 0x19, 0x2f, 0x76, 0x31, 0x2f, 0x63, 0x68, 0x61,
+	0x74, 0x73, 0x2f, 0x7b, 0x72, 0x6f, 0x6f, 0x6d, 0x5f, 0x69, 0x64, 0x7d, 0x2f, 0x75, 0x6e, 0x70,
+	0x69, 0x6e, 0x12, 0x46, 0x0a, 0x0b, 0x4c, 0x69, 0x6b, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67,
+	0x65, 0x12, 0x1e, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e,
+	0x76, 0x31, 0x2e, 0x4c, 0x69, 0x6b, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65,
+	0x71, 0x1a, 0x15, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e,
+	0x76, 0x31, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x00, 0x12, 0x48, 0x0a, 0x0d, 0x55, 0x6e,
+	0x6c, 0x69, 0x6b, 0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x1e, 0x2e, 0x63, 0x68,
+	0x65, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x4c, 0x69, 0x6b,
+	0x65, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x15, 0x2e, 0x63, 0x68,
+	0x65, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x45, 0x6d, 0x70,
+	0x74, 0x79, 0x22, 0x00, 0x12, 0x4f, 0x0a, 0x0d, 0x54, 0x79, 0x70, 0x69, 0x6e, 0x67, 0x43, 0x68,
+	0x61, 0x6e, 0x6e, 0x65, 0x6c, 0x12, 0x1b, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63,
+	0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x79, 0x70, 0x69, 0x6e, 0x67, 0x45, 0x76, 0x65,
+	0x6e, 0x74, 0x1a, 0x1b, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74,
+	0x2e, 0x76, 0x31, 0x2e, 0x54, 0x79, 0x70, 0x69, 0x6e, 0x67, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x22,
+	0x00, 0x28, 0x01, 0x30, 0x01, 0x12, 0x41, 0x0a, 0x0b, 0x54, 0x79, 0x70, 0x69, 0x6e, 0x67, 0x53,
+	0x74, 0x61, 0x72, 0x74, 0x12, 0x19, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x68,
+	0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x79, 0x70, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x1a,
+	0x15, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x76, 0x31,
+	0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x00, 0x12, 0x3f, 0x0a, 0x09, 0x54, 0x79, 0x70, 0x69,
+	0x6e, 0x67, 0x45, 0x6e, 0x64, 0x12, 0x19, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63,
+	0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x54, 0x79, 0x70, 0x69, 0x6e, 0x67, 0x52, 0x65, 0x71,
+	0x1a, 0x15, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x76,
+	0x31, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x00, 0x12, 0x40, 0x0a, 0x08, 0x41, 0x64, 0x64,
+	0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x1b, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63,
+	0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x41, 0x64, 0x64, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x52,
+	0x65, 0x71, 0x1a, 0x15, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74,
+	0x2e, 0x76, 0x31, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x00, 0x12, 0x40, 0x0a, 0x0a, 0x44,
+	0x65, 0x6c, 0x65, 0x74, 0x65, 0x55, 0x73, 0x65, 0x72, 0x12, 0x19, 0x2e, 0x63, 0x68, 0x65, 0x65,
+	0x72, 0x73, 0x2e, 0x63, 0x68, 0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x49,
+	0x64, 0x52, 0x65, 0x71, 0x1a, 0x15, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x63, 0x68,
+	0x61, 0x74, 0x2e, 0x76, 0x31, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x00, 0x42, 0x3d, 0x50,
+	0x01, 0x5a, 0x39, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x73, 0x61,
+	0x6c, 0x61, 0x7a, 0x61, 0x72, 0x68, 0x75, 0x67, 0x6f, 0x2f, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73,
+	0x31, 0x2f, 0x67, 0x65, 0x6e, 0x2f, 0x67, 0x6f, 0x2f, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2f,
+	0x63, 0x68, 0x61, 0x74, 0x2f, 0x76, 0x31, 0x3b, 0x63, 0x68, 0x61, 0x74, 0x62, 0x06, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -2180,92 +2373,100 @@ func file_cheers_chat_v1_chat_service_proto_rawDescGZIP() []byte {
 }
 
 var file_cheers_chat_v1_chat_service_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
-var file_cheers_chat_v1_chat_service_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
+var file_cheers_chat_v1_chat_service_proto_msgTypes = make([]protoimpl.MessageInfo, 31)
 var file_cheers_chat_v1_chat_service_proto_goTypes = []interface{}{
 	(RoomStatus)(0),                  // 0: cheers.chat.v1.RoomStatus
 	(RoomType)(0),                    // 1: cheers.chat.v1.RoomType
 	(MessageType)(0),                 // 2: cheers.chat.v1.MessageType
 	(TypingEvent_Type)(0),            // 3: cheers.chat.v1.TypingEvent.Type
 	(Message_Status)(0),              // 4: cheers.chat.v1.Message.Status
-	(*SendMessageRequest)(nil),       // 5: cheers.chat.v1.SendMessageRequest
-	(*SendMessageResponse)(nil),      // 6: cheers.chat.v1.SendMessageResponse
-	(*GetInboxRequest)(nil),          // 7: cheers.chat.v1.GetInboxRequest
-	(*GetInboxResponse)(nil),         // 8: cheers.chat.v1.GetInboxResponse
-	(*DeleteRoomRequest)(nil),        // 9: cheers.chat.v1.DeleteRoomRequest
-	(*DeleteRoomResponse)(nil),       // 10: cheers.chat.v1.DeleteRoomResponse
-	(*TypingEvent)(nil),              // 11: cheers.chat.v1.TypingEvent
-	(*CreateRoomRequest)(nil),        // 12: cheers.chat.v1.CreateRoomRequest
-	(*CreateRoomResponse)(nil),       // 13: cheers.chat.v1.CreateRoomResponse
-	(*ListRoomMessagesRequest)(nil),  // 14: cheers.chat.v1.ListRoomMessagesRequest
-	(*ListRoomMessagesResponse)(nil), // 15: cheers.chat.v1.ListRoomMessagesResponse
-	(*ListRoomRequest)(nil),          // 16: cheers.chat.v1.ListRoomRequest
-	(*ListRoomResponse)(nil),         // 17: cheers.chat.v1.ListRoomResponse
-	(*ListMembersRequest)(nil),       // 18: cheers.chat.v1.ListMembersRequest
-	(*ListMembersResponse)(nil),      // 19: cheers.chat.v1.ListMembersResponse
-	(*UserIdReq)(nil),                // 20: cheers.chat.v1.UserIdReq
-	(*Empty)(nil),                    // 21: cheers.chat.v1.Empty
-	(*AddTokenReq)(nil),              // 22: cheers.chat.v1.AddTokenReq
-	(*TypingReq)(nil),                // 23: cheers.chat.v1.TypingReq
-	(*JoinRoomRequest)(nil),          // 24: cheers.chat.v1.JoinRoomRequest
-	(*RoomId)(nil),                   // 25: cheers.chat.v1.RoomId
-	(*GetRoomIdReq)(nil),             // 26: cheers.chat.v1.GetRoomIdReq
-	(*RoomWithMessages)(nil),         // 27: cheers.chat.v1.RoomWithMessages
-	(*Room)(nil),                     // 28: cheers.chat.v1.Room
-	(*LikeMessageReq)(nil),           // 29: cheers.chat.v1.LikeMessageReq
-	(*Message)(nil),                  // 30: cheers.chat.v1.Message
-	(*MessageItem)(nil),              // 31: cheers.chat.v1.MessageItem
-	(*user.UserItem)(nil),            // 32: cheers.type.UserItem
+	(*PinRoomRequest)(nil),           // 5: cheers.chat.v1.PinRoomRequest
+	(*PinRoomResponse)(nil),          // 6: cheers.chat.v1.PinRoomResponse
+	(*UnPinRoomResponse)(nil),        // 7: cheers.chat.v1.UnPinRoomResponse
+	(*UnPinRoomRequest)(nil),         // 8: cheers.chat.v1.UnPinRoomRequest
+	(*SendMessageRequest)(nil),       // 9: cheers.chat.v1.SendMessageRequest
+	(*SendMessageResponse)(nil),      // 10: cheers.chat.v1.SendMessageResponse
+	(*GetInboxRequest)(nil),          // 11: cheers.chat.v1.GetInboxRequest
+	(*GetInboxResponse)(nil),         // 12: cheers.chat.v1.GetInboxResponse
+	(*DeleteRoomRequest)(nil),        // 13: cheers.chat.v1.DeleteRoomRequest
+	(*DeleteRoomResponse)(nil),       // 14: cheers.chat.v1.DeleteRoomResponse
+	(*TypingEvent)(nil),              // 15: cheers.chat.v1.TypingEvent
+	(*CreateRoomRequest)(nil),        // 16: cheers.chat.v1.CreateRoomRequest
+	(*CreateRoomResponse)(nil),       // 17: cheers.chat.v1.CreateRoomResponse
+	(*ListRoomMessagesRequest)(nil),  // 18: cheers.chat.v1.ListRoomMessagesRequest
+	(*ListRoomMessagesResponse)(nil), // 19: cheers.chat.v1.ListRoomMessagesResponse
+	(*ListRoomRequest)(nil),          // 20: cheers.chat.v1.ListRoomRequest
+	(*ListRoomResponse)(nil),         // 21: cheers.chat.v1.ListRoomResponse
+	(*ListMembersRequest)(nil),       // 22: cheers.chat.v1.ListMembersRequest
+	(*ListMembersResponse)(nil),      // 23: cheers.chat.v1.ListMembersResponse
+	(*UserIdReq)(nil),                // 24: cheers.chat.v1.UserIdReq
+	(*Empty)(nil),                    // 25: cheers.chat.v1.Empty
+	(*AddTokenReq)(nil),              // 26: cheers.chat.v1.AddTokenReq
+	(*TypingReq)(nil),                // 27: cheers.chat.v1.TypingReq
+	(*JoinRoomRequest)(nil),          // 28: cheers.chat.v1.JoinRoomRequest
+	(*RoomId)(nil),                   // 29: cheers.chat.v1.RoomId
+	(*GetRoomIdReq)(nil),             // 30: cheers.chat.v1.GetRoomIdReq
+	(*RoomWithMessages)(nil),         // 31: cheers.chat.v1.RoomWithMessages
+	(*Room)(nil),                     // 32: cheers.chat.v1.Room
+	(*LikeMessageReq)(nil),           // 33: cheers.chat.v1.LikeMessageReq
+	(*Message)(nil),                  // 34: cheers.chat.v1.Message
+	(*MessageItem)(nil),              // 35: cheers.chat.v1.MessageItem
+	(*user.UserItem)(nil),            // 36: cheers.type.UserItem
 }
 var file_cheers_chat_v1_chat_service_proto_depIdxs = []int32{
-	30, // 0: cheers.chat.v1.SendMessageResponse.message:type_name -> cheers.chat.v1.Message
-	27, // 1: cheers.chat.v1.GetInboxResponse.inbox:type_name -> cheers.chat.v1.RoomWithMessages
+	34, // 0: cheers.chat.v1.SendMessageResponse.message:type_name -> cheers.chat.v1.Message
+	31, // 1: cheers.chat.v1.GetInboxResponse.inbox:type_name -> cheers.chat.v1.RoomWithMessages
 	3,  // 2: cheers.chat.v1.TypingEvent.type:type_name -> cheers.chat.v1.TypingEvent.Type
-	28, // 3: cheers.chat.v1.CreateRoomResponse.room:type_name -> cheers.chat.v1.Room
-	31, // 4: cheers.chat.v1.ListRoomMessagesResponse.messages:type_name -> cheers.chat.v1.MessageItem
-	28, // 5: cheers.chat.v1.ListRoomResponse.rooms:type_name -> cheers.chat.v1.Room
-	32, // 6: cheers.chat.v1.ListMembersResponse.users:type_name -> cheers.type.UserItem
-	28, // 7: cheers.chat.v1.RoomWithMessages.room:type_name -> cheers.chat.v1.Room
-	30, // 8: cheers.chat.v1.RoomWithMessages.messages:type_name -> cheers.chat.v1.Message
+	32, // 3: cheers.chat.v1.CreateRoomResponse.room:type_name -> cheers.chat.v1.Room
+	35, // 4: cheers.chat.v1.ListRoomMessagesResponse.messages:type_name -> cheers.chat.v1.MessageItem
+	32, // 5: cheers.chat.v1.ListRoomResponse.rooms:type_name -> cheers.chat.v1.Room
+	36, // 6: cheers.chat.v1.ListMembersResponse.users:type_name -> cheers.type.UserItem
+	32, // 7: cheers.chat.v1.RoomWithMessages.room:type_name -> cheers.chat.v1.Room
+	34, // 8: cheers.chat.v1.RoomWithMessages.messages:type_name -> cheers.chat.v1.Message
 	1,  // 9: cheers.chat.v1.Room.type:type_name -> cheers.chat.v1.RoomType
 	0,  // 10: cheers.chat.v1.Room.status:type_name -> cheers.chat.v1.RoomStatus
 	2,  // 11: cheers.chat.v1.Room.last_message_type:type_name -> cheers.chat.v1.MessageType
 	2,  // 12: cheers.chat.v1.Message.type:type_name -> cheers.chat.v1.MessageType
 	4,  // 13: cheers.chat.v1.Message.status:type_name -> cheers.chat.v1.Message.Status
-	30, // 14: cheers.chat.v1.MessageItem.message:type_name -> cheers.chat.v1.Message
-	12, // 15: cheers.chat.v1.ChatService.CreateRoom:input_type -> cheers.chat.v1.CreateRoomRequest
-	24, // 16: cheers.chat.v1.ChatService.JoinRoom:input_type -> cheers.chat.v1.JoinRoomRequest
-	7,  // 17: cheers.chat.v1.ChatService.GetInbox:input_type -> cheers.chat.v1.GetInboxRequest
-	14, // 18: cheers.chat.v1.ChatService.ListRoomMessages:input_type -> cheers.chat.v1.ListRoomMessagesRequest
-	9,  // 19: cheers.chat.v1.ChatService.DeleteRoom:input_type -> cheers.chat.v1.DeleteRoomRequest
-	26, // 20: cheers.chat.v1.ChatService.GetRoomId:input_type -> cheers.chat.v1.GetRoomIdReq
-	18, // 21: cheers.chat.v1.ChatService.ListMembers:input_type -> cheers.chat.v1.ListMembersRequest
-	25, // 22: cheers.chat.v1.ChatService.LeaveRoom:input_type -> cheers.chat.v1.RoomId
-	5,  // 23: cheers.chat.v1.ChatService.SendMessage:input_type -> cheers.chat.v1.SendMessageRequest
-	29, // 24: cheers.chat.v1.ChatService.LikeMessage:input_type -> cheers.chat.v1.LikeMessageReq
-	29, // 25: cheers.chat.v1.ChatService.UnlikeMessage:input_type -> cheers.chat.v1.LikeMessageReq
-	11, // 26: cheers.chat.v1.ChatService.TypingChannel:input_type -> cheers.chat.v1.TypingEvent
-	23, // 27: cheers.chat.v1.ChatService.TypingStart:input_type -> cheers.chat.v1.TypingReq
-	23, // 28: cheers.chat.v1.ChatService.TypingEnd:input_type -> cheers.chat.v1.TypingReq
-	22, // 29: cheers.chat.v1.ChatService.AddToken:input_type -> cheers.chat.v1.AddTokenReq
-	20, // 30: cheers.chat.v1.ChatService.DeleteUser:input_type -> cheers.chat.v1.UserIdReq
-	13, // 31: cheers.chat.v1.ChatService.CreateRoom:output_type -> cheers.chat.v1.CreateRoomResponse
-	30, // 32: cheers.chat.v1.ChatService.JoinRoom:output_type -> cheers.chat.v1.Message
-	8,  // 33: cheers.chat.v1.ChatService.GetInbox:output_type -> cheers.chat.v1.GetInboxResponse
-	15, // 34: cheers.chat.v1.ChatService.ListRoomMessages:output_type -> cheers.chat.v1.ListRoomMessagesResponse
-	10, // 35: cheers.chat.v1.ChatService.DeleteRoom:output_type -> cheers.chat.v1.DeleteRoomResponse
-	25, // 36: cheers.chat.v1.ChatService.GetRoomId:output_type -> cheers.chat.v1.RoomId
-	19, // 37: cheers.chat.v1.ChatService.ListMembers:output_type -> cheers.chat.v1.ListMembersResponse
-	21, // 38: cheers.chat.v1.ChatService.LeaveRoom:output_type -> cheers.chat.v1.Empty
-	6,  // 39: cheers.chat.v1.ChatService.SendMessage:output_type -> cheers.chat.v1.SendMessageResponse
-	21, // 40: cheers.chat.v1.ChatService.LikeMessage:output_type -> cheers.chat.v1.Empty
-	21, // 41: cheers.chat.v1.ChatService.UnlikeMessage:output_type -> cheers.chat.v1.Empty
-	11, // 42: cheers.chat.v1.ChatService.TypingChannel:output_type -> cheers.chat.v1.TypingEvent
-	21, // 43: cheers.chat.v1.ChatService.TypingStart:output_type -> cheers.chat.v1.Empty
-	21, // 44: cheers.chat.v1.ChatService.TypingEnd:output_type -> cheers.chat.v1.Empty
-	21, // 45: cheers.chat.v1.ChatService.AddToken:output_type -> cheers.chat.v1.Empty
-	21, // 46: cheers.chat.v1.ChatService.DeleteUser:output_type -> cheers.chat.v1.Empty
-	31, // [31:47] is the sub-list for method output_type
-	15, // [15:31] is the sub-list for method input_type
+	34, // 14: cheers.chat.v1.MessageItem.message:type_name -> cheers.chat.v1.Message
+	16, // 15: cheers.chat.v1.ChatService.CreateRoom:input_type -> cheers.chat.v1.CreateRoomRequest
+	28, // 16: cheers.chat.v1.ChatService.JoinRoom:input_type -> cheers.chat.v1.JoinRoomRequest
+	11, // 17: cheers.chat.v1.ChatService.GetInbox:input_type -> cheers.chat.v1.GetInboxRequest
+	18, // 18: cheers.chat.v1.ChatService.ListRoomMessages:input_type -> cheers.chat.v1.ListRoomMessagesRequest
+	13, // 19: cheers.chat.v1.ChatService.DeleteRoom:input_type -> cheers.chat.v1.DeleteRoomRequest
+	30, // 20: cheers.chat.v1.ChatService.GetRoomId:input_type -> cheers.chat.v1.GetRoomIdReq
+	22, // 21: cheers.chat.v1.ChatService.ListMembers:input_type -> cheers.chat.v1.ListMembersRequest
+	29, // 22: cheers.chat.v1.ChatService.LeaveRoom:input_type -> cheers.chat.v1.RoomId
+	9,  // 23: cheers.chat.v1.ChatService.SendMessage:input_type -> cheers.chat.v1.SendMessageRequest
+	5,  // 24: cheers.chat.v1.ChatService.PinRoom:input_type -> cheers.chat.v1.PinRoomRequest
+	8,  // 25: cheers.chat.v1.ChatService.UnPinRoom:input_type -> cheers.chat.v1.UnPinRoomRequest
+	33, // 26: cheers.chat.v1.ChatService.LikeMessage:input_type -> cheers.chat.v1.LikeMessageReq
+	33, // 27: cheers.chat.v1.ChatService.UnlikeMessage:input_type -> cheers.chat.v1.LikeMessageReq
+	15, // 28: cheers.chat.v1.ChatService.TypingChannel:input_type -> cheers.chat.v1.TypingEvent
+	27, // 29: cheers.chat.v1.ChatService.TypingStart:input_type -> cheers.chat.v1.TypingReq
+	27, // 30: cheers.chat.v1.ChatService.TypingEnd:input_type -> cheers.chat.v1.TypingReq
+	26, // 31: cheers.chat.v1.ChatService.AddToken:input_type -> cheers.chat.v1.AddTokenReq
+	24, // 32: cheers.chat.v1.ChatService.DeleteUser:input_type -> cheers.chat.v1.UserIdReq
+	17, // 33: cheers.chat.v1.ChatService.CreateRoom:output_type -> cheers.chat.v1.CreateRoomResponse
+	34, // 34: cheers.chat.v1.ChatService.JoinRoom:output_type -> cheers.chat.v1.Message
+	12, // 35: cheers.chat.v1.ChatService.GetInbox:output_type -> cheers.chat.v1.GetInboxResponse
+	19, // 36: cheers.chat.v1.ChatService.ListRoomMessages:output_type -> cheers.chat.v1.ListRoomMessagesResponse
+	14, // 37: cheers.chat.v1.ChatService.DeleteRoom:output_type -> cheers.chat.v1.DeleteRoomResponse
+	29, // 38: cheers.chat.v1.ChatService.GetRoomId:output_type -> cheers.chat.v1.RoomId
+	23, // 39: cheers.chat.v1.ChatService.ListMembers:output_type -> cheers.chat.v1.ListMembersResponse
+	25, // 40: cheers.chat.v1.ChatService.LeaveRoom:output_type -> cheers.chat.v1.Empty
+	10, // 41: cheers.chat.v1.ChatService.SendMessage:output_type -> cheers.chat.v1.SendMessageResponse
+	6,  // 42: cheers.chat.v1.ChatService.PinRoom:output_type -> cheers.chat.v1.PinRoomResponse
+	7,  // 43: cheers.chat.v1.ChatService.UnPinRoom:output_type -> cheers.chat.v1.UnPinRoomResponse
+	25, // 44: cheers.chat.v1.ChatService.LikeMessage:output_type -> cheers.chat.v1.Empty
+	25, // 45: cheers.chat.v1.ChatService.UnlikeMessage:output_type -> cheers.chat.v1.Empty
+	15, // 46: cheers.chat.v1.ChatService.TypingChannel:output_type -> cheers.chat.v1.TypingEvent
+	25, // 47: cheers.chat.v1.ChatService.TypingStart:output_type -> cheers.chat.v1.Empty
+	25, // 48: cheers.chat.v1.ChatService.TypingEnd:output_type -> cheers.chat.v1.Empty
+	25, // 49: cheers.chat.v1.ChatService.AddToken:output_type -> cheers.chat.v1.Empty
+	25, // 50: cheers.chat.v1.ChatService.DeleteUser:output_type -> cheers.chat.v1.Empty
+	33, // [33:51] is the sub-list for method output_type
+	15, // [15:33] is the sub-list for method input_type
 	15, // [15:15] is the sub-list for extension type_name
 	15, // [15:15] is the sub-list for extension extendee
 	0,  // [0:15] is the sub-list for field type_name
@@ -2278,7 +2479,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_cheers_chat_v1_chat_service_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SendMessageRequest); i {
+			switch v := v.(*PinRoomRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2290,7 +2491,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SendMessageResponse); i {
+			switch v := v.(*PinRoomResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2302,7 +2503,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetInboxRequest); i {
+			switch v := v.(*UnPinRoomResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2314,7 +2515,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetInboxResponse); i {
+			switch v := v.(*UnPinRoomRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2326,7 +2527,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteRoomRequest); i {
+			switch v := v.(*SendMessageRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2338,7 +2539,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteRoomResponse); i {
+			switch v := v.(*SendMessageResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2350,7 +2551,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TypingEvent); i {
+			switch v := v.(*GetInboxRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2362,7 +2563,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateRoomRequest); i {
+			switch v := v.(*GetInboxResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2374,7 +2575,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateRoomResponse); i {
+			switch v := v.(*DeleteRoomRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2386,7 +2587,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListRoomMessagesRequest); i {
+			switch v := v.(*DeleteRoomResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2398,7 +2599,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListRoomMessagesResponse); i {
+			switch v := v.(*TypingEvent); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2410,7 +2611,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListRoomRequest); i {
+			switch v := v.(*CreateRoomRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2422,7 +2623,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListRoomResponse); i {
+			switch v := v.(*CreateRoomResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2434,7 +2635,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListMembersRequest); i {
+			switch v := v.(*ListRoomMessagesRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2446,7 +2647,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListMembersResponse); i {
+			switch v := v.(*ListRoomMessagesResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2458,7 +2659,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserIdReq); i {
+			switch v := v.(*ListRoomRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2470,7 +2671,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Empty); i {
+			switch v := v.(*ListRoomResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2482,7 +2683,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AddTokenReq); i {
+			switch v := v.(*ListMembersRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2494,7 +2695,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TypingReq); i {
+			switch v := v.(*ListMembersResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2506,7 +2707,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*JoinRoomRequest); i {
+			switch v := v.(*UserIdReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2518,7 +2719,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RoomId); i {
+			switch v := v.(*Empty); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2530,7 +2731,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetRoomIdReq); i {
+			switch v := v.(*AddTokenReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2542,7 +2743,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RoomWithMessages); i {
+			switch v := v.(*TypingReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2554,7 +2755,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Room); i {
+			switch v := v.(*JoinRoomRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2566,7 +2767,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*LikeMessageReq); i {
+			switch v := v.(*RoomId); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2578,7 +2779,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Message); i {
+			switch v := v.(*GetRoomIdReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2590,6 +2791,54 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			}
 		}
 		file_cheers_chat_v1_chat_service_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*RoomWithMessages); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_cheers_chat_v1_chat_service_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Room); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_cheers_chat_v1_chat_service_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*LikeMessageReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_cheers_chat_v1_chat_service_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Message); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_cheers_chat_v1_chat_service_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*MessageItem); i {
 			case 0:
 				return &v.state
@@ -2608,7 +2857,7 @@ func file_cheers_chat_v1_chat_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_cheers_chat_v1_chat_service_proto_rawDesc,
 			NumEnums:      5,
-			NumMessages:   27,
+			NumMessages:   31,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

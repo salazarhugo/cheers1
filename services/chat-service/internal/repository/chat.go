@@ -15,6 +15,7 @@ type ChatRepository interface {
 	JoinRoom(request *pb.JoinRoomRequest, server pb.ChatService_JoinRoomServer) error
 	GetInbox(userID string) ([]*pb.RoomWithMessages, error)
 	DeleteRoom(userID string, roomID string) error
+	UpdateUser(user *user.User) error
 
 	ListRoomMessages(roomID string, userID string) ([]*pb.MessageItem, error)
 	ListMembers(context context.Context, request *pb.ListMembersRequest) ([]*user.UserItem, error)
