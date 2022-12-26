@@ -8,6 +8,7 @@ import (
 	"github.com/go-redis/redis/v9"
 	"github.com/google/uuid"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"log"
@@ -247,15 +248,24 @@ func (cache *redisCache) GetOtherUserId(
 	return members[0], nil
 }
 
-func (cache *redisCache) GetUser(
+func (cache *redisCache) GetUserItem(
 	userId string,
-) (map[string]string, error) {
-	user, err := cache.client.HGetAll(context.Background(), getKeyUser(userId)).Result()
+) (*user.UserItem, error) {
+	res, err := cache.client.HGetAll(context.Background(), getKeyUser(userId)).Result()
 	if err != nil {
 		return nil, err
 	}
+	item := &user.UserItem{
+		Id:          res["id"],
+		Name:        res["name"],
+		Username:    res["username"],
+		Verified:    res["verified"] == "1",
+		Picture:     res["picture"],
+		HasFollowed: false,
+		StoryState:  0,
+	}
 
-	return user, nil
+	return item, nil
 }
 
 func getKeyUser(userUUID string) string {
@@ -423,7 +433,7 @@ func (cache *redisCache) GetRoomWithId(
 	otherUserId, err := cache.GetOtherUserId(roomId, userId)
 
 	if room.Type == pb.RoomType_DIRECT {
-		user, err := cache.GetUser(otherUserId)
+		user, err := cache.GetUserItem(otherUserId)
 
 		if err != nil {
 			return nil, err
@@ -432,18 +442,9 @@ func (cache *redisCache) GetRoomWithId(
 		if user == nil {
 			room.Name = "User not found"
 		} else {
-			name, ok := user["name"]
-			if ok {
-				room.Name = name
-			}
-			pp, ok := user["picture"]
-			if ok {
-				room.Picture = pp
-			}
-			verified, ok := user["verified"]
-			if ok {
-				room.Verified = verified == "true"
-			}
+			room.Name = user.Name
+			room.Picture = user.Picture
+			room.Verified = user.Verified
 		}
 	}
 

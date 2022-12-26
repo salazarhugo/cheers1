@@ -21,7 +21,8 @@ type RoomCache interface {
 	GetRoomWithId(userId string, roomId string) (*pb.Room, error)
 	ListRoomWithMessages(userId string) []*pb.RoomWithMessages
 	GetRoomMembers(roomId string) []string
-	GetUser(userId string) (map[string]string, error)
+	GetUserItem(userId string) (*user.UserItem, error)
+	ListUser(userIds []string) ([]*user.UserItem, error)
 	UpdateUser(user *user.User) error
 	DeleteTokens(userId string) int64
 	AddToken(userId string, token string)

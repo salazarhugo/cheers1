@@ -2,7 +2,9 @@ package repository
 
 import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 )
 
 func (p *userRepository) VerifyUser(
@@ -24,6 +26,16 @@ func (p *userRepository) VerifyUser(
 	if err != nil {
 		return err
 	}
+
+	result, err := p.GetUser(userID, userID)
+
+	err = pubsub.PublishProtoWithBinaryEncoding("user-topic", &pb.UserEvent{
+		Event: &pb.UserEvent_Update{
+			Update: &pb.UpdateUser{
+				User: result.User,
+			},
+		},
+	})
 
 	return nil
 }

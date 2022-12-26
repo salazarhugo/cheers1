@@ -1,7 +1,7 @@
 REGION=europe-west2
-GATEWAY_URL=https://android-gateway-clzdlli7.nw.gateway.dev
+EVENT_BUS_TOPIC=chat-topic
 
 gcloud run deploy chat-service \
   --source . \
   --region=$REGION \
-  --set-env-vars GATEWAY_URL=$GATEWAY_URL
+  --set-env-vars EVENT_BUS_TOPIC=$EVENT_BUS_TOPIC

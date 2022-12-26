@@ -23,8 +23,8 @@ func UserSub(w http.ResponseWriter, r *http.Request) {
 	switch event := event.Event.(type) {
 	case *user.UserEvent_Create:
 		err = repo.UpdateUser(event.Create.User)
-	case *user.UserEvent_Follow:
-		//err = repo.UnVerifyUser(event.Deleted.UserId)
+	case *user.UserEvent_Update:
+		err = repo.UpdateUser(event.Update.User)
 	}
 
 	if err != nil {

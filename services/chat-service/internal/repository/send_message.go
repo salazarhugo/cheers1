@@ -4,8 +4,10 @@ import (
 	"context"
 	"errors"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
+	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"google.golang.org/protobuf/encoding/protojson"
 	"log"
+	"os"
 	"strings"
 	"time"
 )
@@ -41,8 +43,21 @@ func (c chatRepository) SendMessage(
 	bytes, err := protojson.Marshal(msg)
 	// Redis Pub/Sub
 	c.cache.Publish(ctx, msg.RoomId, bytes)
+
 	// Google Cloud Pub/Sub
-	//go PublishToPubSub(msg.SenderId, msg.RoomId)
+	user, err := c.cache.GetUserItem(msg.SenderId)
+	membersIds := c.cache.GetRoomMembers(msg.RoomId)
+	members, err := c.cache.ListUser(membersIds)
+
+	err = pubsub.PublishProtoWithBinaryEncoding(os.Getenv("EVENT_PUB_TOPIC"), &chat.ChatEvent{
+		Event: &chat.ChatEvent_Create{
+			Create: &chat.CreateMessage{
+				Message: msg,
+				Sender:  user,
+				Members: members,
+			},
+		},
+	})
 
 	return msg, nil
 }

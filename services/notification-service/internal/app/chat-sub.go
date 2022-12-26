@@ -1,58 +1,39 @@
 package app
 
 import (
-	"encoding/json"
 	chat "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
-	"google.golang.org/protobuf/proto"
-	"io"
+	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
+	"github.com/salazarhugo/cheers1/services/notification-service/internal/notifications"
+	"github.com/salazarhugo/cheers1/services/notification-service/internal/repository"
 	"log"
 	"net/http"
-	"strings"
 )
 
-// PubSubMessage is the payload of a Pub/Sub event.
-// See the documentation for more details:
-// https://cloud.google.com/pubsub/docs/reference/rest/v1/PubsubMessage
-type PubSubMessage struct {
-	Message struct {
-		Data []byte `json:"data,omitempty"`
-		ID   string `json:"id"`
-	} `json:"message"`
-	Subscription string `json:"subscription"`
-}
-
 func ChatTopic(w http.ResponseWriter, r *http.Request) {
-	var m PubSubMessage
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		log.Printf("ioutil.ReadAll: %v", err)
-		http.Error(w, "Bad Request", http.StatusBadRequest)
-		return
-	}
-
-	// byte slice unmarshalling handles base64 decoding.
-	if err := json.Unmarshal(body, &m); err != nil {
-		log.Printf("json.Unmarshal: %v", err)
-		http.Error(w, "Bad Request", http.StatusBadRequest)
-		return
-	}
-
 	event := &chat.ChatEvent{}
-	err = proto.Unmarshal(m.Message.Data, event)
+	err := pubsub.UnmarshalPubSubMessage(r, event)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		return
 	}
 
-	// Get the Cloud Pub/Sub-generated JWT in the "Authorization" header.
-	authHeader := r.Header.Get("Authorization")
-	if authHeader == "" || len(strings.Split(authHeader, " ")) != 2 {
-		http.Error(w, "Missing Authorization header", http.StatusBadRequest)
-		return
+	repo := repository.NewRepository()
+
+	switch event := event.Event().(type) {
+	case *chat.ChatEvent_Create:
+		members := event.Create.Members
+		for _, member := range members {
+			tokens, err := repo.GetUserTokens(member.Id)
+			if err != nil {
+				return
+			}
+
+			data := notifications.NewChatMessageNotification(member.Username, member.Picture)
+			go repo.SendNotification(map[string][]string{
+				member.Id: tokens,
+			}, data)
+		}
 	}
-	log.Println(event.String())
-	log.Println(authHeader)
-	//repository.NewRepository().SendChatNotification(authHeader)
 
 	return
 }

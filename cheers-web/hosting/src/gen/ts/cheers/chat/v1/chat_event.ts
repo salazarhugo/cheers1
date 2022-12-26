@@ -1,25 +1,28 @@
 /* eslint-disable */
-import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
+import { UserItem } from "../../type/user/user";
+import { Message } from "./chat_service";
 
 export const protobufPackage = "cheers.chat.v1";
 
 export interface ChatEvent {
-  senderId: string;
-  roomId: string;
+  create?: CreateMessage | undefined;
+}
+
+export interface CreateMessage {
+  message: Message | undefined;
+  sender: UserItem | undefined;
+  members: UserItem[];
 }
 
 function createBaseChatEvent(): ChatEvent {
-  return { senderId: "", roomId: "" };
+  return { create: undefined };
 }
 
 export const ChatEvent = {
   encode(message: ChatEvent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.senderId !== "") {
-      writer.uint32(10).string(message.senderId);
-    }
-    if (message.roomId !== "") {
-      writer.uint32(18).string(message.roomId);
+    if (message.create !== undefined) {
+      CreateMessage.encode(message.create, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -32,10 +35,7 @@ export const ChatEvent = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.senderId = reader.string();
-          break;
-        case 2:
-          message.roomId = reader.string();
+          message.create = CreateMessage.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -46,23 +46,95 @@ export const ChatEvent = {
   },
 
   fromJSON(object: any): ChatEvent {
-    return {
-      senderId: isSet(object.senderId) ? String(object.senderId) : "",
-      roomId: isSet(object.roomId) ? String(object.roomId) : "",
-    };
+    return { create: isSet(object.create) ? CreateMessage.fromJSON(object.create) : undefined };
   },
 
   toJSON(message: ChatEvent): unknown {
     const obj: any = {};
-    message.senderId !== undefined && (obj.senderId = message.senderId);
-    message.roomId !== undefined && (obj.roomId = message.roomId);
+    message.create !== undefined && (obj.create = message.create ? CreateMessage.toJSON(message.create) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<ChatEvent>, I>>(object: I): ChatEvent {
     const message = createBaseChatEvent();
-    message.senderId = object.senderId ?? "";
-    message.roomId = object.roomId ?? "";
+    message.create = (object.create !== undefined && object.create !== null)
+      ? CreateMessage.fromPartial(object.create)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseCreateMessage(): CreateMessage {
+  return { message: undefined, sender: undefined, members: [] };
+}
+
+export const CreateMessage = {
+  encode(message: CreateMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.message !== undefined) {
+      Message.encode(message.message, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.sender !== undefined) {
+      UserItem.encode(message.sender, writer.uint32(18).fork()).ldelim();
+    }
+    for (const v of message.members) {
+      UserItem.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateMessage {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateMessage();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.message = Message.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.sender = UserItem.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.members.push(UserItem.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateMessage {
+    return {
+      message: isSet(object.message) ? Message.fromJSON(object.message) : undefined,
+      sender: isSet(object.sender) ? UserItem.fromJSON(object.sender) : undefined,
+      members: Array.isArray(object?.members) ? object.members.map((e: any) => UserItem.fromJSON(e)) : [],
+    };
+  },
+
+  toJSON(message: CreateMessage): unknown {
+    const obj: any = {};
+    message.message !== undefined && (obj.message = message.message ? Message.toJSON(message.message) : undefined);
+    message.sender !== undefined && (obj.sender = message.sender ? UserItem.toJSON(message.sender) : undefined);
+    if (message.members) {
+      obj.members = message.members.map((e) => e ? UserItem.toJSON(e) : undefined);
+    } else {
+      obj.members = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CreateMessage>, I>>(object: I): CreateMessage {
+    const message = createBaseCreateMessage();
+    message.message = (object.message !== undefined && object.message !== null)
+      ? Message.fromPartial(object.message)
+      : undefined;
+    message.sender = (object.sender !== undefined && object.sender !== null)
+      ? UserItem.fromPartial(object.sender)
+      : undefined;
+    message.members = object.members?.map((e) => UserItem.fromPartial(e)) || [];
     return message;
   },
 };
