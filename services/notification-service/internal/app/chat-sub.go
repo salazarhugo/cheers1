@@ -19,12 +19,13 @@ func ChatTopic(w http.ResponseWriter, r *http.Request) {
 
 	repo := repository.NewRepository()
 
-	switch event := event.Event().(type) {
+	switch event := event.Event.(type) {
 	case *chat.ChatEvent_Create:
 		members := event.Create.Members
 		for _, member := range members {
 			tokens, err := repo.GetUserTokens(member.Id)
 			if err != nil {
+				log.Println(err)
 				return
 			}
 

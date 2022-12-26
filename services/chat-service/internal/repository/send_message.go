@@ -46,10 +46,19 @@ func (c chatRepository) SendMessage(
 
 	// Google Cloud Pub/Sub
 	user, err := c.cache.GetUserItem(msg.SenderId)
+	if err != nil {
+		log.Println(err)
+	}
 	membersIds := c.cache.GetRoomMembers(msg.RoomId)
+	if err != nil {
+		log.Println(err)
+	}
 	members, err := c.cache.ListUser(membersIds)
+	if err != nil {
+		log.Println(err)
+	}
 
-	err = pubsub.PublishProtoWithBinaryEncoding(os.Getenv("EVENT_PUB_TOPIC"), &chat.ChatEvent{
+	err = pubsub.PublishProtoWithBinaryEncoding(os.Getenv("EVENT_BUS_TOPIC"), &chat.ChatEvent{
 		Event: &chat.ChatEvent_Create{
 			Create: &chat.CreateMessage{
 				Message: msg,
@@ -59,7 +68,11 @@ func (c chatRepository) SendMessage(
 		},
 	})
 
-	return msg, nil
+	if err != nil {
+		log.Println(err)
+	}
+
+	return msg, err
 }
 
 func ValidateMessage(msg *chat.Message) error {
