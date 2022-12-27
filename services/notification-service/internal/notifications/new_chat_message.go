@@ -6,7 +6,7 @@ func NewChatMessageNotification(
 ) map[string]string {
 	return map[string]string{
 		"title":  username,
-		"body":   "sent you a messsage",
+		"body":   "sent you a message",
 		"avatar": picture,
 	}
 }

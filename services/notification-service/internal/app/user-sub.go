@@ -13,6 +13,7 @@ func UserTopicSub(w http.ResponseWriter, r *http.Request) {
 
 	err := pubsub.UnmarshalPubSubMessage(r, userEvent)
 	if err != nil {
+		log.Println(err)
 		return
 	}
 

@@ -3,38 +3,48 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/salazarhugo/cheers1/gen/go/cheers/notification/v1"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/comment/v1"
 	"github.com/salazarhugo/cheers1/libs/auth"
 	"github.com/salazarhugo/cheers1/libs/profiler"
-	"github.com/salazarhugo/cheers1/services/notification-service/internal/app"
+	"github.com/salazarhugo/cheers1/services/comment-service/internal/app"
+	"github.com/sirupsen/logrus"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health/grpc_health_v1"
-	"log"
 	"net"
 	"net/http"
 	"os"
 	"strings"
+	"time"
 )
 
+var log *logrus.Logger
+
 func init() {
-	go profiler.InitProfiling("notification-service", "1.0.0")
+	go profiler.InitProfiling("comment-service", "1.0.0")
+	log = logrus.New()
+	log.Level = logrus.DebugLevel
+	log.Formatter = &logrus.JSONFormatter{
+		FieldMap: logrus.FieldMap{
+			logrus.FieldKeyTime:  "timestamp",
+			logrus.FieldKeyLevel: "severity",
+			logrus.FieldKeyMsg:   "message",
+		},
+		TimestampFormat: time.RFC3339Nano,
+	}
+	log.Out = os.Stdout
 }
 
 func main() {
-	// Determine port for HTTP service.
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
-		log.Printf("Defaulting to port %s", port)
+		log.Info("Defaulting to port %s", port)
 	}
 
 	httpMux := http.NewServeMux()
-	httpMux.HandleFunc("/", app.PostSub)
-	//httpMux.HandleFunc("/post", app.PostSub)
-	httpMux.HandleFunc("/chat", app.ChatTopic)
-	httpMux.HandleFunc("/user", app.UserTopicSub)
+	httpMux.HandleFunc("/user-sub", app.UserSub)
 
 	grpcS := grpc.NewServer(
 		grpc.UnaryInterceptor(auth.UnaryInterceptor),
@@ -42,12 +52,14 @@ func main() {
 
 	server := app.NewServer()
 
+	comment.RegisterCommentServiceServer(grpcS, server)
 	grpc_health_v1.RegisterHealthServer(grpcS, server)
-	notification.RegisterNotificationServiceServer(grpcS, server)
 
 	mixedHandler := newHTTPandGRPCMux(httpMux, grpcS)
 	http2Server := &http2.Server{}
-	http1Server := &http.Server{Handler: h2c.NewHandler(mixedHandler, http2Server)}
+	http1Server := &http.Server{
+		Handler: h2c.NewHandler(mixedHandler, http2Server),
+	}
 
 	listener, err := net.Listen("tcp", ":"+port)
 	if err != nil {

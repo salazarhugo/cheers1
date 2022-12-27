@@ -20,10 +20,15 @@ func (r repository) SendNotification(
 	}
 
 	for userId, tokens := range userWithToken {
-		response, _ := fcmClient.SendMulticast(context.Background(), &messaging.MulticastMessage{
+		response, err := fcmClient.SendMulticast(context.Background(), &messaging.MulticastMessage{
 			Data:   data,
 			Tokens: tokens,
 		})
+		if err != nil {
+			log.Println(err)
+			continue
+		}
+
 		go r.RemoveExpiredTokens(userId, tokens, response.Responses)
 
 		log.Println("Response success count : ", response.SuccessCount)
