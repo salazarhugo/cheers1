@@ -11,6 +11,8 @@ type Repository interface {
 	CreateComment(userId string, text string, postId string) error
 	UpdateUser(user *user.User) error
 	ListComment(postId string) ([]*comment.CommentItem, error)
+	DeleteComment(postId string, commentId string) error
+
 	GetUserItem(userId string) (*user.UserItem, error)
 }
 

@@ -5,6 +5,14 @@ import { UserItem } from "../../type/user/user";
 
 export const protobufPackage = "cheers.comment.v1";
 
+export interface DeleteCommentRequest {
+  postId: string;
+  commentId: string;
+}
+
+export interface DeleteCommentResponse {
+}
+
 export interface ListCommentRequest {
   postId: string;
 }
@@ -33,6 +41,103 @@ export interface CreateCommentRequest {
 
 export interface CreateCommentResponse {
 }
+
+function createBaseDeleteCommentRequest(): DeleteCommentRequest {
+  return { postId: "", commentId: "" };
+}
+
+export const DeleteCommentRequest = {
+  encode(message: DeleteCommentRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.postId !== "") {
+      writer.uint32(10).string(message.postId);
+    }
+    if (message.commentId !== "") {
+      writer.uint32(18).string(message.commentId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteCommentRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteCommentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.postId = reader.string();
+          break;
+        case 2:
+          message.commentId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteCommentRequest {
+    return {
+      postId: isSet(object.postId) ? String(object.postId) : "",
+      commentId: isSet(object.commentId) ? String(object.commentId) : "",
+    };
+  },
+
+  toJSON(message: DeleteCommentRequest): unknown {
+    const obj: any = {};
+    message.postId !== undefined && (obj.postId = message.postId);
+    message.commentId !== undefined && (obj.commentId = message.commentId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeleteCommentRequest>, I>>(object: I): DeleteCommentRequest {
+    const message = createBaseDeleteCommentRequest();
+    message.postId = object.postId ?? "";
+    message.commentId = object.commentId ?? "";
+    return message;
+  },
+};
+
+function createBaseDeleteCommentResponse(): DeleteCommentResponse {
+  return {};
+}
+
+export const DeleteCommentResponse = {
+  encode(_: DeleteCommentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteCommentResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteCommentResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): DeleteCommentResponse {
+    return {};
+  },
+
+  toJSON(_: DeleteCommentResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeleteCommentResponse>, I>>(_: I): DeleteCommentResponse {
+    const message = createBaseDeleteCommentResponse();
+    return message;
+  },
+};
 
 function createBaseListCommentRequest(): ListCommentRequest {
   return { postId: "" };
@@ -379,6 +484,7 @@ export const CreateCommentResponse = {
 export interface CommentService {
   CreateComment(request: CreateCommentRequest): Promise<CreateCommentResponse>;
   ListComment(request: ListCommentRequest): Promise<ListCommentResponse>;
+  DeleteComment(request: DeleteCommentRequest): Promise<DeleteCommentResponse>;
 }
 
 export class CommentServiceClientImpl implements CommentService {
@@ -389,6 +495,7 @@ export class CommentServiceClientImpl implements CommentService {
     this.rpc = rpc;
     this.CreateComment = this.CreateComment.bind(this);
     this.ListComment = this.ListComment.bind(this);
+    this.DeleteComment = this.DeleteComment.bind(this);
   }
   CreateComment(request: CreateCommentRequest): Promise<CreateCommentResponse> {
     const data = CreateCommentRequest.encode(request).finish();
@@ -400,6 +507,12 @@ export class CommentServiceClientImpl implements CommentService {
     const data = ListCommentRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListComment", data);
     return promise.then((data) => ListCommentResponse.decode(new _m0.Reader(data)));
+  }
+
+  DeleteComment(request: DeleteCommentRequest): Promise<DeleteCommentResponse> {
+    const data = DeleteCommentRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "DeleteComment", data);
+    return promise.then((data) => DeleteCommentResponse.decode(new _m0.Reader(data)));
   }
 }
 
