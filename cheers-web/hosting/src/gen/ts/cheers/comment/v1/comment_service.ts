@@ -23,6 +23,7 @@ export interface Comment {
   text: string;
   createTime: number;
   userId: string;
+  postId: string;
 }
 
 export interface CreateCommentRequest {
@@ -194,7 +195,7 @@ export const CommentItem = {
 };
 
 function createBaseComment(): Comment {
-  return { id: "", text: "", createTime: 0, userId: "" };
+  return { id: "", text: "", createTime: 0, userId: "", postId: "" };
 }
 
 export const Comment = {
@@ -210,6 +211,9 @@ export const Comment = {
     }
     if (message.userId !== "") {
       writer.uint32(26).string(message.userId);
+    }
+    if (message.postId !== "") {
+      writer.uint32(34).string(message.postId);
     }
     return writer;
   },
@@ -233,6 +237,9 @@ export const Comment = {
         case 3:
           message.userId = reader.string();
           break;
+        case 4:
+          message.postId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -247,6 +254,7 @@ export const Comment = {
       text: isSet(object.text) ? String(object.text) : "",
       createTime: isSet(object.createTime) ? Number(object.createTime) : 0,
       userId: isSet(object.userId) ? String(object.userId) : "",
+      postId: isSet(object.postId) ? String(object.postId) : "",
     };
   },
 
@@ -256,6 +264,7 @@ export const Comment = {
     message.text !== undefined && (obj.text = message.text);
     message.createTime !== undefined && (obj.createTime = Math.round(message.createTime));
     message.userId !== undefined && (obj.userId = message.userId);
+    message.postId !== undefined && (obj.postId = message.postId);
     return obj;
   },
 
@@ -265,6 +274,7 @@ export const Comment = {
     message.text = object.text ?? "";
     message.createTime = object.createTime ?? 0;
     message.userId = object.userId ?? "";
+    message.postId = object.postId ?? "";
     return message;
   },
 };

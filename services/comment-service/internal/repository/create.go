@@ -24,6 +24,7 @@ func (r repository) CreateComment(
 		"text":        text,
 		"user_id":     userId,
 		"create_time": time.Now().Unix(),
+		"post_id":     postId,
 	}
 
 	buff := bytes.NewBufferString("")
