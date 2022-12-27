@@ -15,12 +15,14 @@ func getKeyPostComment(postId string) string {
 }
 
 func (r repository) CreateComment(
+	userId string,
 	text string,
 	postId string,
 ) error {
 	comment := map[string]interface{}{
 		"id":          uuid.New().String(),
 		"text":        text,
+		"user_id":     userId,
 		"create_time": time.Now().Unix(),
 	}
 
