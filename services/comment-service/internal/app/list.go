@@ -10,12 +10,12 @@ func (s *Server) ListComment(
 	request *comment.ListCommentRequest,
 ) (*comment.ListCommentResponse, error) {
 
-	comments, err := s.commentRepository.ListComment(request.PostId)
+	items, err := s.commentRepository.ListComment(request.PostId)
 	if err != nil {
 		return nil, err
 	}
 
 	return &comment.ListCommentResponse{
-		Comments: comments,
+		Items: items,
 	}, nil
 }

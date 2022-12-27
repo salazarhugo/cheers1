@@ -10,7 +10,8 @@ import (
 type Repository interface {
 	CreateComment(text string, postId string) error
 	UpdateUser(user *user.User) error
-	ListComment(postId string) ([]*comment.Comment, error)
+	ListComment(postId string) ([]*comment.CommentItem, error)
+	GetUserItem(userId string) (*user.UserItem, error)
 }
 
 type repository struct {

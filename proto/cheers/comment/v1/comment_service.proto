@@ -3,8 +3,8 @@ syntax = "proto3";
 package cheers.comment.v1;
 
 
-import "cheers/type/user/user.proto";
 import "google/api/annotations.proto";
+import "cheers/type/user/user.proto";
 
 option java_multiple_files = true;
 option go_package = "github.com/salazarhugo/cheers1/gen/go/cheers/comment/v1;comment";
@@ -29,15 +29,19 @@ message ListCommentRequest {
 }
 
 message ListCommentResponse {
-  repeated Comment comments = 1;
+  repeated CommentItem items = 1;
+}
+
+message CommentItem {
+  Comment comment = 1;
+  cheers.type.UserItem user_item = 2;
 }
 
 message Comment {
   string id = 1;
   string text = 2;
-  string picture = 3;
-  string username = 4;
   int64 create_time = 5;
+  string user_id = 3;
 }
 
 message CreateCommentRequest {

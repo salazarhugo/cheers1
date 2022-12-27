@@ -23,4 +23,5 @@ protoc \
   cheers/payment/v1/payment_service.proto \
   cheers/activity/v1/activity_service.proto \
   cheers/story/v1/story_service.proto \
-  cheers/notification/v1/notification_service.proto
+  cheers/notification/v1/notification_service.proto \
+  cheers/comment/v1/comment_service.proto

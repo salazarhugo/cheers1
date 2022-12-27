@@ -1,6 +1,7 @@
 /* eslint-disable */
 import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
+import { UserItem } from "../../type/user/user";
 
 export const protobufPackage = "cheers.comment.v1";
 
@@ -9,15 +10,19 @@ export interface ListCommentRequest {
 }
 
 export interface ListCommentResponse {
-  comments: Comment[];
+  items: CommentItem[];
+}
+
+export interface CommentItem {
+  comment: Comment | undefined;
+  userItem: UserItem | undefined;
 }
 
 export interface Comment {
   id: string;
   text: string;
-  picture: string;
-  username: string;
   createTime: number;
+  userId: string;
 }
 
 export interface CreateCommentRequest {
@@ -76,13 +81,13 @@ export const ListCommentRequest = {
 };
 
 function createBaseListCommentResponse(): ListCommentResponse {
-  return { comments: [] };
+  return { items: [] };
 }
 
 export const ListCommentResponse = {
   encode(message: ListCommentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.comments) {
-      Comment.encode(v!, writer.uint32(10).fork()).ldelim();
+    for (const v of message.items) {
+      CommentItem.encode(v!, writer.uint32(10).fork()).ldelim();
     }
     return writer;
   },
@@ -95,7 +100,7 @@ export const ListCommentResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.comments.push(Comment.decode(reader, reader.uint32()));
+          message.items.push(CommentItem.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -106,28 +111,90 @@ export const ListCommentResponse = {
   },
 
   fromJSON(object: any): ListCommentResponse {
-    return { comments: Array.isArray(object?.comments) ? object.comments.map((e: any) => Comment.fromJSON(e)) : [] };
+    return { items: Array.isArray(object?.items) ? object.items.map((e: any) => CommentItem.fromJSON(e)) : [] };
   },
 
   toJSON(message: ListCommentResponse): unknown {
     const obj: any = {};
-    if (message.comments) {
-      obj.comments = message.comments.map((e) => e ? Comment.toJSON(e) : undefined);
+    if (message.items) {
+      obj.items = message.items.map((e) => e ? CommentItem.toJSON(e) : undefined);
     } else {
-      obj.comments = [];
+      obj.items = [];
     }
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<ListCommentResponse>, I>>(object: I): ListCommentResponse {
     const message = createBaseListCommentResponse();
-    message.comments = object.comments?.map((e) => Comment.fromPartial(e)) || [];
+    message.items = object.items?.map((e) => CommentItem.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseCommentItem(): CommentItem {
+  return { comment: undefined, userItem: undefined };
+}
+
+export const CommentItem = {
+  encode(message: CommentItem, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.comment !== undefined) {
+      Comment.encode(message.comment, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.userItem !== undefined) {
+      UserItem.encode(message.userItem, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CommentItem {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCommentItem();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.comment = Comment.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.userItem = UserItem.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CommentItem {
+    return {
+      comment: isSet(object.comment) ? Comment.fromJSON(object.comment) : undefined,
+      userItem: isSet(object.userItem) ? UserItem.fromJSON(object.userItem) : undefined,
+    };
+  },
+
+  toJSON(message: CommentItem): unknown {
+    const obj: any = {};
+    message.comment !== undefined && (obj.comment = message.comment ? Comment.toJSON(message.comment) : undefined);
+    message.userItem !== undefined && (obj.userItem = message.userItem ? UserItem.toJSON(message.userItem) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CommentItem>, I>>(object: I): CommentItem {
+    const message = createBaseCommentItem();
+    message.comment = (object.comment !== undefined && object.comment !== null)
+      ? Comment.fromPartial(object.comment)
+      : undefined;
+    message.userItem = (object.userItem !== undefined && object.userItem !== null)
+      ? UserItem.fromPartial(object.userItem)
+      : undefined;
     return message;
   },
 };
 
 function createBaseComment(): Comment {
-  return { id: "", text: "", picture: "", username: "", createTime: 0 };
+  return { id: "", text: "", createTime: 0, userId: "" };
 }
 
 export const Comment = {
@@ -138,14 +205,11 @@ export const Comment = {
     if (message.text !== "") {
       writer.uint32(18).string(message.text);
     }
-    if (message.picture !== "") {
-      writer.uint32(26).string(message.picture);
-    }
-    if (message.username !== "") {
-      writer.uint32(34).string(message.username);
-    }
     if (message.createTime !== 0) {
       writer.uint32(40).int64(message.createTime);
+    }
+    if (message.userId !== "") {
+      writer.uint32(26).string(message.userId);
     }
     return writer;
   },
@@ -163,14 +227,11 @@ export const Comment = {
         case 2:
           message.text = reader.string();
           break;
-        case 3:
-          message.picture = reader.string();
-          break;
-        case 4:
-          message.username = reader.string();
-          break;
         case 5:
           message.createTime = longToNumber(reader.int64() as Long);
+          break;
+        case 3:
+          message.userId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -184,9 +245,8 @@ export const Comment = {
     return {
       id: isSet(object.id) ? String(object.id) : "",
       text: isSet(object.text) ? String(object.text) : "",
-      picture: isSet(object.picture) ? String(object.picture) : "",
-      username: isSet(object.username) ? String(object.username) : "",
       createTime: isSet(object.createTime) ? Number(object.createTime) : 0,
+      userId: isSet(object.userId) ? String(object.userId) : "",
     };
   },
 
@@ -194,9 +254,8 @@ export const Comment = {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
     message.text !== undefined && (obj.text = message.text);
-    message.picture !== undefined && (obj.picture = message.picture);
-    message.username !== undefined && (obj.username = message.username);
     message.createTime !== undefined && (obj.createTime = Math.round(message.createTime));
+    message.userId !== undefined && (obj.userId = message.userId);
     return obj;
   },
 
@@ -204,9 +263,8 @@ export const Comment = {
     const message = createBaseComment();
     message.id = object.id ?? "";
     message.text = object.text ?? "";
-    message.picture = object.picture ?? "";
-    message.username = object.username ?? "";
     message.createTime = object.createTime ?? 0;
+    message.userId = object.userId ?? "";
     return message;
   },
 };

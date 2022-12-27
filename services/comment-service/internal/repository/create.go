@@ -19,9 +19,9 @@ func (r repository) CreateComment(
 	postId string,
 ) error {
 	comment := map[string]interface{}{
-		"id":         uuid.New().String(),
-		"text":       text,
-		"createTime": time.Now().Unix(),
+		"id":          uuid.New().String(),
+		"text":        text,
+		"create_time": time.Now().Unix(),
 	}
 
 	buff := bytes.NewBufferString("")

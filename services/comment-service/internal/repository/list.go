@@ -7,22 +7,30 @@ import (
 	"strings"
 )
 
-func (r repository) ListComment(postId string) ([]*comment.Comment, error) {
+func (r repository) ListComment(
+	postId string,
+) ([]*comment.CommentItem, error) {
 	values, err := r.redis.ZRevRange(context.Background(), getKeyPostComment(postId), 0, 20).Result()
 	if err != nil {
 		return nil, err
 	}
 
-	var comments []*comment.Comment
+	var comments []*comment.CommentItem
 
 	for i := range values {
-		comment := &comment.Comment{}
+		com := &comment.Comment{}
 		dec := json.NewDecoder(strings.NewReader(values[i]))
-		err := dec.Decode(comment)
+		err := dec.Decode(com)
 		if err != nil {
-			panic(err)
+			continue
 		}
-		comments = append(comments, comment)
+
+		userItem, err := r.GetUserItem(com.UserId)
+
+		comments = append(comments, &comment.CommentItem{
+			Comment:  com,
+			UserItem: userItem,
+		})
 	}
 
 	return comments, nil
