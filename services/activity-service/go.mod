@@ -7,7 +7,7 @@ require (
 	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221227212821-391850db7825
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221028075628-41c8e72f61a4
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221028101521-0cb4516952cb
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221227212821-391850db7825
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221228135748-de96d2093a61
 	golang.org/x/net v0.0.0-20221014081412-f15817d10f9b
 	google.golang.org/api v0.100.0
 	google.golang.org/grpc v1.50.1
