@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"google.golang.org/protobuf/proto"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -34,6 +35,8 @@ func UnmarshalPubSubMessage(
 	if err != nil {
 		return err
 	}
+
+	log.Println(event)
 
 	return nil
 }

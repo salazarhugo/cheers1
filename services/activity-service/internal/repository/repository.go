@@ -5,6 +5,7 @@ import (
 )
 
 type ActivityRepository interface {
+	CreateActivity(userID string, activity *activity.Activity) error
 	ListActivity(userID string) ([]*activity.Activity, error)
 }
 
