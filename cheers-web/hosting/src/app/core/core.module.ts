@@ -9,6 +9,7 @@ import { SidenavComponent } from './ui/sidenav/sidenav.component';
 import {RouterModule} from "@angular/router";
 import { SidenavItemComponent } from './ui/sidenav-item/sidenav-item.component';
 import {UserShellModule} from "../users/feature/user-shell/user-shell.module";
+import {PartyInviteModule} from "../parties/ui/party-invite/party-invite.module";
 
 @NgModule({
     declarations: [
@@ -24,6 +25,7 @@ import {UserShellModule} from "../users/feature/user-shell/user-shell.module";
         MaterialModule,
         UserShellModule,
         TopbarModule,
+        PartyInviteModule,
     ],
     providers: [],
     exports: [

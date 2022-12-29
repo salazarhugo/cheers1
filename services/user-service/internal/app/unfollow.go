@@ -17,7 +17,7 @@ func (s *Server) UnfollowUser(
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")
 	}
 
-	err = s.userRepository.UnfollowUser(userID, request.GetUserId())
+	err = s.userRepository.UnfollowUser(userID, request.UserId)
 	if err != nil {
 		return nil, err
 	}

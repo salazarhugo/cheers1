@@ -9,7 +9,7 @@ import (
 
 func (p *userRepository) FollowUser(
 	userID string,
-	otherUserID string,
+	otherUser string,
 ) error {
 	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close()
@@ -20,8 +20,8 @@ func (p *userRepository) FollowUser(
 	}
 
 	params := map[string]interface{}{
-		"userID":      userID,
-		"otherUserID": otherUserID,
+		"userID":    userID,
+		"otherUser": otherUser,
 	}
 
 	_, err = session.Run(*cypher, params)
@@ -34,17 +34,17 @@ func (p *userRepository) FollowUser(
 	}
 	currentUser := response.User
 
-	response, err = p.GetUser(userID, otherUserID)
+	response, err = p.GetUser(userID, otherUser)
 	if err != nil {
 		return err
 	}
-	otherUser := response.User
+	followedUser := response.User
 
 	err = pubsub.PublishProtoWithBinaryEncoding("user-topic", &user.UserEvent{
 		Event: &user.UserEvent_Follow{
 			Follow: &user.FollowUser{
 				User:         currentUser,
-				FollowedUser: otherUser,
+				FollowedUser: followedUser,
 			},
 		},
 	})

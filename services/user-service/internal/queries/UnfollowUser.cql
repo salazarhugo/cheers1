@@ -1,6 +1,6 @@
 MATCH
-  (u:User)-[r:FOLLOWS]->(u2:User)
+  (u:User {id: $userID})-[r:FOLLOWS]->(u2:User)
 WHERE
-  u.id = $userID AND u2.id = $otherUserID
+  u2.id = $otherUser OR u2.username = $otherUser
 DELETE
   r

@@ -2,16 +2,18 @@
     <div *ngIf="$user | async as user">
         <app-profile-header [user]="user">
         </app-profile-header>
-        <div fxLayoutGap="8px">
-            <button (click)="user.followBack = false;user.followers = user.followers - 1; unfollowUser(user.username)" *ngIf="user.followBack" color="primary" mat-button>
-                Unfollow
-            </button>
-            <button (click)="user.followBack = true;user.followers = user.followers + 1; followUser(user.username)" *ngIf="!user.followBack" color="primary" mat-flat-button>
-                Follow
-            </button>
-            <button color="primary" mat-flat-button style="border-radius: 12px" (click)="onMessageClick()">
-                Message
-            </button>
+        <div fxLayoutAlign="space-between center">
+            <div fxLayoutGap="8px">
+                <button (click)="user.followBack = false;user.followers = user.followers - 1; unfollowUser(user.username)" *ngIf="user.followBack" color="primary" mat-button>
+                    Unfollow
+                </button>
+                <button (click)="user.followBack = true;user.followers = user.followers + 1; followUser(user.username)" *ngIf="!user.followBack" color="primary" mat-flat-button>
+                    Follow
+                </button>
+                <button color="primary" mat-flat-button style="border-radius: 12px" (click)="onMessageClick()">
+                    Message
+                </button>
+            </div>
             <button *ngIf="isAdmin" [mat-menu-trigger-for]="adminMenu" mat-icon-button color="primary">
                 <mat-icon>more_vert</mat-icon>
             </button>

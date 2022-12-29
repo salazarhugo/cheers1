@@ -8,6 +8,8 @@ import {PartyAnswer} from "../../../../gen/ts/cheers/party/v1/party_service";
 import {UserService} from "../../../shared/data/services/user.service";
 import {firstValueFrom} from "rxjs";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
+import {MatDialog} from "@angular/material/dialog";
+import {PartyInviteComponent} from "../../ui/party-invite/party-invite.component";
 
 @Component({
     selector: 'app-party-detail',
@@ -27,6 +29,7 @@ export class PartyComponent implements OnInit {
         private snackBar: MatSnackBar,
         private userService: UserService,
         private afAuth: AngularFireAuth,
+        private matDialog: MatDialog,
     ) {
     }
 
@@ -53,6 +56,10 @@ export class PartyComponent implements OnInit {
         this.snackBar.open("Link copied to clipboard", "Hide", {
             duration: 3000
         })
+    }
+
+    onInviteClick() {
+        this.matDialog.open(PartyInviteComponent)
     }
 
     async onGoingToggle() {

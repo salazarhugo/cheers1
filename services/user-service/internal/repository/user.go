@@ -17,7 +17,7 @@ type UserRepository interface {
 	UnVerifyUser(userID string) error
 	GetUsersIn(userIDs []string) ([]*user.User, error)
 	GetUserItemsIn(userID string, userIDs []string) ([]*user.UserItem, error)
-	FollowUser(userID string, otherUserID string) error
+	FollowUser(userID string, otherUser string) error
 	UnfollowUser(userID string, otherUserID string) error
 
 	BlockUser(userID string, otherUserID string) error

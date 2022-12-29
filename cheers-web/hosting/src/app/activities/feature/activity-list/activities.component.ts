@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Activity} from "../../data/activity.model";
+import {ActivityService} from "../../data/activity.service";
+import {firstValueFrom} from "rxjs";
+import {UserService} from "../../../shared/data/services/user.service";
 
 @Component({
     selector: 'app-activity-list',
@@ -8,16 +11,17 @@ import {Activity} from "../../data/activity.model";
 })
 export class ActivitiesComponent implements OnInit {
 
-    activities = [
-        new Activity(),
-        new Activity(),
-        new Activity(),
-        new Activity(),
-    ]
-    constructor() {
+    activities: Activity[] = []
+
+    constructor(
+        private userService: UserService,
+        private activityService: ActivityService,
+    ) {
     }
 
-    ngOnInit(): void {
+    async ngOnInit() {
+        const activities = await firstValueFrom(this.activityService.listActivity())
+        this.activities = activities
     }
 
 }

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {User} from "../../../shared/data/models/user.model";
 import {UserItem} from "../../../../gen/ts/cheers/type/user/user";
 
@@ -10,8 +10,13 @@ import {UserItem} from "../../../../gen/ts/cheers/type/user/user";
 export class UserItemComponent implements OnInit {
 
     @Input() user: UserItem
+    @Output() onClick = new EventEmitter<UserItem>()
 
     constructor() {
+    }
+
+    click() {
+        this.onClick.emit(this.user)
     }
 
     ngOnInit(): void {

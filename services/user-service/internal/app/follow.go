@@ -17,7 +17,7 @@ func (s *Server) FollowUser(
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")
 	}
 
-	err = s.userRepository.FollowUser(userID, request.GetUserId())
+	err = s.userRepository.FollowUser(userID, request.UserId)
 	if err != nil {
 		return nil, err
 	}

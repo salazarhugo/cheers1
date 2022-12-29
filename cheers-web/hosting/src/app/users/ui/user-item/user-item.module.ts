@@ -4,6 +4,7 @@ import {CommonModule} from '@angular/common';
 import {UserItemRoutingModule} from './user-item-routing.module';
 import {UserItemComponent} from "./user-item.component";
 import {FlexModule} from "@angular/flex-layout";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import {FlexModule} from "@angular/flex-layout";
     imports: [
         CommonModule,
         UserItemRoutingModule,
-        FlexModule
+        FlexModule,
+        MatTooltipModule
     ],
     exports: [UserItemComponent],
 })

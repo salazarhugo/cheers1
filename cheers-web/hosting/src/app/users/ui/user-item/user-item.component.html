@@ -1,7 +1,14 @@
-<div [routerLink]="['/u', user.username]" class="user-item" fxLayoutAlign="none">
-    <img (error)="onImgError($event)" [src]="user.picture" class="avatar--small">
-    <div class="user-text" fxLayout="column">
-        <span class="username">{{user.username}}</span>
-        <span class="name">{{user.name}}</span>
+<div (click)="click()" class="user-item" fxLayoutAlign="space-between center">
+    <div fxLayoutAlign="none center">
+        <img (error)="onImgError($event)" [src]="user.picture" class="avatar--small">
+        <div class="user-text" fxLayout="column">
+        <span fxLayout="row" fxLayoutAlign="none center">
+            <span class="username">{{user.username}}</span>
+            <img *ngIf="user.verified" height="18" matTooltip="Verified" src="../../../../assets/ic_verified.png"
+                 style="margin: 0 4px" width="18"/>
+        </span>
+            <span class="name">{{user.name}}</span>
+        </div>
     </div>
+    <ng-content></ng-content>
 </div>

@@ -7,7 +7,7 @@ import (
 
 func (p *userRepository) UnfollowUser(
 	userID string,
-	otherUserID string,
+	otherUser string,
 ) error {
 	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close()
@@ -18,8 +18,8 @@ func (p *userRepository) UnfollowUser(
 	}
 
 	params := map[string]interface{}{
-		"userID":      userID,
-		"otherUserID": otherUserID,
+		"userID":    userID,
+		"otherUser": otherUser,
 	}
 
 	_, err = session.Run(*cypher, params)

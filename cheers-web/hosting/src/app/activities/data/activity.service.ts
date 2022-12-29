@@ -1,27 +1,22 @@
 import {Injectable} from '@angular/core';
+import {map, Observable} from "rxjs";
+import {Activity, toActivity} from "./activity.model";
+import {HttpClient} from "@angular/common/http";
+import {ListActivityResponse} from "../../../gen/ts/cheers/activity/v1/activity_service";
+import {environment} from "../../../environments/environment";
 
 @Injectable({
     providedIn: 'root'
 })
 export class ActivityService {
 
-    // private client: ActivityServiceClient;
-
-    constructor() {
-        // this.client = new ActivityServiceClient(
-        //     'https://activity-service-r3a2dr4u4a-nw.a.run.app:443', {
-        //         debug: true
-        //     });
+    constructor(
+        private http: HttpClient,
+    ) {
     }
 
-    listActivity(userId: string): void {
-        // const request = new ListActivityRequest();
-        // request.setUserId(userId);
-        // this.client.listActivity(
-        //     request, (error: any, response: ListActivityResponse | null) => {
-        //         // Your code to handle error & response.
-        //         console.log('Error: ' + error);
-        //         console.log('ListActivityResponse: ' + response);
-        //     });
+    listActivity(): Observable<Activity[]> {
+        return this.http.get<ListActivityResponse>(`${environment.GATEWAY_URL}/v1/activities`)
+            .pipe(map(res => res.activities.map(activity => toActivity(activity))))
     }
 }

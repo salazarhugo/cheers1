@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Invite</h1>
+<div mat-dialog-content>
+    <mat-chip *ngFor="let user of selectedUsers">
+        {{user.username}}
+    </mat-chip>
+
+    <ng-container *ngFor="let user of users">
+        <app-user-item [user]="user" (onClick)="onSelectUser($event)">
+            <mat-checkbox [checked]="selectedUsers.has(user)"></mat-checkbox>
+        </app-user-item>
+    </ng-container>
+</div>
+<div mat-dialog-actions [align]="'end'">
+    <button mat-button>Cancel</button>
+    <button mat-flat-button color="primary" (click)="onSendInvitations()" [disabled]="isLoading">
+        <div fxLayoutAlign="center center" fxLayoutGap="16px">
+            <mat-spinner *ngIf="isLoading" [diameter]="16" [strokeWidth]="1"></mat-spinner>
+            <span> Send Invitations </span>
+        </div>
+    </button>
+</div>

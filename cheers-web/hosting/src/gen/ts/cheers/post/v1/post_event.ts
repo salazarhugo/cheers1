@@ -1,134 +1,45 @@
 /* eslint-disable */
 import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
+import { Post } from "../../type/post/post";
+import { UserItem } from "../../type/user/user";
 
 export const protobufPackage = "cheers.post.v1";
 
 export interface PostEvent {
-  userId: string;
-  postId: string;
-  creatorId: string;
-  caption: string;
-  address: string;
-  photos: string[];
-  isCommentEnabled: boolean;
-  locationName: string;
-  drink: string;
-  drunkenness: number;
-  commentsEnabled: boolean;
-  shareEnabled: boolean;
-  type: PostEvent_EventType;
+  create?: CreatePost | undefined;
+  like?: LikePost | undefined;
+  delete?: DeletePost | undefined;
 }
 
-export enum PostEvent_EventType {
-  CREATE = 0,
-  UPDATE = 1,
-  DELETE = 2,
-  LIKE = 3,
-  COMMENT = 4,
-  UNRECOGNIZED = -1,
+export interface CreatePost {
+  post: Post | undefined;
+  user: UserItem | undefined;
 }
 
-export function postEvent_EventTypeFromJSON(object: any): PostEvent_EventType {
-  switch (object) {
-    case 0:
-    case "CREATE":
-      return PostEvent_EventType.CREATE;
-    case 1:
-    case "UPDATE":
-      return PostEvent_EventType.UPDATE;
-    case 2:
-    case "DELETE":
-      return PostEvent_EventType.DELETE;
-    case 3:
-    case "LIKE":
-      return PostEvent_EventType.LIKE;
-    case 4:
-    case "COMMENT":
-      return PostEvent_EventType.COMMENT;
-    case -1:
-    case "UNRECOGNIZED":
-    default:
-      return PostEvent_EventType.UNRECOGNIZED;
-  }
+export interface LikePost {
+  post: Post | undefined;
+  user: UserItem | undefined;
 }
 
-export function postEvent_EventTypeToJSON(object: PostEvent_EventType): string {
-  switch (object) {
-    case PostEvent_EventType.CREATE:
-      return "CREATE";
-    case PostEvent_EventType.UPDATE:
-      return "UPDATE";
-    case PostEvent_EventType.DELETE:
-      return "DELETE";
-    case PostEvent_EventType.LIKE:
-      return "LIKE";
-    case PostEvent_EventType.COMMENT:
-      return "COMMENT";
-    case PostEvent_EventType.UNRECOGNIZED:
-    default:
-      return "UNRECOGNIZED";
-  }
+export interface DeletePost {
+  sender: UserItem | undefined;
 }
 
 function createBasePostEvent(): PostEvent {
-  return {
-    userId: "",
-    postId: "",
-    creatorId: "",
-    caption: "",
-    address: "",
-    photos: [],
-    isCommentEnabled: false,
-    locationName: "",
-    drink: "",
-    drunkenness: 0,
-    commentsEnabled: false,
-    shareEnabled: false,
-    type: 0,
-  };
+  return { create: undefined, like: undefined, delete: undefined };
 }
 
 export const PostEvent = {
   encode(message: PostEvent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
+    if (message.create !== undefined) {
+      CreatePost.encode(message.create, writer.uint32(10).fork()).ldelim();
     }
-    if (message.postId !== "") {
-      writer.uint32(90).string(message.postId);
+    if (message.like !== undefined) {
+      LikePost.encode(message.like, writer.uint32(18).fork()).ldelim();
     }
-    if (message.creatorId !== "") {
-      writer.uint32(18).string(message.creatorId);
-    }
-    if (message.caption !== "") {
-      writer.uint32(26).string(message.caption);
-    }
-    if (message.address !== "") {
-      writer.uint32(34).string(message.address);
-    }
-    for (const v of message.photos) {
-      writer.uint32(50).string(v!);
-    }
-    if (message.isCommentEnabled === true) {
-      writer.uint32(56).bool(message.isCommentEnabled);
-    }
-    if (message.locationName !== "") {
-      writer.uint32(66).string(message.locationName);
-    }
-    if (message.drink !== "") {
-      writer.uint32(74).string(message.drink);
-    }
-    if (message.drunkenness !== 0) {
-      writer.uint32(80).int64(message.drunkenness);
-    }
-    if (message.commentsEnabled === true) {
-      writer.uint32(104).bool(message.commentsEnabled);
-    }
-    if (message.shareEnabled === true) {
-      writer.uint32(112).bool(message.shareEnabled);
-    }
-    if (message.type !== 0) {
-      writer.uint32(96).int32(message.type);
+    if (message.delete !== undefined) {
+      DeletePost.encode(message.delete, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -141,43 +52,13 @@ export const PostEvent = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.userId = reader.string();
-          break;
-        case 11:
-          message.postId = reader.string();
+          message.create = CreatePost.decode(reader, reader.uint32());
           break;
         case 2:
-          message.creatorId = reader.string();
+          message.like = LikePost.decode(reader, reader.uint32());
           break;
         case 3:
-          message.caption = reader.string();
-          break;
-        case 4:
-          message.address = reader.string();
-          break;
-        case 6:
-          message.photos.push(reader.string());
-          break;
-        case 7:
-          message.isCommentEnabled = reader.bool();
-          break;
-        case 8:
-          message.locationName = reader.string();
-          break;
-        case 9:
-          message.drink = reader.string();
-          break;
-        case 10:
-          message.drunkenness = longToNumber(reader.int64() as Long);
-          break;
-        case 13:
-          message.commentsEnabled = reader.bool();
-          break;
-        case 14:
-          message.shareEnabled = reader.bool();
-          break;
-        case 12:
-          message.type = reader.int32() as any;
+          message.delete = DeletePost.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -189,59 +70,194 @@ export const PostEvent = {
 
   fromJSON(object: any): PostEvent {
     return {
-      userId: isSet(object.userId) ? String(object.userId) : "",
-      postId: isSet(object.postId) ? String(object.postId) : "",
-      creatorId: isSet(object.creatorId) ? String(object.creatorId) : "",
-      caption: isSet(object.caption) ? String(object.caption) : "",
-      address: isSet(object.address) ? String(object.address) : "",
-      photos: Array.isArray(object?.photos) ? object.photos.map((e: any) => String(e)) : [],
-      isCommentEnabled: isSet(object.isCommentEnabled) ? Boolean(object.isCommentEnabled) : false,
-      locationName: isSet(object.locationName) ? String(object.locationName) : "",
-      drink: isSet(object.drink) ? String(object.drink) : "",
-      drunkenness: isSet(object.drunkenness) ? Number(object.drunkenness) : 0,
-      commentsEnabled: isSet(object.commentsEnabled) ? Boolean(object.commentsEnabled) : false,
-      shareEnabled: isSet(object.shareEnabled) ? Boolean(object.shareEnabled) : false,
-      type: isSet(object.type) ? postEvent_EventTypeFromJSON(object.type) : 0,
+      create: isSet(object.create) ? CreatePost.fromJSON(object.create) : undefined,
+      like: isSet(object.like) ? LikePost.fromJSON(object.like) : undefined,
+      delete: isSet(object.delete) ? DeletePost.fromJSON(object.delete) : undefined,
     };
   },
 
   toJSON(message: PostEvent): unknown {
     const obj: any = {};
-    message.userId !== undefined && (obj.userId = message.userId);
-    message.postId !== undefined && (obj.postId = message.postId);
-    message.creatorId !== undefined && (obj.creatorId = message.creatorId);
-    message.caption !== undefined && (obj.caption = message.caption);
-    message.address !== undefined && (obj.address = message.address);
-    if (message.photos) {
-      obj.photos = message.photos.map((e) => e);
-    } else {
-      obj.photos = [];
-    }
-    message.isCommentEnabled !== undefined && (obj.isCommentEnabled = message.isCommentEnabled);
-    message.locationName !== undefined && (obj.locationName = message.locationName);
-    message.drink !== undefined && (obj.drink = message.drink);
-    message.drunkenness !== undefined && (obj.drunkenness = Math.round(message.drunkenness));
-    message.commentsEnabled !== undefined && (obj.commentsEnabled = message.commentsEnabled);
-    message.shareEnabled !== undefined && (obj.shareEnabled = message.shareEnabled);
-    message.type !== undefined && (obj.type = postEvent_EventTypeToJSON(message.type));
+    message.create !== undefined && (obj.create = message.create ? CreatePost.toJSON(message.create) : undefined);
+    message.like !== undefined && (obj.like = message.like ? LikePost.toJSON(message.like) : undefined);
+    message.delete !== undefined && (obj.delete = message.delete ? DeletePost.toJSON(message.delete) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<PostEvent>, I>>(object: I): PostEvent {
     const message = createBasePostEvent();
-    message.userId = object.userId ?? "";
-    message.postId = object.postId ?? "";
-    message.creatorId = object.creatorId ?? "";
-    message.caption = object.caption ?? "";
-    message.address = object.address ?? "";
-    message.photos = object.photos?.map((e) => e) || [];
-    message.isCommentEnabled = object.isCommentEnabled ?? false;
-    message.locationName = object.locationName ?? "";
-    message.drink = object.drink ?? "";
-    message.drunkenness = object.drunkenness ?? 0;
-    message.commentsEnabled = object.commentsEnabled ?? false;
-    message.shareEnabled = object.shareEnabled ?? false;
-    message.type = object.type ?? 0;
+    message.create = (object.create !== undefined && object.create !== null)
+      ? CreatePost.fromPartial(object.create)
+      : undefined;
+    message.like = (object.like !== undefined && object.like !== null) ? LikePost.fromPartial(object.like) : undefined;
+    message.delete = (object.delete !== undefined && object.delete !== null)
+      ? DeletePost.fromPartial(object.delete)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseCreatePost(): CreatePost {
+  return { post: undefined, user: undefined };
+}
+
+export const CreatePost = {
+  encode(message: CreatePost, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.post !== undefined) {
+      Post.encode(message.post, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.user !== undefined) {
+      UserItem.encode(message.user, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreatePost {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreatePost();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.post = Post.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.user = UserItem.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreatePost {
+    return {
+      post: isSet(object.post) ? Post.fromJSON(object.post) : undefined,
+      user: isSet(object.user) ? UserItem.fromJSON(object.user) : undefined,
+    };
+  },
+
+  toJSON(message: CreatePost): unknown {
+    const obj: any = {};
+    message.post !== undefined && (obj.post = message.post ? Post.toJSON(message.post) : undefined);
+    message.user !== undefined && (obj.user = message.user ? UserItem.toJSON(message.user) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CreatePost>, I>>(object: I): CreatePost {
+    const message = createBaseCreatePost();
+    message.post = (object.post !== undefined && object.post !== null) ? Post.fromPartial(object.post) : undefined;
+    message.user = (object.user !== undefined && object.user !== null) ? UserItem.fromPartial(object.user) : undefined;
+    return message;
+  },
+};
+
+function createBaseLikePost(): LikePost {
+  return { post: undefined, user: undefined };
+}
+
+export const LikePost = {
+  encode(message: LikePost, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.post !== undefined) {
+      Post.encode(message.post, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.user !== undefined) {
+      UserItem.encode(message.user, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LikePost {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLikePost();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.post = Post.decode(reader, reader.uint32());
+          break;
+        case 2:
+          message.user = UserItem.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LikePost {
+    return {
+      post: isSet(object.post) ? Post.fromJSON(object.post) : undefined,
+      user: isSet(object.user) ? UserItem.fromJSON(object.user) : undefined,
+    };
+  },
+
+  toJSON(message: LikePost): unknown {
+    const obj: any = {};
+    message.post !== undefined && (obj.post = message.post ? Post.toJSON(message.post) : undefined);
+    message.user !== undefined && (obj.user = message.user ? UserItem.toJSON(message.user) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<LikePost>, I>>(object: I): LikePost {
+    const message = createBaseLikePost();
+    message.post = (object.post !== undefined && object.post !== null) ? Post.fromPartial(object.post) : undefined;
+    message.user = (object.user !== undefined && object.user !== null) ? UserItem.fromPartial(object.user) : undefined;
+    return message;
+  },
+};
+
+function createBaseDeletePost(): DeletePost {
+  return { sender: undefined };
+}
+
+export const DeletePost = {
+  encode(message: DeletePost, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.sender !== undefined) {
+      UserItem.encode(message.sender, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeletePost {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeletePost();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 2:
+          message.sender = UserItem.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeletePost {
+    return { sender: isSet(object.sender) ? UserItem.fromJSON(object.sender) : undefined };
+  },
+
+  toJSON(message: DeletePost): unknown {
+    const obj: any = {};
+    message.sender !== undefined && (obj.sender = message.sender ? UserItem.toJSON(message.sender) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeletePost>, I>>(object: I): DeletePost {
+    const message = createBaseDeletePost();
+    message.sender = (object.sender !== undefined && object.sender !== null)
+      ? UserItem.fromPartial(object.sender)
+      : undefined;
     return message;
   },
 };
@@ -275,13 +291,6 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  return long.toNumber();
-}
 
 // If you get a compile-error about 'Constructor<Long> and ... have no overlap',
 // add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
