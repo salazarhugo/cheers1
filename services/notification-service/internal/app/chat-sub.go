@@ -31,7 +31,7 @@ func ChatTopic(w http.ResponseWriter, r *http.Request) {
 			if member.Id == sender.Id {
 				continue
 			}
-			go Async(repo, sender, member)
+			go Async(repo, sender, member, event.Create.Message.RoomId)
 		}
 	}
 
@@ -42,6 +42,7 @@ func Async(
 	repo repository.Repository,
 	sender *user.UserItem,
 	member *user.UserItem,
+	roomId string,
 ) {
 	tokens, err := repo.GetUserTokens(member.Id)
 	if err != nil {
@@ -52,6 +53,7 @@ func Async(
 	data := notifications.NewChatMessageNotification(
 		sender.Username,
 		sender.Picture,
+		roomId,
 	)
 
 	err = repo.SendNotification(
