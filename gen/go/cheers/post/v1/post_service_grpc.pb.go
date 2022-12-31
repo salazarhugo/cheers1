@@ -23,14 +23,21 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PostServiceClient interface {
+	//
 	// Create a new post
 	CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*PostResponse, error)
 	GetPost(ctx context.Context, in *GetPostRequest, opts ...grpc.CallOption) (*PostResponse, error)
 	UpdatePost(ctx context.Context, in *UpdatePostRequest, opts ...grpc.CallOption) (*PostResponse, error)
 	DeletePost(ctx context.Context, in *DeletePostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	//
 	// List posts of a specific user
 	ListPost(ctx context.Context, in *ListPostRequest, opts ...grpc.CallOption) (*ListPostResponse, error)
+	//
+	// Friends post feed
 	FeedPost(ctx context.Context, in *FeedPostRequest, opts ...grpc.CallOption) (*FeedPostResponse, error)
+	//
+	// Map post feed
+	ListMapPost(ctx context.Context, in *ListMapPostRequest, opts ...grpc.CallOption) (*ListMapPostResponse, error)
 	LikePost(ctx context.Context, in *LikePostRequest, opts ...grpc.CallOption) (*LikePostResponse, error)
 	UnlikePost(ctx context.Context, in *UnlikePostRequest, opts ...grpc.CallOption) (*UnlikePostResponse, error)
 	SavePost(ctx context.Context, in *SavePostRequest, opts ...grpc.CallOption) (*SavePostResponse, error)
@@ -99,6 +106,15 @@ func (c *postServiceClient) FeedPost(ctx context.Context, in *FeedPostRequest, o
 	return out, nil
 }
 
+func (c *postServiceClient) ListMapPost(ctx context.Context, in *ListMapPostRequest, opts ...grpc.CallOption) (*ListMapPostResponse, error) {
+	out := new(ListMapPostResponse)
+	err := c.cc.Invoke(ctx, "/cheers.post.v1.PostService/ListMapPost", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *postServiceClient) LikePost(ctx context.Context, in *LikePostRequest, opts ...grpc.CallOption) (*LikePostResponse, error) {
 	out := new(LikePostResponse)
 	err := c.cc.Invoke(ctx, "/cheers.post.v1.PostService/LikePost", in, out, opts...)
@@ -139,14 +155,21 @@ func (c *postServiceClient) UnsavePost(ctx context.Context, in *UnsavePostReques
 // All implementations must embed UnimplementedPostServiceServer
 // for forward compatibility
 type PostServiceServer interface {
+	//
 	// Create a new post
 	CreatePost(context.Context, *CreatePostRequest) (*PostResponse, error)
 	GetPost(context.Context, *GetPostRequest) (*PostResponse, error)
 	UpdatePost(context.Context, *UpdatePostRequest) (*PostResponse, error)
 	DeletePost(context.Context, *DeletePostRequest) (*emptypb.Empty, error)
+	//
 	// List posts of a specific user
 	ListPost(context.Context, *ListPostRequest) (*ListPostResponse, error)
+	//
+	// Friends post feed
 	FeedPost(context.Context, *FeedPostRequest) (*FeedPostResponse, error)
+	//
+	// Map post feed
+	ListMapPost(context.Context, *ListMapPostRequest) (*ListMapPostResponse, error)
 	LikePost(context.Context, *LikePostRequest) (*LikePostResponse, error)
 	UnlikePost(context.Context, *UnlikePostRequest) (*UnlikePostResponse, error)
 	SavePost(context.Context, *SavePostRequest) (*SavePostResponse, error)
@@ -175,6 +198,9 @@ func (UnimplementedPostServiceServer) ListPost(context.Context, *ListPostRequest
 }
 func (UnimplementedPostServiceServer) FeedPost(context.Context, *FeedPostRequest) (*FeedPostResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FeedPost not implemented")
+}
+func (UnimplementedPostServiceServer) ListMapPost(context.Context, *ListMapPostRequest) (*ListMapPostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListMapPost not implemented")
 }
 func (UnimplementedPostServiceServer) LikePost(context.Context, *LikePostRequest) (*LikePostResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LikePost not implemented")
@@ -309,6 +335,24 @@ func _PostService_FeedPost_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PostService_ListMapPost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMapPostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).ListMapPost(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.post.v1.PostService/ListMapPost",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).ListMapPost(ctx, req.(*ListMapPostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PostService_LikePost_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(LikePostRequest)
 	if err := dec(in); err != nil {
@@ -411,6 +455,10 @@ var PostService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FeedPost",
 			Handler:    _PostService_FeedPost_Handler,
+		},
+		{
+			MethodName: "ListMapPost",
+			Handler:    _PostService_ListMapPost_Handler,
 		},
 		{
 			MethodName: "LikePost",

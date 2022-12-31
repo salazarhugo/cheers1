@@ -7,6 +7,16 @@ import { User } from "../../type/user/user";
 
 export const protobufPackage = "cheers.post.v1";
 
+export interface ListMapPostRequest {
+  parent: string;
+  pageSize: number;
+  page: number;
+}
+
+export interface ListMapPostResponse {
+  posts: PostResponse[];
+}
+
 export interface CreatePostRequest {
   post: Post | undefined;
 }
@@ -85,6 +95,124 @@ export interface PostResponse {
   hasLiked: boolean;
   isCreator: boolean;
 }
+
+function createBaseListMapPostRequest(): ListMapPostRequest {
+  return { parent: "", pageSize: 0, page: 0 };
+}
+
+export const ListMapPostRequest = {
+  encode(message: ListMapPostRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.parent !== "") {
+      writer.uint32(10).string(message.parent);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(16).int32(message.pageSize);
+    }
+    if (message.page !== 0) {
+      writer.uint32(24).int32(message.page);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListMapPostRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListMapPostRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.parent = reader.string();
+          break;
+        case 2:
+          message.pageSize = reader.int32();
+          break;
+        case 3:
+          message.page = reader.int32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListMapPostRequest {
+    return {
+      parent: isSet(object.parent) ? String(object.parent) : "",
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
+      page: isSet(object.page) ? Number(object.page) : 0,
+    };
+  },
+
+  toJSON(message: ListMapPostRequest): unknown {
+    const obj: any = {};
+    message.parent !== undefined && (obj.parent = message.parent);
+    message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
+    message.page !== undefined && (obj.page = Math.round(message.page));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListMapPostRequest>, I>>(object: I): ListMapPostRequest {
+    const message = createBaseListMapPostRequest();
+    message.parent = object.parent ?? "";
+    message.pageSize = object.pageSize ?? 0;
+    message.page = object.page ?? 0;
+    return message;
+  },
+};
+
+function createBaseListMapPostResponse(): ListMapPostResponse {
+  return { posts: [] };
+}
+
+export const ListMapPostResponse = {
+  encode(message: ListMapPostResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.posts) {
+      PostResponse.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListMapPostResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListMapPostResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.posts.push(PostResponse.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListMapPostResponse {
+    return { posts: Array.isArray(object?.posts) ? object.posts.map((e: any) => PostResponse.fromJSON(e)) : [] };
+  },
+
+  toJSON(message: ListMapPostResponse): unknown {
+    const obj: any = {};
+    if (message.posts) {
+      obj.posts = message.posts.map((e) => e ? PostResponse.toJSON(e) : undefined);
+    } else {
+      obj.posts = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListMapPostResponse>, I>>(object: I): ListMapPostResponse {
+    const message = createBaseListMapPostResponse();
+    message.posts = object.posts?.map((e) => PostResponse.fromPartial(e)) || [];
+    return message;
+  },
+};
 
 function createBaseCreatePostRequest(): CreatePostRequest {
   return { post: undefined };
@@ -1010,7 +1138,10 @@ export interface PostService {
   DeletePost(request: DeletePostRequest): Promise<Empty>;
   /** List posts of a specific user */
   ListPost(request: ListPostRequest): Promise<ListPostResponse>;
+  /** Friends post feed */
   FeedPost(request: FeedPostRequest): Promise<FeedPostResponse>;
+  /** Map post feed */
+  ListMapPost(request: ListMapPostRequest): Promise<ListMapPostResponse>;
   LikePost(request: LikePostRequest): Promise<LikePostResponse>;
   UnlikePost(request: UnlikePostRequest): Promise<UnlikePostResponse>;
   SavePost(request: SavePostRequest): Promise<SavePostResponse>;
@@ -1029,6 +1160,7 @@ export class PostServiceClientImpl implements PostService {
     this.DeletePost = this.DeletePost.bind(this);
     this.ListPost = this.ListPost.bind(this);
     this.FeedPost = this.FeedPost.bind(this);
+    this.ListMapPost = this.ListMapPost.bind(this);
     this.LikePost = this.LikePost.bind(this);
     this.UnlikePost = this.UnlikePost.bind(this);
     this.SavePost = this.SavePost.bind(this);
@@ -1068,6 +1200,12 @@ export class PostServiceClientImpl implements PostService {
     const data = FeedPostRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "FeedPost", data);
     return promise.then((data) => FeedPostResponse.decode(new _m0.Reader(data)));
+  }
+
+  ListMapPost(request: ListMapPostRequest): Promise<ListMapPostResponse> {
+    const data = ListMapPostRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ListMapPost", data);
+    return promise.then((data) => ListMapPostResponse.decode(new _m0.Reader(data)));
   }
 
   LikePost(request: LikePostRequest): Promise<LikePostResponse> {

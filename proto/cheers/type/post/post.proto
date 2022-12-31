@@ -22,6 +22,10 @@ message Post {
   bool can_comment = 13;
   bool can_share = 14;
   PostRatio ratio = 15;
+  // The latitude in degrees. It must be in the range [-90.0, +90.0].
+  double latitude = 16;
+  // The longitude in degrees. It must be in the range [-180.0, +180.0].
+  double longitude = 17;
 }
 
 enum PostRatio {
