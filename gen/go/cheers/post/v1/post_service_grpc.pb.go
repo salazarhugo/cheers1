@@ -23,15 +23,19 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PostServiceClient interface {
+	//
 	// Create a new post
 	CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*PostResponse, error)
 	GetPost(ctx context.Context, in *GetPostRequest, opts ...grpc.CallOption) (*PostResponse, error)
 	UpdatePost(ctx context.Context, in *UpdatePostRequest, opts ...grpc.CallOption) (*PostResponse, error)
 	DeletePost(ctx context.Context, in *DeletePostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	//
 	// List posts of a specific user
 	ListPost(ctx context.Context, in *ListPostRequest, opts ...grpc.CallOption) (*ListPostResponse, error)
+	//
 	// Friends post feed
 	FeedPost(ctx context.Context, in *FeedPostRequest, opts ...grpc.CallOption) (*FeedPostResponse, error)
+	//
 	// Map post feed
 	ListMapPost(ctx context.Context, in *ListMapPostRequest, opts ...grpc.CallOption) (*ListMapPostResponse, error)
 	LikePost(ctx context.Context, in *LikePostRequest, opts ...grpc.CallOption) (*LikePostResponse, error)
@@ -151,15 +155,19 @@ func (c *postServiceClient) UnsavePost(ctx context.Context, in *UnsavePostReques
 // All implementations must embed UnimplementedPostServiceServer
 // for forward compatibility
 type PostServiceServer interface {
+	//
 	// Create a new post
 	CreatePost(context.Context, *CreatePostRequest) (*PostResponse, error)
 	GetPost(context.Context, *GetPostRequest) (*PostResponse, error)
 	UpdatePost(context.Context, *UpdatePostRequest) (*PostResponse, error)
 	DeletePost(context.Context, *DeletePostRequest) (*emptypb.Empty, error)
+	//
 	// List posts of a specific user
 	ListPost(context.Context, *ListPostRequest) (*ListPostResponse, error)
+	//
 	// Friends post feed
 	FeedPost(context.Context, *FeedPostRequest) (*FeedPostResponse, error)
+	//
 	// Map post feed
 	ListMapPost(context.Context, *ListMapPostRequest) (*ListMapPostResponse, error)
 	LikePost(context.Context, *LikePostRequest) (*LikePostResponse, error)

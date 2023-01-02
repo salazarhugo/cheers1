@@ -18,26 +18,30 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 
 	log.Println(event)
 
-	users, err := repository.GetUsers([]string{event.UserId})
-	if err != nil || len(users) < 1 {
-		log.Println(err)
-		return
-	}
-	user := users[0]
-
 	repo := repository.NewRepository()
-	postCreatorId := event.GetCreatorId()
-	tokens, err := repo.GetUserTokens(postCreatorId)
-	if err != nil {
-		return
-	}
 
-	switch event.GetType() {
-	case post.PostEvent_LIKE:
-		data := notifications.LikePostNotification(user.Username, user.Picture)
-		err := repo.SendNotification(map[string][]string{postCreatorId: tokens}, data)
+	switch event := event.Event.(type) {
+	case *post.PostEvent_Like:
+		users, err := repository.GetUsers([]string{event.Like.User.Id})
+		if err != nil || len(users) < 1 {
+			log.Println(err)
+			return
+		}
+		user := users[0]
+		postCreatorId := event.Like.Post.CreatorId
+		tokens, err := repo.GetUserTokens(postCreatorId)
 		if err != nil {
 			return
 		}
+
+		data := notifications.LikePostNotification(user.Username, user.Picture)
+		err = repo.SendNotification(map[string][]string{postCreatorId: tokens}, data)
+		if err != nil {
+			return
+		}
+	case *post.PostEvent_Create:
+	case *post.PostEvent_Delete:
+	default:
 	}
+
 }
