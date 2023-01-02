@@ -23,6 +23,10 @@ export class PostService {
         return this.api.deletePost(postId)
     }
 
+    listMapPost(): Observable<PostResponse[]> {
+        return this.api.listMapPost()
+    }
+
     getPostFeed(): Observable<PostResponse[]> {
         return this.api.getPostFeed()
     }

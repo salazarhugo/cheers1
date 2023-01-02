@@ -5,7 +5,12 @@ import {StoryState, toUser, User, UserResponse} from "../models/user.model";
 import {Post} from "../models/post.model";
 import {Story, toStory} from "../models/story.model";
 import {Ticket, toTicket} from "../models/ticket.model";
-import {FeedPostResponse, ListPostResponse, PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
+import {
+    FeedPostResponse,
+    ListMapPostResponse,
+    ListPostResponse,
+    PostResponse
+} from "../../../../gen/ts/cheers/post/v1/post_service";
 import {Empty} from "../../../../gen/ts/google/protobuf/empty";
 import {environment} from "../../../../environments/environment";
 import {CreateRegistrationTokenResponse} from "../../../../gen/ts/cheers/notification/v1/notification_service";
@@ -125,9 +130,16 @@ export class ApiService {
             .pipe(map(r => r.posts))
     }
 
+    listMapPost(): Observable<PostResponse[]> {
+        return this.http.get<ListMapPostResponse>(`${environment.GATEWAY_URL}/v1/posts/map?pageSize=10&page=0`)
+            .pipe(map(r => r.posts))
+    }
+
     getPostFeed(): Observable<PostResponse[]> {
         return this.http.get<FeedPostResponse>(`${environment.GATEWAY_URL}/v1/posts/feed?pageSize=10&page=0`)
-            .pipe(map(r => r.posts))
+            .pipe(
+                map(r => r.posts.sort((a, b) => b.post?.createTime! - a.post?.createTime!)),
+            )
     }
 
     getStoryFeed(): Observable<Story[]> {

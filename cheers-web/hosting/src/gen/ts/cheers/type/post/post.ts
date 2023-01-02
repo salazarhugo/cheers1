@@ -98,6 +98,13 @@ export interface Post {
   canComment: boolean;
   canShare: boolean;
   ratio: PostRatio;
+  /** The latitude in degrees. It must be in the range [-90.0, +90.0]. */
+  latitude: number;
+  /** The longitude in degrees. It must be in the range [-180.0, +180.0]. */
+  longitude: number;
+  lastCommentText: string;
+  lastCommentUsername: string;
+  lastCommentCreateTime: string;
 }
 
 function createBasePost(): Post {
@@ -116,6 +123,11 @@ function createBasePost(): Post {
     canComment: false,
     canShare: false,
     ratio: 0,
+    latitude: 0,
+    longitude: 0,
+    lastCommentText: "",
+    lastCommentUsername: "",
+    lastCommentCreateTime: "",
   };
 }
 
@@ -162,6 +174,21 @@ export const Post = {
     }
     if (message.ratio !== 0) {
       writer.uint32(120).int32(message.ratio);
+    }
+    if (message.latitude !== 0) {
+      writer.uint32(129).double(message.latitude);
+    }
+    if (message.longitude !== 0) {
+      writer.uint32(137).double(message.longitude);
+    }
+    if (message.lastCommentText !== "") {
+      writer.uint32(146).string(message.lastCommentText);
+    }
+    if (message.lastCommentUsername !== "") {
+      writer.uint32(154).string(message.lastCommentUsername);
+    }
+    if (message.lastCommentCreateTime !== "") {
+      writer.uint32(162).string(message.lastCommentCreateTime);
     }
     return writer;
   },
@@ -215,6 +242,21 @@ export const Post = {
         case 15:
           message.ratio = reader.int32() as any;
           break;
+        case 16:
+          message.latitude = reader.double();
+          break;
+        case 17:
+          message.longitude = reader.double();
+          break;
+        case 18:
+          message.lastCommentText = reader.string();
+          break;
+        case 19:
+          message.lastCommentUsername = reader.string();
+          break;
+        case 20:
+          message.lastCommentCreateTime = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -239,6 +281,11 @@ export const Post = {
       canComment: isSet(object.canComment) ? Boolean(object.canComment) : false,
       canShare: isSet(object.canShare) ? Boolean(object.canShare) : false,
       ratio: isSet(object.ratio) ? postRatioFromJSON(object.ratio) : 0,
+      latitude: isSet(object.latitude) ? Number(object.latitude) : 0,
+      longitude: isSet(object.longitude) ? Number(object.longitude) : 0,
+      lastCommentText: isSet(object.lastCommentText) ? String(object.lastCommentText) : "",
+      lastCommentUsername: isSet(object.lastCommentUsername) ? String(object.lastCommentUsername) : "",
+      lastCommentCreateTime: isSet(object.lastCommentCreateTime) ? String(object.lastCommentCreateTime) : "",
     };
   },
 
@@ -262,6 +309,11 @@ export const Post = {
     message.canComment !== undefined && (obj.canComment = message.canComment);
     message.canShare !== undefined && (obj.canShare = message.canShare);
     message.ratio !== undefined && (obj.ratio = postRatioToJSON(message.ratio));
+    message.latitude !== undefined && (obj.latitude = message.latitude);
+    message.longitude !== undefined && (obj.longitude = message.longitude);
+    message.lastCommentText !== undefined && (obj.lastCommentText = message.lastCommentText);
+    message.lastCommentUsername !== undefined && (obj.lastCommentUsername = message.lastCommentUsername);
+    message.lastCommentCreateTime !== undefined && (obj.lastCommentCreateTime = message.lastCommentCreateTime);
     return obj;
   },
 
@@ -281,6 +333,11 @@ export const Post = {
     message.canComment = object.canComment ?? false;
     message.canShare = object.canShare ?? false;
     message.ratio = object.ratio ?? 0;
+    message.latitude = object.latitude ?? 0;
+    message.longitude = object.longitude ?? 0;
+    message.lastCommentText = object.lastCommentText ?? "";
+    message.lastCommentUsername = object.lastCommentUsername ?? "";
+    message.lastCommentCreateTime = object.lastCommentCreateTime ?? "";
     return message;
   },
 };

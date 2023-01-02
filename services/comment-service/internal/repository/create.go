@@ -7,6 +7,9 @@ import (
 	"fmt"
 	"github.com/go-redis/redis/v9"
 	"github.com/google/uuid"
+	commentpb "github.com/salazarhugo/cheers1/gen/go/cheers/comment/v1"
+	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
+	"log"
 	"time"
 )
 
@@ -19,8 +22,9 @@ func (r repository) CreateComment(
 	text string,
 	postId string,
 ) error {
+	id := uuid.New().String()
 	comment := map[string]interface{}{
-		"id":          uuid.New().String(),
+		"id":          id,
 		"text":        text,
 		"user_id":     userId,
 		"create_time": time.Now().Unix(),
@@ -46,6 +50,21 @@ func (r repository) CreateComment(
 	if err != nil {
 		return err
 	}
+	commentItem, err := r.GetComment(id)
+
+	go func() {
+		err := pubsub.PublishProtoWithBinaryEncoding("comment-topic", &commentpb.CommentEvent{
+			Event: &commentpb.CommentEvent_Created{
+				Created: &commentpb.CreatedComment{
+					Comment: commentItem.Comment,
+					User:    commentItem.UserItem,
+				},
+			},
+		})
+		if err != nil {
+			log.Println(err)
+		}
+	}()
 
 	return nil
 }
