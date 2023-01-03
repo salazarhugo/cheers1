@@ -1,14 +1,13 @@
 package repository
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
 	"github.com/go-redis/redis/v9"
 	"github.com/google/uuid"
 	commentpb "github.com/salazarhugo/cheers1/gen/go/cheers/comment/v1"
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
+	"google.golang.org/protobuf/encoding/protojson"
 	"log"
 	"time"
 )
@@ -22,42 +21,42 @@ func (r repository) CreateComment(
 	text string,
 	postId string,
 ) error {
-	id := uuid.New().String()
-	comment := map[string]interface{}{
-		"id":          id,
-		"text":        text,
-		"user_id":     userId,
-		"create_time": time.Now().Unix(),
-		"post_id":     postId,
+	comment := &commentpb.Comment{
+		Id:         uuid.New().String(),
+		Text:       text,
+		CreateTime: time.Now().Unix(),
+		UserId:     userId,
+		PostId:     postId,
 	}
 
-	buff := bytes.NewBufferString("")
-	enc := json.NewEncoder(buff)
-	err := enc.Encode(comment)
-	if err != nil {
-		return err
-	}
+	bytes, err := protojson.Marshal(comment)
 
 	err = r.redis.ZAdd(
 		context.Background(),
 		getKeyPostComment(postId),
 		redis.Z{
 			Score:  float64(time.Now().Unix()),
-			Member: buff.String(),
+			Member: string(bytes),
 		},
 	).Err()
 
 	if err != nil {
 		return err
 	}
-	commentItem, err := r.GetComment(id)
+
+	userItem, err := r.GetUserItem(comment.UserId)
+
+	item := &commentpb.CommentItem{
+		Comment:  comment,
+		UserItem: userItem,
+	}
 
 	go func() {
 		err := pubsub.PublishProtoWithBinaryEncoding("comment-topic", &commentpb.CommentEvent{
 			Event: &commentpb.CommentEvent_Created{
 				Created: &commentpb.CreatedComment{
-					Comment: commentItem.Comment,
-					User:    commentItem.UserItem,
+					Comment: item.Comment,
+					User:    item.UserItem,
 				},
 			},
 		})

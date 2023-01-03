@@ -10,7 +10,7 @@ import (
 type Repository interface {
 	CreateComment(userId string, text string, postId string) error
 	UpdateUser(user *user.User) error
-	GetComment(commentId string) (*comment.CommentItem, error)
+	GetLastComment(postId string) (*comment.CommentItem, error)
 	ListComment(postId string) ([]*comment.CommentItem, error)
 	DeleteComment(postId string, commentId string) error
 

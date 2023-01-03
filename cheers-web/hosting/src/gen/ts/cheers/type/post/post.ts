@@ -104,7 +104,7 @@ export interface Post {
   longitude: number;
   lastCommentText: string;
   lastCommentUsername: string;
-  lastCommentCreateTime: string;
+  lastCommentCreateTime: number;
 }
 
 function createBasePost(): Post {
@@ -127,7 +127,7 @@ function createBasePost(): Post {
     longitude: 0,
     lastCommentText: "",
     lastCommentUsername: "",
-    lastCommentCreateTime: "",
+    lastCommentCreateTime: 0,
   };
 }
 
@@ -187,8 +187,8 @@ export const Post = {
     if (message.lastCommentUsername !== "") {
       writer.uint32(154).string(message.lastCommentUsername);
     }
-    if (message.lastCommentCreateTime !== "") {
-      writer.uint32(162).string(message.lastCommentCreateTime);
+    if (message.lastCommentCreateTime !== 0) {
+      writer.uint32(160).int64(message.lastCommentCreateTime);
     }
     return writer;
   },
@@ -255,7 +255,7 @@ export const Post = {
           message.lastCommentUsername = reader.string();
           break;
         case 20:
-          message.lastCommentCreateTime = reader.string();
+          message.lastCommentCreateTime = longToNumber(reader.int64() as Long);
           break;
         default:
           reader.skipType(tag & 7);
@@ -285,7 +285,7 @@ export const Post = {
       longitude: isSet(object.longitude) ? Number(object.longitude) : 0,
       lastCommentText: isSet(object.lastCommentText) ? String(object.lastCommentText) : "",
       lastCommentUsername: isSet(object.lastCommentUsername) ? String(object.lastCommentUsername) : "",
-      lastCommentCreateTime: isSet(object.lastCommentCreateTime) ? String(object.lastCommentCreateTime) : "",
+      lastCommentCreateTime: isSet(object.lastCommentCreateTime) ? Number(object.lastCommentCreateTime) : 0,
     };
   },
 
@@ -313,7 +313,8 @@ export const Post = {
     message.longitude !== undefined && (obj.longitude = message.longitude);
     message.lastCommentText !== undefined && (obj.lastCommentText = message.lastCommentText);
     message.lastCommentUsername !== undefined && (obj.lastCommentUsername = message.lastCommentUsername);
-    message.lastCommentCreateTime !== undefined && (obj.lastCommentCreateTime = message.lastCommentCreateTime);
+    message.lastCommentCreateTime !== undefined &&
+      (obj.lastCommentCreateTime = Math.round(message.lastCommentCreateTime));
     return obj;
   },
 
@@ -337,7 +338,7 @@ export const Post = {
     message.longitude = object.longitude ?? 0;
     message.lastCommentText = object.lastCommentText ?? "";
     message.lastCommentUsername = object.lastCommentUsername ?? "";
-    message.lastCommentCreateTime = object.lastCommentCreateTime ?? "";
+    message.lastCommentCreateTime = object.lastCommentCreateTime ?? 0;
     return message;
   },
 };

@@ -4,6 +4,7 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	utils "github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"log"
 )
 
@@ -32,15 +33,13 @@ func (p *postRepository) LikePost(
 	go func() {
 		postResponse, err := p.GetPost(userID, postID)
 		post := postResponse.GetPost()
-		err = utils.PublishProtoMessages("post-topic", &pb.PostEvent{
-			UserId:       userID,
-			PostId:       post.Id,
-			CreatorId:    post.CreatorId,
-			Caption:      post.Caption,
-			Address:      post.Address,
-			LocationName: post.LocationName,
-			Drink:        post.Drink,
-			Type:         pb.PostEvent_LIKE,
+		err = pubsub.PublishProtoWithBinaryEncoding("post-topic", &pb.PostEvent{
+			Event: &pb.PostEvent_Like{
+				Like: &pb.LikePost{
+					Post: post,
+					User: nil,
+				},
+			},
 		})
 		if err != nil {
 			log.Println(err)

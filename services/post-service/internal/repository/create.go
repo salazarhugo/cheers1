@@ -6,6 +6,7 @@ import (
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	postpb "github.com/salazarhugo/cheers1/gen/go/cheers/type/post"
 	utils "github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"log"
 	"time"
 )
@@ -43,15 +44,13 @@ func (p *postRepository) CreatePost(
 	}
 
 	go func() {
-		err := utils.PublishProtoMessages("post-topic", &pb.PostEvent{
-			UserId:       userID,
-			PostId:       post.Id,
-			CreatorId:    post.CreatorId,
-			Caption:      post.Caption,
-			Address:      post.Address,
-			LocationName: post.LocationName,
-			Drink:        post.Drink,
-			Type:         pb.PostEvent_CREATE,
+		err := pubsub.PublishProtoWithBinaryEncoding("post-topic", &pb.PostEvent{
+			Event: &pb.PostEvent_Create{
+				Create: &pb.CreatePost{
+					Post: post,
+					User: nil,
+				},
+			},
 		})
 		if err != nil {
 			log.Println(err)

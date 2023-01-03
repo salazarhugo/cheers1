@@ -2,10 +2,9 @@ package repository
 
 import (
 	"context"
-	"encoding/json"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/comment/v1"
+	"google.golang.org/protobuf/encoding/protojson"
 	"log"
-	"strings"
 )
 
 func (r repository) ListComment(
@@ -21,14 +20,12 @@ func (r repository) ListComment(
 
 	for i := range values {
 		com := &comment.Comment{}
-		dec := json.NewDecoder(strings.NewReader(values[i]))
-		err := dec.Decode(com)
+		err = protojson.Unmarshal([]byte(values[i]), com)
+		userItem, err := r.GetUserItem(com.UserId)
 		if err != nil {
 			log.Println(err)
 			continue
 		}
-
-		userItem, err := r.GetUserItem(com.UserId)
 
 		comments = append(comments, &comment.CommentItem{
 			Comment:  com,

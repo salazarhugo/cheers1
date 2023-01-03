@@ -2,22 +2,28 @@ package repository
 
 import (
 	"context"
-	"encoding/json"
+	"github.com/go-redis/redis/v9"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/comment/v1"
+	"google.golang.org/protobuf/encoding/protojson"
 	"log"
-	"strings"
 )
 
-func (r repository) GetComment(commentId string) (*comment.CommentItem, error) {
-	values, err := r.redis.ZScan(context.Background(), getKeyPostComment(postId), 0, 20).Result()
+func (r repository) GetLastComment(postId string) (*comment.CommentItem, error) {
+	values, err := r.redis.ZRevRangeByScore(context.Background(), getKeyPostComment(postId), &redis.ZRangeBy{
+		Offset: 0,
+		Count:  1,
+	}).Result()
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
 
+	if len(values) < 1 {
+		return nil, nil
+	}
+
 	com := &comment.Comment{}
-	dec := json.NewDecoder(strings.NewReader(values[i]))
-	err := dec.Decode(com)
+	err = protojson.Unmarshal([]byte(values[0]), com)
 	if err != nil {
 		log.Println(err)
 		return nil, err

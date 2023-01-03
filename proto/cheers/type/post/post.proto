@@ -28,7 +28,7 @@ message Post {
   double longitude = 17;
   string last_comment_text = 18;
   string last_comment_username = 19;
-  string last_comment_create_time = 20;
+  int64 last_comment_create_time = 20;
 }
 
 enum PostRatio {
