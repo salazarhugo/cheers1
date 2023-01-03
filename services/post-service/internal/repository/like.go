@@ -3,7 +3,8 @@ package repository
 import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
-	utils "github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
+	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"log"
 )
@@ -37,7 +38,7 @@ func (p *postRepository) LikePost(
 			Event: &pb.PostEvent_Like{
 				Like: &pb.LikePost{
 					Post: post,
-					User: nil,
+					User: &user.UserItem{Id: userID},
 				},
 			},
 		})

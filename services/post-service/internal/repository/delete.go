@@ -31,8 +31,6 @@ func (p *postRepository) DeletePost(
 	}
 
 	go func() {
-		//postResponse, err := p.GetPost(userID, postID)
-		//post := postResponse.GetPost()
 		err = pubsub.PublishProtoWithBinaryEncoding("post-topic", &pb.PostEvent{
 			Event: &pb.PostEvent_Delete{
 				Delete: &pb.DeletePost{
