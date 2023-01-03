@@ -34,3 +34,28 @@ func GetUsers(userIds []string) ([]*pb.User, error) {
 	}
 	return response.GetUsers(), nil
 }
+
+func GetUser(userId string) (*pb.User, error) {
+	ctx := context.Background()
+	systemRoots, err := x509.SystemCertPool()
+	if err != nil {
+		log.Println(err)
+		return nil, err
+	}
+	transportCredentials := credentials.NewTLS(&tls.Config{
+		RootCAs: systemRoots,
+	})
+	conn, err := grpc.DialContext(ctx, "user-service-r3a2dr4u4a-nw.a.run.app:443",
+		grpc.WithTransportCredentials(transportCredentials),
+	)
+	defer conn.Close()
+
+	client := user.NewUserServiceClient(conn)
+
+	response, err := client.GetUser(ctx, &user.GetUserRequest{UserId: userId})
+	if err != nil {
+		log.Println(err)
+	}
+
+	return response.GetUser(), nil
+}

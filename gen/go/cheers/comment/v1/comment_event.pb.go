@@ -7,6 +7,7 @@
 package comment
 
 import (
+	v1 "github.com/salazarhugo/cheers1/gen/go/cheers/comment/v1"
 	user "github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -107,7 +108,7 @@ type CreatedComment struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Comment *Comment       `protobuf:"bytes,1,opt,name=comment,proto3" json:"comment,omitempty"`
+	Comment *v1.Comment    `protobuf:"bytes,1,opt,name=comment,proto3" json:"comment,omitempty"`
 	User    *user.UserItem `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
 }
 
@@ -143,7 +144,7 @@ func (*CreatedComment) Descriptor() ([]byte, []int) {
 	return file_cheers_comment_v1_comment_event_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CreatedComment) GetComment() *Comment {
+func (x *CreatedComment) GetComment() *v1.Comment {
 	if x != nil {
 		return x.Comment
 	}
@@ -162,7 +163,7 @@ type DeletedComment struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Comment *Comment       `protobuf:"bytes,1,opt,name=comment,proto3" json:"comment,omitempty"`
+	Comment *v1.Comment    `protobuf:"bytes,1,opt,name=comment,proto3" json:"comment,omitempty"`
 	User    *user.UserItem `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
 }
 
@@ -198,7 +199,7 @@ func (*DeletedComment) Descriptor() ([]byte, []int) {
 	return file_cheers_comment_v1_comment_event_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *DeletedComment) GetComment() *Comment {
+func (x *DeletedComment) GetComment() *v1.Comment {
 	if x != nil {
 		return x.Comment
 	}
@@ -249,7 +250,7 @@ var file_cheers_comment_v1_comment_event_proto_rawDesc = []byte{
 	0x55, 0x73, 0x65, 0x72, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x04, 0x75, 0x73, 0x65, 0x72, 0x42, 0x43,
 	0x50, 0x01, 0x5a, 0x3f, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x73,
 	0x61, 0x6c, 0x61, 0x7a, 0x61, 0x72, 0x68, 0x75, 0x67, 0x6f, 0x2f, 0x63, 0x68, 0x65, 0x65, 0x72,
-	0x73, 0x31, 0x2f, 0x67, 0x65, 0x6e, 0x2f, 0x67, 0x6f, 0x2f, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73,
+	0x73, 0x31, 0x2f, 0x67, 0x6f, 0x2f, 0x67, 0x65, 0x6e, 0x2f, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73,
 	0x2f, 0x63, 0x6f, 0x6d, 0x6d, 0x65, 0x6e, 0x74, 0x2f, 0x76, 0x31, 0x3b, 0x63, 0x6f, 0x6d, 0x6d,
 	0x65, 0x6e, 0x74, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
@@ -271,7 +272,7 @@ var file_cheers_comment_v1_comment_event_proto_goTypes = []interface{}{
 	(*CommentEvent)(nil),   // 0: cheers.comment.v1.CommentEvent
 	(*CreatedComment)(nil), // 1: cheers.comment.v1.CreatedComment
 	(*DeletedComment)(nil), // 2: cheers.comment.v1.DeletedComment
-	(*Comment)(nil),        // 3: cheers.comment.v1.Comment
+	(*v1.Comment)(nil),     // 3: cheers.comment.v1.Comment
 	(*user.UserItem)(nil),  // 4: cheers.type.UserItem
 }
 var file_cheers_comment_v1_comment_event_proto_depIdxs = []int32{
@@ -293,7 +294,6 @@ func file_cheers_comment_v1_comment_event_proto_init() {
 	if File_cheers_comment_v1_comment_event_proto != nil {
 		return
 	}
-	file_cheers_comment_v1_comment_service_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_cheers_comment_v1_comment_event_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CommentEvent); i {

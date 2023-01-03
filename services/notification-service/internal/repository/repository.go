@@ -18,6 +18,7 @@ type Repository interface {
 	) error
 	CreateRegistrationToken(userID string, token string) error
 	GetUserTokens(userID string) ([]string, error)
+	GetUsersTokens(userIDs []string) ([]string, error)
 	RemoveExpiredTokens(userId string, tokens []string, responses []*messaging.SendResponse)
 	DeleteToken(userId string, token string) error
 }

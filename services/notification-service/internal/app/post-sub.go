@@ -22,12 +22,11 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 
 	switch event := event.Event.(type) {
 	case *post.PostEvent_Like:
-		users, err := repository.GetUsers([]string{event.Like.User.Id})
-		if err != nil || len(users) < 1 {
+		user, err := repository.GetUser(event.Like.User.Id)
+		if err != nil {
 			log.Println(err)
 			return
 		}
-		user := users[0]
 		postCreatorId := event.Like.Post.CreatorId
 		tokens, err := repo.GetUserTokens(postCreatorId)
 		if err != nil {
@@ -36,12 +35,36 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 
 		data := notifications.LikePostNotification(user.Username, user.Picture)
 		err = repo.SendNotification(map[string][]string{postCreatorId: tokens}, data)
-		if err != nil {
-			return
-		}
 	case *post.PostEvent_Create:
+		//user, err := repository.GetUser(event.Create.GetPost().GetCreatorId())
+		//if err != nil {
+		//	log.Println(err)
+		//	return
+		//}
+
+		//followers, err := repository.GetUserFollowers(event.Create.GetPost().GetCreatorId())
+		//if err != nil {
+		//	log.Println(err)
+		//	return
+		//}
+		//postCreatorId := event.Create.Post.CreatorId
+		//tokens, err := repo.GetUsersTokens(followers)
+		//if err != nil {
+		//	return
+		//}
+
+		//data := notifications.CreatePostNotification(
+		//	user.Username,
+		//	user.Picture,
+		//	event.Create.Post.Drink,
+		//)
+		//err = repo.SendNotification(map[string][]string{postCreatorId: tokens}, data)
 	case *post.PostEvent_Delete:
 	default:
 	}
 
+	if err != nil {
+		log.Println(err)
+		return
+	}
 }
