@@ -26,12 +26,19 @@ func ChatTopic(w http.ResponseWriter, r *http.Request) {
 	case *chat.ChatEvent_Create:
 		members := event.Create.Members
 		sender := event.Create.Sender
+		room := event.Create.Room
 		for _, member := range members {
 			// Don't send notification to the sender
 			if member.Id == sender.Id {
 				continue
 			}
-			go Async(repo, sender, member, event.Create.Message.RoomId)
+			go Async(
+				repo,
+				sender,
+				room,
+				member,
+				event.Create.Message.RoomId,
+			)
 		}
 	}
 
@@ -41,6 +48,7 @@ func ChatTopic(w http.ResponseWriter, r *http.Request) {
 func Async(
 	repo repository.Repository,
 	sender *user.UserItem,
+	room *chat.Room,
 	member *user.UserItem,
 	roomId string,
 ) {
@@ -50,15 +58,26 @@ func Async(
 		return
 	}
 
-	data := notifications.NewChatMessageNotification(
-		sender.Username,
-		sender.Picture,
-		roomId,
-	)
+	notification := make(map[string]string, 0)
+
+	switch room.Type {
+	case chat.RoomType_DIRECT:
+		notification = notifications.NewChatMessageNotification(
+			sender.Username,
+			sender.Picture,
+			roomId,
+		)
+	case chat.RoomType_GROUP:
+		notification = notifications.NewGroupMessageNotification(
+			room.Name,
+			room.Picture,
+			roomId,
+		)
+	}
 
 	err = repo.SendNotification(
 		map[string][]string{member.Id: tokens},
-		data,
+		notification,
 	)
 
 	if err != nil {

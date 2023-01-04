@@ -57,7 +57,7 @@ func (c chatRepository) SendMessage(
 	if err != nil {
 		log.Println(err)
 	}
-	room, err := c.cache.GetRoomWithId("", roomID)
+	room, err := c.cache.GetRoomWithId(senderID, roomID)
 	if err != nil {
 		log.Println(err)
 	}
