@@ -57,6 +57,10 @@ func (c chatRepository) SendMessage(
 	if err != nil {
 		log.Println(err)
 	}
+	room, err := c.cache.GetRoomWithId("", roomID)
+	if err != nil {
+		log.Println(err)
+	}
 
 	err = pubsub.PublishProtoWithBinaryEncoding(os.Getenv("EVENT_BUS_TOPIC"), &chat.ChatEvent{
 		Event: &chat.ChatEvent_Create{
@@ -64,6 +68,7 @@ func (c chatRepository) SendMessage(
 				Message: msg,
 				Sender:  user,
 				Members: members,
+				Room:    room,
 			},
 		},
 	})

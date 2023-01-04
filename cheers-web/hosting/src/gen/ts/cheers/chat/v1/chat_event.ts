@@ -1,7 +1,7 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { UserItem } from "../../type/user/user";
-import { Message } from "./chat_service";
+import { Message, Room } from "./chat_service";
 
 export const protobufPackage = "cheers.chat.v1";
 
@@ -13,6 +13,7 @@ export interface CreateMessage {
   message: Message | undefined;
   sender: UserItem | undefined;
   members: UserItem[];
+  room: Room | undefined;
 }
 
 function createBaseChatEvent(): ChatEvent {
@@ -65,7 +66,7 @@ export const ChatEvent = {
 };
 
 function createBaseCreateMessage(): CreateMessage {
-  return { message: undefined, sender: undefined, members: [] };
+  return { message: undefined, sender: undefined, members: [], room: undefined };
 }
 
 export const CreateMessage = {
@@ -78,6 +79,9 @@ export const CreateMessage = {
     }
     for (const v of message.members) {
       UserItem.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.room !== undefined) {
+      Room.encode(message.room, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -98,6 +102,9 @@ export const CreateMessage = {
         case 3:
           message.members.push(UserItem.decode(reader, reader.uint32()));
           break;
+        case 4:
+          message.room = Room.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -111,6 +118,7 @@ export const CreateMessage = {
       message: isSet(object.message) ? Message.fromJSON(object.message) : undefined,
       sender: isSet(object.sender) ? UserItem.fromJSON(object.sender) : undefined,
       members: Array.isArray(object?.members) ? object.members.map((e: any) => UserItem.fromJSON(e)) : [],
+      room: isSet(object.room) ? Room.fromJSON(object.room) : undefined,
     };
   },
 
@@ -123,6 +131,7 @@ export const CreateMessage = {
     } else {
       obj.members = [];
     }
+    message.room !== undefined && (obj.room = message.room ? Room.toJSON(message.room) : undefined);
     return obj;
   },
 
@@ -135,6 +144,7 @@ export const CreateMessage = {
       ? UserItem.fromPartial(object.sender)
       : undefined;
     message.members = object.members?.map((e) => UserItem.fromPartial(e)) || [];
+    message.room = (object.room !== undefined && object.room !== null) ? Room.fromPartial(object.room) : undefined;
     return message;
   },
 };
