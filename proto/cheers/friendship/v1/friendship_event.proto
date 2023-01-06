@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package cheers.friendship.v1;
+
+option java_multiple_files = true;
+option go_package = "github.com/salazarhugo/cheers1/gen/go/cheers/friendship/v1;friendship";
+
+import "cheers/friendship/v1/friendship_service.proto";
+import "cheers/type/user/user.proto";
+
+message FriendshipEvent {
+  oneof event {
+    CreatedFriendship created = 1;
+    DeletedFriendship deleted = 2;
+  };
+}
+
+message CreatedFriendship {
+  cheers.friendship.v1.Friendship friendship = 1;
+  cheers.type.UserItem user = 2;
+}
+
+message DeletedFriendship {
+  cheers.friendship.v1.Friendship friendship = 1;
+  cheers.type.UserItem user = 2;
+}
