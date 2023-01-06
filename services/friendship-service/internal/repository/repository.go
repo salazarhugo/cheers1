@@ -9,6 +9,7 @@ import (
 type Repository interface {
 	CreateFriendRequest(userId string, friendId string) error
 	ListFriendRequests(userId string) ([]*user.UserItem, error)
+	AcceptFriendRequest(userId string, friendId string) error
 }
 
 type repository struct {

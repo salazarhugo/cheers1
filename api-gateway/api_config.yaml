@@ -15,6 +15,7 @@ apis:
   - name: cheers.notification.v1.NotificationService
   - name: cheers.ticket.v1.TicketService
   - name: cheers.comment.v1.CommentService
+  - name: cheers.friendship.v1.FriendshipService
 usage:
   rules:
     # All methods can be called without an API Key.
@@ -67,3 +68,7 @@ backend:
     # Comment Service methods
     - selector: cheers.comment.v1.*
       address: grpcs://comment-service-r3a2dr4u4a-nw.a.run.app
+
+    # Friendship Service methods
+    - selector: cheers.friendship.v1.*
+      address: grpcs://friendship-service-r3a2dr4u4a-nw.a.run.app

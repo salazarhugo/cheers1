@@ -5,6 +5,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
+	userpb "github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
@@ -28,11 +29,24 @@ func GetUsers(userIds []string) ([]*pb.UserItem, error) {
 
 	client := user.NewUserServiceClient(conn)
 
-	response, err := client.GetUserItemsIn(ctx, &user.GetUserItemsInRequest{UserIds: userIds})
+	response, err := client.GetUsersIn(ctx, &user.GetUsersInRequest{UserIds: userIds})
 	if err != nil {
 		log.Println(err)
 	}
-	return response.GetUsers(), nil
+
+	items := make([]*userpb.UserItem, 0)
+	for _, user := range response.Users {
+		items = append(items, &userpb.UserItem{
+			Id:          user.Id,
+			Name:        user.Name,
+			Username:    user.Username,
+			Verified:    user.Verified,
+			Picture:     user.Picture,
+			HasFollowed: false,
+			StoryState:  0,
+		})
+	}
+	return items, nil
 }
 
 func GetUser(userId string) (*pb.UserItem, error) {

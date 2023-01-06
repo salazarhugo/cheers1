@@ -11,11 +11,21 @@ option go_package = "github.com/salazarhugo/cheers1/gen/go/cheers/friendship/v1;
 
 service FriendshipService {
   /*
-    Add a new friend
+    Send a friend request
    */
   rpc CreateFriendRequest(CreateFriendRequestRequest) returns (CreateFriendRequestResponse) {
     option (google.api.http) = {
       post: "/v1/friendships"
+      body: "*"
+    };
+  }
+
+  /*
+    Accept a friend request
+   */
+  rpc AcceptFriendRequest(AcceptFriendRequestRequest) returns (AcceptFriendRequestResponse) {
+    option (google.api.http) = {
+      post: "/v1/friendships/accept"
       body: "*"
     };
   }
@@ -39,16 +49,39 @@ service FriendshipService {
   }
 
   /*
+    Refuse a friend request
+   */
+  rpc DeleteFriendRequest(DeleteFriendRequestRequest) returns (DeleteFriendRequestResponse) {
+    option (google.api.http) = {
+      delete: "/v1/friendships/request"
+    };
+  }
+
+  /*
     Delete a friend
    */
-  rpc DeleteFriend(DeleteFriendRequest) returns (DeleteFriendResponse) {
+  rpc DeleteFriend(DeleteFriendRequest2) returns (DeleteFriendResponse) {
     option (google.api.http) = {
       delete: "/v1/friendships"
     };
   }
 }
 
-message DeleteFriendRequest {
+message AcceptFriendRequestRequest {
+  string user_id = 1;
+}
+
+message AcceptFriendRequestResponse {
+}
+
+message DeleteFriendRequestRequest {
+  string user_id = 1;
+}
+
+message DeleteFriendRequestResponse {
+}
+
+message DeleteFriendRequest2 {
   string post_id = 1;
   string friendship_id = 2;
 }
@@ -57,7 +90,7 @@ message DeleteFriendResponse {
 }
 
 message ListFriendRequest {
-  string post_id = 1;
+  string user_id = 1;
 }
 
 message ListFriendResponse {

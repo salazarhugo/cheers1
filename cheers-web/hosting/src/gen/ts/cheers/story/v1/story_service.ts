@@ -1,8 +1,8 @@
 /* eslint-disable */
 import * as _m0 from "protobufjs/minimal";
 import { Empty } from "../../../google/protobuf/empty";
-import { Story } from "../../type/story/story";
 import { User } from "../../type/user/user";
+import { Story } from "./story";
 
 export const protobufPackage = "cheers.story.v1";
 

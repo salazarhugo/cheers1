@@ -23,8 +23,11 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FriendshipServiceClient interface {
 	//
-	// Add a new friend
+	// Send a friend request
 	CreateFriendRequest(ctx context.Context, in *CreateFriendRequestRequest, opts ...grpc.CallOption) (*CreateFriendRequestResponse, error)
+	//
+	// Accept a friend request
+	AcceptFriendRequest(ctx context.Context, in *AcceptFriendRequestRequest, opts ...grpc.CallOption) (*AcceptFriendRequestResponse, error)
 	//
 	// Get friend list of a specific user
 	ListFriend(ctx context.Context, in *ListFriendRequest, opts ...grpc.CallOption) (*ListFriendResponse, error)
@@ -32,8 +35,11 @@ type FriendshipServiceClient interface {
 	// Get friend requests list of a specific user
 	ListFriendRequests(ctx context.Context, in *ListFriendRequestsRequest, opts ...grpc.CallOption) (*ListFriendRequestsResponse, error)
 	//
+	// Refuse a friend request
+	DeleteFriendRequest(ctx context.Context, in *DeleteFriendRequestRequest, opts ...grpc.CallOption) (*DeleteFriendRequestResponse, error)
+	//
 	// Delete a friend
-	DeleteFriend(ctx context.Context, in *DeleteFriendRequest, opts ...grpc.CallOption) (*DeleteFriendResponse, error)
+	DeleteFriend(ctx context.Context, in *DeleteFriendRequest2, opts ...grpc.CallOption) (*DeleteFriendResponse, error)
 }
 
 type friendshipServiceClient struct {
@@ -47,6 +53,15 @@ func NewFriendshipServiceClient(cc grpc.ClientConnInterface) FriendshipServiceCl
 func (c *friendshipServiceClient) CreateFriendRequest(ctx context.Context, in *CreateFriendRequestRequest, opts ...grpc.CallOption) (*CreateFriendRequestResponse, error) {
 	out := new(CreateFriendRequestResponse)
 	err := c.cc.Invoke(ctx, "/cheers.friendship.v1.FriendshipService/CreateFriendRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *friendshipServiceClient) AcceptFriendRequest(ctx context.Context, in *AcceptFriendRequestRequest, opts ...grpc.CallOption) (*AcceptFriendRequestResponse, error) {
+	out := new(AcceptFriendRequestResponse)
+	err := c.cc.Invoke(ctx, "/cheers.friendship.v1.FriendshipService/AcceptFriendRequest", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +86,16 @@ func (c *friendshipServiceClient) ListFriendRequests(ctx context.Context, in *Li
 	return out, nil
 }
 
-func (c *friendshipServiceClient) DeleteFriend(ctx context.Context, in *DeleteFriendRequest, opts ...grpc.CallOption) (*DeleteFriendResponse, error) {
+func (c *friendshipServiceClient) DeleteFriendRequest(ctx context.Context, in *DeleteFriendRequestRequest, opts ...grpc.CallOption) (*DeleteFriendRequestResponse, error) {
+	out := new(DeleteFriendRequestResponse)
+	err := c.cc.Invoke(ctx, "/cheers.friendship.v1.FriendshipService/DeleteFriendRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *friendshipServiceClient) DeleteFriend(ctx context.Context, in *DeleteFriendRequest2, opts ...grpc.CallOption) (*DeleteFriendResponse, error) {
 	out := new(DeleteFriendResponse)
 	err := c.cc.Invoke(ctx, "/cheers.friendship.v1.FriendshipService/DeleteFriend", in, out, opts...)
 	if err != nil {
@@ -85,8 +109,11 @@ func (c *friendshipServiceClient) DeleteFriend(ctx context.Context, in *DeleteFr
 // for forward compatibility
 type FriendshipServiceServer interface {
 	//
-	// Add a new friend
+	// Send a friend request
 	CreateFriendRequest(context.Context, *CreateFriendRequestRequest) (*CreateFriendRequestResponse, error)
+	//
+	// Accept a friend request
+	AcceptFriendRequest(context.Context, *AcceptFriendRequestRequest) (*AcceptFriendRequestResponse, error)
 	//
 	// Get friend list of a specific user
 	ListFriend(context.Context, *ListFriendRequest) (*ListFriendResponse, error)
@@ -94,8 +121,11 @@ type FriendshipServiceServer interface {
 	// Get friend requests list of a specific user
 	ListFriendRequests(context.Context, *ListFriendRequestsRequest) (*ListFriendRequestsResponse, error)
 	//
+	// Refuse a friend request
+	DeleteFriendRequest(context.Context, *DeleteFriendRequestRequest) (*DeleteFriendRequestResponse, error)
+	//
 	// Delete a friend
-	DeleteFriend(context.Context, *DeleteFriendRequest) (*DeleteFriendResponse, error)
+	DeleteFriend(context.Context, *DeleteFriendRequest2) (*DeleteFriendResponse, error)
 	mustEmbedUnimplementedFriendshipServiceServer()
 }
 
@@ -106,13 +136,19 @@ type UnimplementedFriendshipServiceServer struct {
 func (UnimplementedFriendshipServiceServer) CreateFriendRequest(context.Context, *CreateFriendRequestRequest) (*CreateFriendRequestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateFriendRequest not implemented")
 }
+func (UnimplementedFriendshipServiceServer) AcceptFriendRequest(context.Context, *AcceptFriendRequestRequest) (*AcceptFriendRequestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AcceptFriendRequest not implemented")
+}
 func (UnimplementedFriendshipServiceServer) ListFriend(context.Context, *ListFriendRequest) (*ListFriendResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListFriend not implemented")
 }
 func (UnimplementedFriendshipServiceServer) ListFriendRequests(context.Context, *ListFriendRequestsRequest) (*ListFriendRequestsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListFriendRequests not implemented")
 }
-func (UnimplementedFriendshipServiceServer) DeleteFriend(context.Context, *DeleteFriendRequest) (*DeleteFriendResponse, error) {
+func (UnimplementedFriendshipServiceServer) DeleteFriendRequest(context.Context, *DeleteFriendRequestRequest) (*DeleteFriendRequestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteFriendRequest not implemented")
+}
+func (UnimplementedFriendshipServiceServer) DeleteFriend(context.Context, *DeleteFriendRequest2) (*DeleteFriendResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteFriend not implemented")
 }
 func (UnimplementedFriendshipServiceServer) mustEmbedUnimplementedFriendshipServiceServer() {}
@@ -142,6 +178,24 @@ func _FriendshipService_CreateFriendRequest_Handler(srv interface{}, ctx context
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(FriendshipServiceServer).CreateFriendRequest(ctx, req.(*CreateFriendRequestRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FriendshipService_AcceptFriendRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AcceptFriendRequestRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FriendshipServiceServer).AcceptFriendRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.friendship.v1.FriendshipService/AcceptFriendRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FriendshipServiceServer).AcceptFriendRequest(ctx, req.(*AcceptFriendRequestRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -182,8 +236,26 @@ func _FriendshipService_ListFriendRequests_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FriendshipService_DeleteFriendRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteFriendRequestRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FriendshipServiceServer).DeleteFriendRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.friendship.v1.FriendshipService/DeleteFriendRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FriendshipServiceServer).DeleteFriendRequest(ctx, req.(*DeleteFriendRequestRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _FriendshipService_DeleteFriend_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteFriendRequest)
+	in := new(DeleteFriendRequest2)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -195,7 +267,7 @@ func _FriendshipService_DeleteFriend_Handler(srv interface{}, ctx context.Contex
 		FullMethod: "/cheers.friendship.v1.FriendshipService/DeleteFriend",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FriendshipServiceServer).DeleteFriend(ctx, req.(*DeleteFriendRequest))
+		return srv.(FriendshipServiceServer).DeleteFriend(ctx, req.(*DeleteFriendRequest2))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -212,12 +284,20 @@ var FriendshipService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _FriendshipService_CreateFriendRequest_Handler,
 		},
 		{
+			MethodName: "AcceptFriendRequest",
+			Handler:    _FriendshipService_AcceptFriendRequest_Handler,
+		},
+		{
 			MethodName: "ListFriend",
 			Handler:    _FriendshipService_ListFriend_Handler,
 		},
 		{
 			MethodName: "ListFriendRequests",
 			Handler:    _FriendshipService_ListFriendRequests_Handler,
+		},
+		{
+			MethodName: "DeleteFriendRequest",
+			Handler:    _FriendshipService_DeleteFriendRequest_Handler,
 		},
 		{
 			MethodName: "DeleteFriend",

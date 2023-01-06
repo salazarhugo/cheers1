@@ -5,7 +5,21 @@ import { UserItem } from "../../type/user/user";
 
 export const protobufPackage = "cheers.friendship.v1";
 
-export interface DeleteFriendRequest {
+export interface AcceptFriendRequestRequest {
+  userId: string;
+}
+
+export interface AcceptFriendRequestResponse {
+}
+
+export interface DeleteFriendRequestRequest {
+  userId: string;
+}
+
+export interface DeleteFriendRequestResponse {
+}
+
+export interface DeleteFriendRequest2 {
   postId: string;
   friendshipId: string;
 }
@@ -14,7 +28,7 @@ export interface DeleteFriendResponse {
 }
 
 export interface ListFriendRequest {
-  postId: string;
+  userId: string;
 }
 
 export interface ListFriendResponse {
@@ -49,12 +63,184 @@ export interface CreateFriendRequestRequest {
 export interface CreateFriendRequestResponse {
 }
 
-function createBaseDeleteFriendRequest(): DeleteFriendRequest {
+function createBaseAcceptFriendRequestRequest(): AcceptFriendRequestRequest {
+  return { userId: "" };
+}
+
+export const AcceptFriendRequestRequest = {
+  encode(message: AcceptFriendRequestRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): AcceptFriendRequestRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAcceptFriendRequestRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.userId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): AcceptFriendRequestRequest {
+    return { userId: isSet(object.userId) ? String(object.userId) : "" };
+  },
+
+  toJSON(message: AcceptFriendRequestRequest): unknown {
+    const obj: any = {};
+    message.userId !== undefined && (obj.userId = message.userId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AcceptFriendRequestRequest>, I>>(object: I): AcceptFriendRequestRequest {
+    const message = createBaseAcceptFriendRequestRequest();
+    message.userId = object.userId ?? "";
+    return message;
+  },
+};
+
+function createBaseAcceptFriendRequestResponse(): AcceptFriendRequestResponse {
+  return {};
+}
+
+export const AcceptFriendRequestResponse = {
+  encode(_: AcceptFriendRequestResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): AcceptFriendRequestResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseAcceptFriendRequestResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): AcceptFriendRequestResponse {
+    return {};
+  },
+
+  toJSON(_: AcceptFriendRequestResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AcceptFriendRequestResponse>, I>>(_: I): AcceptFriendRequestResponse {
+    const message = createBaseAcceptFriendRequestResponse();
+    return message;
+  },
+};
+
+function createBaseDeleteFriendRequestRequest(): DeleteFriendRequestRequest {
+  return { userId: "" };
+}
+
+export const DeleteFriendRequestRequest = {
+  encode(message: DeleteFriendRequestRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFriendRequestRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteFriendRequestRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.userId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteFriendRequestRequest {
+    return { userId: isSet(object.userId) ? String(object.userId) : "" };
+  },
+
+  toJSON(message: DeleteFriendRequestRequest): unknown {
+    const obj: any = {};
+    message.userId !== undefined && (obj.userId = message.userId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeleteFriendRequestRequest>, I>>(object: I): DeleteFriendRequestRequest {
+    const message = createBaseDeleteFriendRequestRequest();
+    message.userId = object.userId ?? "";
+    return message;
+  },
+};
+
+function createBaseDeleteFriendRequestResponse(): DeleteFriendRequestResponse {
+  return {};
+}
+
+export const DeleteFriendRequestResponse = {
+  encode(_: DeleteFriendRequestResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFriendRequestResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteFriendRequestResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): DeleteFriendRequestResponse {
+    return {};
+  },
+
+  toJSON(_: DeleteFriendRequestResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeleteFriendRequestResponse>, I>>(_: I): DeleteFriendRequestResponse {
+    const message = createBaseDeleteFriendRequestResponse();
+    return message;
+  },
+};
+
+function createBaseDeleteFriendRequest2(): DeleteFriendRequest2 {
   return { postId: "", friendshipId: "" };
 }
 
-export const DeleteFriendRequest = {
-  encode(message: DeleteFriendRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const DeleteFriendRequest2 = {
+  encode(message: DeleteFriendRequest2, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.postId !== "") {
       writer.uint32(10).string(message.postId);
     }
@@ -64,10 +250,10 @@ export const DeleteFriendRequest = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFriendRequest {
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFriendRequest2 {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseDeleteFriendRequest();
+    const message = createBaseDeleteFriendRequest2();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
@@ -85,22 +271,22 @@ export const DeleteFriendRequest = {
     return message;
   },
 
-  fromJSON(object: any): DeleteFriendRequest {
+  fromJSON(object: any): DeleteFriendRequest2 {
     return {
       postId: isSet(object.postId) ? String(object.postId) : "",
       friendshipId: isSet(object.friendshipId) ? String(object.friendshipId) : "",
     };
   },
 
-  toJSON(message: DeleteFriendRequest): unknown {
+  toJSON(message: DeleteFriendRequest2): unknown {
     const obj: any = {};
     message.postId !== undefined && (obj.postId = message.postId);
     message.friendshipId !== undefined && (obj.friendshipId = message.friendshipId);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<DeleteFriendRequest>, I>>(object: I): DeleteFriendRequest {
-    const message = createBaseDeleteFriendRequest();
+  fromPartial<I extends Exact<DeepPartial<DeleteFriendRequest2>, I>>(object: I): DeleteFriendRequest2 {
+    const message = createBaseDeleteFriendRequest2();
     message.postId = object.postId ?? "";
     message.friendshipId = object.friendshipId ?? "";
     return message;
@@ -147,13 +333,13 @@ export const DeleteFriendResponse = {
 };
 
 function createBaseListFriendRequest(): ListFriendRequest {
-  return { postId: "" };
+  return { userId: "" };
 }
 
 export const ListFriendRequest = {
   encode(message: ListFriendRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.postId !== "") {
-      writer.uint32(10).string(message.postId);
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
     }
     return writer;
   },
@@ -166,7 +352,7 @@ export const ListFriendRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.postId = reader.string();
+          message.userId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -177,18 +363,18 @@ export const ListFriendRequest = {
   },
 
   fromJSON(object: any): ListFriendRequest {
-    return { postId: isSet(object.postId) ? String(object.postId) : "" };
+    return { userId: isSet(object.userId) ? String(object.userId) : "" };
   },
 
   toJSON(message: ListFriendRequest): unknown {
     const obj: any = {};
-    message.postId !== undefined && (obj.postId = message.postId);
+    message.userId !== undefined && (obj.userId = message.userId);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<ListFriendRequest>, I>>(object: I): ListFriendRequest {
     const message = createBaseListFriendRequest();
-    message.postId = object.postId ?? "";
+    message.userId = object.userId ?? "";
     return message;
   },
 };
@@ -577,14 +763,18 @@ export const CreateFriendRequestResponse = {
 };
 
 export interface FriendshipService {
-  /** Add a new friend */
+  /** Send a friend request */
   CreateFriendRequest(request: CreateFriendRequestRequest): Promise<CreateFriendRequestResponse>;
+  /** Accept a friend request */
+  AcceptFriendRequest(request: AcceptFriendRequestRequest): Promise<AcceptFriendRequestResponse>;
   /** Get friend list of a specific user */
   ListFriend(request: ListFriendRequest): Promise<ListFriendResponse>;
   /** Get friend requests list of a specific user */
   ListFriendRequests(request: ListFriendRequestsRequest): Promise<ListFriendRequestsResponse>;
+  /** Refuse a friend request */
+  DeleteFriendRequest(request: DeleteFriendRequestRequest): Promise<DeleteFriendRequestResponse>;
   /** Delete a friend */
-  DeleteFriend(request: DeleteFriendRequest): Promise<DeleteFriendResponse>;
+  DeleteFriend(request: DeleteFriendRequest2): Promise<DeleteFriendResponse>;
 }
 
 export class FriendshipServiceClientImpl implements FriendshipService {
@@ -594,14 +784,22 @@ export class FriendshipServiceClientImpl implements FriendshipService {
     this.service = opts?.service || "cheers.friendship.v1.FriendshipService";
     this.rpc = rpc;
     this.CreateFriendRequest = this.CreateFriendRequest.bind(this);
+    this.AcceptFriendRequest = this.AcceptFriendRequest.bind(this);
     this.ListFriend = this.ListFriend.bind(this);
     this.ListFriendRequests = this.ListFriendRequests.bind(this);
+    this.DeleteFriendRequest = this.DeleteFriendRequest.bind(this);
     this.DeleteFriend = this.DeleteFriend.bind(this);
   }
   CreateFriendRequest(request: CreateFriendRequestRequest): Promise<CreateFriendRequestResponse> {
     const data = CreateFriendRequestRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateFriendRequest", data);
     return promise.then((data) => CreateFriendRequestResponse.decode(new _m0.Reader(data)));
+  }
+
+  AcceptFriendRequest(request: AcceptFriendRequestRequest): Promise<AcceptFriendRequestResponse> {
+    const data = AcceptFriendRequestRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "AcceptFriendRequest", data);
+    return promise.then((data) => AcceptFriendRequestResponse.decode(new _m0.Reader(data)));
   }
 
   ListFriend(request: ListFriendRequest): Promise<ListFriendResponse> {
@@ -616,8 +814,14 @@ export class FriendshipServiceClientImpl implements FriendshipService {
     return promise.then((data) => ListFriendRequestsResponse.decode(new _m0.Reader(data)));
   }
 
-  DeleteFriend(request: DeleteFriendRequest): Promise<DeleteFriendResponse> {
-    const data = DeleteFriendRequest.encode(request).finish();
+  DeleteFriendRequest(request: DeleteFriendRequestRequest): Promise<DeleteFriendRequestResponse> {
+    const data = DeleteFriendRequestRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "DeleteFriendRequest", data);
+    return promise.then((data) => DeleteFriendRequestResponse.decode(new _m0.Reader(data)));
+  }
+
+  DeleteFriend(request: DeleteFriendRequest2): Promise<DeleteFriendResponse> {
+    const data = DeleteFriendRequest2.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteFriend", data);
     return promise.then((data) => DeleteFriendResponse.decode(new _m0.Reader(data)));
   }

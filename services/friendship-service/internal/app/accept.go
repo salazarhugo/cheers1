@@ -9,16 +9,16 @@ import (
 	"log"
 )
 
-func (s *Server) CreateFriendRequest(
+func (s *Server) AcceptFriendRequest(
 	ctx context.Context,
-	request *friendship.CreateFriendRequestRequest,
-) (*friendship.CreateFriendRequestResponse, error) {
+	request *friendship.AcceptFriendRequestRequest,
+) (*friendship.AcceptFriendRequestResponse, error) {
 	userID, err := utils.GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to retrieve userID")
 	}
 
-	err = s.friendshipRepository.CreateFriendRequest(
+	err = s.friendshipRepository.AcceptFriendRequest(
 		userID,
 		request.UserId,
 	)
@@ -28,5 +28,5 @@ func (s *Server) CreateFriendRequest(
 		return nil, err
 	}
 
-	return &friendship.CreateFriendRequestResponse{}, nil
+	return &friendship.AcceptFriendRequestResponse{}, nil
 }

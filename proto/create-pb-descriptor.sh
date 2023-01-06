@@ -13,7 +13,6 @@ protoc \
   cheers/type/privacy/privacy.proto \
   cheers/type/user/user.proto \
   cheers/type/post/post.proto \
-  cheers/type/story/story.proto \
   cheers/party/v1/party_service.proto \
   cheers/post/v1/post_service.proto \
   cheers/user/v1/user_service.proto \
@@ -24,4 +23,5 @@ protoc \
   cheers/activity/v1/activity_service.proto \
   cheers/story/v1/story_service.proto \
   cheers/notification/v1/notification_service.proto \
+  cheers/friendship/v1/friendship_service.proto \
   cheers/comment/v1/comment_service.proto
