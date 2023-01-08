@@ -8,6 +8,8 @@ LIMIT 10
 OPTIONAL MATCH
   (u)-[posts:POSTED]->(:Post)
 OPTIONAL MATCH
+  (u)-[friends:FRIENDS]->(:User)
+OPTIONAL MATCH
   (u)-[following:FOLLOWS]->(:User)
 OPTIONAL MATCH
   (:User)-[followers:FOLLOWS]->(u)
@@ -19,6 +21,7 @@ WITH
   u,
   EXISTS((:User {id: $userID})-[:FOLLOWS]->(u)) as has_followed,
   COUNT(s) > 0 as has_story,
+  COUNT(DISTINCT friends) as friends_count,
   EXISTS((me)-[:FRIENDS]->(u)) as friend,
   EXISTS((me)-[:REQUESTED]->(u)) as requested,
   EXISTS((u)-[:REQUESTED]->(me)) as has_requested_viewer,
@@ -34,6 +37,7 @@ RETURN DISTINCT
     friend: friend,
     requested: requested,
     has_requested_viewer: has_requested_viewer,
+    friends_count: friends_count,
     story_state:
       CASE
         WHEN has_story AND NOT seen_story THEN "NOT_SEEN"

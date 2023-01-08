@@ -72,6 +72,7 @@ export interface GetUserResponse {
   friend: boolean;
   requested: boolean;
   hasRequestedViewer: boolean;
+  friendsCount: number;
 }
 
 export interface BlockUserRequest {
@@ -814,6 +815,7 @@ function createBaseGetUserResponse(): GetUserResponse {
     friend: false,
     requested: false,
     hasRequestedViewer: false,
+    friendsCount: 0,
   };
 }
 
@@ -845,6 +847,9 @@ export const GetUserResponse = {
     }
     if (message.hasRequestedViewer === true) {
       writer.uint32(72).bool(message.hasRequestedViewer);
+    }
+    if (message.friendsCount !== 0) {
+      writer.uint32(80).int32(message.friendsCount);
     }
     return writer;
   },
@@ -883,6 +888,9 @@ export const GetUserResponse = {
         case 9:
           message.hasRequestedViewer = reader.bool();
           break;
+        case 10:
+          message.friendsCount = reader.int32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -902,6 +910,7 @@ export const GetUserResponse = {
       friend: isSet(object.friend) ? Boolean(object.friend) : false,
       requested: isSet(object.requested) ? Boolean(object.requested) : false,
       hasRequestedViewer: isSet(object.hasRequestedViewer) ? Boolean(object.hasRequestedViewer) : false,
+      friendsCount: isSet(object.friendsCount) ? Number(object.friendsCount) : 0,
     };
   },
 
@@ -916,6 +925,7 @@ export const GetUserResponse = {
     message.friend !== undefined && (obj.friend = message.friend);
     message.requested !== undefined && (obj.requested = message.requested);
     message.hasRequestedViewer !== undefined && (obj.hasRequestedViewer = message.hasRequestedViewer);
+    message.friendsCount !== undefined && (obj.friendsCount = Math.round(message.friendsCount));
     return obj;
   },
 
@@ -930,6 +940,7 @@ export const GetUserResponse = {
     message.friend = object.friend ?? false;
     message.requested = object.requested ?? false;
     message.hasRequestedViewer = object.hasRequestedViewer ?? false;
+    message.friendsCount = object.friendsCount ?? 0;
     return message;
   },
 };

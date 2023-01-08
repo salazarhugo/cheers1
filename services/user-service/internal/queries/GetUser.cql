@@ -5,6 +5,8 @@ MATCH (u:User)
 OPTIONAL MATCH
   (u)-[authorPosts:POSTED]->(:Post)
 OPTIONAL MATCH
+  (u)-[friends:FRIENDS]->(:User)
+OPTIONAL MATCH
   (u)-[following:FOLLOWS]->(:User)
 OPTIONAL MATCH
   (:User)-[followers:FOLLOWS]->(u)
@@ -17,6 +19,7 @@ WITH
   COUNT(DISTINCT authorPosts) as post_count,
   COUNT(DISTINCT followers) as followers_count,
   COUNT(DISTINCT following) as following_count,
+  COUNT(DISTINCT friends) as friends_count,
   COUNT(s) > 0 as hasStory,
   COUNT(seen) = count(s) as seenStory,
   EXISTS((me)-[:FOLLOWS]->(u)) as has_followed,
@@ -29,6 +32,7 @@ RETURN
       post_count: post_count,
       followers_count: followers_count,
       following_count: following_count,
+      friends_count: friends_count,
       has_followed : has_followed,
       friend : friend,
       requested : requested,
