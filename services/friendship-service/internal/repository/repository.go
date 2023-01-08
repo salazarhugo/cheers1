@@ -10,6 +10,8 @@ type Repository interface {
 	CreateFriendRequest(userId string, friendId string) error
 	ListFriendRequests(userId string) ([]*user.UserItem, error)
 	AcceptFriendRequest(userId string, friendId string) error
+	DeleteFriendRequest(userId string, friendId string) error
+	DeleteFriend(userId string, friendId string) error
 }
 
 type repository struct {

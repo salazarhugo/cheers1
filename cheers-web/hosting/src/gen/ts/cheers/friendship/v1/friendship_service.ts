@@ -1,5 +1,4 @@
 /* eslint-disable */
-import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
 import { UserItem } from "../../type/user/user";
 
@@ -19,8 +18,11 @@ export interface DeleteFriendRequestRequest {
 export interface DeleteFriendRequestResponse {
 }
 
+export interface ListFriendResponse {
+}
+
 export interface DeleteFriendRequest2 {
-  postId: string;
+  userId: string;
   friendshipId: string;
 }
 
@@ -31,29 +33,12 @@ export interface ListFriendRequest {
   userId: string;
 }
 
-export interface ListFriendResponse {
-  items: FriendshipItem[];
-}
-
 export interface ListFriendRequestsRequest {
-  postId: string;
+  userId: string;
 }
 
 export interface ListFriendRequestsResponse {
   items: UserItem[];
-}
-
-export interface FriendshipItem {
-  friendship: Friendship | undefined;
-  userItem: UserItem | undefined;
-}
-
-export interface Friendship {
-  id: string;
-  text: string;
-  createTime: number;
-  userId: string;
-  postId: string;
 }
 
 export interface CreateFriendRequestRequest {
@@ -235,14 +220,53 @@ export const DeleteFriendRequestResponse = {
   },
 };
 
+function createBaseListFriendResponse(): ListFriendResponse {
+  return {};
+}
+
+export const ListFriendResponse = {
+  encode(_: ListFriendResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListFriendResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListFriendResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): ListFriendResponse {
+    return {};
+  },
+
+  toJSON(_: ListFriendResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListFriendResponse>, I>>(_: I): ListFriendResponse {
+    const message = createBaseListFriendResponse();
+    return message;
+  },
+};
+
 function createBaseDeleteFriendRequest2(): DeleteFriendRequest2 {
-  return { postId: "", friendshipId: "" };
+  return { userId: "", friendshipId: "" };
 }
 
 export const DeleteFriendRequest2 = {
   encode(message: DeleteFriendRequest2, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.postId !== "") {
-      writer.uint32(10).string(message.postId);
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
     }
     if (message.friendshipId !== "") {
       writer.uint32(18).string(message.friendshipId);
@@ -258,7 +282,7 @@ export const DeleteFriendRequest2 = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.postId = reader.string();
+          message.userId = reader.string();
           break;
         case 2:
           message.friendshipId = reader.string();
@@ -273,21 +297,21 @@ export const DeleteFriendRequest2 = {
 
   fromJSON(object: any): DeleteFriendRequest2 {
     return {
-      postId: isSet(object.postId) ? String(object.postId) : "",
+      userId: isSet(object.userId) ? String(object.userId) : "",
       friendshipId: isSet(object.friendshipId) ? String(object.friendshipId) : "",
     };
   },
 
   toJSON(message: DeleteFriendRequest2): unknown {
     const obj: any = {};
-    message.postId !== undefined && (obj.postId = message.postId);
+    message.userId !== undefined && (obj.userId = message.userId);
     message.friendshipId !== undefined && (obj.friendshipId = message.friendshipId);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<DeleteFriendRequest2>, I>>(object: I): DeleteFriendRequest2 {
     const message = createBaseDeleteFriendRequest2();
-    message.postId = object.postId ?? "";
+    message.userId = object.userId ?? "";
     message.friendshipId = object.friendshipId ?? "";
     return message;
   },
@@ -379,65 +403,14 @@ export const ListFriendRequest = {
   },
 };
 
-function createBaseListFriendResponse(): ListFriendResponse {
-  return { items: [] };
-}
-
-export const ListFriendResponse = {
-  encode(message: ListFriendResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    for (const v of message.items) {
-      FriendshipItem.encode(v!, writer.uint32(10).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ListFriendResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseListFriendResponse();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.items.push(FriendshipItem.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): ListFriendResponse {
-    return { items: Array.isArray(object?.items) ? object.items.map((e: any) => FriendshipItem.fromJSON(e)) : [] };
-  },
-
-  toJSON(message: ListFriendResponse): unknown {
-    const obj: any = {};
-    if (message.items) {
-      obj.items = message.items.map((e) => e ? FriendshipItem.toJSON(e) : undefined);
-    } else {
-      obj.items = [];
-    }
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<ListFriendResponse>, I>>(object: I): ListFriendResponse {
-    const message = createBaseListFriendResponse();
-    message.items = object.items?.map((e) => FriendshipItem.fromPartial(e)) || [];
-    return message;
-  },
-};
-
 function createBaseListFriendRequestsRequest(): ListFriendRequestsRequest {
-  return { postId: "" };
+  return { userId: "" };
 }
 
 export const ListFriendRequestsRequest = {
   encode(message: ListFriendRequestsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.postId !== "") {
-      writer.uint32(10).string(message.postId);
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
     }
     return writer;
   },
@@ -450,7 +423,7 @@ export const ListFriendRequestsRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.postId = reader.string();
+          message.userId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -461,18 +434,18 @@ export const ListFriendRequestsRequest = {
   },
 
   fromJSON(object: any): ListFriendRequestsRequest {
-    return { postId: isSet(object.postId) ? String(object.postId) : "" };
+    return { userId: isSet(object.userId) ? String(object.userId) : "" };
   },
 
   toJSON(message: ListFriendRequestsRequest): unknown {
     const obj: any = {};
-    message.postId !== undefined && (obj.postId = message.postId);
+    message.userId !== undefined && (obj.userId = message.userId);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<ListFriendRequestsRequest>, I>>(object: I): ListFriendRequestsRequest {
     const message = createBaseListFriendRequestsRequest();
-    message.postId = object.postId ?? "";
+    message.userId = object.userId ?? "";
     return message;
   },
 };
@@ -524,154 +497,6 @@ export const ListFriendRequestsResponse = {
   fromPartial<I extends Exact<DeepPartial<ListFriendRequestsResponse>, I>>(object: I): ListFriendRequestsResponse {
     const message = createBaseListFriendRequestsResponse();
     message.items = object.items?.map((e) => UserItem.fromPartial(e)) || [];
-    return message;
-  },
-};
-
-function createBaseFriendshipItem(): FriendshipItem {
-  return { friendship: undefined, userItem: undefined };
-}
-
-export const FriendshipItem = {
-  encode(message: FriendshipItem, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.friendship !== undefined) {
-      Friendship.encode(message.friendship, writer.uint32(10).fork()).ldelim();
-    }
-    if (message.userItem !== undefined) {
-      UserItem.encode(message.userItem, writer.uint32(18).fork()).ldelim();
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): FriendshipItem {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseFriendshipItem();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.friendship = Friendship.decode(reader, reader.uint32());
-          break;
-        case 2:
-          message.userItem = UserItem.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): FriendshipItem {
-    return {
-      friendship: isSet(object.friendship) ? Friendship.fromJSON(object.friendship) : undefined,
-      userItem: isSet(object.userItem) ? UserItem.fromJSON(object.userItem) : undefined,
-    };
-  },
-
-  toJSON(message: FriendshipItem): unknown {
-    const obj: any = {};
-    message.friendship !== undefined &&
-      (obj.friendship = message.friendship ? Friendship.toJSON(message.friendship) : undefined);
-    message.userItem !== undefined && (obj.userItem = message.userItem ? UserItem.toJSON(message.userItem) : undefined);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<FriendshipItem>, I>>(object: I): FriendshipItem {
-    const message = createBaseFriendshipItem();
-    message.friendship = (object.friendship !== undefined && object.friendship !== null)
-      ? Friendship.fromPartial(object.friendship)
-      : undefined;
-    message.userItem = (object.userItem !== undefined && object.userItem !== null)
-      ? UserItem.fromPartial(object.userItem)
-      : undefined;
-    return message;
-  },
-};
-
-function createBaseFriendship(): Friendship {
-  return { id: "", text: "", createTime: 0, userId: "", postId: "" };
-}
-
-export const Friendship = {
-  encode(message: Friendship, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
-    }
-    if (message.text !== "") {
-      writer.uint32(18).string(message.text);
-    }
-    if (message.createTime !== 0) {
-      writer.uint32(40).int64(message.createTime);
-    }
-    if (message.userId !== "") {
-      writer.uint32(26).string(message.userId);
-    }
-    if (message.postId !== "") {
-      writer.uint32(34).string(message.postId);
-    }
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): Friendship {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseFriendship();
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-      switch (tag >>> 3) {
-        case 1:
-          message.id = reader.string();
-          break;
-        case 2:
-          message.text = reader.string();
-          break;
-        case 5:
-          message.createTime = longToNumber(reader.int64() as Long);
-          break;
-        case 3:
-          message.userId = reader.string();
-          break;
-        case 4:
-          message.postId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-    return message;
-  },
-
-  fromJSON(object: any): Friendship {
-    return {
-      id: isSet(object.id) ? String(object.id) : "",
-      text: isSet(object.text) ? String(object.text) : "",
-      createTime: isSet(object.createTime) ? Number(object.createTime) : 0,
-      userId: isSet(object.userId) ? String(object.userId) : "",
-      postId: isSet(object.postId) ? String(object.postId) : "",
-    };
-  },
-
-  toJSON(message: Friendship): unknown {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
-    message.text !== undefined && (obj.text = message.text);
-    message.createTime !== undefined && (obj.createTime = Math.round(message.createTime));
-    message.userId !== undefined && (obj.userId = message.userId);
-    message.postId !== undefined && (obj.postId = message.postId);
-    return obj;
-  },
-
-  fromPartial<I extends Exact<DeepPartial<Friendship>, I>>(object: I): Friendship {
-    const message = createBaseFriendship();
-    message.id = object.id ?? "";
-    message.text = object.text ?? "";
-    message.createTime = object.createTime ?? 0;
-    message.userId = object.userId ?? "";
-    message.postId = object.postId ?? "";
     return message;
   },
 };
@@ -831,25 +656,6 @@ interface Rpc {
   request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
 }
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var tsProtoGlobalThis: any = (() => {
-  if (typeof globalThis !== "undefined") {
-    return globalThis;
-  }
-  if (typeof self !== "undefined") {
-    return self;
-  }
-  if (typeof window !== "undefined") {
-    return window;
-  }
-  if (typeof global !== "undefined") {
-    return global;
-  }
-  throw "Unable to locate global object";
-})();
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
@@ -860,20 +666,6 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-function longToNumber(long: Long): number {
-  if (long.gt(Number.MAX_SAFE_INTEGER)) {
-    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
-  }
-  return long.toNumber();
-}
-
-// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
-// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
-if (_m0.util.Long !== Long) {
-  _m0.util.Long = Long as any;
-  _m0.configure();
-}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

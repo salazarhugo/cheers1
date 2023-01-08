@@ -19,7 +19,9 @@ WITH
   COUNT(DISTINCT following) as following_count,
   COUNT(s) > 0 as hasStory,
   COUNT(seen) = count(s) as seenStory,
-  EXISTS((me)-[:FOLLOWS]->(u)) as has_followed
+  EXISTS((me)-[:FOLLOWS]->(u)) as has_followed,
+  EXISTS((me)-[:FRIENDS]->(u)) as friend,
+  EXISTS((me)-[:REQUESTED]->(u)) as requested
 RETURN
    {
       user: PROPERTIES(u),
@@ -27,6 +29,8 @@ RETURN
       followers_count: followers_count,
       following_count: following_count,
       has_followed : has_followed,
+      friend : friend,
+      requested : requested,
       story_state:
        CASE
          WHEN hasStory AND NOT seenStory THEN "NOT_SEEN"

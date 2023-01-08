@@ -69,6 +69,8 @@ export interface GetUserResponse {
   followingCount: number;
   hasFollowed: boolean;
   storyState: StoryState;
+  friend: boolean;
+  requested: boolean;
 }
 
 export interface BlockUserRequest {
@@ -801,7 +803,16 @@ export const ListFollowingResponse = {
 };
 
 function createBaseGetUserResponse(): GetUserResponse {
-  return { user: undefined, postCount: 0, followersCount: 0, followingCount: 0, hasFollowed: false, storyState: 0 };
+  return {
+    user: undefined,
+    postCount: 0,
+    followersCount: 0,
+    followingCount: 0,
+    hasFollowed: false,
+    storyState: 0,
+    friend: false,
+    requested: false,
+  };
 }
 
 export const GetUserResponse = {
@@ -823,6 +834,12 @@ export const GetUserResponse = {
     }
     if (message.storyState !== 0) {
       writer.uint32(48).int32(message.storyState);
+    }
+    if (message.friend === true) {
+      writer.uint32(56).bool(message.friend);
+    }
+    if (message.requested === true) {
+      writer.uint32(64).bool(message.requested);
     }
     return writer;
   },
@@ -852,6 +869,12 @@ export const GetUserResponse = {
         case 6:
           message.storyState = reader.int32() as any;
           break;
+        case 7:
+          message.friend = reader.bool();
+          break;
+        case 8:
+          message.requested = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -868,6 +891,8 @@ export const GetUserResponse = {
       followingCount: isSet(object.followingCount) ? Number(object.followingCount) : 0,
       hasFollowed: isSet(object.hasFollowed) ? Boolean(object.hasFollowed) : false,
       storyState: isSet(object.storyState) ? storyStateFromJSON(object.storyState) : 0,
+      friend: isSet(object.friend) ? Boolean(object.friend) : false,
+      requested: isSet(object.requested) ? Boolean(object.requested) : false,
     };
   },
 
@@ -879,6 +904,8 @@ export const GetUserResponse = {
     message.followingCount !== undefined && (obj.followingCount = Math.round(message.followingCount));
     message.hasFollowed !== undefined && (obj.hasFollowed = message.hasFollowed);
     message.storyState !== undefined && (obj.storyState = storyStateToJSON(message.storyState));
+    message.friend !== undefined && (obj.friend = message.friend);
+    message.requested !== undefined && (obj.requested = message.requested);
     return obj;
   },
 
@@ -890,6 +917,8 @@ export const GetUserResponse = {
     message.followingCount = object.followingCount ?? 0;
     message.hasFollowed = object.hasFollowed ?? false;
     message.storyState = object.storyState ?? 0;
+    message.friend = object.friend ?? false;
+    message.requested = object.requested ?? false;
     return message;
   },
 };

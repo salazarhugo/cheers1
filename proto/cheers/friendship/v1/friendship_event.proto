@@ -10,17 +10,29 @@ import "cheers/type/user/user.proto";
 
 message FriendshipEvent {
   oneof event {
-    CreatedFriendship created = 1;
-    DeletedFriendship deleted = 2;
+    CreatedFriendRequest created_friend_request = 1;
+    CreatedFriend created_friend = 2;
+    DeletedFriendRequest deleted_friend_request = 3;
+    DeletedFriend deleted_friend = 4;
   };
 }
 
-message CreatedFriendship {
-  cheers.friendship.v1.Friendship friendship = 1;
-  cheers.type.UserItem user = 2;
+message CreatedFriendRequest {
+  string from = 1;
+  string to = 2;
 }
 
-message DeletedFriendship {
-  cheers.friendship.v1.Friendship friendship = 1;
-  cheers.type.UserItem user = 2;
+message DeletedFriendRequest {
+  string from = 1;
+  string to = 2;
+}
+
+message CreatedFriend {
+  string from = 1;
+  string to = 2;
+}
+
+message DeletedFriend {
+  string from = 1;
+  string to = 2;
 }

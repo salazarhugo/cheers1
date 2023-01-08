@@ -9,10 +9,10 @@ import (
 	"log"
 )
 
-func (s *Server) DeleteFriendRequest(
+func (s *Server) DeleteFriend(
 	ctx context.Context,
-	request *friendship.DeleteFriendRequestRequest,
-) (*friendship.DeleteFriendRequestResponse, error) {
+	request *friendship.DeleteFriendRequest2,
+) (*friendship.DeleteFriendResponse, error) {
 	userID, err := utils.GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to retrieve userID")

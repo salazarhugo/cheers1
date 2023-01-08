@@ -129,6 +129,8 @@ message GetUserResponse {
   int32 following_count = 4;
   bool has_followed = 5;
   cheers.type.StoryState story_state = 6;
+  bool friend = 7;
+  bool requested = 8;
 }
 
 message BlockUserRequest {

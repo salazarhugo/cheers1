@@ -1,37 +1,57 @@
 /* eslint-disable */
-import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
-import { UserItem } from "../../type/user/user";
-import { Friendship } from "./friendship_service";
 
 export const protobufPackage = "cheers.friendship.v1";
 
 export interface FriendshipEvent {
-  created?: CreatedFriendship | undefined;
-  deleted?: DeletedFriendship | undefined;
+  createdFriendRequest?: CreatedFriendRequest | undefined;
+  createdFriend?: CreatedFriend | undefined;
+  deletedFriendRequest?: DeletedFriendRequest | undefined;
+  deletedFriend?: DeletedFriend | undefined;
 }
 
-export interface CreatedFriendship {
-  friendship: Friendship | undefined;
-  user: UserItem | undefined;
+export interface CreatedFriendRequest {
+  from: string;
+  to: string;
 }
 
-export interface DeletedFriendship {
-  friendship: Friendship | undefined;
-  user: UserItem | undefined;
+export interface DeletedFriendRequest {
+  from: string;
+  to: string;
+}
+
+export interface CreatedFriend {
+  from: string;
+  to: string;
+}
+
+export interface DeletedFriend {
+  from: string;
+  to: string;
 }
 
 function createBaseFriendshipEvent(): FriendshipEvent {
-  return { created: undefined, deleted: undefined };
+  return {
+    createdFriendRequest: undefined,
+    createdFriend: undefined,
+    deletedFriendRequest: undefined,
+    deletedFriend: undefined,
+  };
 }
 
 export const FriendshipEvent = {
   encode(message: FriendshipEvent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.created !== undefined) {
-      CreatedFriendship.encode(message.created, writer.uint32(10).fork()).ldelim();
+    if (message.createdFriendRequest !== undefined) {
+      CreatedFriendRequest.encode(message.createdFriendRequest, writer.uint32(10).fork()).ldelim();
     }
-    if (message.deleted !== undefined) {
-      DeletedFriendship.encode(message.deleted, writer.uint32(18).fork()).ldelim();
+    if (message.createdFriend !== undefined) {
+      CreatedFriend.encode(message.createdFriend, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.deletedFriendRequest !== undefined) {
+      DeletedFriendRequest.encode(message.deletedFriendRequest, writer.uint32(26).fork()).ldelim();
+    }
+    if (message.deletedFriend !== undefined) {
+      DeletedFriend.encode(message.deletedFriend, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -44,10 +64,16 @@ export const FriendshipEvent = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.created = CreatedFriendship.decode(reader, reader.uint32());
+          message.createdFriendRequest = CreatedFriendRequest.decode(reader, reader.uint32());
           break;
         case 2:
-          message.deleted = DeletedFriendship.decode(reader, reader.uint32());
+          message.createdFriend = CreatedFriend.decode(reader, reader.uint32());
+          break;
+        case 3:
+          message.deletedFriendRequest = DeletedFriendRequest.decode(reader, reader.uint32());
+          break;
+        case 4:
+          message.deletedFriend = DeletedFriend.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -59,59 +85,77 @@ export const FriendshipEvent = {
 
   fromJSON(object: any): FriendshipEvent {
     return {
-      created: isSet(object.created) ? CreatedFriendship.fromJSON(object.created) : undefined,
-      deleted: isSet(object.deleted) ? DeletedFriendship.fromJSON(object.deleted) : undefined,
+      createdFriendRequest: isSet(object.createdFriendRequest)
+        ? CreatedFriendRequest.fromJSON(object.createdFriendRequest)
+        : undefined,
+      createdFriend: isSet(object.createdFriend) ? CreatedFriend.fromJSON(object.createdFriend) : undefined,
+      deletedFriendRequest: isSet(object.deletedFriendRequest)
+        ? DeletedFriendRequest.fromJSON(object.deletedFriendRequest)
+        : undefined,
+      deletedFriend: isSet(object.deletedFriend) ? DeletedFriend.fromJSON(object.deletedFriend) : undefined,
     };
   },
 
   toJSON(message: FriendshipEvent): unknown {
     const obj: any = {};
-    message.created !== undefined &&
-      (obj.created = message.created ? CreatedFriendship.toJSON(message.created) : undefined);
-    message.deleted !== undefined &&
-      (obj.deleted = message.deleted ? DeletedFriendship.toJSON(message.deleted) : undefined);
+    message.createdFriendRequest !== undefined && (obj.createdFriendRequest = message.createdFriendRequest
+      ? CreatedFriendRequest.toJSON(message.createdFriendRequest)
+      : undefined);
+    message.createdFriend !== undefined &&
+      (obj.createdFriend = message.createdFriend ? CreatedFriend.toJSON(message.createdFriend) : undefined);
+    message.deletedFriendRequest !== undefined && (obj.deletedFriendRequest = message.deletedFriendRequest
+      ? DeletedFriendRequest.toJSON(message.deletedFriendRequest)
+      : undefined);
+    message.deletedFriend !== undefined &&
+      (obj.deletedFriend = message.deletedFriend ? DeletedFriend.toJSON(message.deletedFriend) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<FriendshipEvent>, I>>(object: I): FriendshipEvent {
     const message = createBaseFriendshipEvent();
-    message.created = (object.created !== undefined && object.created !== null)
-      ? CreatedFriendship.fromPartial(object.created)
+    message.createdFriendRequest = (object.createdFriendRequest !== undefined && object.createdFriendRequest !== null)
+      ? CreatedFriendRequest.fromPartial(object.createdFriendRequest)
       : undefined;
-    message.deleted = (object.deleted !== undefined && object.deleted !== null)
-      ? DeletedFriendship.fromPartial(object.deleted)
+    message.createdFriend = (object.createdFriend !== undefined && object.createdFriend !== null)
+      ? CreatedFriend.fromPartial(object.createdFriend)
+      : undefined;
+    message.deletedFriendRequest = (object.deletedFriendRequest !== undefined && object.deletedFriendRequest !== null)
+      ? DeletedFriendRequest.fromPartial(object.deletedFriendRequest)
+      : undefined;
+    message.deletedFriend = (object.deletedFriend !== undefined && object.deletedFriend !== null)
+      ? DeletedFriend.fromPartial(object.deletedFriend)
       : undefined;
     return message;
   },
 };
 
-function createBaseCreatedFriendship(): CreatedFriendship {
-  return { friendship: undefined, user: undefined };
+function createBaseCreatedFriendRequest(): CreatedFriendRequest {
+  return { from: "", to: "" };
 }
 
-export const CreatedFriendship = {
-  encode(message: CreatedFriendship, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.friendship !== undefined) {
-      Friendship.encode(message.friendship, writer.uint32(10).fork()).ldelim();
+export const CreatedFriendRequest = {
+  encode(message: CreatedFriendRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.from !== "") {
+      writer.uint32(10).string(message.from);
     }
-    if (message.user !== undefined) {
-      UserItem.encode(message.user, writer.uint32(18).fork()).ldelim();
+    if (message.to !== "") {
+      writer.uint32(18).string(message.to);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): CreatedFriendship {
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreatedFriendRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCreatedFriendship();
+    const message = createBaseCreatedFriendRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.friendship = Friendship.decode(reader, reader.uint32());
+          message.from = reader.string();
           break;
         case 2:
-          message.user = UserItem.decode(reader, reader.uint32());
+          message.to = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -121,58 +165,52 @@ export const CreatedFriendship = {
     return message;
   },
 
-  fromJSON(object: any): CreatedFriendship {
-    return {
-      friendship: isSet(object.friendship) ? Friendship.fromJSON(object.friendship) : undefined,
-      user: isSet(object.user) ? UserItem.fromJSON(object.user) : undefined,
-    };
+  fromJSON(object: any): CreatedFriendRequest {
+    return { from: isSet(object.from) ? String(object.from) : "", to: isSet(object.to) ? String(object.to) : "" };
   },
 
-  toJSON(message: CreatedFriendship): unknown {
+  toJSON(message: CreatedFriendRequest): unknown {
     const obj: any = {};
-    message.friendship !== undefined &&
-      (obj.friendship = message.friendship ? Friendship.toJSON(message.friendship) : undefined);
-    message.user !== undefined && (obj.user = message.user ? UserItem.toJSON(message.user) : undefined);
+    message.from !== undefined && (obj.from = message.from);
+    message.to !== undefined && (obj.to = message.to);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<CreatedFriendship>, I>>(object: I): CreatedFriendship {
-    const message = createBaseCreatedFriendship();
-    message.friendship = (object.friendship !== undefined && object.friendship !== null)
-      ? Friendship.fromPartial(object.friendship)
-      : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserItem.fromPartial(object.user) : undefined;
+  fromPartial<I extends Exact<DeepPartial<CreatedFriendRequest>, I>>(object: I): CreatedFriendRequest {
+    const message = createBaseCreatedFriendRequest();
+    message.from = object.from ?? "";
+    message.to = object.to ?? "";
     return message;
   },
 };
 
-function createBaseDeletedFriendship(): DeletedFriendship {
-  return { friendship: undefined, user: undefined };
+function createBaseDeletedFriendRequest(): DeletedFriendRequest {
+  return { from: "", to: "" };
 }
 
-export const DeletedFriendship = {
-  encode(message: DeletedFriendship, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.friendship !== undefined) {
-      Friendship.encode(message.friendship, writer.uint32(10).fork()).ldelim();
+export const DeletedFriendRequest = {
+  encode(message: DeletedFriendRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.from !== "") {
+      writer.uint32(10).string(message.from);
     }
-    if (message.user !== undefined) {
-      UserItem.encode(message.user, writer.uint32(18).fork()).ldelim();
+    if (message.to !== "") {
+      writer.uint32(18).string(message.to);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): DeletedFriendship {
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeletedFriendRequest {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseDeletedFriendship();
+    const message = createBaseDeletedFriendRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.friendship = Friendship.decode(reader, reader.uint32());
+          message.from = reader.string();
           break;
         case 2:
-          message.user = UserItem.decode(reader, reader.uint32());
+          message.to = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -182,49 +220,134 @@ export const DeletedFriendship = {
     return message;
   },
 
-  fromJSON(object: any): DeletedFriendship {
-    return {
-      friendship: isSet(object.friendship) ? Friendship.fromJSON(object.friendship) : undefined,
-      user: isSet(object.user) ? UserItem.fromJSON(object.user) : undefined,
-    };
+  fromJSON(object: any): DeletedFriendRequest {
+    return { from: isSet(object.from) ? String(object.from) : "", to: isSet(object.to) ? String(object.to) : "" };
   },
 
-  toJSON(message: DeletedFriendship): unknown {
+  toJSON(message: DeletedFriendRequest): unknown {
     const obj: any = {};
-    message.friendship !== undefined &&
-      (obj.friendship = message.friendship ? Friendship.toJSON(message.friendship) : undefined);
-    message.user !== undefined && (obj.user = message.user ? UserItem.toJSON(message.user) : undefined);
+    message.from !== undefined && (obj.from = message.from);
+    message.to !== undefined && (obj.to = message.to);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<DeletedFriendship>, I>>(object: I): DeletedFriendship {
-    const message = createBaseDeletedFriendship();
-    message.friendship = (object.friendship !== undefined && object.friendship !== null)
-      ? Friendship.fromPartial(object.friendship)
-      : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserItem.fromPartial(object.user) : undefined;
+  fromPartial<I extends Exact<DeepPartial<DeletedFriendRequest>, I>>(object: I): DeletedFriendRequest {
+    const message = createBaseDeletedFriendRequest();
+    message.from = object.from ?? "";
+    message.to = object.to ?? "";
     return message;
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var tsProtoGlobalThis: any = (() => {
-  if (typeof globalThis !== "undefined") {
-    return globalThis;
-  }
-  if (typeof self !== "undefined") {
-    return self;
-  }
-  if (typeof window !== "undefined") {
-    return window;
-  }
-  if (typeof global !== "undefined") {
-    return global;
-  }
-  throw "Unable to locate global object";
-})();
+function createBaseCreatedFriend(): CreatedFriend {
+  return { from: "", to: "" };
+}
+
+export const CreatedFriend = {
+  encode(message: CreatedFriend, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.from !== "") {
+      writer.uint32(10).string(message.from);
+    }
+    if (message.to !== "") {
+      writer.uint32(18).string(message.to);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreatedFriend {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreatedFriend();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.from = reader.string();
+          break;
+        case 2:
+          message.to = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreatedFriend {
+    return { from: isSet(object.from) ? String(object.from) : "", to: isSet(object.to) ? String(object.to) : "" };
+  },
+
+  toJSON(message: CreatedFriend): unknown {
+    const obj: any = {};
+    message.from !== undefined && (obj.from = message.from);
+    message.to !== undefined && (obj.to = message.to);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CreatedFriend>, I>>(object: I): CreatedFriend {
+    const message = createBaseCreatedFriend();
+    message.from = object.from ?? "";
+    message.to = object.to ?? "";
+    return message;
+  },
+};
+
+function createBaseDeletedFriend(): DeletedFriend {
+  return { from: "", to: "" };
+}
+
+export const DeletedFriend = {
+  encode(message: DeletedFriend, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.from !== "") {
+      writer.uint32(10).string(message.from);
+    }
+    if (message.to !== "") {
+      writer.uint32(18).string(message.to);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeletedFriend {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeletedFriend();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.from = reader.string();
+          break;
+        case 2:
+          message.to = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeletedFriend {
+    return { from: isSet(object.from) ? String(object.from) : "", to: isSet(object.to) ? String(object.to) : "" };
+  },
+
+  toJSON(message: DeletedFriend): unknown {
+    const obj: any = {};
+    message.from !== undefined && (obj.from = message.from);
+    message.to !== undefined && (obj.to = message.to);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeletedFriend>, I>>(object: I): DeletedFriend {
+    const message = createBaseDeletedFriend();
+    message.from = object.from ?? "";
+    message.to = object.to ?? "";
+    return message;
+  },
+};
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
@@ -236,13 +359,6 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
-// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
-if (_m0.util.Long !== Long) {
-  _m0.util.Long = Long as any;
-  _m0.configure();
-}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;
