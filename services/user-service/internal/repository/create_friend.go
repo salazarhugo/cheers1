@@ -2,7 +2,10 @@ package repository
 
 import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
+	userpb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
+	"log"
 )
 
 func (p *userRepository) CreateFriend(from string, to string) error {
@@ -23,6 +26,21 @@ func (p *userRepository) CreateFriend(from string, to string) error {
 	if err != nil {
 		return err
 	}
+
+	users, err := p.GetUsersIn([]string{from, to})
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	err = pubsub.PublishProtoWithBinaryEncoding("user-topic", &userpb.UserEvent{
+		Event: &userpb.UserEvent_Follow{
+			Follow: &userpb.FollowUser{
+				User:         users[0],
+				FollowedUser: users[1],
+			},
+		},
+	})
 
 	return nil
 }
