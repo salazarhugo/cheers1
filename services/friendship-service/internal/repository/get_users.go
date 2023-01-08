@@ -37,13 +37,16 @@ func GetUsers(userIds []string) ([]*pb.UserItem, error) {
 	items := make([]*userpb.UserItem, 0)
 	for _, user := range response.Users {
 		items = append(items, &userpb.UserItem{
-			Id:          user.Id,
-			Name:        user.Name,
-			Username:    user.Username,
-			Verified:    user.Verified,
-			Picture:     user.Picture,
-			HasFollowed: false,
-			StoryState:  0,
+			Id:                 user.Id,
+			Name:               user.Name,
+			Username:           user.Username,
+			Verified:           user.Verified,
+			Picture:            user.Picture,
+			HasFollowed:        false,
+			StoryState:         0,
+			Friend:             true,
+			Requested:          false,
+			HasRequestedViewer: false,
 		})
 	}
 	return items, nil
