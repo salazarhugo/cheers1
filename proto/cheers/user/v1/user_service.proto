@@ -131,6 +131,7 @@ message GetUserResponse {
   cheers.type.StoryState story_state = 6;
   bool friend = 7;
   bool requested = 8;
+  bool has_requested_viewer = 9;
 }
 
 message BlockUserRequest {

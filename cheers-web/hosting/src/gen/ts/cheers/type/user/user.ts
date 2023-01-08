@@ -108,6 +108,7 @@ export interface UserItem {
   storyState: StoryState;
   friend: boolean;
   requested: boolean;
+  hasRequestedViewer: boolean;
 }
 
 function createBaseUser(): User {
@@ -298,6 +299,7 @@ function createBaseUserItem(): UserItem {
     storyState: 0,
     friend: false,
     requested: false,
+    hasRequestedViewer: false,
   };
 }
 
@@ -329,6 +331,9 @@ export const UserItem = {
     }
     if (message.requested === true) {
       writer.uint32(72).bool(message.requested);
+    }
+    if (message.hasRequestedViewer === true) {
+      writer.uint32(80).bool(message.hasRequestedViewer);
     }
     return writer;
   },
@@ -367,6 +372,9 @@ export const UserItem = {
         case 9:
           message.requested = reader.bool();
           break;
+        case 10:
+          message.hasRequestedViewer = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -386,6 +394,7 @@ export const UserItem = {
       storyState: isSet(object.storyState) ? storyStateFromJSON(object.storyState) : 0,
       friend: isSet(object.friend) ? Boolean(object.friend) : false,
       requested: isSet(object.requested) ? Boolean(object.requested) : false,
+      hasRequestedViewer: isSet(object.hasRequestedViewer) ? Boolean(object.hasRequestedViewer) : false,
     };
   },
 
@@ -400,6 +409,7 @@ export const UserItem = {
     message.storyState !== undefined && (obj.storyState = storyStateToJSON(message.storyState));
     message.friend !== undefined && (obj.friend = message.friend);
     message.requested !== undefined && (obj.requested = message.requested);
+    message.hasRequestedViewer !== undefined && (obj.hasRequestedViewer = message.hasRequestedViewer);
     return obj;
   },
 
@@ -414,6 +424,7 @@ export const UserItem = {
     message.storyState = object.storyState ?? 0;
     message.friend = object.friend ?? false;
     message.requested = object.requested ?? false;
+    message.hasRequestedViewer = object.hasRequestedViewer ?? false;
     return message;
   },
 };

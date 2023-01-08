@@ -71,6 +71,7 @@ export interface GetUserResponse {
   storyState: StoryState;
   friend: boolean;
   requested: boolean;
+  hasRequestedViewer: boolean;
 }
 
 export interface BlockUserRequest {
@@ -812,6 +813,7 @@ function createBaseGetUserResponse(): GetUserResponse {
     storyState: 0,
     friend: false,
     requested: false,
+    hasRequestedViewer: false,
   };
 }
 
@@ -840,6 +842,9 @@ export const GetUserResponse = {
     }
     if (message.requested === true) {
       writer.uint32(64).bool(message.requested);
+    }
+    if (message.hasRequestedViewer === true) {
+      writer.uint32(72).bool(message.hasRequestedViewer);
     }
     return writer;
   },
@@ -875,6 +880,9 @@ export const GetUserResponse = {
         case 8:
           message.requested = reader.bool();
           break;
+        case 9:
+          message.hasRequestedViewer = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -893,6 +901,7 @@ export const GetUserResponse = {
       storyState: isSet(object.storyState) ? storyStateFromJSON(object.storyState) : 0,
       friend: isSet(object.friend) ? Boolean(object.friend) : false,
       requested: isSet(object.requested) ? Boolean(object.requested) : false,
+      hasRequestedViewer: isSet(object.hasRequestedViewer) ? Boolean(object.hasRequestedViewer) : false,
     };
   },
 
@@ -906,6 +915,7 @@ export const GetUserResponse = {
     message.storyState !== undefined && (obj.storyState = storyStateToJSON(message.storyState));
     message.friend !== undefined && (obj.friend = message.friend);
     message.requested !== undefined && (obj.requested = message.requested);
+    message.hasRequestedViewer !== undefined && (obj.hasRequestedViewer = message.hasRequestedViewer);
     return obj;
   },
 
@@ -919,6 +929,7 @@ export const GetUserResponse = {
     message.storyState = object.storyState ?? 0;
     message.friend = object.friend ?? false;
     message.requested = object.requested ?? false;
+    message.hasRequestedViewer = object.hasRequestedViewer ?? false;
     return message;
   },
 };

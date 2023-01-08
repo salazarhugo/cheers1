@@ -11,6 +11,7 @@ WITH
   EXISTS((me)-[:FOLLOWS]->(u)) as has_followed,
   EXISTS((me)-[:FRIENDS]->(u)) as friend,
   EXISTS((me)-[:REQUESTED]->(u)) as requested,
+  EXISTS((u)-[:REQUESTED]->(me)) as has_requested_viewer,
   COUNT(s) > 0 as has_story,
   COUNT(seen) = COUNT(s) as seen_story
   LIMIT 20
@@ -24,6 +25,7 @@ RETURN
     has_followed: has_followed,
     friend: friend,
     requested: requested,
+    has_requested_viewer: has_requested_viewer,
     storyState:
     CASE
       WHEN has_story AND NOT seen_story THEN "NOT_SEEN"

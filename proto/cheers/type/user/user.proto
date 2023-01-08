@@ -32,6 +32,7 @@ message UserItem {
   StoryState story_state = 7;
   bool friend = 8;
   bool requested = 9;
+  bool has_requested_viewer = 10;
 }
 
 enum StoryState {

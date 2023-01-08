@@ -21,6 +21,7 @@ WITH
   COUNT(s) > 0 as has_story,
   EXISTS((me)-[:FRIENDS]->(u)) as friend,
   EXISTS((me)-[:REQUESTED]->(u)) as requested,
+  EXISTS((u)-[:REQUESTED]->(me)) as has_requested_viewer,
   COUNT(seen) = count(s) as seen_story
 RETURN DISTINCT
   {
@@ -32,6 +33,7 @@ RETURN DISTINCT
     has_followed: has_followed,
     friend: friend,
     requested: requested,
+    has_requested_viewer: has_requested_viewer,
     story_state:
       CASE
         WHEN has_story AND NOT seen_story THEN "NOT_SEEN"
