@@ -106,6 +106,8 @@ export interface UserItem {
   picture: string;
   hasFollowed: boolean;
   storyState: StoryState;
+  friend: boolean;
+  requested: boolean;
 }
 
 function createBaseUser(): User {
@@ -286,7 +288,17 @@ export const User = {
 };
 
 function createBaseUserItem(): UserItem {
-  return { id: "", name: "", username: "", verified: false, picture: "", hasFollowed: false, storyState: 0 };
+  return {
+    id: "",
+    name: "",
+    username: "",
+    verified: false,
+    picture: "",
+    hasFollowed: false,
+    storyState: 0,
+    friend: false,
+    requested: false,
+  };
 }
 
 export const UserItem = {
@@ -311,6 +323,12 @@ export const UserItem = {
     }
     if (message.storyState !== 0) {
       writer.uint32(56).int32(message.storyState);
+    }
+    if (message.friend === true) {
+      writer.uint32(64).bool(message.friend);
+    }
+    if (message.requested === true) {
+      writer.uint32(72).bool(message.requested);
     }
     return writer;
   },
@@ -343,6 +361,12 @@ export const UserItem = {
         case 7:
           message.storyState = reader.int32() as any;
           break;
+        case 8:
+          message.friend = reader.bool();
+          break;
+        case 9:
+          message.requested = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -360,6 +384,8 @@ export const UserItem = {
       picture: isSet(object.picture) ? String(object.picture) : "",
       hasFollowed: isSet(object.hasFollowed) ? Boolean(object.hasFollowed) : false,
       storyState: isSet(object.storyState) ? storyStateFromJSON(object.storyState) : 0,
+      friend: isSet(object.friend) ? Boolean(object.friend) : false,
+      requested: isSet(object.requested) ? Boolean(object.requested) : false,
     };
   },
 
@@ -372,6 +398,8 @@ export const UserItem = {
     message.picture !== undefined && (obj.picture = message.picture);
     message.hasFollowed !== undefined && (obj.hasFollowed = message.hasFollowed);
     message.storyState !== undefined && (obj.storyState = storyStateToJSON(message.storyState));
+    message.friend !== undefined && (obj.friend = message.friend);
+    message.requested !== undefined && (obj.requested = message.requested);
     return obj;
   },
 
@@ -384,6 +412,8 @@ export const UserItem = {
     message.picture = object.picture ?? "";
     message.hasFollowed = object.hasFollowed ?? false;
     message.storyState = object.storyState ?? 0;
+    message.friend = object.friend ?? false;
+    message.requested = object.requested ?? false;
     return message;
   },
 };

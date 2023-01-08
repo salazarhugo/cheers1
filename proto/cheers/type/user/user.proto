@@ -30,6 +30,8 @@ message UserItem {
   string picture = 5;
   bool has_followed = 6;
   StoryState story_state = 7;
+  bool friend = 8;
+  bool requested = 9;
 }
 
 enum StoryState {

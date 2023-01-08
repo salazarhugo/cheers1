@@ -26,6 +26,21 @@ type UserRepository interface {
 	SearchUser(userID string, query string) ([]*user.UserItem, error)
 	ListFollowers(userID string, request *pb.ListFollowersRequest) ([]*user.UserItem, error)
 	ListFollowing(userID string, request *pb.ListFollowingRequest) ([]*user.UserItem, error)
+
+	CreateFriend(
+		from string,
+		to string,
+	) error
+
+	CreateFriendRequest(
+		from string,
+		to string,
+	) error
+
+	DeleteFriendRequest(
+		from string,
+		to string,
+	) error
 }
 
 type userRepository struct {

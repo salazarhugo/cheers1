@@ -1,8 +1,7 @@
 MATCH
   (u:User {id: $userID})
 MATCH
-  (f:User)
-WHERE f.id = $otherUser OR f.username = $otherUser
+  (f:User {id: $otherUserID})
 MERGE
   (u)-[:FRIENDS]->(f)
 MERGE

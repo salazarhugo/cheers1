@@ -19,6 +19,8 @@ WITH
   u,
   EXISTS((:User {id: $userID})-[:FOLLOWS]->(u)) as has_followed,
   COUNT(s) > 0 as has_story,
+  EXISTS((me)-[:FRIENDS]->(u)) as friend,
+  EXISTS((me)-[:REQUESTED]->(u)) as requested,
   COUNT(seen) = count(s) as seen_story
 RETURN DISTINCT
   {
@@ -28,6 +30,8 @@ RETURN DISTINCT
     verified: u.verified,
     picture: u.picture,
     has_followed: has_followed,
+    friend: friend,
+    requested: requested,
     story_state:
       CASE
         WHEN has_story AND NOT seen_story THEN "NOT_SEEN"

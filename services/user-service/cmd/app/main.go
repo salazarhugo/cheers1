@@ -45,6 +45,7 @@ func main() {
 
 	httpMux := http.NewServeMux()
 	httpMux.HandleFunc("/claim-sub", app.ClaimSub)
+	httpMux.HandleFunc("/friendship-sub", app.FriendShipSub)
 
 	grpcS := grpc.NewServer(
 		grpc.UnaryInterceptor(auth.UnaryInterceptor),

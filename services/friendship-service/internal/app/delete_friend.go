@@ -28,5 +28,5 @@ func (s *Server) DeleteFriend(
 		return nil, err
 	}
 
-	return &friendship.DeleteFriendRequestResponse{}, nil
+	return &friendship.DeleteFriendResponse{}, nil
 }

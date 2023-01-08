@@ -9,6 +9,8 @@ OPTIONAL MATCH
 WITH
   u,
   EXISTS((me)-[:FOLLOWS]->(u)) as has_followed,
+  EXISTS((me)-[:FRIENDS]->(u)) as friend,
+  EXISTS((me)-[:REQUESTED]->(u)) as requested,
   COUNT(s) > 0 as has_story,
   COUNT(seen) = COUNT(s) as seen_story
   LIMIT 20
@@ -20,6 +22,8 @@ RETURN
     .verified,
     .picture,
     has_followed: has_followed,
+    friend: friend,
+    requested: requested,
     storyState:
     CASE
       WHEN has_story AND NOT seen_story THEN "NOT_SEEN"
