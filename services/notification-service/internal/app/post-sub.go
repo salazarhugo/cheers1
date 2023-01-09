@@ -49,10 +49,12 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		tokens, err := repo.GetUsersTokens(friends)
+		usersWithTokens, err := repo.GetUsersTokens(friends)
 		if err != nil {
+			log.Println(err)
 			return
 		}
+		log.Println(usersWithTokens)
 
 		data := notifications.CreatePostNotification(
 			user.Username,
@@ -60,7 +62,7 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 			event.Create.Post.Drink,
 		)
 
-		err = repo.SendNotification(map[string][]string{creatorId: tokens}, data)
+		err = repo.SendNotification(usersWithTokens, data)
 	case *post.PostEvent_Delete:
 	default:
 	}

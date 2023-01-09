@@ -8,7 +8,7 @@ import (
 )
 
 func (r repository) SendNotification(
-	userWithToken map[string][]string,
+	usersWithToken map[string][]string,
 	data map[string]string,
 ) error {
 	ctx := context.Background()
@@ -19,8 +19,8 @@ func (r repository) SendNotification(
 		return err
 	}
 
-	for userId, tokens := range userWithToken {
-		response, err := fcmClient.SendMulticast(context.Background(), &messaging.MulticastMessage{
+	for userId, tokens := range usersWithToken {
+		response, err := fcmClient.SendMulticast(ctx, &messaging.MulticastMessage{
 			Data:   data,
 			Tokens: tokens,
 		})

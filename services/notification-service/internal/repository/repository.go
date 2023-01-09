@@ -9,7 +9,7 @@ import (
 
 type Repository interface {
 	SendNotification(
-		userWithToken map[string][]string,
+		usersWithToken map[string][]string,
 		data map[string]string,
 	) error
 	FollowUserNotification(
@@ -18,7 +18,7 @@ type Repository interface {
 	) error
 	CreateRegistrationToken(userID string, token string) error
 	GetUserTokens(userID string) ([]string, error)
-	GetUsersTokens(userIDs []string) ([]string, error)
+	GetUsersTokens(userIDs []string) (map[string][]string, error)
 	RemoveExpiredTokens(userId string, tokens []string, responses []*messaging.SendResponse)
 	DeleteToken(userId string, token string) error
 }
