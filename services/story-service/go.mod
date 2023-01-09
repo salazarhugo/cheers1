@@ -6,7 +6,7 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/improbable-eng/grpc-web v0.15.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20221220164209-8907ee2c5c87
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230108202437-6da9a0d69351
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221018182022-91ddac90c15e
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221013185914-f468203a7c71

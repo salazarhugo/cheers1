@@ -7,7 +7,6 @@
 package story
 
 import (
-	v1 "github.com/salazarhugo/cheers1/gen/go/cheers/story/v1"
 	user "github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -131,7 +130,7 @@ type CreateStoryRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Story *v1.Story `protobuf:"bytes,1,opt,name=story,proto3" json:"story,omitempty"`
+	Story *Story `protobuf:"bytes,1,opt,name=story,proto3" json:"story,omitempty"`
 }
 
 func (x *CreateStoryRequest) Reset() {
@@ -166,7 +165,7 @@ func (*CreateStoryRequest) Descriptor() ([]byte, []int) {
 	return file_cheers_story_v1_story_service_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *CreateStoryRequest) GetStory() *v1.Story {
+func (x *CreateStoryRequest) GetStory() *Story {
 	if x != nil {
 		return x.Story
 	}
@@ -225,7 +224,7 @@ type UpdateStoryRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Story *v1.Story `protobuf:"bytes,1,opt,name=story,proto3" json:"story,omitempty"`
+	Story *Story `protobuf:"bytes,1,opt,name=story,proto3" json:"story,omitempty"`
 }
 
 func (x *UpdateStoryRequest) Reset() {
@@ -260,7 +259,7 @@ func (*UpdateStoryRequest) Descriptor() ([]byte, []int) {
 	return file_cheers_story_v1_story_service_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *UpdateStoryRequest) GetStory() *v1.Story {
+func (x *UpdateStoryRequest) GetStory() *Story {
 	if x != nil {
 		return x.Story
 	}
@@ -1017,9 +1016,9 @@ type StoryResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Story     *v1.Story `protobuf:"bytes,2,opt,name=story,proto3" json:"story,omitempty"`
-	HasLiked  bool      `protobuf:"varint,5,opt,name=has_liked,json=hasLiked,proto3" json:"has_liked,omitempty"`
-	HasViewed bool      `protobuf:"varint,6,opt,name=has_viewed,json=hasViewed,proto3" json:"has_viewed,omitempty"`
+	Story     *Story `protobuf:"bytes,2,opt,name=story,proto3" json:"story,omitempty"`
+	HasLiked  bool   `protobuf:"varint,5,opt,name=has_liked,json=hasLiked,proto3" json:"has_liked,omitempty"`
+	HasViewed bool   `protobuf:"varint,6,opt,name=has_viewed,json=hasViewed,proto3" json:"has_viewed,omitempty"`
 }
 
 func (x *StoryResponse) Reset() {
@@ -1054,7 +1053,7 @@ func (*StoryResponse) Descriptor() ([]byte, []int) {
 	return file_cheers_story_v1_story_service_proto_rawDescGZIP(), []int{20}
 }
 
-func (x *StoryResponse) GetStory() *v1.Story {
+func (x *StoryResponse) GetStory() *Story {
 	if x != nil {
 		return x.Story
 	}
@@ -1237,7 +1236,7 @@ var file_cheers_story_v1_story_service_proto_rawDesc = []byte{
 	0x2e, 0x55, 0x6e, 0x73, 0x61, 0x76, 0x65, 0x53, 0x74, 0x6f, 0x72, 0x79, 0x52, 0x65, 0x73, 0x70,
 	0x6f, 0x6e, 0x73, 0x65, 0x42, 0x3f, 0x50, 0x01, 0x5a, 0x3b, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62,
 	0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x73, 0x61, 0x6c, 0x61, 0x7a, 0x61, 0x72, 0x68, 0x75, 0x67, 0x6f,
-	0x2f, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x31, 0x2f, 0x67, 0x6f, 0x2f, 0x67, 0x65, 0x6e, 0x2f,
+	0x2f, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x31, 0x2f, 0x67, 0x65, 0x6e, 0x2f, 0x67, 0x6f, 0x2f,
 	0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2f, 0x73, 0x74, 0x6f, 0x72, 0x79, 0x2f, 0x76, 0x31, 0x3b,
 	0x73, 0x74, 0x6f, 0x72, 0x79, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
@@ -1278,7 +1277,7 @@ var file_cheers_story_v1_story_service_proto_goTypes = []interface{}{
 	(*UserWithStories)(nil),       // 19: cheers.story.v1.UserWithStories
 	(*StoryResponse)(nil),         // 20: cheers.story.v1.StoryResponse
 	(*user.User)(nil),             // 21: cheers.type.User
-	(*v1.Story)(nil),              // 22: cheers.story.v1.Story
+	(*Story)(nil),                 // 22: cheers.story.v1.Story
 	(*emptypb.Empty)(nil),         // 23: google.protobuf.Empty
 }
 var file_cheers_story_v1_story_service_proto_depIdxs = []int32{
@@ -1326,6 +1325,7 @@ func file_cheers_story_v1_story_service_proto_init() {
 	if File_cheers_story_v1_story_service_proto != nil {
 		return
 	}
+	file_cheers_story_v1_story_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_cheers_story_v1_story_service_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*ListUserStoryRequest); i {

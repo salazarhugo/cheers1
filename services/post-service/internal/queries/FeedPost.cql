@@ -1,5 +1,5 @@
 MATCH
-  (u:User {id: $userID})-[:FOLLOWS*0..1]->(creator:User)-[:POSTED]->(post:Post)
+  (u:User {id: $userID})-[:FRIENDS*0..1]->(creator:User)-[:POSTED]->(post:Post)
 WITH
   u,
   creator,

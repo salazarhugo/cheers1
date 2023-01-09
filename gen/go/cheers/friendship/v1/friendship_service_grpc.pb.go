@@ -22,22 +22,16 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FriendshipServiceClient interface {
-	//
 	// Send a friend request
 	CreateFriendRequest(ctx context.Context, in *CreateFriendRequestRequest, opts ...grpc.CallOption) (*CreateFriendRequestResponse, error)
-	//
 	// Accept a friend request
 	AcceptFriendRequest(ctx context.Context, in *AcceptFriendRequestRequest, opts ...grpc.CallOption) (*AcceptFriendRequestResponse, error)
-	//
 	// Get friend list of a specific user
 	ListFriend(ctx context.Context, in *ListFriendRequest, opts ...grpc.CallOption) (*ListFriendResponse, error)
-	//
 	// Get friend requests list of a specific user
 	ListFriendRequests(ctx context.Context, in *ListFriendRequestsRequest, opts ...grpc.CallOption) (*ListFriendRequestsResponse, error)
-	//
 	// Refuse a friend request
 	DeleteFriendRequest(ctx context.Context, in *DeleteFriendRequestRequest, opts ...grpc.CallOption) (*DeleteFriendRequestResponse, error)
-	//
 	// Delete a friend
 	DeleteFriend(ctx context.Context, in *DeleteFriendRequest2, opts ...grpc.CallOption) (*DeleteFriendResponse, error)
 }
@@ -108,22 +102,16 @@ func (c *friendshipServiceClient) DeleteFriend(ctx context.Context, in *DeleteFr
 // All implementations must embed UnimplementedFriendshipServiceServer
 // for forward compatibility
 type FriendshipServiceServer interface {
-	//
 	// Send a friend request
 	CreateFriendRequest(context.Context, *CreateFriendRequestRequest) (*CreateFriendRequestResponse, error)
-	//
 	// Accept a friend request
 	AcceptFriendRequest(context.Context, *AcceptFriendRequestRequest) (*AcceptFriendRequestResponse, error)
-	//
 	// Get friend list of a specific user
 	ListFriend(context.Context, *ListFriendRequest) (*ListFriendResponse, error)
-	//
 	// Get friend requests list of a specific user
 	ListFriendRequests(context.Context, *ListFriendRequestsRequest) (*ListFriendRequestsResponse, error)
-	//
 	// Refuse a friend request
 	DeleteFriendRequest(context.Context, *DeleteFriendRequestRequest) (*DeleteFriendRequestResponse, error)
-	//
 	// Delete a friend
 	DeleteFriend(context.Context, *DeleteFriendRequest2) (*DeleteFriendResponse, error)
 	mustEmbedUnimplementedFriendshipServiceServer()

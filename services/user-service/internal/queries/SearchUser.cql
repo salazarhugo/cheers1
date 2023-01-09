@@ -37,7 +37,6 @@ RETURN DISTINCT
     friend: friend,
     requested: requested,
     has_requested_viewer: has_requested_viewer,
-    friends_count: friends_count,
     story_state:
       CASE
         WHEN has_story AND NOT seen_story THEN "NOT_SEEN"
