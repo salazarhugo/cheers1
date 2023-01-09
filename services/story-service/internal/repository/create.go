@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"github.com/google/uuid"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
-	storypb "github.com/salazarhugo/cheers1/gen/go/cheers/type/story"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/story/v1"
 	utils "github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/protobuf/encoding/protojson"
 	"log"
@@ -13,7 +13,7 @@ import (
 
 func (p *storyRepository) CreateStory(
 	userID string,
-	story *storypb.Story,
+	story *pb.Story,
 ) (string, error) {
 	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close()

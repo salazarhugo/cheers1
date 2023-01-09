@@ -19,6 +19,7 @@ export interface DeleteFriendRequestResponse {
 }
 
 export interface ListFriendResponse {
+  items: UserItem[];
 }
 
 export interface DeleteFriendRequest2 {
@@ -221,11 +222,14 @@ export const DeleteFriendRequestResponse = {
 };
 
 function createBaseListFriendResponse(): ListFriendResponse {
-  return {};
+  return { items: [] };
 }
 
 export const ListFriendResponse = {
-  encode(_: ListFriendResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: ListFriendResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.items) {
+      UserItem.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -236,6 +240,9 @@ export const ListFriendResponse = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.items.push(UserItem.decode(reader, reader.uint32()));
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -244,17 +251,23 @@ export const ListFriendResponse = {
     return message;
   },
 
-  fromJSON(_: any): ListFriendResponse {
-    return {};
+  fromJSON(object: any): ListFriendResponse {
+    return { items: Array.isArray(object?.items) ? object.items.map((e: any) => UserItem.fromJSON(e)) : [] };
   },
 
-  toJSON(_: ListFriendResponse): unknown {
+  toJSON(message: ListFriendResponse): unknown {
     const obj: any = {};
+    if (message.items) {
+      obj.items = message.items.map((e) => e ? UserItem.toJSON(e) : undefined);
+    } else {
+      obj.items = [];
+    }
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<ListFriendResponse>, I>>(_: I): ListFriendResponse {
+  fromPartial<I extends Exact<DeepPartial<ListFriendResponse>, I>>(object: I): ListFriendResponse {
     const message = createBaseListFriendResponse();
+    message.items = object.items?.map((e) => UserItem.fromPartial(e)) || [];
     return message;
   },
 };

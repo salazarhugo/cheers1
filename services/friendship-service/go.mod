@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/go-redis/redis/v9 v9.0.0-rc.1
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230108165604-8d795ad9f5ee
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230109095939-243e3b46cf0a
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221213134422-aa6e73eb6dc9

@@ -4,6 +4,7 @@ WITH
   u,
   creator,
   post
+ORDER BY post.createTime DESC
 SKIP
   $skip
 LIMIT
@@ -25,4 +26,3 @@ RETURN
      has_liked:     has_liked,
      is_creator:    is_creator
    }
-ORDER BY post.createTime DESC

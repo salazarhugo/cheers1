@@ -7,7 +7,7 @@ import (
 )
 
 type StoryRepository interface {
-	CreateStory(userID string, story *storypb.Story) (string, error)
+	CreateStory(userID string, story *pb.Story) (string, error)
 	GetStory(userID string, storyID string) (*pb.StoryResponse, error)
 	UpdateStory(story *storypb.Story) (*pb.StoryResponse, error)
 	DeleteStory(id string) error
