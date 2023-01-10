@@ -36,7 +36,8 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 		data := notifications.LikePostNotification(user.Username, user.Picture)
 		err = repo.SendNotification(map[string][]string{postCreatorId: tokens}, data)
 	case *post.PostEvent_Create:
-		creatorId := event.Create.Post.CreatorId
+		post := event.Create.Post
+		creatorId := post.CreatorId
 		user, err := repository.GetUser(event.Create.GetPost().GetCreatorId())
 		if err != nil {
 			log.Println(err)
@@ -57,9 +58,13 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 		log.Println(usersWithTokens)
 
 		data := notifications.CreatePostNotification(
+			user.Name,
 			user.Username,
 			user.Picture,
-			event.Create.Post.Drink,
+			post.LocationName,
+			post.Drink,
+			post.Caption,
+			len(post.Photos) > 0,
 		)
 
 		err = repo.SendNotification(usersWithTokens, data)
