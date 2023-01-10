@@ -18,7 +18,7 @@ func (s *Server) DeleteFriend(
 		return nil, status.Error(codes.Internal, "failed to retrieve userID")
 	}
 
-	err = s.friendshipRepository.DeleteFriendRequest(
+	err = s.friendshipRepository.DeleteFriend(
 		userID,
 		request.UserId,
 	)

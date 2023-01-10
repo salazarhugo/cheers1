@@ -41,6 +41,11 @@ type UserRepository interface {
 		from string,
 		to string,
 	) error
+
+	DeleteFriend(
+		from string,
+		to string,
+	) error
 }
 
 type userRepository struct {

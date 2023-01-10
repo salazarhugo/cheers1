@@ -32,9 +32,9 @@ func FriendShipSub(w http.ResponseWriter, r *http.Request) {
 		err = repo.DeleteFriendRequest(created.From, created.To)
 		err = repo.DeleteFriendRequest(created.To, created.From)
 		err = repo.CreateFriend(created.From, created.To)
-		//case *friendship.FriendshipEvent_DeletedFriend:
-		//	deleted := event.DeletedFriend
-		//	err = repo.UnVerifyUser(event.DeletedFriend.UserId)
+	case *friendship.FriendshipEvent_DeletedFriend:
+		deleted := event.DeletedFriend
+		err = repo.DeleteFriend(deleted.From, deleted.To)
 	}
 
 	if err != nil {
