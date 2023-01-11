@@ -21,6 +21,9 @@ func (s *Server) CreatePost(
 	if partyReq == nil {
 		return nil, status.Error(codes.InvalidArgument, "post parameter can't be nil")
 	}
+	if partyReq.Caption == "" && len(partyReq.Photos) <= 0 {
+		return nil, status.Error(codes.InvalidArgument, "empty caption and photos")
+	}
 
 	postID, err := s.postRepository.CreatePost(userID, partyReq)
 	if err != nil {
