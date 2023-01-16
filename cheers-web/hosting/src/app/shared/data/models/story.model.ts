@@ -13,7 +13,7 @@ export class Story {
     created: number = 0
     relativeTime: string = ""
     privacy: string = ""
-    photoUrl: string = ""
+    photo: string = ""
     videoUrl: string = ""
     latitude: number = 0
     longitude: number = 0
