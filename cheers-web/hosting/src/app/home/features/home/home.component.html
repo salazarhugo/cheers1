@@ -14,7 +14,7 @@
             <ng-container *ngFor="let story of stories">
                 <a [routerLink]="['/story-feed', story.id]" class="story" fxLayout="column" fxLayoutAlign="none center">
                     <img (error)="onImgError($event)" [ngClass]="{'story-avatar--seen' : !story.seen}"
-                         [src]="story.profilePictureUrl" class="story-avatar">
+                         [src]="story.picture" class="story-avatar">
                     <span class="story-username">{{story.username}}</span>
                 </a>
             </ng-container>

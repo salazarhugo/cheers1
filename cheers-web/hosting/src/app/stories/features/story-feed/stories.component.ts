@@ -29,6 +29,7 @@ export class StoriesComponent implements OnInit {
             const storyId = params.get("id")
             this.story$ = this.storyService.getStoryFeed()
             this.story$.subscribe(stories => {
+                console.log(stories)
                 const story = stories?.find(s => s.id == storyId)
                 if (story) {
                     this.selectedStory = story

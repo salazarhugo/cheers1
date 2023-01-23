@@ -145,8 +145,7 @@ export class ApiService {
     getStoryFeed(): Observable<Story[]> {
         return this.http.get<FeedStoryResponse>(`${environment.GATEWAY_URL}/v1/stories/feed?pageSize=10&page=0`)
             .pipe(
-                map(r => r.items.flatMap(uws => uws.stories)),
-                map(a => a.map(a => toStory(a.story!)))
+                map(r => r.items.flatMap(uws => toStory(uws)))
             )
     }
 
