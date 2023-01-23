@@ -5,6 +5,7 @@ import (
 	"github.com/labstack/gommon/log"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
+	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -33,6 +34,17 @@ func (s *Server) CreateUser(
 	if err != nil {
 		log.Error(err)
 		return nil, status.Error(codes.Internal, "failed to get user")
+	}
+
+	err = pubsub.PublishProtoWithBinaryEncoding("user-topic", &pb.UserEvent{
+		Event: &pb.UserEvent_Create{
+			Create: &pb.CreateUser{
+				User: response.User,
+			},
+		},
+	})
+	if err != nil {
+		return nil, err
 	}
 
 	return &pb.CreateUserResponse{

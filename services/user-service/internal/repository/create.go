@@ -3,9 +3,7 @@ package repository
 import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
-	userpb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
-	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"log"
 	"time"
 )
@@ -35,23 +33,15 @@ func (p *userRepository) CreateUser(
 		"user": m,
 	}
 
-	_, err = session.Run(*cypher, params)
-
+	log.Println(user)
+	result, err := session.Run(*cypher, params)
 	if err != nil {
 		log.Println(err)
 		return "", err
 	}
 
-	err = pubsub.PublishProtoWithBinaryEncoding("user-topic", &userpb.UserEvent{
-		Event: &userpb.UserEvent_Create{
-			Create: &userpb.CreateUser{
-				User: user,
-			},
-		},
-	})
-
-	if err != nil {
-		return "", err
+	if result.Err() != nil {
+		return "", result.Err()
 	}
 
 	return user.Id, nil

@@ -4,8 +4,6 @@ package cheers.type;
 
 option go_package = "github.com/salazarhugo/cheers1/gen/go/cheers/type/user;user";
 
-
-
 message User {
   string id = 1;
   string name = 2;
