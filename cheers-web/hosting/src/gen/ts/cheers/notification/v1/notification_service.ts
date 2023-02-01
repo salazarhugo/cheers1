@@ -50,6 +50,10 @@ export const CreateRegistrationTokenRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CreateRegistrationTokenRequest>, I>>(base?: I): CreateRegistrationTokenRequest {
+    return CreateRegistrationTokenRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CreateRegistrationTokenRequest>, I>>(
     object: I,
   ): CreateRegistrationTokenRequest {
@@ -90,6 +94,10 @@ export const CreateRegistrationTokenResponse = {
   toJSON(_: CreateRegistrationTokenResponse): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateRegistrationTokenResponse>, I>>(base?: I): CreateRegistrationTokenResponse {
+    return CreateRegistrationTokenResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<CreateRegistrationTokenResponse>, I>>(_: I): CreateRegistrationTokenResponse {

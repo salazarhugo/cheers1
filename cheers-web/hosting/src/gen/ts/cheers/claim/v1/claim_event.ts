@@ -68,6 +68,10 @@ export const ClaimEvent = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ClaimEvent>, I>>(base?: I): ClaimEvent {
+    return ClaimEvent.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<ClaimEvent>, I>>(object: I): ClaimEvent {
     const message = createBaseClaimEvent();
     message.created = (object.created !== undefined && object.created !== null)
@@ -130,6 +134,10 @@ export const CreatedClaim = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CreatedClaim>, I>>(base?: I): CreatedClaim {
+    return CreatedClaim.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CreatedClaim>, I>>(object: I): CreatedClaim {
     const message = createBaseCreatedClaim();
     message.userId = object.userId ?? "";
@@ -186,6 +194,10 @@ export const DeletedClaim = {
     message.userId !== undefined && (obj.userId = message.userId);
     message.claim !== undefined && (obj.claim = message.claim);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeletedClaim>, I>>(base?: I): DeletedClaim {
+    return DeletedClaim.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<DeletedClaim>, I>>(object: I): DeletedClaim {

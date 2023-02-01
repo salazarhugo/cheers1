@@ -114,6 +114,10 @@ export const ListActivityRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ListActivityRequest>, I>>(base?: I): ListActivityRequest {
+    return ListActivityRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<ListActivityRequest>, I>>(object: I): ListActivityRequest {
     const message = createBaseListActivityRequest();
     message.userId = object.userId ?? "";
@@ -165,6 +169,10 @@ export const ListActivityResponse = {
       obj.activities = [];
     }
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListActivityResponse>, I>>(base?: I): ListActivityResponse {
+    return ListActivityResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<ListActivityResponse>, I>>(object: I): ListActivityResponse {
@@ -270,6 +278,10 @@ export const Activity = {
     message.mediaPicture !== undefined && (obj.mediaPicture = message.mediaPicture);
     message.mediaId !== undefined && (obj.mediaId = message.mediaId);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<Activity>, I>>(base?: I): Activity {
+    return Activity.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<Activity>, I>>(object: I): Activity {

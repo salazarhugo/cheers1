@@ -269,6 +269,10 @@ export const User = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<User>, I>>(base?: I): User {
+    return User.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<User>, I>>(object: I): User {
     const message = createBaseUser();
     message.id = object.id ?? "";
@@ -411,6 +415,10 @@ export const UserItem = {
     message.requested !== undefined && (obj.requested = message.requested);
     message.hasRequestedViewer !== undefined && (obj.hasRequestedViewer = message.hasRequestedViewer);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UserItem>, I>>(base?: I): UserItem {
+    return UserItem.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<UserItem>, I>>(object: I): UserItem {

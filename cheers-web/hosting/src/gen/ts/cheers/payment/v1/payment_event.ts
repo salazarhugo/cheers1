@@ -102,6 +102,10 @@ export const PaymentEvent = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<PaymentEvent>, I>>(base?: I): PaymentEvent {
+    return PaymentEvent.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<PaymentEvent>, I>>(object: I): PaymentEvent {
     const message = createBasePaymentEvent();
     message.paymentIntentId = object.paymentIntentId ?? "";

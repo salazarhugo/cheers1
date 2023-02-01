@@ -111,6 +111,10 @@ export const FriendshipEvent = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<FriendshipEvent>, I>>(base?: I): FriendshipEvent {
+    return FriendshipEvent.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<FriendshipEvent>, I>>(object: I): FriendshipEvent {
     const message = createBaseFriendshipEvent();
     message.createdFriendRequest = (object.createdFriendRequest !== undefined && object.createdFriendRequest !== null)
@@ -176,6 +180,10 @@ export const CreatedFriendRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CreatedFriendRequest>, I>>(base?: I): CreatedFriendRequest {
+    return CreatedFriendRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CreatedFriendRequest>, I>>(object: I): CreatedFriendRequest {
     const message = createBaseCreatedFriendRequest();
     message.from = object.from ?? "";
@@ -229,6 +237,10 @@ export const DeletedFriendRequest = {
     message.from !== undefined && (obj.from = message.from);
     message.to !== undefined && (obj.to = message.to);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeletedFriendRequest>, I>>(base?: I): DeletedFriendRequest {
+    return DeletedFriendRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<DeletedFriendRequest>, I>>(object: I): DeletedFriendRequest {
@@ -286,6 +298,10 @@ export const CreatedFriend = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CreatedFriend>, I>>(base?: I): CreatedFriend {
+    return CreatedFriend.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CreatedFriend>, I>>(object: I): CreatedFriend {
     const message = createBaseCreatedFriend();
     message.from = object.from ?? "";
@@ -339,6 +355,10 @@ export const DeletedFriend = {
     message.from !== undefined && (obj.from = message.from);
     message.to !== undefined && (obj.to = message.to);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeletedFriend>, I>>(base?: I): DeletedFriend {
+    return DeletedFriend.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<DeletedFriend>, I>>(object: I): DeletedFriend {

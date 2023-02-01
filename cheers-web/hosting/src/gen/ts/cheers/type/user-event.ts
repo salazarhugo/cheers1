@@ -173,6 +173,10 @@ export const UserEvent = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<UserEvent>, I>>(base?: I): UserEvent {
+    return UserEvent.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<UserEvent>, I>>(object: I): UserEvent {
     const message = createBaseUserEvent();
     message.type = object.type ?? 0;

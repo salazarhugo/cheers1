@@ -56,6 +56,10 @@ export const ChatEvent = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ChatEvent>, I>>(base?: I): ChatEvent {
+    return ChatEvent.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<ChatEvent>, I>>(object: I): ChatEvent {
     const message = createBaseChatEvent();
     message.create = (object.create !== undefined && object.create !== null)
@@ -133,6 +137,10 @@ export const CreateMessage = {
     }
     message.room !== undefined && (obj.room = message.room ? Room.toJSON(message.room) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateMessage>, I>>(base?: I): CreateMessage {
+    return CreateMessage.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<CreateMessage>, I>>(object: I): CreateMessage {

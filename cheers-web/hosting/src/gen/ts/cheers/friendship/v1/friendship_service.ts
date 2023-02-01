@@ -89,6 +89,10 @@ export const AcceptFriendRequestRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<AcceptFriendRequestRequest>, I>>(base?: I): AcceptFriendRequestRequest {
+    return AcceptFriendRequestRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<AcceptFriendRequestRequest>, I>>(object: I): AcceptFriendRequestRequest {
     const message = createBaseAcceptFriendRequestRequest();
     message.userId = object.userId ?? "";
@@ -127,6 +131,10 @@ export const AcceptFriendRequestResponse = {
   toJSON(_: AcceptFriendRequestResponse): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<AcceptFriendRequestResponse>, I>>(base?: I): AcceptFriendRequestResponse {
+    return AcceptFriendRequestResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<AcceptFriendRequestResponse>, I>>(_: I): AcceptFriendRequestResponse {
@@ -175,6 +183,10 @@ export const DeleteFriendRequestRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<DeleteFriendRequestRequest>, I>>(base?: I): DeleteFriendRequestRequest {
+    return DeleteFriendRequestRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<DeleteFriendRequestRequest>, I>>(object: I): DeleteFriendRequestRequest {
     const message = createBaseDeleteFriendRequestRequest();
     message.userId = object.userId ?? "";
@@ -213,6 +225,10 @@ export const DeleteFriendRequestResponse = {
   toJSON(_: DeleteFriendRequestResponse): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteFriendRequestResponse>, I>>(base?: I): DeleteFriendRequestResponse {
+    return DeleteFriendRequestResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<DeleteFriendRequestResponse>, I>>(_: I): DeleteFriendRequestResponse {
@@ -263,6 +279,10 @@ export const ListFriendResponse = {
       obj.items = [];
     }
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListFriendResponse>, I>>(base?: I): ListFriendResponse {
+    return ListFriendResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<ListFriendResponse>, I>>(object: I): ListFriendResponse {
@@ -322,6 +342,10 @@ export const DeleteFriendRequest2 = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<DeleteFriendRequest2>, I>>(base?: I): DeleteFriendRequest2 {
+    return DeleteFriendRequest2.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<DeleteFriendRequest2>, I>>(object: I): DeleteFriendRequest2 {
     const message = createBaseDeleteFriendRequest2();
     message.userId = object.userId ?? "";
@@ -361,6 +385,10 @@ export const DeleteFriendResponse = {
   toJSON(_: DeleteFriendResponse): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteFriendResponse>, I>>(base?: I): DeleteFriendResponse {
+    return DeleteFriendResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<DeleteFriendResponse>, I>>(_: I): DeleteFriendResponse {
@@ -409,6 +437,10 @@ export const ListFriendRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ListFriendRequest>, I>>(base?: I): ListFriendRequest {
+    return ListFriendRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<ListFriendRequest>, I>>(object: I): ListFriendRequest {
     const message = createBaseListFriendRequest();
     message.userId = object.userId ?? "";
@@ -454,6 +486,10 @@ export const ListFriendRequestsRequest = {
     const obj: any = {};
     message.userId !== undefined && (obj.userId = message.userId);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListFriendRequestsRequest>, I>>(base?: I): ListFriendRequestsRequest {
+    return ListFriendRequestsRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<ListFriendRequestsRequest>, I>>(object: I): ListFriendRequestsRequest {
@@ -507,6 +543,10 @@ export const ListFriendRequestsResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ListFriendRequestsResponse>, I>>(base?: I): ListFriendRequestsResponse {
+    return ListFriendRequestsResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<ListFriendRequestsResponse>, I>>(object: I): ListFriendRequestsResponse {
     const message = createBaseListFriendRequestsResponse();
     message.items = object.items?.map((e) => UserItem.fromPartial(e)) || [];
@@ -554,6 +594,10 @@ export const CreateFriendRequestRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CreateFriendRequestRequest>, I>>(base?: I): CreateFriendRequestRequest {
+    return CreateFriendRequestRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CreateFriendRequestRequest>, I>>(object: I): CreateFriendRequestRequest {
     const message = createBaseCreateFriendRequestRequest();
     message.userId = object.userId ?? "";
@@ -592,6 +636,10 @@ export const CreateFriendRequestResponse = {
   toJSON(_: CreateFriendRequestResponse): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateFriendRequestResponse>, I>>(base?: I): CreateFriendRequestResponse {
+    return CreateFriendRequestResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<CreateFriendRequestResponse>, I>>(_: I): CreateFriendRequestResponse {

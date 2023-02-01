@@ -318,6 +318,10 @@ export const Post = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Post>, I>>(base?: I): Post {
+    return Post.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<Post>, I>>(object: I): Post {
     const message = createBasePost();
     message.id = object.id ?? "";

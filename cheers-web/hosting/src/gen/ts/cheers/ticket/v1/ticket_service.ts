@@ -224,6 +224,10 @@ export const Ticket = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Ticket>, I>>(base?: I): Ticket {
+    return Ticket.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<Ticket>, I>>(object: I): Ticket {
     const message = createBaseTicket();
     message.id = object.id ?? "";
@@ -284,6 +288,10 @@ export const CreateTicketRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CreateTicketRequest>, I>>(base?: I): CreateTicketRequest {
+    return CreateTicketRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CreateTicketRequest>, I>>(object: I): CreateTicketRequest {
     const message = createBaseCreateTicketRequest();
     message.ticket = (object.ticket !== undefined && object.ticket !== null)
@@ -331,6 +339,10 @@ export const CreateTicketResponse = {
     const obj: any = {};
     message.ticket !== undefined && (obj.ticket = message.ticket ? Ticket.toJSON(message.ticket) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateTicketResponse>, I>>(base?: I): CreateTicketResponse {
+    return CreateTicketResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<CreateTicketResponse>, I>>(object: I): CreateTicketResponse {
@@ -382,6 +394,10 @@ export const GetTicketRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GetTicketRequest>, I>>(base?: I): GetTicketRequest {
+    return GetTicketRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<GetTicketRequest>, I>>(object: I): GetTicketRequest {
     const message = createBaseGetTicketRequest();
     message.ticketId = object.ticketId ?? "";
@@ -427,6 +443,10 @@ export const GetTicketResponse = {
     const obj: any = {};
     message.ticket !== undefined && (obj.ticket = message.ticket ? Ticket.toJSON(message.ticket) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetTicketResponse>, I>>(base?: I): GetTicketResponse {
+    return GetTicketResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<GetTicketResponse>, I>>(object: I): GetTicketResponse {
@@ -478,6 +498,10 @@ export const UpdateTicketRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<UpdateTicketRequest>, I>>(base?: I): UpdateTicketRequest {
+    return UpdateTicketRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<UpdateTicketRequest>, I>>(object: I): UpdateTicketRequest {
     const message = createBaseUpdateTicketRequest();
     message.ticket = (object.ticket !== undefined && object.ticket !== null)
@@ -525,6 +549,10 @@ export const UpdateTicketResponse = {
     const obj: any = {};
     message.ticket !== undefined && (obj.ticket = message.ticket ? Ticket.toJSON(message.ticket) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateTicketResponse>, I>>(base?: I): UpdateTicketResponse {
+    return UpdateTicketResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<UpdateTicketResponse>, I>>(object: I): UpdateTicketResponse {
@@ -576,6 +604,10 @@ export const DeleteTicketRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<DeleteTicketRequest>, I>>(base?: I): DeleteTicketRequest {
+    return DeleteTicketRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<DeleteTicketRequest>, I>>(object: I): DeleteTicketRequest {
     const message = createBaseDeleteTicketRequest();
     message.ticketId = object.ticketId ?? "";
@@ -614,6 +646,10 @@ export const DeleteTicketResponse = {
   toJSON(_: DeleteTicketResponse): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteTicketResponse>, I>>(base?: I): DeleteTicketResponse {
+    return DeleteTicketResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<DeleteTicketResponse>, I>>(_: I): DeleteTicketResponse {
@@ -672,6 +708,10 @@ export const ListTicketRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ListTicketRequest>, I>>(base?: I): ListTicketRequest {
+    return ListTicketRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<ListTicketRequest>, I>>(object: I): ListTicketRequest {
     const message = createBaseListTicketRequest();
     message.partyId = object.partyId ?? undefined;
@@ -722,6 +762,10 @@ export const ListTicketResponse = {
       obj.tickets = [];
     }
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListTicketResponse>, I>>(base?: I): ListTicketResponse {
+    return ListTicketResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<ListTicketResponse>, I>>(object: I): ListTicketResponse {

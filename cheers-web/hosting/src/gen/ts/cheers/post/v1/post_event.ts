@@ -84,6 +84,10 @@ export const PostEvent = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<PostEvent>, I>>(base?: I): PostEvent {
+    return PostEvent.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<PostEvent>, I>>(object: I): PostEvent {
     const message = createBasePostEvent();
     message.create = (object.create !== undefined && object.create !== null)
@@ -147,6 +151,10 @@ export const CreatePost = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CreatePost>, I>>(base?: I): CreatePost {
+    return CreatePost.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CreatePost>, I>>(object: I): CreatePost {
     const message = createBaseCreatePost();
     message.post = (object.post !== undefined && object.post !== null) ? Post.fromPartial(object.post) : undefined;
@@ -205,6 +213,10 @@ export const LikePost = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<LikePost>, I>>(base?: I): LikePost {
+    return LikePost.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<LikePost>, I>>(object: I): LikePost {
     const message = createBaseLikePost();
     message.post = (object.post !== undefined && object.post !== null) ? Post.fromPartial(object.post) : undefined;
@@ -251,6 +263,10 @@ export const DeletePost = {
     const obj: any = {};
     message.sender !== undefined && (obj.sender = message.sender ? UserItem.toJSON(message.sender) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeletePost>, I>>(base?: I): DeletePost {
+    return DeletePost.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<DeletePost>, I>>(object: I): DeletePost {

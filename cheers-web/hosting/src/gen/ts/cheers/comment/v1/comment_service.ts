@@ -92,6 +92,10 @@ export const DeleteCommentRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<DeleteCommentRequest>, I>>(base?: I): DeleteCommentRequest {
+    return DeleteCommentRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<DeleteCommentRequest>, I>>(object: I): DeleteCommentRequest {
     const message = createBaseDeleteCommentRequest();
     message.postId = object.postId ?? "";
@@ -131,6 +135,10 @@ export const DeleteCommentResponse = {
   toJSON(_: DeleteCommentResponse): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteCommentResponse>, I>>(base?: I): DeleteCommentResponse {
+    return DeleteCommentResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<DeleteCommentResponse>, I>>(_: I): DeleteCommentResponse {
@@ -177,6 +185,10 @@ export const ListCommentRequest = {
     const obj: any = {};
     message.postId !== undefined && (obj.postId = message.postId);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListCommentRequest>, I>>(base?: I): ListCommentRequest {
+    return ListCommentRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<ListCommentRequest>, I>>(object: I): ListCommentRequest {
@@ -228,6 +240,10 @@ export const ListCommentResponse = {
       obj.items = [];
     }
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListCommentResponse>, I>>(base?: I): ListCommentResponse {
+    return ListCommentResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<ListCommentResponse>, I>>(object: I): ListCommentResponse {
@@ -285,6 +301,10 @@ export const CommentItem = {
     message.comment !== undefined && (obj.comment = message.comment ? Comment.toJSON(message.comment) : undefined);
     message.userItem !== undefined && (obj.userItem = message.userItem ? UserItem.toJSON(message.userItem) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CommentItem>, I>>(base?: I): CommentItem {
+    return CommentItem.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<CommentItem>, I>>(object: I): CommentItem {
@@ -373,6 +393,10 @@ export const Comment = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Comment>, I>>(base?: I): Comment {
+    return Comment.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<Comment>, I>>(object: I): Comment {
     const message = createBaseComment();
     message.id = object.id ?? "";
@@ -434,6 +458,10 @@ export const CreateCommentRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CreateCommentRequest>, I>>(base?: I): CreateCommentRequest {
+    return CreateCommentRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CreateCommentRequest>, I>>(object: I): CreateCommentRequest {
     const message = createBaseCreateCommentRequest();
     message.postId = object.postId ?? "";
@@ -473,6 +501,10 @@ export const CreateCommentResponse = {
   toJSON(_: CreateCommentResponse): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateCommentResponse>, I>>(base?: I): CreateCommentResponse {
+    return CreateCommentResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<CreateCommentResponse>, I>>(_: I): CreateCommentResponse {

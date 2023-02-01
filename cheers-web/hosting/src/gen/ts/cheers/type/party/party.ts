@@ -178,6 +178,10 @@ export const Party = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Party>, I>>(base?: I): Party {
+    return Party.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<Party>, I>>(object: I): Party {
     const message = createBaseParty();
     message.id = object.id ?? "";

@@ -138,6 +138,10 @@ export const ListUserStoryRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ListUserStoryRequest>, I>>(base?: I): ListUserStoryRequest {
+    return ListUserStoryRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<ListUserStoryRequest>, I>>(object: I): ListUserStoryRequest {
     const message = createBaseListUserStoryRequest();
     message.userId = object.userId ?? "";
@@ -199,6 +203,10 @@ export const ListUserStoryResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ListUserStoryResponse>, I>>(base?: I): ListUserStoryResponse {
+    return ListUserStoryResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<ListUserStoryResponse>, I>>(object: I): ListUserStoryResponse {
     const message = createBaseListUserStoryResponse();
     message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
@@ -245,6 +253,10 @@ export const CreateStoryRequest = {
     const obj: any = {};
     message.story !== undefined && (obj.story = message.story ? Story.toJSON(message.story) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateStoryRequest>, I>>(base?: I): CreateStoryRequest {
+    return CreateStoryRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<CreateStoryRequest>, I>>(object: I): CreateStoryRequest {
@@ -294,6 +306,10 @@ export const GetStoryRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GetStoryRequest>, I>>(base?: I): GetStoryRequest {
+    return GetStoryRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<GetStoryRequest>, I>>(object: I): GetStoryRequest {
     const message = createBaseGetStoryRequest();
     message.id = object.id ?? "";
@@ -341,6 +357,10 @@ export const UpdateStoryRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<UpdateStoryRequest>, I>>(base?: I): UpdateStoryRequest {
+    return UpdateStoryRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<UpdateStoryRequest>, I>>(object: I): UpdateStoryRequest {
     const message = createBaseUpdateStoryRequest();
     message.story = (object.story !== undefined && object.story !== null) ? Story.fromPartial(object.story) : undefined;
@@ -386,6 +406,10 @@ export const DeleteStoryRequest = {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteStoryRequest>, I>>(base?: I): DeleteStoryRequest {
+    return DeleteStoryRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<DeleteStoryRequest>, I>>(object: I): DeleteStoryRequest {
@@ -453,6 +477,10 @@ export const FeedStoryRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<FeedStoryRequest>, I>>(base?: I): FeedStoryRequest {
+    return FeedStoryRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<FeedStoryRequest>, I>>(object: I): FeedStoryRequest {
     const message = createBaseFeedStoryRequest();
     message.parent = object.parent ?? "";
@@ -516,6 +544,10 @@ export const FeedStoryResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<FeedStoryResponse>, I>>(base?: I): FeedStoryResponse {
+    return FeedStoryResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<FeedStoryResponse>, I>>(object: I): FeedStoryResponse {
     const message = createBaseFeedStoryResponse();
     message.items = object.items?.map((e) => UserWithStories.fromPartial(e)) || [];
@@ -562,6 +594,10 @@ export const ViewStoryRequest = {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ViewStoryRequest>, I>>(base?: I): ViewStoryRequest {
+    return ViewStoryRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<ViewStoryRequest>, I>>(object: I): ViewStoryRequest {
@@ -611,6 +647,10 @@ export const ViewStoryResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ViewStoryResponse>, I>>(base?: I): ViewStoryResponse {
+    return ViewStoryResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<ViewStoryResponse>, I>>(object: I): ViewStoryResponse {
     const message = createBaseViewStoryResponse();
     message.success = object.success ?? false;
@@ -656,6 +696,10 @@ export const LikeStoryRequest = {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<LikeStoryRequest>, I>>(base?: I): LikeStoryRequest {
+    return LikeStoryRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<LikeStoryRequest>, I>>(object: I): LikeStoryRequest {
@@ -705,6 +749,10 @@ export const LikeStoryResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<LikeStoryResponse>, I>>(base?: I): LikeStoryResponse {
+    return LikeStoryResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<LikeStoryResponse>, I>>(object: I): LikeStoryResponse {
     const message = createBaseLikeStoryResponse();
     message.success = object.success ?? false;
@@ -750,6 +798,10 @@ export const UnlikeStoryRequest = {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UnlikeStoryRequest>, I>>(base?: I): UnlikeStoryRequest {
+    return UnlikeStoryRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<UnlikeStoryRequest>, I>>(object: I): UnlikeStoryRequest {
@@ -799,6 +851,10 @@ export const UnlikeStoryResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<UnlikeStoryResponse>, I>>(base?: I): UnlikeStoryResponse {
+    return UnlikeStoryResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<UnlikeStoryResponse>, I>>(object: I): UnlikeStoryResponse {
     const message = createBaseUnlikeStoryResponse();
     message.success = object.success ?? false;
@@ -844,6 +900,10 @@ export const SaveStoryRequest = {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SaveStoryRequest>, I>>(base?: I): SaveStoryRequest {
+    return SaveStoryRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<SaveStoryRequest>, I>>(object: I): SaveStoryRequest {
@@ -893,6 +953,10 @@ export const SaveStoryResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<SaveStoryResponse>, I>>(base?: I): SaveStoryResponse {
+    return SaveStoryResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<SaveStoryResponse>, I>>(object: I): SaveStoryResponse {
     const message = createBaseSaveStoryResponse();
     message.success = object.success ?? false;
@@ -940,6 +1004,10 @@ export const UnsaveStoryRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<UnsaveStoryRequest>, I>>(base?: I): UnsaveStoryRequest {
+    return UnsaveStoryRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<UnsaveStoryRequest>, I>>(object: I): UnsaveStoryRequest {
     const message = createBaseUnsaveStoryRequest();
     message.id = object.id ?? "";
@@ -985,6 +1053,10 @@ export const UnsaveStoryResponse = {
     const obj: any = {};
     message.success !== undefined && (obj.success = message.success);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UnsaveStoryResponse>, I>>(base?: I): UnsaveStoryResponse {
+    return UnsaveStoryResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<UnsaveStoryResponse>, I>>(object: I): UnsaveStoryResponse {
@@ -1048,6 +1120,10 @@ export const ListStoryResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ListStoryResponse>, I>>(base?: I): ListStoryResponse {
+    return ListStoryResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<ListStoryResponse>, I>>(object: I): ListStoryResponse {
     const message = createBaseListStoryResponse();
     message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
@@ -1108,6 +1184,10 @@ export const UserWithStories = {
       obj.stories = [];
     }
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UserWithStories>, I>>(base?: I): UserWithStories {
+    return UserWithStories.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<UserWithStories>, I>>(object: I): UserWithStories {
@@ -1174,6 +1254,10 @@ export const StoryResponse = {
     message.hasLiked !== undefined && (obj.hasLiked = message.hasLiked);
     message.hasViewed !== undefined && (obj.hasViewed = message.hasViewed);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<StoryResponse>, I>>(base?: I): StoryResponse {
+    return StoryResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<StoryResponse>, I>>(object: I): StoryResponse {

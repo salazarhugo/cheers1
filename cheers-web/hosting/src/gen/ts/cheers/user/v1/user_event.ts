@@ -82,6 +82,10 @@ export const UserEvent = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<UserEvent>, I>>(base?: I): UserEvent {
+    return UserEvent.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<UserEvent>, I>>(object: I): UserEvent {
     const message = createBaseUserEvent();
     message.create = (object.create !== undefined && object.create !== null)
@@ -137,6 +141,10 @@ export const CreateUser = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CreateUser>, I>>(base?: I): CreateUser {
+    return CreateUser.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CreateUser>, I>>(object: I): CreateUser {
     const message = createBaseCreateUser();
     message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
@@ -182,6 +190,10 @@ export const UpdateUser = {
     const obj: any = {};
     message.user !== undefined && (obj.user = message.user ? User.toJSON(message.user) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateUser>, I>>(base?: I): UpdateUser {
+    return UpdateUser.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<UpdateUser>, I>>(object: I): UpdateUser {
@@ -240,6 +252,10 @@ export const FollowUser = {
     message.followedUser !== undefined &&
       (obj.followedUser = message.followedUser ? User.toJSON(message.followedUser) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<FollowUser>, I>>(base?: I): FollowUser {
+    return FollowUser.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<FollowUser>, I>>(object: I): FollowUser {

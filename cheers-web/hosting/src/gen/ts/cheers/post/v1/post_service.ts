@@ -154,6 +154,10 @@ export const ListMapPostRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ListMapPostRequest>, I>>(base?: I): ListMapPostRequest {
+    return ListMapPostRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<ListMapPostRequest>, I>>(object: I): ListMapPostRequest {
     const message = createBaseListMapPostRequest();
     message.parent = object.parent ?? "";
@@ -207,6 +211,10 @@ export const ListMapPostResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ListMapPostResponse>, I>>(base?: I): ListMapPostResponse {
+    return ListMapPostResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<ListMapPostResponse>, I>>(object: I): ListMapPostResponse {
     const message = createBaseListMapPostResponse();
     message.posts = object.posts?.map((e) => PostResponse.fromPartial(e)) || [];
@@ -252,6 +260,10 @@ export const CreatePostRequest = {
     const obj: any = {};
     message.post !== undefined && (obj.post = message.post ? Post.toJSON(message.post) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreatePostRequest>, I>>(base?: I): CreatePostRequest {
+    return CreatePostRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<CreatePostRequest>, I>>(object: I): CreatePostRequest {
@@ -301,6 +313,10 @@ export const GetPostRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GetPostRequest>, I>>(base?: I): GetPostRequest {
+    return GetPostRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<GetPostRequest>, I>>(object: I): GetPostRequest {
     const message = createBaseGetPostRequest();
     message.id = object.id ?? "";
@@ -348,6 +364,10 @@ export const UpdatePostRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<UpdatePostRequest>, I>>(base?: I): UpdatePostRequest {
+    return UpdatePostRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<UpdatePostRequest>, I>>(object: I): UpdatePostRequest {
     const message = createBaseUpdatePostRequest();
     message.post = (object.post !== undefined && object.post !== null) ? Post.fromPartial(object.post) : undefined;
@@ -393,6 +413,10 @@ export const DeletePostRequest = {
     const obj: any = {};
     message.id !== undefined && (obj.id = message.id);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeletePostRequest>, I>>(base?: I): DeletePostRequest {
+    return DeletePostRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<DeletePostRequest>, I>>(object: I): DeletePostRequest {
@@ -460,6 +484,10 @@ export const ListPostRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ListPostRequest>, I>>(base?: I): ListPostRequest {
+    return ListPostRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<ListPostRequest>, I>>(object: I): ListPostRequest {
     const message = createBaseListPostRequest();
     message.username = object.username ?? "";
@@ -521,6 +549,10 @@ export const ListPostResponse = {
     }
     message.nextPageToken !== undefined && (obj.nextPageToken = message.nextPageToken);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListPostResponse>, I>>(base?: I): ListPostResponse {
+    return ListPostResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<ListPostResponse>, I>>(object: I): ListPostResponse {
@@ -589,6 +621,10 @@ export const FeedPostRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<FeedPostRequest>, I>>(base?: I): FeedPostRequest {
+    return FeedPostRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<FeedPostRequest>, I>>(object: I): FeedPostRequest {
     const message = createBaseFeedPostRequest();
     message.parent = object.parent ?? "";
@@ -652,6 +688,10 @@ export const FeedPostResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<FeedPostResponse>, I>>(base?: I): FeedPostResponse {
+    return FeedPostResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<FeedPostResponse>, I>>(object: I): FeedPostResponse {
     const message = createBaseFeedPostResponse();
     message.posts = object.posts?.map((e) => PostResponse.fromPartial(e)) || [];
@@ -698,6 +738,10 @@ export const LikePostRequest = {
     const obj: any = {};
     message.postId !== undefined && (obj.postId = message.postId);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<LikePostRequest>, I>>(base?: I): LikePostRequest {
+    return LikePostRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<LikePostRequest>, I>>(object: I): LikePostRequest {
@@ -747,6 +791,10 @@ export const LikePostResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<LikePostResponse>, I>>(base?: I): LikePostResponse {
+    return LikePostResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<LikePostResponse>, I>>(object: I): LikePostResponse {
     const message = createBaseLikePostResponse();
     message.success = object.success ?? false;
@@ -792,6 +840,10 @@ export const UnlikePostRequest = {
     const obj: any = {};
     message.postId !== undefined && (obj.postId = message.postId);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UnlikePostRequest>, I>>(base?: I): UnlikePostRequest {
+    return UnlikePostRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<UnlikePostRequest>, I>>(object: I): UnlikePostRequest {
@@ -841,6 +893,10 @@ export const UnlikePostResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<UnlikePostResponse>, I>>(base?: I): UnlikePostResponse {
+    return UnlikePostResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<UnlikePostResponse>, I>>(object: I): UnlikePostResponse {
     const message = createBaseUnlikePostResponse();
     message.success = object.success ?? false;
@@ -886,6 +942,10 @@ export const SavePostRequest = {
     const obj: any = {};
     message.postId !== undefined && (obj.postId = message.postId);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SavePostRequest>, I>>(base?: I): SavePostRequest {
+    return SavePostRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<SavePostRequest>, I>>(object: I): SavePostRequest {
@@ -935,6 +995,10 @@ export const SavePostResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<SavePostResponse>, I>>(base?: I): SavePostResponse {
+    return SavePostResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<SavePostResponse>, I>>(object: I): SavePostResponse {
     const message = createBaseSavePostResponse();
     message.success = object.success ?? false;
@@ -982,6 +1046,10 @@ export const UnsavePostRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<UnsavePostRequest>, I>>(base?: I): UnsavePostRequest {
+    return UnsavePostRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<UnsavePostRequest>, I>>(object: I): UnsavePostRequest {
     const message = createBaseUnsavePostRequest();
     message.postId = object.postId ?? "";
@@ -1027,6 +1095,10 @@ export const UnsavePostResponse = {
     const obj: any = {};
     message.success !== undefined && (obj.success = message.success);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UnsavePostResponse>, I>>(base?: I): UnsavePostResponse {
+    return UnsavePostResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<UnsavePostResponse>, I>>(object: I): UnsavePostResponse {
@@ -1116,6 +1188,10 @@ export const PostResponse = {
     message.hasLiked !== undefined && (obj.hasLiked = message.hasLiked);
     message.isCreator !== undefined && (obj.isCreator = message.isCreator);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<PostResponse>, I>>(base?: I): PostResponse {
+    return PostResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<PostResponse>, I>>(object: I): PostResponse {

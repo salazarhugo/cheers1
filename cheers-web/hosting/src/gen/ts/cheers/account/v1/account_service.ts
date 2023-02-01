@@ -107,6 +107,10 @@ export const Account = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Account>, I>>(base?: I): Account {
+    return Account.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<Account>, I>>(object: I): Account {
     const message = createBaseAccount();
     message.id = object.id ?? "";
@@ -154,6 +158,10 @@ export const CreateAccountRequest = {
     const obj: any = {};
     message.account !== undefined && (obj.account = message.account ? Account.toJSON(message.account) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateAccountRequest>, I>>(base?: I): CreateAccountRequest {
+    return CreateAccountRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<CreateAccountRequest>, I>>(object: I): CreateAccountRequest {
@@ -205,6 +213,10 @@ export const CreateAccountResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CreateAccountResponse>, I>>(base?: I): CreateAccountResponse {
+    return CreateAccountResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CreateAccountResponse>, I>>(object: I): CreateAccountResponse {
     const message = createBaseCreateAccountResponse();
     message.account = (object.account !== undefined && object.account !== null)
@@ -254,6 +266,10 @@ export const GetAccountRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GetAccountRequest>, I>>(base?: I): GetAccountRequest {
+    return GetAccountRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<GetAccountRequest>, I>>(object: I): GetAccountRequest {
     const message = createBaseGetAccountRequest();
     message.accountId = object.accountId ?? "";
@@ -299,6 +315,10 @@ export const GetAccountResponse = {
     const obj: any = {};
     message.account !== undefined && (obj.account = message.account ? Account.toJSON(message.account) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetAccountResponse>, I>>(base?: I): GetAccountResponse {
+    return GetAccountResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<GetAccountResponse>, I>>(object: I): GetAccountResponse {
@@ -350,6 +370,10 @@ export const UpdateAccountRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<UpdateAccountRequest>, I>>(base?: I): UpdateAccountRequest {
+    return UpdateAccountRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<UpdateAccountRequest>, I>>(object: I): UpdateAccountRequest {
     const message = createBaseUpdateAccountRequest();
     message.account = (object.account !== undefined && object.account !== null)
@@ -397,6 +421,10 @@ export const UpdateAccountResponse = {
     const obj: any = {};
     message.account !== undefined && (obj.account = message.account ? Account.toJSON(message.account) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UpdateAccountResponse>, I>>(base?: I): UpdateAccountResponse {
+    return UpdateAccountResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<UpdateAccountResponse>, I>>(object: I): UpdateAccountResponse {
@@ -448,6 +476,10 @@ export const DeleteAccountRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<DeleteAccountRequest>, I>>(base?: I): DeleteAccountRequest {
+    return DeleteAccountRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<DeleteAccountRequest>, I>>(object: I): DeleteAccountRequest {
     const message = createBaseDeleteAccountRequest();
     message.accountId = object.accountId ?? "";
@@ -486,6 +518,10 @@ export const DeleteAccountResponse = {
   toJSON(_: DeleteAccountResponse): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteAccountResponse>, I>>(base?: I): DeleteAccountResponse {
+    return DeleteAccountResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<DeleteAccountResponse>, I>>(_: I): DeleteAccountResponse {
@@ -544,6 +580,10 @@ export const ListAccountRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ListAccountRequest>, I>>(base?: I): ListAccountRequest {
+    return ListAccountRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<ListAccountRequest>, I>>(object: I): ListAccountRequest {
     const message = createBaseListAccountRequest();
     message.partyId = object.partyId ?? undefined;
@@ -594,6 +634,10 @@ export const ListAccountResponse = {
       obj.accounts = [];
     }
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListAccountResponse>, I>>(base?: I): ListAccountResponse {
+    return ListAccountResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<ListAccountResponse>, I>>(object: I): ListAccountResponse {

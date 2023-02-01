@@ -65,6 +65,10 @@ export const VerifyUserRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<VerifyUserRequest>, I>>(base?: I): VerifyUserRequest {
+    return VerifyUserRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<VerifyUserRequest>, I>>(object: I): VerifyUserRequest {
     const message = createBaseVerifyUserRequest();
     message.userId = object.userId ?? "";
@@ -103,6 +107,10 @@ export const VerifyUserResponse = {
   toJSON(_: VerifyUserResponse): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<VerifyUserResponse>, I>>(base?: I): VerifyUserResponse {
+    return VerifyUserResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<VerifyUserResponse>, I>>(_: I): VerifyUserResponse {
@@ -151,6 +159,10 @@ export const CreateModeratorRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CreateModeratorRequest>, I>>(base?: I): CreateModeratorRequest {
+    return CreateModeratorRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CreateModeratorRequest>, I>>(object: I): CreateModeratorRequest {
     const message = createBaseCreateModeratorRequest();
     message.userId = object.userId ?? "";
@@ -189,6 +201,10 @@ export const CreateModeratorResponse = {
   toJSON(_: CreateModeratorResponse): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateModeratorResponse>, I>>(base?: I): CreateModeratorResponse {
+    return CreateModeratorResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<CreateModeratorResponse>, I>>(_: I): CreateModeratorResponse {
@@ -237,6 +253,10 @@ export const CreateBusinessAccountRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CreateBusinessAccountRequest>, I>>(base?: I): CreateBusinessAccountRequest {
+    return CreateBusinessAccountRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CreateBusinessAccountRequest>, I>>(object: I): CreateBusinessAccountRequest {
     const message = createBaseCreateBusinessAccountRequest();
     message.userId = object.userId ?? "";
@@ -275,6 +295,10 @@ export const CreateBusinessAccountResponse = {
   toJSON(_: CreateBusinessAccountResponse): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateBusinessAccountResponse>, I>>(base?: I): CreateBusinessAccountResponse {
+    return CreateBusinessAccountResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<CreateBusinessAccountResponse>, I>>(_: I): CreateBusinessAccountResponse {

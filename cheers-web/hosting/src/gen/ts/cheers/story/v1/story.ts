@@ -166,6 +166,10 @@ export const Story = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<Story>, I>>(base?: I): Story {
+    return Story.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<Story>, I>>(object: I): Story {
     const message = createBaseStory();
     message.id = object.id ?? "";

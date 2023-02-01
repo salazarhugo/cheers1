@@ -46,6 +46,10 @@ type UserRepository interface {
 		from string,
 		to string,
 	) error
+
+	CheckUsername(
+		username string,
+	) (bool, error)
 }
 
 type userRepository struct {

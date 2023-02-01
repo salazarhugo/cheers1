@@ -73,6 +73,10 @@ export const CommentEvent = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CommentEvent>, I>>(base?: I): CommentEvent {
+    return CommentEvent.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CommentEvent>, I>>(object: I): CommentEvent {
     const message = createBaseCommentEvent();
     message.created = (object.created !== undefined && object.created !== null)
@@ -135,6 +139,10 @@ export const CreatedComment = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CreatedComment>, I>>(base?: I): CreatedComment {
+    return CreatedComment.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CreatedComment>, I>>(object: I): CreatedComment {
     const message = createBaseCreatedComment();
     message.comment = (object.comment !== undefined && object.comment !== null)
@@ -193,6 +201,10 @@ export const DeletedComment = {
     message.comment !== undefined && (obj.comment = message.comment ? Comment.toJSON(message.comment) : undefined);
     message.user !== undefined && (obj.user = message.user ? UserItem.toJSON(message.user) : undefined);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeletedComment>, I>>(base?: I): DeletedComment {
+    return DeletedComment.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<DeletedComment>, I>>(object: I): DeletedComment {

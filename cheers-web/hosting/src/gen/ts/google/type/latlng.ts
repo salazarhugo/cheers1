@@ -68,6 +68,10 @@ export const LatLng = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<LatLng>, I>>(base?: I): LatLng {
+    return LatLng.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<LatLng>, I>>(object: I): LatLng {
     const message = createBaseLatLng();
     message.latitude = object.latitude ?? 0;

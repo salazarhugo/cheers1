@@ -115,6 +115,10 @@ export const CreatePaymentRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CreatePaymentRequest>, I>>(base?: I): CreatePaymentRequest {
+    return CreatePaymentRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CreatePaymentRequest>, I>>(object: I): CreatePaymentRequest {
     const message = createBaseCreatePaymentRequest();
     message.partyId = object.partyId ?? "";
@@ -178,6 +182,12 @@ export const CreatePaymentRequest_TicketsEntry = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CreatePaymentRequest_TicketsEntry>, I>>(
+    base?: I,
+  ): CreatePaymentRequest_TicketsEntry {
+    return CreatePaymentRequest_TicketsEntry.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CreatePaymentRequest_TicketsEntry>, I>>(
     object: I,
   ): CreatePaymentRequest_TicketsEntry {
@@ -228,6 +238,10 @@ export const CreatePaymentResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CreatePaymentResponse>, I>>(base?: I): CreatePaymentResponse {
+    return CreatePaymentResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CreatePaymentResponse>, I>>(object: I): CreatePaymentResponse {
     const message = createBaseCreatePaymentResponse();
     message.clientSecret = object.clientSecret ?? "";
@@ -275,6 +289,10 @@ export const RefundPaymentRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<RefundPaymentRequest>, I>>(base?: I): RefundPaymentRequest {
+    return RefundPaymentRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<RefundPaymentRequest>, I>>(object: I): RefundPaymentRequest {
     const message = createBaseRefundPaymentRequest();
     message.paymentIntentId = object.paymentIntentId ?? "";
@@ -313,6 +331,10 @@ export const RefundPaymentResponse = {
   toJSON(_: RefundPaymentResponse): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<RefundPaymentResponse>, I>>(base?: I): RefundPaymentResponse {
+    return RefundPaymentResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<RefundPaymentResponse>, I>>(_: I): RefundPaymentResponse {

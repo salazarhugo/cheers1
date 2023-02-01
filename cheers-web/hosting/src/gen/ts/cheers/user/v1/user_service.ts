@@ -5,6 +5,14 @@ import { StoryState, storyStateFromJSON, storyStateToJSON, User, UserItem } from
 
 export const protobufPackage = "cheers.user.v1";
 
+export interface CheckUsernameRequest {
+  username: string;
+}
+
+export interface CheckUsernameResponse {
+  valid: boolean;
+}
+
 export interface CreateUserRequest {
   email: string;
   name: string;
@@ -112,6 +120,108 @@ export interface DeleteUserRequest {
   userId: string;
 }
 
+function createBaseCheckUsernameRequest(): CheckUsernameRequest {
+  return { username: "" };
+}
+
+export const CheckUsernameRequest = {
+  encode(message: CheckUsernameRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.username !== "") {
+      writer.uint32(10).string(message.username);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CheckUsernameRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCheckUsernameRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.username = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CheckUsernameRequest {
+    return { username: isSet(object.username) ? String(object.username) : "" };
+  },
+
+  toJSON(message: CheckUsernameRequest): unknown {
+    const obj: any = {};
+    message.username !== undefined && (obj.username = message.username);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CheckUsernameRequest>, I>>(base?: I): CheckUsernameRequest {
+    return CheckUsernameRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CheckUsernameRequest>, I>>(object: I): CheckUsernameRequest {
+    const message = createBaseCheckUsernameRequest();
+    message.username = object.username ?? "";
+    return message;
+  },
+};
+
+function createBaseCheckUsernameResponse(): CheckUsernameResponse {
+  return { valid: false };
+}
+
+export const CheckUsernameResponse = {
+  encode(message: CheckUsernameResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.valid === true) {
+      writer.uint32(8).bool(message.valid);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CheckUsernameResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCheckUsernameResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.valid = reader.bool();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CheckUsernameResponse {
+    return { valid: isSet(object.valid) ? Boolean(object.valid) : false };
+  },
+
+  toJSON(message: CheckUsernameResponse): unknown {
+    const obj: any = {};
+    message.valid !== undefined && (obj.valid = message.valid);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CheckUsernameResponse>, I>>(base?: I): CheckUsernameResponse {
+    return CheckUsernameResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CheckUsernameResponse>, I>>(object: I): CheckUsernameResponse {
+    const message = createBaseCheckUsernameResponse();
+    message.valid = object.valid ?? false;
+    return message;
+  },
+};
+
 function createBaseCreateUserRequest(): CreateUserRequest {
   return { email: "", name: "", picture: "", username: "" };
 }
@@ -178,6 +288,10 @@ export const CreateUserRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CreateUserRequest>, I>>(base?: I): CreateUserRequest {
+    return CreateUserRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CreateUserRequest>, I>>(object: I): CreateUserRequest {
     const message = createBaseCreateUserRequest();
     message.email = object.email ?? "";
@@ -228,6 +342,10 @@ export const CreateUserResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<CreateUserResponse>, I>>(base?: I): CreateUserResponse {
+    return CreateUserResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<CreateUserResponse>, I>>(object: I): CreateUserResponse {
     const message = createBaseCreateUserResponse();
     message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
@@ -268,6 +386,10 @@ export const BlockUserResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<BlockUserResponse>, I>>(base?: I): BlockUserResponse {
+    return BlockUserResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<BlockUserResponse>, I>>(_: I): BlockUserResponse {
     const message = createBaseBlockUserResponse();
     return message;
@@ -305,6 +427,10 @@ export const UnblockUserResponse = {
   toJSON(_: UnblockUserResponse): unknown {
     const obj: any = {};
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UnblockUserResponse>, I>>(base?: I): UnblockUserResponse {
+    return UnblockUserResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<UnblockUserResponse>, I>>(_: I): UnblockUserResponse {
@@ -355,6 +481,10 @@ export const GetUsersInRequest = {
       obj.userIds = [];
     }
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetUsersInRequest>, I>>(base?: I): GetUsersInRequest {
+    return GetUsersInRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<GetUsersInRequest>, I>>(object: I): GetUsersInRequest {
@@ -408,6 +538,10 @@ export const GetUsersInResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GetUsersInResponse>, I>>(base?: I): GetUsersInResponse {
+    return GetUsersInResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<GetUsersInResponse>, I>>(object: I): GetUsersInResponse {
     const message = createBaseGetUsersInResponse();
     message.users = object.users?.map((e) => User.fromPartial(e)) || [];
@@ -457,6 +591,10 @@ export const GetUserItemsInRequest = {
       obj.userIds = [];
     }
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetUserItemsInRequest>, I>>(base?: I): GetUserItemsInRequest {
+    return GetUserItemsInRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<GetUserItemsInRequest>, I>>(object: I): GetUserItemsInRequest {
@@ -510,6 +648,10 @@ export const GetUserItemsInResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GetUserItemsInResponse>, I>>(base?: I): GetUserItemsInResponse {
+    return GetUserItemsInResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<GetUserItemsInResponse>, I>>(object: I): GetUserItemsInResponse {
     const message = createBaseGetUserItemsInResponse();
     message.users = object.users?.map((e) => UserItem.fromPartial(e)) || [];
@@ -559,6 +701,10 @@ export const SearchUserResponse = {
       obj.users = [];
     }
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<SearchUserResponse>, I>>(base?: I): SearchUserResponse {
+    return SearchUserResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<SearchUserResponse>, I>>(object: I): SearchUserResponse {
@@ -624,6 +770,10 @@ export const ListFollowersRequest = {
     message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
     message.page !== undefined && (obj.page = Math.round(message.page));
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListFollowersRequest>, I>>(base?: I): ListFollowersRequest {
+    return ListFollowersRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<ListFollowersRequest>, I>>(object: I): ListFollowersRequest {
@@ -693,6 +843,10 @@ export const ListFollowingRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ListFollowingRequest>, I>>(base?: I): ListFollowingRequest {
+    return ListFollowingRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<ListFollowingRequest>, I>>(object: I): ListFollowingRequest {
     const message = createBaseListFollowingRequest();
     message.userId = object.userId ?? "";
@@ -746,6 +900,10 @@ export const ListFollowersResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<ListFollowersResponse>, I>>(base?: I): ListFollowersResponse {
+    return ListFollowersResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<ListFollowersResponse>, I>>(object: I): ListFollowersResponse {
     const message = createBaseListFollowersResponse();
     message.users = object.users?.map((e) => UserItem.fromPartial(e)) || [];
@@ -795,6 +953,10 @@ export const ListFollowingResponse = {
       obj.users = [];
     }
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListFollowingResponse>, I>>(base?: I): ListFollowingResponse {
+    return ListFollowingResponse.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<ListFollowingResponse>, I>>(object: I): ListFollowingResponse {
@@ -929,6 +1091,10 @@ export const GetUserResponse = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<GetUserResponse>, I>>(base?: I): GetUserResponse {
+    return GetUserResponse.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<GetUserResponse>, I>>(object: I): GetUserResponse {
     const message = createBaseGetUserResponse();
     message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
@@ -985,6 +1151,10 @@ export const BlockUserRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<BlockUserRequest>, I>>(base?: I): BlockUserRequest {
+    return BlockUserRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<BlockUserRequest>, I>>(object: I): BlockUserRequest {
     const message = createBaseBlockUserRequest();
     message.userId = object.userId ?? "";
@@ -1030,6 +1200,10 @@ export const UnblockUserRequest = {
     const obj: any = {};
     message.userId !== undefined && (obj.userId = message.userId);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<UnblockUserRequest>, I>>(base?: I): UnblockUserRequest {
+    return UnblockUserRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<UnblockUserRequest>, I>>(object: I): UnblockUserRequest {
@@ -1079,6 +1253,10 @@ export const UnfollowUserRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<UnfollowUserRequest>, I>>(base?: I): UnfollowUserRequest {
+    return UnfollowUserRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<UnfollowUserRequest>, I>>(object: I): UnfollowUserRequest {
     const message = createBaseUnfollowUserRequest();
     message.userId = object.userId ?? "";
@@ -1124,6 +1302,10 @@ export const FollowUserRequest = {
     const obj: any = {};
     message.userId !== undefined && (obj.userId = message.userId);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<FollowUserRequest>, I>>(base?: I): FollowUserRequest {
+    return FollowUserRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<FollowUserRequest>, I>>(object: I): FollowUserRequest {
@@ -1173,6 +1355,10 @@ export const SearchUserRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<SearchUserRequest>, I>>(base?: I): SearchUserRequest {
+    return SearchUserRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<SearchUserRequest>, I>>(object: I): SearchUserRequest {
     const message = createBaseSearchUserRequest();
     message.query = object.query ?? "";
@@ -1218,6 +1404,10 @@ export const GetUserRequest = {
     const obj: any = {};
     message.userId !== undefined && (obj.userId = message.userId);
     return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetUserRequest>, I>>(base?: I): GetUserRequest {
+    return GetUserRequest.fromPartial(base ?? {});
   },
 
   fromPartial<I extends Exact<DeepPartial<GetUserRequest>, I>>(object: I): GetUserRequest {
@@ -1309,6 +1499,10 @@ export const UpdateUserRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<UpdateUserRequest>, I>>(base?: I): UpdateUserRequest {
+    return UpdateUserRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<UpdateUserRequest>, I>>(object: I): UpdateUserRequest {
     const message = createBaseUpdateUserRequest();
     message.name = object.name ?? "";
@@ -1361,6 +1555,10 @@ export const DeleteUserRequest = {
     return obj;
   },
 
+  create<I extends Exact<DeepPartial<DeleteUserRequest>, I>>(base?: I): DeleteUserRequest {
+    return DeleteUserRequest.fromPartial(base ?? {});
+  },
+
   fromPartial<I extends Exact<DeepPartial<DeleteUserRequest>, I>>(object: I): DeleteUserRequest {
     const message = createBaseDeleteUserRequest();
     message.userId = object.userId ?? "";
@@ -1382,6 +1580,7 @@ export interface UserService {
   UnblockUser(request: UnblockUserRequest): Promise<UnblockUserResponse>;
   ListFollowers(request: ListFollowersRequest): Promise<ListFollowersResponse>;
   ListFollowing(request: ListFollowingRequest): Promise<ListFollowingResponse>;
+  CheckUsername(request: CheckUsernameRequest): Promise<CheckUsernameResponse>;
 }
 
 export class UserServiceClientImpl implements UserService {
@@ -1403,6 +1602,7 @@ export class UserServiceClientImpl implements UserService {
     this.UnblockUser = this.UnblockUser.bind(this);
     this.ListFollowers = this.ListFollowers.bind(this);
     this.ListFollowing = this.ListFollowing.bind(this);
+    this.CheckUsername = this.CheckUsername.bind(this);
   }
   CreateUser(request: CreateUserRequest): Promise<CreateUserResponse> {
     const data = CreateUserRequest.encode(request).finish();
@@ -1480,6 +1680,12 @@ export class UserServiceClientImpl implements UserService {
     const data = ListFollowingRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListFollowing", data);
     return promise.then((data) => ListFollowingResponse.decode(new _m0.Reader(data)));
+  }
+
+  CheckUsername(request: CheckUsernameRequest): Promise<CheckUsernameResponse> {
+    const data = CheckUsernameRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "CheckUsername", data);
+    return promise.then((data) => CheckUsernameResponse.decode(new _m0.Reader(data)));
   }
 }
 
