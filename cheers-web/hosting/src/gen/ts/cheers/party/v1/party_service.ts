@@ -6,46 +6,46 @@ import { User, UserItem } from "../../type/user/user";
 
 export const protobufPackage = "cheers.party.v1";
 
-export enum PartyAnswer {
+export enum WatchStatus {
   GOING = 0,
   INTERESTED = 1,
-  NOT_INTERESTED = 2,
+  UNWATCHED = 2,
   MAYBE = 3,
   UNRECOGNIZED = -1,
 }
 
-export function partyAnswerFromJSON(object: any): PartyAnswer {
+export function watchStatusFromJSON(object: any): WatchStatus {
   switch (object) {
     case 0:
     case "GOING":
-      return PartyAnswer.GOING;
+      return WatchStatus.GOING;
     case 1:
     case "INTERESTED":
-      return PartyAnswer.INTERESTED;
+      return WatchStatus.INTERESTED;
     case 2:
-    case "NOT_INTERESTED":
-      return PartyAnswer.NOT_INTERESTED;
+    case "UNWATCHED":
+      return WatchStatus.UNWATCHED;
     case 3:
     case "MAYBE":
-      return PartyAnswer.MAYBE;
+      return WatchStatus.MAYBE;
     case -1:
     case "UNRECOGNIZED":
     default:
-      return PartyAnswer.UNRECOGNIZED;
+      return WatchStatus.UNRECOGNIZED;
   }
 }
 
-export function partyAnswerToJSON(object: PartyAnswer): string {
+export function watchStatusToJSON(object: WatchStatus): string {
   switch (object) {
-    case PartyAnswer.GOING:
+    case WatchStatus.GOING:
       return "GOING";
-    case PartyAnswer.INTERESTED:
+    case WatchStatus.INTERESTED:
       return "INTERESTED";
-    case PartyAnswer.NOT_INTERESTED:
-      return "NOT_INTERESTED";
-    case PartyAnswer.MAYBE:
+    case WatchStatus.UNWATCHED:
+      return "UNWATCHED";
+    case WatchStatus.MAYBE:
       return "MAYBE";
-    case PartyAnswer.UNRECOGNIZED:
+    case WatchStatus.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
   }
@@ -61,7 +61,7 @@ export interface ListGoingResponse {
 
 export interface AnswerPartyRequest {
   partyId: string;
-  answer: PartyAnswer;
+  watchStatus: WatchStatus;
 }
 
 export interface AnswerPartyResponse {
@@ -124,7 +124,8 @@ export interface PartyItem {
   interestedCount: number;
   invitedCount: number;
   isCreator: boolean;
-  answer: PartyAnswer;
+  /** Watch status */
+  viewerWatchStatus: WatchStatus;
 }
 
 function createBaseListGoingRequest(): ListGoingRequest {
@@ -234,7 +235,7 @@ export const ListGoingResponse = {
 };
 
 function createBaseAnswerPartyRequest(): AnswerPartyRequest {
-  return { partyId: "", answer: 0 };
+  return { partyId: "", watchStatus: 0 };
 }
 
 export const AnswerPartyRequest = {
@@ -242,8 +243,8 @@ export const AnswerPartyRequest = {
     if (message.partyId !== "") {
       writer.uint32(10).string(message.partyId);
     }
-    if (message.answer !== 0) {
-      writer.uint32(16).int32(message.answer);
+    if (message.watchStatus !== 0) {
+      writer.uint32(16).int32(message.watchStatus);
     }
     return writer;
   },
@@ -259,7 +260,7 @@ export const AnswerPartyRequest = {
           message.partyId = reader.string();
           break;
         case 2:
-          message.answer = reader.int32() as any;
+          message.watchStatus = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -272,14 +273,14 @@ export const AnswerPartyRequest = {
   fromJSON(object: any): AnswerPartyRequest {
     return {
       partyId: isSet(object.partyId) ? String(object.partyId) : "",
-      answer: isSet(object.answer) ? partyAnswerFromJSON(object.answer) : 0,
+      watchStatus: isSet(object.watchStatus) ? watchStatusFromJSON(object.watchStatus) : 0,
     };
   },
 
   toJSON(message: AnswerPartyRequest): unknown {
     const obj: any = {};
     message.partyId !== undefined && (obj.partyId = message.partyId);
-    message.answer !== undefined && (obj.answer = partyAnswerToJSON(message.answer));
+    message.watchStatus !== undefined && (obj.watchStatus = watchStatusToJSON(message.watchStatus));
     return obj;
   },
 
@@ -290,7 +291,7 @@ export const AnswerPartyRequest = {
   fromPartial<I extends Exact<DeepPartial<AnswerPartyRequest>, I>>(object: I): AnswerPartyRequest {
     const message = createBaseAnswerPartyRequest();
     message.partyId = object.partyId ?? "";
-    message.answer = object.answer ?? 0;
+    message.watchStatus = object.watchStatus ?? 0;
     return message;
   },
 };
@@ -985,7 +986,7 @@ function createBasePartyItem(): PartyItem {
     interestedCount: 0,
     invitedCount: 0,
     isCreator: false,
-    answer: 0,
+    viewerWatchStatus: 0,
   };
 }
 
@@ -1009,8 +1010,8 @@ export const PartyItem = {
     if (message.isCreator === true) {
       writer.uint32(64).bool(message.isCreator);
     }
-    if (message.answer !== 0) {
-      writer.uint32(72).int32(message.answer);
+    if (message.viewerWatchStatus !== 0) {
+      writer.uint32(72).int32(message.viewerWatchStatus);
     }
     return writer;
   },
@@ -1041,7 +1042,7 @@ export const PartyItem = {
           message.isCreator = reader.bool();
           break;
         case 9:
-          message.answer = reader.int32() as any;
+          message.viewerWatchStatus = reader.int32() as any;
           break;
         default:
           reader.skipType(tag & 7);
@@ -1059,7 +1060,7 @@ export const PartyItem = {
       interestedCount: isSet(object.interestedCount) ? Number(object.interestedCount) : 0,
       invitedCount: isSet(object.invitedCount) ? Number(object.invitedCount) : 0,
       isCreator: isSet(object.isCreator) ? Boolean(object.isCreator) : false,
-      answer: isSet(object.answer) ? partyAnswerFromJSON(object.answer) : 0,
+      viewerWatchStatus: isSet(object.viewerWatchStatus) ? watchStatusFromJSON(object.viewerWatchStatus) : 0,
     };
   },
 
@@ -1071,7 +1072,7 @@ export const PartyItem = {
     message.interestedCount !== undefined && (obj.interestedCount = Math.round(message.interestedCount));
     message.invitedCount !== undefined && (obj.invitedCount = Math.round(message.invitedCount));
     message.isCreator !== undefined && (obj.isCreator = message.isCreator);
-    message.answer !== undefined && (obj.answer = partyAnswerToJSON(message.answer));
+    message.viewerWatchStatus !== undefined && (obj.viewerWatchStatus = watchStatusToJSON(message.viewerWatchStatus));
     return obj;
   },
 
@@ -1087,7 +1088,7 @@ export const PartyItem = {
     message.interestedCount = object.interestedCount ?? 0;
     message.invitedCount = object.invitedCount ?? 0;
     message.isCreator = object.isCreator ?? false;
-    message.answer = object.answer ?? 0;
+    message.viewerWatchStatus = object.viewerWatchStatus ?? 0;
     return message;
   },
 };

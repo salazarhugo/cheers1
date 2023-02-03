@@ -2,6 +2,10 @@ MATCH
   (me:User {id: $userID})
 MATCH
   (creator:User)-[:POSTED]->(party:Party)
+WHERE
+  toFloat(party.startDate) > timestamp() / 1000
+OPTIONAL MATCH
+  (me)-[watchStatus:WATCH_STATUS]->(party)
 OPTIONAL MATCH
   (:User)-[interest:INTERESTED]->(party)
 OPTIONAL MATCH
@@ -26,6 +30,7 @@ RETURN
     going_count:      going_count,
     interested_count: interested_count,
     invited_count:    invited_count,
-    is_creator:       is_creator
+    is_creator:       is_creator,
+    viewer_watch_status: watchStatus.value
   }
   ORDER BY party.createTime DESC

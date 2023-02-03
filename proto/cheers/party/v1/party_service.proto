@@ -72,7 +72,7 @@ message ListGoingResponse {
 
 message AnswerPartyRequest {
   string party_id = 1;
-  PartyAnswer answer = 2;
+  WatchStatus watch_status = 2;
 }
 
 message AnswerPartyResponse {
@@ -135,12 +135,13 @@ message PartyItem {
   int64 interested_count = 4;
   int64 invited_count = 5;
   bool is_creator = 8;
-  PartyAnswer answer = 9;
+  // Watch status
+  WatchStatus viewer_watch_status = 9;
 }
 
-enum PartyAnswer {
+enum WatchStatus {
   GOING = 0;
   INTERESTED = 1;
-  NOT_INTERESTED = 2;
+  UNWATCHED = 2;
   MAYBE = 3;
 }

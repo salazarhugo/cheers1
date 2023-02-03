@@ -17,13 +17,13 @@ func (s *Server) CheckUsername(
 		return nil, status.Error(codes.Internal, "not signed in")
 	}
 
-	response, err := s.userRepository.CheckUsername(request.Username)
+	exists, err := s.userRepository.CheckUsername(request.Username)
 	if err != nil {
 		log.Error(err)
 		return nil, status.Error(codes.Internal, "failed to check username")
 	}
 
 	return &pb.CheckUsernameResponse{
-		Valid: response,
+		Valid: !exists,
 	}, nil
 }

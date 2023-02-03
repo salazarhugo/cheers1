@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
 	payment "github.com/salazarhugo/cheers1/gen/go/cheers/payment/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
@@ -24,7 +25,7 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 	partyID, err := GetPartyId(event.GetPaymentIntentId(), order.CustomerId)
 
 	repo := repository.NewPartyRepository(utils.GetDriver())
-	err = repo.GoingParty(userID, partyID)
+	err = repo.UpdateWatchStatus(userID, partyID, party.WatchStatus_GOING)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

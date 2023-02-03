@@ -4,7 +4,6 @@ package cheers.type;
 
 option go_package = "github.com/salazarhugo/cheers1/gen/go/cheers/type/party;partypb";
 
-
 import "cheers/type/privacy/privacy.proto";
 
 message Party {

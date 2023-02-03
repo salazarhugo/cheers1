@@ -17,12 +17,7 @@ func (s *Server) AnswerParty(
 		return nil, status.Error(codes.Internal, "failed retrieving userID")
 	}
 
-	switch request.Answer {
-	case pb.PartyAnswer_GOING:
-		err = s.partyRepository.GoingParty(userID, request.PartyId)
-	case pb.PartyAnswer_NOT_INTERESTED:
-		err = s.partyRepository.UnGoingParty(userID, request.PartyId)
-	}
+	err = s.partyRepository.UpdateWatchStatus(userID, request.PartyId, request.WatchStatus)
 
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to answer party")

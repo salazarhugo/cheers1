@@ -3,4 +3,4 @@ MATCH
 MATCH
   (party:Party {id: $partyID})
 MERGE
-  (u)-[:GOING]->(party)
+  (u)-[:WATCH_STATUS { value: $watchStatus}]->(party)
