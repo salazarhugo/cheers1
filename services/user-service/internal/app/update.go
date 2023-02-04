@@ -19,7 +19,20 @@ func (s *Server) UpdateUser(
 		return nil, status.Error(codes.Internal, "failed retrieving userID")
 	}
 
-	err = s.userRepository.UpdateUser(userID, request)
+	response, err := s.userRepository.GetUser(userID, userID)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "user does not exist")
+	}
+
+	user := response.GetUser()
+	user.Name = request.Name
+	user.Picture = request.Picture
+	user.Bio = request.Bio
+	user.Website = request.Website
+	user.Birthday = request.Birthday
+	user.PhoneNumber = request.Birthday
+
+	err = s.userRepository.UpdateUser(userID, user)
 	if err != nil {
 		log.Error(err)
 		return nil, status.Error(codes.Internal, "failed to update user")

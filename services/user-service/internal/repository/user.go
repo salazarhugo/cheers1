@@ -10,9 +10,10 @@ import (
 type UserRepository interface {
 	CreateUser(userID string, user *user.User) (string, error)
 	GetUser(userID string, otherUserID string) (*pb.GetUserResponse, error)
-	UpdateUser(userID string, user *pb.UpdateUserRequest) error
+	UpdateUser(userID string, user *user.User) error
 	DeleteUser(id string) error
 
+	UpdateBusinessAccount(userID string, isBusinessAccount bool) error
 	VerifyUser(userID string) error
 	UnVerifyUser(userID string) error
 	GetUsersIn(userIDs []string) ([]*user.User, error)

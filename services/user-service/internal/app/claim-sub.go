@@ -25,9 +25,15 @@ func ClaimSub(w http.ResponseWriter, r *http.Request) {
 		if event.Created.Claim == "verified" {
 			err = repo.VerifyUser(event.Created.UserId)
 		}
+		if event.Created.Claim == "business" {
+			err = repo.UpdateBusinessAccount(event.Created.UserId, true)
+		}
 	case *claim.ClaimEvent_Deleted:
 		if event.Deleted.Claim == "verified" {
 			err = repo.UnVerifyUser(event.Deleted.UserId)
+		}
+		if event.Deleted.Claim == "business" {
+			err = repo.UpdateBusinessAccount(event.Deleted.UserId, false)
 		}
 	}
 

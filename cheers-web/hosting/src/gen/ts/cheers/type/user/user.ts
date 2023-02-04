@@ -96,6 +96,7 @@ export interface User {
   phoneNumber: string;
   createTime: number;
   registrationTokens: string[];
+  isBusinessAccount: boolean;
 }
 
 export interface UserItem {
@@ -126,6 +127,7 @@ function createBaseUser(): User {
     phoneNumber: "",
     createTime: 0,
     registrationTokens: [],
+    isBusinessAccount: false,
   };
 }
 
@@ -169,6 +171,9 @@ export const User = {
     }
     for (const v of message.registrationTokens) {
       writer.uint32(90).string(v!);
+    }
+    if (message.isBusinessAccount === true) {
+      writer.uint32(112).bool(message.isBusinessAccount);
     }
     return writer;
   },
@@ -219,6 +224,9 @@ export const User = {
         case 11:
           message.registrationTokens.push(reader.string());
           break;
+        case 14:
+          message.isBusinessAccount = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -244,6 +252,7 @@ export const User = {
       registrationTokens: Array.isArray(object?.registrationTokens)
         ? object.registrationTokens.map((e: any) => String(e))
         : [],
+      isBusinessAccount: isSet(object.isBusinessAccount) ? Boolean(object.isBusinessAccount) : false,
     };
   },
 
@@ -266,6 +275,7 @@ export const User = {
     } else {
       obj.registrationTokens = [];
     }
+    message.isBusinessAccount !== undefined && (obj.isBusinessAccount = message.isBusinessAccount);
     return obj;
   },
 
@@ -288,6 +298,7 @@ export const User = {
     message.phoneNumber = object.phoneNumber ?? "";
     message.createTime = object.createTime ?? 0;
     message.registrationTokens = object.registrationTokens?.map((e) => e) || [];
+    message.isBusinessAccount = object.isBusinessAccount ?? false;
     return message;
   },
 };
