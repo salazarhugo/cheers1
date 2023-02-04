@@ -48,6 +48,15 @@ service PartyService {
     };
   }
 
+  /*
+    List parties of a specific user
+   */
+  rpc ListParty (ListPartyRequest) returns (ListPartyResponse) {
+    option (google.api.http) = {
+      get: "/v1/parties"
+    };
+  }
+
   rpc AnswerParty (AnswerPartyRequest) returns (AnswerPartyResponse) {
     option (google.api.http) = {
       post: "/v1/parties/{party_id}/answer"
@@ -60,6 +69,17 @@ service PartyService {
       get: "/v1/parties/{party_id}/going"
     };
   }
+}
+
+message ListPartyRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string user_id = 3;
+}
+
+message ListPartyResponse {
+  repeated PartyItem items = 1;
+  string next_page_token = 2;
 }
 
 message ListGoingRequest {

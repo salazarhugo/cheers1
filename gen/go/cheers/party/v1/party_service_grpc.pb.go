@@ -28,6 +28,9 @@ type PartyServiceClient interface {
 	DeleteParty(ctx context.Context, in *DeletePartyRequest, opts ...grpc.CallOption) (*DeletePartyResponse, error)
 	GetPartyItem(ctx context.Context, in *GetPartyItemRequest, opts ...grpc.CallOption) (*GetPartyItemResponse, error)
 	FeedParty(ctx context.Context, in *FeedPartyRequest, opts ...grpc.CallOption) (*FeedPartyResponse, error)
+	//
+	// List parties of a specific user
+	ListParty(ctx context.Context, in *ListPartyRequest, opts ...grpc.CallOption) (*ListPartyResponse, error)
 	AnswerParty(ctx context.Context, in *AnswerPartyRequest, opts ...grpc.CallOption) (*AnswerPartyResponse, error)
 	ListGoing(ctx context.Context, in *ListGoingRequest, opts ...grpc.CallOption) (*ListGoingResponse, error)
 }
@@ -94,6 +97,15 @@ func (c *partyServiceClient) FeedParty(ctx context.Context, in *FeedPartyRequest
 	return out, nil
 }
 
+func (c *partyServiceClient) ListParty(ctx context.Context, in *ListPartyRequest, opts ...grpc.CallOption) (*ListPartyResponse, error) {
+	out := new(ListPartyResponse)
+	err := c.cc.Invoke(ctx, "/cheers.party.v1.PartyService/ListParty", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *partyServiceClient) AnswerParty(ctx context.Context, in *AnswerPartyRequest, opts ...grpc.CallOption) (*AnswerPartyResponse, error) {
 	out := new(AnswerPartyResponse)
 	err := c.cc.Invoke(ctx, "/cheers.party.v1.PartyService/AnswerParty", in, out, opts...)
@@ -122,6 +134,9 @@ type PartyServiceServer interface {
 	DeleteParty(context.Context, *DeletePartyRequest) (*DeletePartyResponse, error)
 	GetPartyItem(context.Context, *GetPartyItemRequest) (*GetPartyItemResponse, error)
 	FeedParty(context.Context, *FeedPartyRequest) (*FeedPartyResponse, error)
+	//
+	// List parties of a specific user
+	ListParty(context.Context, *ListPartyRequest) (*ListPartyResponse, error)
 	AnswerParty(context.Context, *AnswerPartyRequest) (*AnswerPartyResponse, error)
 	ListGoing(context.Context, *ListGoingRequest) (*ListGoingResponse, error)
 	mustEmbedUnimplementedPartyServiceServer()
@@ -148,6 +163,9 @@ func (UnimplementedPartyServiceServer) GetPartyItem(context.Context, *GetPartyIt
 }
 func (UnimplementedPartyServiceServer) FeedParty(context.Context, *FeedPartyRequest) (*FeedPartyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FeedParty not implemented")
+}
+func (UnimplementedPartyServiceServer) ListParty(context.Context, *ListPartyRequest) (*ListPartyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListParty not implemented")
 }
 func (UnimplementedPartyServiceServer) AnswerParty(context.Context, *AnswerPartyRequest) (*AnswerPartyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AnswerParty not implemented")
@@ -276,6 +294,24 @@ func _PartyService_FeedParty_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PartyService_ListParty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPartyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PartyServiceServer).ListParty(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.party.v1.PartyService/ListParty",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PartyServiceServer).ListParty(ctx, req.(*ListPartyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _PartyService_AnswerParty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AnswerPartyRequest)
 	if err := dec(in); err != nil {
@@ -342,6 +378,10 @@ var PartyService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "FeedParty",
 			Handler:    _PartyService_FeedParty_Handler,
+		},
+		{
+			MethodName: "ListParty",
+			Handler:    _PartyService_ListParty_Handler,
 		},
 		{
 			MethodName: "AnswerParty",

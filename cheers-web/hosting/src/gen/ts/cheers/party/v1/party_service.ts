@@ -51,6 +51,17 @@ export function watchStatusToJSON(object: WatchStatus): string {
   }
 }
 
+export interface ListPartyRequest {
+  page: number;
+  pageSize: number;
+  userId: string;
+}
+
+export interface ListPartyResponse {
+  items: PartyItem[];
+  nextPageToken: string;
+}
+
 export interface ListGoingRequest {
   partyId: string;
 }
@@ -127,6 +138,143 @@ export interface PartyItem {
   /** Watch status */
   viewerWatchStatus: WatchStatus;
 }
+
+function createBaseListPartyRequest(): ListPartyRequest {
+  return { page: 0, pageSize: 0, userId: "" };
+}
+
+export const ListPartyRequest = {
+  encode(message: ListPartyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.page !== 0) {
+      writer.uint32(8).int32(message.page);
+    }
+    if (message.pageSize !== 0) {
+      writer.uint32(16).int32(message.pageSize);
+    }
+    if (message.userId !== "") {
+      writer.uint32(26).string(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListPartyRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListPartyRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.page = reader.int32();
+          break;
+        case 2:
+          message.pageSize = reader.int32();
+          break;
+        case 3:
+          message.userId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListPartyRequest {
+    return {
+      page: isSet(object.page) ? Number(object.page) : 0,
+      pageSize: isSet(object.pageSize) ? Number(object.pageSize) : 0,
+      userId: isSet(object.userId) ? String(object.userId) : "",
+    };
+  },
+
+  toJSON(message: ListPartyRequest): unknown {
+    const obj: any = {};
+    message.page !== undefined && (obj.page = Math.round(message.page));
+    message.pageSize !== undefined && (obj.pageSize = Math.round(message.pageSize));
+    message.userId !== undefined && (obj.userId = message.userId);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListPartyRequest>, I>>(base?: I): ListPartyRequest {
+    return ListPartyRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListPartyRequest>, I>>(object: I): ListPartyRequest {
+    const message = createBaseListPartyRequest();
+    message.page = object.page ?? 0;
+    message.pageSize = object.pageSize ?? 0;
+    message.userId = object.userId ?? "";
+    return message;
+  },
+};
+
+function createBaseListPartyResponse(): ListPartyResponse {
+  return { items: [], nextPageToken: "" };
+}
+
+export const ListPartyResponse = {
+  encode(message: ListPartyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.items) {
+      PartyItem.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.nextPageToken !== "") {
+      writer.uint32(18).string(message.nextPageToken);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListPartyResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListPartyResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.items.push(PartyItem.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.nextPageToken = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListPartyResponse {
+    return {
+      items: Array.isArray(object?.items) ? object.items.map((e: any) => PartyItem.fromJSON(e)) : [],
+      nextPageToken: isSet(object.nextPageToken) ? String(object.nextPageToken) : "",
+    };
+  },
+
+  toJSON(message: ListPartyResponse): unknown {
+    const obj: any = {};
+    if (message.items) {
+      obj.items = message.items.map((e) => e ? PartyItem.toJSON(e) : undefined);
+    } else {
+      obj.items = [];
+    }
+    message.nextPageToken !== undefined && (obj.nextPageToken = message.nextPageToken);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListPartyResponse>, I>>(base?: I): ListPartyResponse {
+    return ListPartyResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListPartyResponse>, I>>(object: I): ListPartyResponse {
+    const message = createBaseListPartyResponse();
+    message.items = object.items?.map((e) => PartyItem.fromPartial(e)) || [];
+    message.nextPageToken = object.nextPageToken ?? "";
+    return message;
+  },
+};
 
 function createBaseListGoingRequest(): ListGoingRequest {
   return { partyId: "" };
@@ -1100,6 +1248,8 @@ export interface PartyService {
   DeleteParty(request: DeletePartyRequest): Promise<DeletePartyResponse>;
   GetPartyItem(request: GetPartyItemRequest): Promise<GetPartyItemResponse>;
   FeedParty(request: FeedPartyRequest): Promise<FeedPartyResponse>;
+  /** List parties of a specific user */
+  ListParty(request: ListPartyRequest): Promise<ListPartyResponse>;
   AnswerParty(request: AnswerPartyRequest): Promise<AnswerPartyResponse>;
   ListGoing(request: ListGoingRequest): Promise<ListGoingResponse>;
 }
@@ -1116,6 +1266,7 @@ export class PartyServiceClientImpl implements PartyService {
     this.DeleteParty = this.DeleteParty.bind(this);
     this.GetPartyItem = this.GetPartyItem.bind(this);
     this.FeedParty = this.FeedParty.bind(this);
+    this.ListParty = this.ListParty.bind(this);
     this.AnswerParty = this.AnswerParty.bind(this);
     this.ListGoing = this.ListGoing.bind(this);
   }
@@ -1153,6 +1304,12 @@ export class PartyServiceClientImpl implements PartyService {
     const data = FeedPartyRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "FeedParty", data);
     return promise.then((data) => FeedPartyResponse.decode(new _m0.Reader(data)));
+  }
+
+  ListParty(request: ListPartyRequest): Promise<ListPartyResponse> {
+    const data = ListPartyRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ListParty", data);
+    return promise.then((data) => ListPartyResponse.decode(new _m0.Reader(data)));
   }
 
   AnswerParty(request: AnswerPartyRequest): Promise<AnswerPartyResponse> {

@@ -16,6 +16,7 @@ type PartyRepository interface {
 	GetPartyItem(userID string, partyID string) (*pb.PartyItem, error)
 	GetPartyItemPublic(partyID string) (*pb.PartyItem, error)
 	FeedParty(userID string, request *pb.FeedPartyRequest) (*pb.FeedPartyResponse, error)
+	ListParty(viewerID string, request *pb.ListPartyRequest) (*pb.ListPartyResponse, error)
 	UpdateWatchStatus(userID string, partyID string, status pb.WatchStatus) error
 	ListGoing(userID string, partyID string) ([]*user.UserItem, error)
 	UnGoingParty(userID string, partyID string) error
