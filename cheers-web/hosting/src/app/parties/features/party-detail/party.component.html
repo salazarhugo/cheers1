@@ -1,4 +1,4 @@
-<div class="party-container" fxLayout="column">
+<div class="party-container" fxLayout="column" *ngIf="userService.user$ | async as viewer">
     <div *ngIf="party as party" class="party" fxLayout="column">
         <div class="party-banner-container image-placeholder" fxLayoutAlign="center center">
             <img *ngIf="party.bannerUrl" [src]="party.bannerUrl" alt="party banner" class="party-banner">
@@ -9,7 +9,7 @@
             <h3> {{party.locationName}}</h3>
             <mat-divider></mat-divider>
             <div class="party-header-buttons" fxLayoutAlign="end" fxLayoutGap="20px">
-                <button *ngIf="party.isHost" [routerLink]="['/manage/parties', party.id, 'basicinfo']" mat-flat-button>
+                <button *ngIf="party.isHost || viewer.admin" [routerLink]="['/manage/parties', party.id, 'basicinfo']" mat-flat-button>
                     <mat-icon>edit</mat-icon>
                     <span class="button-span">Edit</span>
                 </button>

@@ -1,8 +1,4 @@
-import {PartyAnswer, PartyItem} from "../../../../gen/ts/cheers/party/v1/party_service";
-import {Party} from "./party.model";
-import {Story as StoryPb} from "../../../../gen/ts/cheers/type/story/story";
 import {UserWithStories} from "../../../../gen/ts/cheers/story/v1/story_service";
-import {User} from "../../../../gen/ts/cheers/type/user/user";
 
 
 export class Story {

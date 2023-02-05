@@ -13,6 +13,7 @@ type PartyRepository interface {
 	UpdateParty(party *party.Party) (string, error)
 	DeleteParty(id string) error
 
+	TransferParty(userID string, partyID string) error
 	GetPartyItem(userID string, partyID string) (*pb.PartyItem, error)
 	GetPartyItemPublic(partyID string) (*pb.PartyItem, error)
 	FeedParty(userID string, request *pb.FeedPartyRequest) (*pb.FeedPartyResponse, error)

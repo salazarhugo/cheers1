@@ -23,8 +23,10 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthServiceClient interface {
 	CreateModerator(ctx context.Context, in *CreateModeratorRequest, opts ...grpc.CallOption) (*CreateModeratorResponse, error)
+	DeleteModerator(ctx context.Context, in *DeleteModeratorRequest, opts ...grpc.CallOption) (*DeleteModeratorResponse, error)
 	CreateBusinessAccount(ctx context.Context, in *CreateBusinessAccountRequest, opts ...grpc.CallOption) (*CreateBusinessAccountResponse, error)
 	VerifyUser(ctx context.Context, in *VerifyUserRequest, opts ...grpc.CallOption) (*VerifyUserResponse, error)
+	DeleteVerifyUser(ctx context.Context, in *VerifyUserRequest, opts ...grpc.CallOption) (*VerifyUserResponse, error)
 }
 
 type authServiceClient struct {
@@ -38,6 +40,15 @@ func NewAuthServiceClient(cc grpc.ClientConnInterface) AuthServiceClient {
 func (c *authServiceClient) CreateModerator(ctx context.Context, in *CreateModeratorRequest, opts ...grpc.CallOption) (*CreateModeratorResponse, error) {
 	out := new(CreateModeratorResponse)
 	err := c.cc.Invoke(ctx, "/cheers.auth.v1.AuthService/CreateModerator", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) DeleteModerator(ctx context.Context, in *DeleteModeratorRequest, opts ...grpc.CallOption) (*DeleteModeratorResponse, error) {
+	out := new(DeleteModeratorResponse)
+	err := c.cc.Invoke(ctx, "/cheers.auth.v1.AuthService/DeleteModerator", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -62,13 +73,24 @@ func (c *authServiceClient) VerifyUser(ctx context.Context, in *VerifyUserReques
 	return out, nil
 }
 
+func (c *authServiceClient) DeleteVerifyUser(ctx context.Context, in *VerifyUserRequest, opts ...grpc.CallOption) (*VerifyUserResponse, error) {
+	out := new(VerifyUserResponse)
+	err := c.cc.Invoke(ctx, "/cheers.auth.v1.AuthService/DeleteVerifyUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthServiceServer is the server API for AuthService service.
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility
 type AuthServiceServer interface {
 	CreateModerator(context.Context, *CreateModeratorRequest) (*CreateModeratorResponse, error)
+	DeleteModerator(context.Context, *DeleteModeratorRequest) (*DeleteModeratorResponse, error)
 	CreateBusinessAccount(context.Context, *CreateBusinessAccountRequest) (*CreateBusinessAccountResponse, error)
 	VerifyUser(context.Context, *VerifyUserRequest) (*VerifyUserResponse, error)
+	DeleteVerifyUser(context.Context, *VerifyUserRequest) (*VerifyUserResponse, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }
 
@@ -79,11 +101,17 @@ type UnimplementedAuthServiceServer struct {
 func (UnimplementedAuthServiceServer) CreateModerator(context.Context, *CreateModeratorRequest) (*CreateModeratorResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateModerator not implemented")
 }
+func (UnimplementedAuthServiceServer) DeleteModerator(context.Context, *DeleteModeratorRequest) (*DeleteModeratorResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteModerator not implemented")
+}
 func (UnimplementedAuthServiceServer) CreateBusinessAccount(context.Context, *CreateBusinessAccountRequest) (*CreateBusinessAccountResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateBusinessAccount not implemented")
 }
 func (UnimplementedAuthServiceServer) VerifyUser(context.Context, *VerifyUserRequest) (*VerifyUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerifyUser not implemented")
+}
+func (UnimplementedAuthServiceServer) DeleteVerifyUser(context.Context, *VerifyUserRequest) (*VerifyUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteVerifyUser not implemented")
 }
 func (UnimplementedAuthServiceServer) mustEmbedUnimplementedAuthServiceServer() {}
 
@@ -112,6 +140,24 @@ func _AuthService_CreateModerator_Handler(srv interface{}, ctx context.Context, 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AuthServiceServer).CreateModerator(ctx, req.(*CreateModeratorRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_DeleteModerator_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteModeratorRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).DeleteModerator(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.auth.v1.AuthService/DeleteModerator",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).DeleteModerator(ctx, req.(*DeleteModeratorRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -152,6 +198,24 @@ func _AuthService_VerifyUser_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthService_DeleteVerifyUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(VerifyUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).DeleteVerifyUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.auth.v1.AuthService/DeleteVerifyUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).DeleteVerifyUser(ctx, req.(*VerifyUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthService_ServiceDesc is the grpc.ServiceDesc for AuthService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -164,12 +228,20 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AuthService_CreateModerator_Handler,
 		},
 		{
+			MethodName: "DeleteModerator",
+			Handler:    _AuthService_DeleteModerator_Handler,
+		},
+		{
 			MethodName: "CreateBusinessAccount",
 			Handler:    _AuthService_CreateBusinessAccount_Handler,
 		},
 		{
 			MethodName: "VerifyUser",
 			Handler:    _AuthService_VerifyUser_Handler,
+		},
+		{
+			MethodName: "DeleteVerifyUser",
+			Handler:    _AuthService_DeleteVerifyUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

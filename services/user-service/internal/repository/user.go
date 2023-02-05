@@ -14,6 +14,8 @@ type UserRepository interface {
 	DeleteUser(id string) error
 
 	UpdateBusinessAccount(userID string, isBusinessAccount bool) error
+	UpdateAdmin(userID string, isAdmin bool) error
+	UpdateModerator(userID string, isModerator bool) error
 	VerifyUser(userID string) error
 	UnVerifyUser(userID string) error
 	GetUsersIn(userIDs []string) ([]*user.User, error)

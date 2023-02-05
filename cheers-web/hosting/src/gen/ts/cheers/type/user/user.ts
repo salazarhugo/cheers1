@@ -97,6 +97,8 @@ export interface User {
   createTime: number;
   registrationTokens: string[];
   isBusinessAccount: boolean;
+  isAdmin: boolean;
+  isModerator: boolean;
 }
 
 export interface UserItem {
@@ -128,6 +130,8 @@ function createBaseUser(): User {
     createTime: 0,
     registrationTokens: [],
     isBusinessAccount: false,
+    isAdmin: false,
+    isModerator: false,
   };
 }
 
@@ -174,6 +178,12 @@ export const User = {
     }
     if (message.isBusinessAccount === true) {
       writer.uint32(112).bool(message.isBusinessAccount);
+    }
+    if (message.isAdmin === true) {
+      writer.uint32(120).bool(message.isAdmin);
+    }
+    if (message.isModerator === true) {
+      writer.uint32(128).bool(message.isModerator);
     }
     return writer;
   },
@@ -227,6 +237,12 @@ export const User = {
         case 14:
           message.isBusinessAccount = reader.bool();
           break;
+        case 15:
+          message.isAdmin = reader.bool();
+          break;
+        case 16:
+          message.isModerator = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -253,6 +269,8 @@ export const User = {
         ? object.registrationTokens.map((e: any) => String(e))
         : [],
       isBusinessAccount: isSet(object.isBusinessAccount) ? Boolean(object.isBusinessAccount) : false,
+      isAdmin: isSet(object.isAdmin) ? Boolean(object.isAdmin) : false,
+      isModerator: isSet(object.isModerator) ? Boolean(object.isModerator) : false,
     };
   },
 
@@ -276,6 +294,8 @@ export const User = {
       obj.registrationTokens = [];
     }
     message.isBusinessAccount !== undefined && (obj.isBusinessAccount = message.isBusinessAccount);
+    message.isAdmin !== undefined && (obj.isAdmin = message.isAdmin);
+    message.isModerator !== undefined && (obj.isModerator = message.isModerator);
     return obj;
   },
 
@@ -299,6 +319,8 @@ export const User = {
     message.createTime = object.createTime ?? 0;
     message.registrationTokens = object.registrationTokens?.map((e) => e) || [];
     message.isBusinessAccount = object.isBusinessAccount ?? false;
+    message.isAdmin = object.isAdmin ?? false;
+    message.isModerator = object.isModerator ?? false;
     return message;
   },
 };

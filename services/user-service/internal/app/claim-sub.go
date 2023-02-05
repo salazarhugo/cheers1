@@ -22,18 +22,32 @@ func ClaimSub(w http.ResponseWriter, r *http.Request) {
 
 	switch event := event.Event.(type) {
 	case *claim.ClaimEvent_Created:
-		if event.Created.Claim == "verified" {
+		claimName := event.Created.Claim
+		if claimName == "verified" {
 			err = repo.VerifyUser(event.Created.UserId)
 		}
-		if event.Created.Claim == "business" {
+		if claimName == "business" {
 			err = repo.UpdateBusinessAccount(event.Created.UserId, true)
 		}
+		if claimName == "moderator" {
+			err = repo.UpdateModerator(event.Created.UserId, true)
+		}
+		if claimName == "admin" {
+			err = repo.UpdateAdmin(event.Created.UserId, true)
+		}
 	case *claim.ClaimEvent_Deleted:
-		if event.Deleted.Claim == "verified" {
+		claimName := event.Deleted.Claim
+		if claimName == "verified" {
 			err = repo.UnVerifyUser(event.Deleted.UserId)
 		}
-		if event.Deleted.Claim == "business" {
+		if claimName == "business" {
 			err = repo.UpdateBusinessAccount(event.Deleted.UserId, false)
+		}
+		if claimName == "moderator" {
+			err = repo.UpdateModerator(event.Deleted.UserId, false)
+		}
+		if claimName == "admin" {
+			err = repo.UpdateAdmin(event.Deleted.UserId, false)
 		}
 	}
 

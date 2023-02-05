@@ -19,6 +19,8 @@ message User {
   int64 create_time = 10;
   repeated string registration_tokens = 11;
   bool is_business_account = 14;
+  bool is_admin = 15;
+  bool is_moderator = 16;
 }
 
 message UserItem {

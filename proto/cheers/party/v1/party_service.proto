@@ -69,6 +69,21 @@ service PartyService {
       get: "/v1/parties/{party_id}/going"
     };
   }
+
+  rpc TransferParty (TransferPartyRequest) returns (TransferPartyResponse) {
+    option (google.api.http) = {
+      post: "/v1/parties/{party_id}/transfer"
+      body: "*"
+    };
+  }
+}
+
+message TransferPartyRequest {
+  string user_id = 1;
+  string party_id = 2;
+}
+
+message TransferPartyResponse {
 }
 
 message ListPartyRequest {

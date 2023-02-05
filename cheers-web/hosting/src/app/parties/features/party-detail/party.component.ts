@@ -4,12 +4,12 @@ import {Party} from "../../../shared/data/models/party.model";
 import {PartyService} from "../../data/party.service";
 import {Clipboard} from '@angular/cdk/clipboard';
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {PartyAnswer} from "../../../../gen/ts/cheers/party/v1/party_service";
 import {UserService} from "../../../shared/data/services/user.service";
 import {firstValueFrom} from "rxjs";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {MatDialog} from "@angular/material/dialog";
 import {PartyInviteComponent} from "../../ui/party-invite/party-invite.component";
+import {WatchStatus} from "../../../../gen/ts/cheers/party/v1/party_service";
 
 @Component({
     selector: 'app-party-detail',
@@ -27,7 +27,7 @@ export class PartyComponent implements OnInit {
         private partyService: PartyService,
         private clipboard: Clipboard,
         private snackBar: MatSnackBar,
-        private userService: UserService,
+        public userService: UserService,
         private afAuth: AngularFireAuth,
         private matDialog: MatDialog,
     ) {
@@ -70,11 +70,11 @@ export class PartyComponent implements OnInit {
         const party = this.party!!
         if (party.going) {
             party.going = false
-            await this.partyService.answerParty(this.partyId!, PartyAnswer.NOT_INTERESTED)
+            await this.partyService.answerParty(this.partyId!, WatchStatus.UNWATCHED)
         }
         else {
             party.going = true
-            await this.partyService.answerParty(this.partyId!, PartyAnswer.GOING)
+            await this.partyService.answerParty(this.partyId!, WatchStatus.GOING)
         }
     }
 }

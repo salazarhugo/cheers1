@@ -15,6 +15,12 @@ service AuthService {
     };
   }
 
+  rpc DeleteModerator(DeleteModeratorRequest) returns (DeleteModeratorResponse) {
+    option (google.api.http) = {
+      delete: "/v1/auths/moderator"
+    };
+  }
+
   rpc CreateBusinessAccount(CreateBusinessAccountRequest) returns (CreateBusinessAccountResponse) {
     option (google.api.http) = {
       post: "/v1/auths/business"
@@ -28,6 +34,12 @@ service AuthService {
       body: "*"
     };
   }
+
+  rpc DeleteVerifyUser(VerifyUserRequest) returns (VerifyUserResponse) {
+    option (google.api.http) = {
+      delete: "/v1/auths/verify"
+    };
+  }
 }
 
 message VerifyUserRequest {
@@ -35,6 +47,13 @@ message VerifyUserRequest {
 }
 
 message VerifyUserResponse {
+}
+
+message DeleteModeratorRequest {
+  string user_id = 1;
+}
+
+message DeleteModeratorResponse {
 }
 
 message CreateModeratorRequest {

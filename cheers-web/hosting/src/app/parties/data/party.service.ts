@@ -7,8 +7,8 @@ import {
     AnswerPartyResponse,
     CreatePartyResponse,
     FeedPartyResponse,
-    GetPartyItemResponse, ListGoingRequest, ListGoingResponse, PartyAnswer,
-    PartyItem, UpdatePartyRequest, UpdatePartyResponse
+    GetPartyItemResponse, ListGoingRequest, ListGoingResponse,
+    PartyItem, UpdatePartyRequest, UpdatePartyResponse, WatchStatus
 } from "../../../gen/ts/cheers/party/v1/party_service";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
@@ -48,7 +48,7 @@ export class PartyService {
             .pipe(map(r => r.users)))
     }
 
-    answerParty(id: string, answer: PartyAnswer): Promise<AnswerPartyResponse> {
+    answerParty(id: string, answer: WatchStatus): Promise<AnswerPartyResponse> {
         return firstValueFrom(this.http.post<AnswerPartyResponse>(`${environment.GATEWAY_URL}/v1/parties/${id}/answer`, {
             answer: answer
         }))

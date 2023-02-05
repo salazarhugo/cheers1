@@ -11,6 +11,13 @@ export interface VerifyUserRequest {
 export interface VerifyUserResponse {
 }
 
+export interface DeleteModeratorRequest {
+  userId: string;
+}
+
+export interface DeleteModeratorResponse {
+}
+
 export interface CreateModeratorRequest {
   userId: string;
 }
@@ -115,6 +122,100 @@ export const VerifyUserResponse = {
 
   fromPartial<I extends Exact<DeepPartial<VerifyUserResponse>, I>>(_: I): VerifyUserResponse {
     const message = createBaseVerifyUserResponse();
+    return message;
+  },
+};
+
+function createBaseDeleteModeratorRequest(): DeleteModeratorRequest {
+  return { userId: "" };
+}
+
+export const DeleteModeratorRequest = {
+  encode(message: DeleteModeratorRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteModeratorRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteModeratorRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.userId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteModeratorRequest {
+    return { userId: isSet(object.userId) ? String(object.userId) : "" };
+  },
+
+  toJSON(message: DeleteModeratorRequest): unknown {
+    const obj: any = {};
+    message.userId !== undefined && (obj.userId = message.userId);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteModeratorRequest>, I>>(base?: I): DeleteModeratorRequest {
+    return DeleteModeratorRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeleteModeratorRequest>, I>>(object: I): DeleteModeratorRequest {
+    const message = createBaseDeleteModeratorRequest();
+    message.userId = object.userId ?? "";
+    return message;
+  },
+};
+
+function createBaseDeleteModeratorResponse(): DeleteModeratorResponse {
+  return {};
+}
+
+export const DeleteModeratorResponse = {
+  encode(_: DeleteModeratorResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteModeratorResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteModeratorResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): DeleteModeratorResponse {
+    return {};
+  },
+
+  toJSON(_: DeleteModeratorResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteModeratorResponse>, I>>(base?: I): DeleteModeratorResponse {
+    return DeleteModeratorResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeleteModeratorResponse>, I>>(_: I): DeleteModeratorResponse {
+    const message = createBaseDeleteModeratorResponse();
     return message;
   },
 };
@@ -309,8 +410,10 @@ export const CreateBusinessAccountResponse = {
 
 export interface AuthService {
   CreateModerator(request: CreateModeratorRequest): Promise<CreateModeratorResponse>;
+  DeleteModerator(request: DeleteModeratorRequest): Promise<DeleteModeratorResponse>;
   CreateBusinessAccount(request: CreateBusinessAccountRequest): Promise<CreateBusinessAccountResponse>;
   VerifyUser(request: VerifyUserRequest): Promise<VerifyUserResponse>;
+  DeleteVerifyUser(request: VerifyUserRequest): Promise<VerifyUserResponse>;
 }
 
 export class AuthServiceClientImpl implements AuthService {
@@ -320,13 +423,21 @@ export class AuthServiceClientImpl implements AuthService {
     this.service = opts?.service || "cheers.auth.v1.AuthService";
     this.rpc = rpc;
     this.CreateModerator = this.CreateModerator.bind(this);
+    this.DeleteModerator = this.DeleteModerator.bind(this);
     this.CreateBusinessAccount = this.CreateBusinessAccount.bind(this);
     this.VerifyUser = this.VerifyUser.bind(this);
+    this.DeleteVerifyUser = this.DeleteVerifyUser.bind(this);
   }
   CreateModerator(request: CreateModeratorRequest): Promise<CreateModeratorResponse> {
     const data = CreateModeratorRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateModerator", data);
     return promise.then((data) => CreateModeratorResponse.decode(new _m0.Reader(data)));
+  }
+
+  DeleteModerator(request: DeleteModeratorRequest): Promise<DeleteModeratorResponse> {
+    const data = DeleteModeratorRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "DeleteModerator", data);
+    return promise.then((data) => DeleteModeratorResponse.decode(new _m0.Reader(data)));
   }
 
   CreateBusinessAccount(request: CreateBusinessAccountRequest): Promise<CreateBusinessAccountResponse> {
@@ -338,6 +449,12 @@ export class AuthServiceClientImpl implements AuthService {
   VerifyUser(request: VerifyUserRequest): Promise<VerifyUserResponse> {
     const data = VerifyUserRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "VerifyUser", data);
+    return promise.then((data) => VerifyUserResponse.decode(new _m0.Reader(data)));
+  }
+
+  DeleteVerifyUser(request: VerifyUserRequest): Promise<VerifyUserResponse> {
+    const data = VerifyUserRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "DeleteVerifyUser", data);
     return promise.then((data) => VerifyUserResponse.decode(new _m0.Reader(data)));
   }
 }

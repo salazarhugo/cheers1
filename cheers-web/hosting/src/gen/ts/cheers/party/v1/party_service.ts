@@ -51,6 +51,14 @@ export function watchStatusToJSON(object: WatchStatus): string {
   }
 }
 
+export interface TransferPartyRequest {
+  userId: string;
+  partyId: string;
+}
+
+export interface TransferPartyResponse {
+}
+
 export interface ListPartyRequest {
   page: number;
   pageSize: number;
@@ -138,6 +146,111 @@ export interface PartyItem {
   /** Watch status */
   viewerWatchStatus: WatchStatus;
 }
+
+function createBaseTransferPartyRequest(): TransferPartyRequest {
+  return { userId: "", partyId: "" };
+}
+
+export const TransferPartyRequest = {
+  encode(message: TransferPartyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    if (message.partyId !== "") {
+      writer.uint32(18).string(message.partyId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TransferPartyRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTransferPartyRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.userId = reader.string();
+          break;
+        case 2:
+          message.partyId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): TransferPartyRequest {
+    return {
+      userId: isSet(object.userId) ? String(object.userId) : "",
+      partyId: isSet(object.partyId) ? String(object.partyId) : "",
+    };
+  },
+
+  toJSON(message: TransferPartyRequest): unknown {
+    const obj: any = {};
+    message.userId !== undefined && (obj.userId = message.userId);
+    message.partyId !== undefined && (obj.partyId = message.partyId);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TransferPartyRequest>, I>>(base?: I): TransferPartyRequest {
+    return TransferPartyRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<TransferPartyRequest>, I>>(object: I): TransferPartyRequest {
+    const message = createBaseTransferPartyRequest();
+    message.userId = object.userId ?? "";
+    message.partyId = object.partyId ?? "";
+    return message;
+  },
+};
+
+function createBaseTransferPartyResponse(): TransferPartyResponse {
+  return {};
+}
+
+export const TransferPartyResponse = {
+  encode(_: TransferPartyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): TransferPartyResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseTransferPartyResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): TransferPartyResponse {
+    return {};
+  },
+
+  toJSON(_: TransferPartyResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<TransferPartyResponse>, I>>(base?: I): TransferPartyResponse {
+    return TransferPartyResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<TransferPartyResponse>, I>>(_: I): TransferPartyResponse {
+    const message = createBaseTransferPartyResponse();
+    return message;
+  },
+};
 
 function createBaseListPartyRequest(): ListPartyRequest {
   return { page: 0, pageSize: 0, userId: "" };
@@ -1252,6 +1365,7 @@ export interface PartyService {
   ListParty(request: ListPartyRequest): Promise<ListPartyResponse>;
   AnswerParty(request: AnswerPartyRequest): Promise<AnswerPartyResponse>;
   ListGoing(request: ListGoingRequest): Promise<ListGoingResponse>;
+  TransferParty(request: TransferPartyRequest): Promise<TransferPartyResponse>;
 }
 
 export class PartyServiceClientImpl implements PartyService {
@@ -1269,6 +1383,7 @@ export class PartyServiceClientImpl implements PartyService {
     this.ListParty = this.ListParty.bind(this);
     this.AnswerParty = this.AnswerParty.bind(this);
     this.ListGoing = this.ListGoing.bind(this);
+    this.TransferParty = this.TransferParty.bind(this);
   }
   CreateParty(request: CreatePartyRequest): Promise<CreatePartyResponse> {
     const data = CreatePartyRequest.encode(request).finish();
@@ -1322,6 +1437,12 @@ export class PartyServiceClientImpl implements PartyService {
     const data = ListGoingRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListGoing", data);
     return promise.then((data) => ListGoingResponse.decode(new _m0.Reader(data)));
+  }
+
+  TransferParty(request: TransferPartyRequest): Promise<TransferPartyResponse> {
+    const data = TransferPartyRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "TransferParty", data);
+    return promise.then((data) => TransferPartyResponse.decode(new _m0.Reader(data)));
   }
 }
 
