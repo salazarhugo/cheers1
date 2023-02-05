@@ -143,8 +143,9 @@ export interface PartyItem {
   interestedCount: number;
   invitedCount: number;
   isCreator: boolean;
-  /** Watch status */
   viewerWatchStatus: WatchStatus;
+  mutualUsernames: string[];
+  mutualPictures: string[];
 }
 
 function createBaseTransferPartyRequest(): TransferPartyRequest {
@@ -1248,6 +1249,8 @@ function createBasePartyItem(): PartyItem {
     invitedCount: 0,
     isCreator: false,
     viewerWatchStatus: 0,
+    mutualUsernames: [],
+    mutualPictures: [],
   };
 }
 
@@ -1273,6 +1276,12 @@ export const PartyItem = {
     }
     if (message.viewerWatchStatus !== 0) {
       writer.uint32(72).int32(message.viewerWatchStatus);
+    }
+    for (const v of message.mutualUsernames) {
+      writer.uint32(82).string(v!);
+    }
+    for (const v of message.mutualPictures) {
+      writer.uint32(90).string(v!);
     }
     return writer;
   },
@@ -1305,6 +1314,12 @@ export const PartyItem = {
         case 9:
           message.viewerWatchStatus = reader.int32() as any;
           break;
+        case 10:
+          message.mutualUsernames.push(reader.string());
+          break;
+        case 11:
+          message.mutualPictures.push(reader.string());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -1322,6 +1337,8 @@ export const PartyItem = {
       invitedCount: isSet(object.invitedCount) ? Number(object.invitedCount) : 0,
       isCreator: isSet(object.isCreator) ? Boolean(object.isCreator) : false,
       viewerWatchStatus: isSet(object.viewerWatchStatus) ? watchStatusFromJSON(object.viewerWatchStatus) : 0,
+      mutualUsernames: Array.isArray(object?.mutualUsernames) ? object.mutualUsernames.map((e: any) => String(e)) : [],
+      mutualPictures: Array.isArray(object?.mutualPictures) ? object.mutualPictures.map((e: any) => String(e)) : [],
     };
   },
 
@@ -1334,6 +1351,16 @@ export const PartyItem = {
     message.invitedCount !== undefined && (obj.invitedCount = Math.round(message.invitedCount));
     message.isCreator !== undefined && (obj.isCreator = message.isCreator);
     message.viewerWatchStatus !== undefined && (obj.viewerWatchStatus = watchStatusToJSON(message.viewerWatchStatus));
+    if (message.mutualUsernames) {
+      obj.mutualUsernames = message.mutualUsernames.map((e) => e);
+    } else {
+      obj.mutualUsernames = [];
+    }
+    if (message.mutualPictures) {
+      obj.mutualPictures = message.mutualPictures.map((e) => e);
+    } else {
+      obj.mutualPictures = [];
+    }
     return obj;
   },
 
@@ -1350,6 +1377,8 @@ export const PartyItem = {
     message.invitedCount = object.invitedCount ?? 0;
     message.isCreator = object.isCreator ?? false;
     message.viewerWatchStatus = object.viewerWatchStatus ?? 0;
+    message.mutualUsernames = object.mutualUsernames?.map((e) => e) || [];
+    message.mutualPictures = object.mutualPictures?.map((e) => e) || [];
     return message;
   },
 };

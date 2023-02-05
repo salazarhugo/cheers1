@@ -170,8 +170,9 @@ message PartyItem {
   int64 interested_count = 4;
   int64 invited_count = 5;
   bool is_creator = 8;
-  // Watch status
   WatchStatus viewer_watch_status = 9;
+  repeated string mutual_usernames = 10;
+  repeated string mutual_pictures = 11;
 }
 
 enum WatchStatus {

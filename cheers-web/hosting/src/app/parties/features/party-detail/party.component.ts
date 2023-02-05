@@ -77,4 +77,8 @@ export class PartyComponent implements OnInit {
             await this.partyService.answerParty(this.partyId!, WatchStatus.GOING)
         }
     }
+
+    async onTransferClick() {
+        await this.partyService.transferParty("sHRRcDPAQeO5Lv4rdGjF9Rarimb2", this.partyId!)
+    }
 }

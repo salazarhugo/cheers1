@@ -5,21 +5,19 @@ MATCH
 WHERE
   toFloat(party.startDate) > timestamp() / 1000
 OPTIONAL MATCH
+  (me)-[:FRIENDS]->(friend:User)-[w:WATCH_STATUS]->(party) WHERE w.value = "GOING"
+OPTIONAL MATCH
   (me)-[watchStatus:WATCH_STATUS]->(party)
-OPTIONAL MATCH
-  (:User)-[interest:INTERESTED]->(party)
-OPTIONAL MATCH
-  (:User)-[going:GOING]->(party)
-OPTIONAL MATCH
-  (:User)-[invite:INVITED]->(party)
 WITH
   creator,
   party,
   me.id = creator.id AS is_creator,
-  count(DISTINCT interest) AS interested_count,
-  count(DISTINCT going) AS going_count,
-  count(DISTINCT invite) AS invited_count,
-  watchStatus.value AS watch_status
+  count(DISTINCT watchStatus) AS interested_count,
+  count(DISTINCT watchStatus) AS going_count,
+  count(DISTINCT watchStatus) AS invited_count,
+  watchStatus.value AS watch_status,
+  collect(friend.username) AS mutual_usernames,
+  collect(friend.picture) AS mutual_pictures
   SKIP
   $skip
   LIMIT
@@ -32,6 +30,8 @@ RETURN
     interested_count: interested_count,
     invited_count:    invited_count,
     is_creator:       is_creator,
-    viewer_watch_status: watch_status
+    viewer_watch_status: watch_status,
+    mutual_usernames: mutual_usernames,
+    mutual_pictures: mutual_pictures
   }
   ORDER BY party.createTime DESC

@@ -9,6 +9,10 @@
             <h3> {{party.locationName}}</h3>
             <mat-divider></mat-divider>
             <div class="party-header-buttons" fxLayoutAlign="end" fxLayoutGap="20px">
+                <button *ngIf="viewer.admin" (click)="onTransferClick()" mat-flat-button>
+                    <mat-icon>transfer_within_a_station</mat-icon>
+                    <span class="button-span">Transfer</span>
+                </button>
                 <button *ngIf="party.isHost || viewer.admin" [routerLink]="['/manage/parties', party.id, 'basicinfo']" mat-flat-button>
                     <mat-icon>edit</mat-icon>
                     <span class="button-span">Edit</span>

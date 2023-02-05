@@ -43,6 +43,12 @@ export class PartyService {
         return this.api.deleteParty(id)
     }
 
+    transferParty(userId:string, partyId: string): Promise<void | Object> {
+        return firstValueFrom(this.http.post(`${environment.GATEWAY_URL}/v1/parties/${partyId}/transfer`, {
+            user_id: userId
+        }))
+    }
+
     listGoing(partyId: string): Promise<UserItem[]> {
         return firstValueFrom(this.http.get<ListGoingResponse>(`${environment.GATEWAY_URL}/v1/parties/${partyId}/going`)
             .pipe(map(r => r.users)))
