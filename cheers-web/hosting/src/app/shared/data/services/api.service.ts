@@ -18,6 +18,7 @@ import {Account, GetAccountResponse} from "../../../../gen/ts/cheers/account/v1/
 import {ListUserOrdersResponse, Order} from "../../../../gen/ts/cheers/order/v1/order_service";
 import {ListTicketResponse} from "../../../../gen/ts/cheers/ticket/v1/ticket";
 import {FeedStoryResponse} from "../../../../gen/ts/cheers/story/v1/story_service";
+import {UserItem} from "../../../../gen/ts/cheers/type/user/user";
 
 @Injectable({
     providedIn: 'root'
@@ -69,8 +70,8 @@ export class ApiService {
         return this.http.delete(`${environment.GATEWAY_URL}/v1/users/${username}/unfollow`)
     }
 
-    searchUser(query: string): Observable<User[]> {
-        return this.http.get<User[]>(`${this.BASE_URL}/users/search/${query}`)
+    searchUser(query: string): Observable<UserItem[]> {
+        return this.http.get<UserItem[]>(`${this.BASE_URL}/users/search/${query}`)
     }
 
     getAccount(accountId: string): Observable<Account | undefined> {

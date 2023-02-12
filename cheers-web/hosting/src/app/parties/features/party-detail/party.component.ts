@@ -10,6 +10,8 @@ import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {MatDialog} from "@angular/material/dialog";
 import {PartyInviteComponent} from "../../ui/party-invite/party-invite.component";
 import {WatchStatus} from "../../../../gen/ts/cheers/party/v1/party_service";
+import {PostDeleteDialogComponent} from "../../../posts/ui/post-delete-dialog/post-delete-dialog.component";
+import {PartyTransferComponent} from "../party-transfer/party-transfer.component";
 
 @Component({
     selector: 'app-party-detail',
@@ -78,7 +80,17 @@ export class PartyComponent implements OnInit {
         }
     }
 
-    async onTransferClick() {
-        await this.partyService.transferParty("sHRRcDPAQeO5Lv4rdGjF9Rarimb2", this.partyId!)
+    onTransferClick() {
+        const dialogRef = this.matDialog.open(PartyTransferComponent, {
+            panelClass: 'cheers-dialog'
+        });
+
+        dialogRef.afterClosed().subscribe(async userId => {
+            if (userId == "")
+                return;
+
+            await this.partyService.transferParty(userId, this.partyId!)
+            this.snackBar.open("Transfered party", "Hide");
+        });
     }
 }

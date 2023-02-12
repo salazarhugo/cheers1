@@ -34,6 +34,7 @@ type PartyServiceClient interface {
 	AnswerParty(ctx context.Context, in *AnswerPartyRequest, opts ...grpc.CallOption) (*AnswerPartyResponse, error)
 	ListGoing(ctx context.Context, in *ListGoingRequest, opts ...grpc.CallOption) (*ListGoingResponse, error)
 	TransferParty(ctx context.Context, in *TransferPartyRequest, opts ...grpc.CallOption) (*TransferPartyResponse, error)
+	DuplicateParty(ctx context.Context, in *DuplicatePartyRequest, opts ...grpc.CallOption) (*DuplicatePartyResponse, error)
 }
 
 type partyServiceClient struct {
@@ -134,6 +135,15 @@ func (c *partyServiceClient) TransferParty(ctx context.Context, in *TransferPart
 	return out, nil
 }
 
+func (c *partyServiceClient) DuplicateParty(ctx context.Context, in *DuplicatePartyRequest, opts ...grpc.CallOption) (*DuplicatePartyResponse, error) {
+	out := new(DuplicatePartyResponse)
+	err := c.cc.Invoke(ctx, "/cheers.party.v1.PartyService/DuplicateParty", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PartyServiceServer is the server API for PartyService service.
 // All implementations must embed UnimplementedPartyServiceServer
 // for forward compatibility
@@ -150,6 +160,7 @@ type PartyServiceServer interface {
 	AnswerParty(context.Context, *AnswerPartyRequest) (*AnswerPartyResponse, error)
 	ListGoing(context.Context, *ListGoingRequest) (*ListGoingResponse, error)
 	TransferParty(context.Context, *TransferPartyRequest) (*TransferPartyResponse, error)
+	DuplicateParty(context.Context, *DuplicatePartyRequest) (*DuplicatePartyResponse, error)
 	mustEmbedUnimplementedPartyServiceServer()
 }
 
@@ -186,6 +197,9 @@ func (UnimplementedPartyServiceServer) ListGoing(context.Context, *ListGoingRequ
 }
 func (UnimplementedPartyServiceServer) TransferParty(context.Context, *TransferPartyRequest) (*TransferPartyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TransferParty not implemented")
+}
+func (UnimplementedPartyServiceServer) DuplicateParty(context.Context, *DuplicatePartyRequest) (*DuplicatePartyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DuplicateParty not implemented")
 }
 func (UnimplementedPartyServiceServer) mustEmbedUnimplementedPartyServiceServer() {}
 
@@ -380,6 +394,24 @@ func _PartyService_TransferParty_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PartyService_DuplicateParty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DuplicatePartyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PartyServiceServer).DuplicateParty(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.party.v1.PartyService/DuplicateParty",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PartyServiceServer).DuplicateParty(ctx, req.(*DuplicatePartyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PartyService_ServiceDesc is the grpc.ServiceDesc for PartyService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -426,6 +458,10 @@ var PartyService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "TransferParty",
 			Handler:    _PartyService_TransferParty_Handler,
+		},
+		{
+			MethodName: "DuplicateParty",
+			Handler:    _PartyService_DuplicateParty_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

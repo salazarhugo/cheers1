@@ -6,6 +6,7 @@ import {UserService} from "../../../shared/data/services/user.service";
 import {AuthService} from "../../../shared/data/services/auth.service";
 import {Router} from "@angular/router";
 import {ThemeService} from "../../../core/data/theme.service";
+import {UserItem} from "../../../../gen/ts/cheers/type/user/user";
 
 @Component({
     selector: 'app-topbar',
@@ -16,8 +17,8 @@ export class TopbarComponent implements OnInit {
 
     isDarkTheme: Observable<boolean>
     $user: Observable<User | null> = of(null)
-    $searchResults: Observable<User[] | null> = of(null)
-    $recentSearches: Observable<User[] | null> = of(null)
+    $searchResults: Observable<UserItem[] | null> = of(null)
+    $recentSearches: Observable<UserItem[] | null> = of(null)
 
     @ViewChild(MatSidenav) sidenav!: MatSidenav;
     @ViewChild('searchInput', {static: true}) searchInput!: ElementRef;
@@ -56,7 +57,7 @@ export class TopbarComponent implements OnInit {
         await this.router.navigate(['sign-in'])
     }
 
-    onUserClick(user: User) {
+    onUserClick(user: UserItem) {
         localStorage.setItem('recent', JSON.stringify(user));
         this.$recentSearches = of([user])
     }

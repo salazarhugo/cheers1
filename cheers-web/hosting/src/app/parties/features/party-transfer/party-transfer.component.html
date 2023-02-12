@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>Transfer Party {{selectedUser != null ? " to " + selectedUser.username : ''}}</h1>
+
+<div mat-dialog-content>
+    <div class="search-bar" fxLayoutAlign="none center">
+        <mat-icon>search</mat-icon>
+        <input #searchInput placeholder="Search userk" type="text">
+        <button mat-button *ngIf="searchInput.value" matSuffix mat-icon-button aria-label="Clear" (click)="searchInput.value=''">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div (click)="onUserClick(user)" *ngFor="let user of ($searchResults | async)">
+        <app-user-item [user]="user"></app-user-item>
+    </div>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-button (click)="onNoClick()" [mat-dialog-close]="">Cancel</button>
+    <button mat-flat-button color="primary" [mat-dialog-close]="this.selectedUser?.id">Transfer</button>
+</div>

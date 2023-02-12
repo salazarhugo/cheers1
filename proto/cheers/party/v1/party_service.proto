@@ -53,7 +53,7 @@ service PartyService {
    */
   rpc ListParty (ListPartyRequest) returns (ListPartyResponse) {
     option (google.api.http) = {
-      get: "/v1/parties/list"
+      get: "/v1/parties/{user_id}"
     };
   }
 
@@ -76,6 +76,20 @@ service PartyService {
       body: "*"
     };
   }
+
+  rpc DuplicateParty (DuplicatePartyRequest) returns (DuplicatePartyResponse) {
+    option (google.api.http) = {
+      post: "/v1/parties/{party_id}/duplicate"
+      body: "*"
+    };
+  }
+}
+
+message DuplicatePartyRequest {
+  string party_id = 1;
+}
+
+message DuplicatePartyResponse {
 }
 
 message TransferPartyRequest {

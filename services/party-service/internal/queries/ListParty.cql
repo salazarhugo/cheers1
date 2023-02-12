@@ -1,7 +1,7 @@
 MATCH
   (viewer:User {id: $viewerID})
 MATCH
-  (creator:User {id: $userID})-[:POSTED]->(party:Party)
+  (creator:User)-[:POSTED]->(party:Party) WHERE creator.id = $userID or creator.username = $userID
 OPTIONAL MATCH
   (viewer)-[watchStatus:WATCH_STATUS]->(party)
 OPTIONAL MATCH

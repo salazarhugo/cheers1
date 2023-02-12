@@ -1,0 +1,16 @@
+<div class="main" fxLayout="column" fxLayoutAlign="space-between">
+    <div class="parties-container">
+        <section *ngIf="$parties | async as parties">
+            <h2>Your parties</h2>
+            <div *ngIf="parties.length == 0" fxLayout="column" fxLayoutAlign="center center">
+                <h1> No parties at the moment</h1>
+                <h3> Follow people to start seeing parties they share</h3>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="flex-start" fxLayoutGap="16px">
+                <ng-container *ngFor="let party of parties">
+                    <app-party-item [party]="party"></app-party-item>
+                </ng-container>
+            </div>
+        </section>
+    </div>
+</div>

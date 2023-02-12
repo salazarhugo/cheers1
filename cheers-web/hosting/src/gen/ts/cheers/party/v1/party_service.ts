@@ -51,6 +51,13 @@ export function watchStatusToJSON(object: WatchStatus): string {
   }
 }
 
+export interface DuplicatePartyRequest {
+  partyId: string;
+}
+
+export interface DuplicatePartyResponse {
+}
+
 export interface TransferPartyRequest {
   userId: string;
   partyId: string;
@@ -147,6 +154,100 @@ export interface PartyItem {
   mutualUsernames: string[];
   mutualPictures: string[];
 }
+
+function createBaseDuplicatePartyRequest(): DuplicatePartyRequest {
+  return { partyId: "" };
+}
+
+export const DuplicatePartyRequest = {
+  encode(message: DuplicatePartyRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.partyId !== "") {
+      writer.uint32(10).string(message.partyId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DuplicatePartyRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDuplicatePartyRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.partyId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DuplicatePartyRequest {
+    return { partyId: isSet(object.partyId) ? String(object.partyId) : "" };
+  },
+
+  toJSON(message: DuplicatePartyRequest): unknown {
+    const obj: any = {};
+    message.partyId !== undefined && (obj.partyId = message.partyId);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DuplicatePartyRequest>, I>>(base?: I): DuplicatePartyRequest {
+    return DuplicatePartyRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DuplicatePartyRequest>, I>>(object: I): DuplicatePartyRequest {
+    const message = createBaseDuplicatePartyRequest();
+    message.partyId = object.partyId ?? "";
+    return message;
+  },
+};
+
+function createBaseDuplicatePartyResponse(): DuplicatePartyResponse {
+  return {};
+}
+
+export const DuplicatePartyResponse = {
+  encode(_: DuplicatePartyResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DuplicatePartyResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDuplicatePartyResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): DuplicatePartyResponse {
+    return {};
+  },
+
+  toJSON(_: DuplicatePartyResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DuplicatePartyResponse>, I>>(base?: I): DuplicatePartyResponse {
+    return DuplicatePartyResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DuplicatePartyResponse>, I>>(_: I): DuplicatePartyResponse {
+    const message = createBaseDuplicatePartyResponse();
+    return message;
+  },
+};
 
 function createBaseTransferPartyRequest(): TransferPartyRequest {
   return { userId: "", partyId: "" };
@@ -1395,6 +1496,7 @@ export interface PartyService {
   AnswerParty(request: AnswerPartyRequest): Promise<AnswerPartyResponse>;
   ListGoing(request: ListGoingRequest): Promise<ListGoingResponse>;
   TransferParty(request: TransferPartyRequest): Promise<TransferPartyResponse>;
+  DuplicateParty(request: DuplicatePartyRequest): Promise<DuplicatePartyResponse>;
 }
 
 export class PartyServiceClientImpl implements PartyService {
@@ -1413,6 +1515,7 @@ export class PartyServiceClientImpl implements PartyService {
     this.AnswerParty = this.AnswerParty.bind(this);
     this.ListGoing = this.ListGoing.bind(this);
     this.TransferParty = this.TransferParty.bind(this);
+    this.DuplicateParty = this.DuplicateParty.bind(this);
   }
   CreateParty(request: CreatePartyRequest): Promise<CreatePartyResponse> {
     const data = CreatePartyRequest.encode(request).finish();
@@ -1472,6 +1575,12 @@ export class PartyServiceClientImpl implements PartyService {
     const data = TransferPartyRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "TransferParty", data);
     return promise.then((data) => TransferPartyResponse.decode(new _m0.Reader(data)));
+  }
+
+  DuplicateParty(request: DuplicatePartyRequest): Promise<DuplicatePartyResponse> {
+    const data = DuplicatePartyRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "DuplicateParty", data);
+    return promise.then((data) => DuplicatePartyResponse.decode(new _m0.Reader(data)));
   }
 }
 

@@ -27,7 +27,7 @@ export class PartiesComponent implements OnInit {
 
     async ngOnInit() {
         const user = await firstValueFrom(this.userService.user$)
-        this.$myParties = this.partyService.getMyParties()
+        this.$myParties = this.partyService.getMyParties(user.id)
         this.$parties = this.partyService.getPartyFeed().pipe(
             map(parties => parties.map(party => {
                 party.owner = party.hostId == user.id

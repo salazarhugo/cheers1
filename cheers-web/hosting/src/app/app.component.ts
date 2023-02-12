@@ -7,6 +7,7 @@ import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import {environment} from "../environments/environment";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {NotificationService} from "./core/data/notification.service";
+import {OverlayContainer} from "@angular/cdk/overlay";
 
 @Component({
     selector: 'app-root',
@@ -24,6 +25,7 @@ export class AppComponent implements OnInit {
         public themeService: ThemeService,
         private _snackBar: MatSnackBar,
         private notificationService: NotificationService,
+        private overlay: OverlayContainer,
     ) {
         this.auth.isSignInWithEmailLink(window.location.href).then((success: boolean) => {
             if (!success) {
@@ -52,6 +54,11 @@ export class AppComponent implements OnInit {
         this.isDarkTheme = this.themeService.isDarkTheme;
         this.requestPermission();
         this.listen();
+        if (this.isDarkTheme) {
+            this.overlay.getContainerElement().classList.add('dark-theme');
+        } else {
+            this.overlay.getContainerElement().classList.remove('dark-theme');
+        }
     }
 
     openSnackBar(message: string) {

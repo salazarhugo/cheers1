@@ -10,6 +10,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {FlexModule} from "@angular/flex-layout";
 import {MatIconModule} from "@angular/material/icon";
 import {MatMenuModule} from "@angular/material/menu";
+import {PartyItemModule} from "../../../parties/ui/party-item/party-item.module";
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import {MatMenuModule} from "@angular/material/menu";
         FlexModule,
         MatIconModule,
         MatMenuModule,
+        PartyItemModule,
     ],
     exports: [OtherProfileComponent],
 })

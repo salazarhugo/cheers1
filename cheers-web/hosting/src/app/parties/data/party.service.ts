@@ -7,7 +7,7 @@ import {
     AnswerPartyResponse,
     CreatePartyResponse,
     FeedPartyResponse,
-    GetPartyItemResponse, ListGoingRequest, ListGoingResponse,
+    GetPartyItemResponse, ListGoingRequest, ListGoingResponse, ListPartyResponse,
     PartyItem, UpdatePartyRequest, UpdatePartyResponse, WatchStatus
 } from "../../../gen/ts/cheers/party/v1/party_service";
 import {HttpClient} from "@angular/common/http";
@@ -105,9 +105,9 @@ export class PartyService {
             .pipe(map(p => toParty(p.item!)));
     }
 
-    getMyParties(): Observable<Party[]> {
-        return this.http.get<PartyItem[]>(`${environment.GATEWAY_URL}/v1/parties/my?pageSize=10&page=0`)
-            .pipe(map(res => res.map(p => toParty(p))));
+    getMyParties(userId: string): Observable<Party[]> {
+        return this.http.get<ListPartyResponse>(`${environment.GATEWAY_URL}/v1/parties/${userId}?pageSize=10&page=1`)
+            .pipe(map(res => res.items.map(p => toParty(p))));
     }
 
     getFeed(): Observable<Party[]> {

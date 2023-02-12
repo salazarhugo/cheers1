@@ -1,5 +1,5 @@
-<mat-stepper #stepper [linear]="true" style="background: transparent">
-    <mat-step [stepControl]="partyForm">
+<div>
+    <section>
         <h2>Basic Info</h2>
         <div *ngIf="$user | async as user" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 16px;">
             <img [src]="user.picture ? user.picture : 'assets/default_profile_picture.png' "
@@ -17,14 +17,11 @@
                     <input formControlName="name" matInput type="text">
                 </mat-form-field>
             </div>
-            <div>
-                <button color="primary" mat-flat-button matStepperNext type="button">Next</button>
-            </div>
             <mat-spinner *ngIf="isLoading"></mat-spinner>
         </form>
-    </mat-step>
+    </section>
 
-    <mat-step>
+    <section>
         <h2> Date and time </h2>
         <form (ngSubmit)="submit()" [formGroup]="partyForm" style="margin-top: 16px">
             <div fxLayout="row" fxLayoutAlign="none center" fxLayoutGap="16px">
@@ -70,13 +67,10 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div>
-                <button color="primary" mat-flat-button matStepperNext type="button">Next</button>
-            </div>
         </form>
-    </mat-step>
+    </section>
 
-    <mat-step>
+    <section>
         <h2> Location </h2>
         <h3> Add a physical location for people to join your event. </h3>
         <div style="margin-bottom: 16px">
@@ -108,5 +102,5 @@
                 Save & Continue
             </button>
         </div>
-    </mat-step>
-</mat-stepper>
+    </section>
+</div>

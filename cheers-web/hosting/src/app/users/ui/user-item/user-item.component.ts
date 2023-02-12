@@ -10,6 +10,7 @@ import {UserItem} from "../../../../gen/ts/cheers/type/user/user";
 export class UserItemComponent implements OnInit {
 
     @Input() user: UserItem
+    @Input() isSelected: boolean = false;
     @Output() onClick = new EventEmitter<UserItem>()
 
     constructor() {

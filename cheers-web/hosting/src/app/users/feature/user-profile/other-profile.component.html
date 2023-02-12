@@ -38,7 +38,12 @@
             </div>
         </mat-tab>
 
-        <mat-tab label="Events">
+        <mat-tab label="Parties" *ngIf="$parties | async as parties">
+            <div fxLayout="row wrap" fxLayoutAlign="flex-start" fxLayoutGap="16px">
+                <ng-container *ngFor="let party of parties">
+                    <app-party-item [party]="party"></app-party-item>
+                </ng-container>
+            </div>
         </mat-tab>
 
         <mat-tab label="Tags"> Content 3</mat-tab>

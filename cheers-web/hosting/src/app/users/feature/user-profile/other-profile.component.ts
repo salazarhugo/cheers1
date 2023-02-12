@@ -10,6 +10,8 @@ import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {AuthService} from "../../../shared/data/services/auth.service";
 import {ChatService} from "../../../chats/data/chat.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {Party} from "../../../shared/data/models/party.model";
+import {PartyService} from "../../../parties/data/party.service";
 
 @Component({
     selector: 'app-user-profile',
@@ -20,6 +22,7 @@ export class OtherProfileComponent implements OnInit {
 
     $user: Observable<User | null> = of(null)
     $posts: Observable<PostResponse[] | null> = of(null)
+    $parties: Observable<Party[] | null> = of(null)
     username: string | null = null
     isAdmin: boolean = false
 
@@ -31,6 +34,7 @@ export class OtherProfileComponent implements OnInit {
         private auth: AngularFireAuth,
         private authService: AuthService,
         private chatService: ChatService,
+        private partyService: PartyService,
         private snackbar: MatSnackBar,
     ) {
     }
@@ -47,6 +51,7 @@ export class OtherProfileComponent implements OnInit {
             if (username) {
                 this.$user = this.userService.getUser(username)
                 this.$posts = this.postService.getUserPosts(username)
+                this.$parties = this.partyService.getMyParties(username)
             }
         })
     }
