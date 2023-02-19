@@ -5,7 +5,7 @@ import {BehaviorSubject, firstValueFrom, map, Observable} from "rxjs";
 import {Ticket} from "../../shared/data/models/ticket.model";
 import {
     AnswerPartyResponse,
-    CreatePartyResponse,
+    CreatePartyResponse, DuplicatePartyRequest, DuplicatePartyResponse,
     FeedPartyResponse,
     GetPartyItemResponse, ListGoingRequest, ListGoingResponse, ListPartyResponse,
     PartyItem, UpdatePartyRequest, UpdatePartyResponse, WatchStatus
@@ -66,6 +66,10 @@ export class PartyService {
         })
     }
 
+    duplicateParty(partyId: string): Observable<DuplicatePartyResponse> {
+        return this.http.post<DuplicatePartyResponse>(`${environment.GATEWAY_URL}/v1/parties/${partyId}/duplicate`, {})
+    }
+
     createParty(party: Party): Observable<CreatePartyResponse> {
         return this.http.post<CreatePartyResponse>(`${environment.GATEWAY_URL}/v1/parties`, {
             party: {
@@ -106,7 +110,7 @@ export class PartyService {
     }
 
     getMyParties(userId: string): Observable<Party[]> {
-        return this.http.get<ListPartyResponse>(`${environment.GATEWAY_URL}/v1/parties/${userId}?pageSize=10&page=1`)
+        return this.http.get<ListPartyResponse>(`${environment.GATEWAY_URL}/v1/parties/${userId}/list?pageSize=10&page=1`)
             .pipe(map(res => res.items.map(p => toParty(p))));
     }
 
@@ -115,7 +119,7 @@ export class PartyService {
     }
 
     getPartyFeed(): Observable<Party[]> {
-        return this.http.get<FeedPartyResponse>(`${environment.GATEWAY_URL}/v1/parties/feed?pageSize=10&page=0`)
+        return this.http.get<FeedPartyResponse>(`${environment.GATEWAY_URL}/v1/parties/feed`)
             .pipe(map(res => res.items.map(p => toParty(p))));
     }
 }

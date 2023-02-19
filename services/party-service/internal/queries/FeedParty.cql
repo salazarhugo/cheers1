@@ -34,4 +34,4 @@ RETURN
     mutual_usernames: mutual_usernames,
     mutual_pictures: mutual_pictures
   }
-  ORDER BY party.createTime DESC
+  ORDER BY party.startDate DESC

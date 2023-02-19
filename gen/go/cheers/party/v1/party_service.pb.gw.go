@@ -781,7 +781,7 @@ func RegisterPartyServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/cheers.party.v1.PartyService/ListParty", runtime.WithHTTPPathPattern("/v1/parties/{user_id}"))
+		annotatedContext, err = runtime.AnnotateIncomingContext(ctx, mux, req, "/cheers.party.v1.PartyService/ListParty", runtime.WithHTTPPathPattern("/v1/parties/{user_id}/list"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1077,7 +1077,7 @@ func RegisterPartyServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
 		var err error
 		var annotatedContext context.Context
-		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/cheers.party.v1.PartyService/ListParty", runtime.WithHTTPPathPattern("/v1/parties/{user_id}"))
+		annotatedContext, err = runtime.AnnotateContext(ctx, mux, req, "/cheers.party.v1.PartyService/ListParty", runtime.WithHTTPPathPattern("/v1/parties/{user_id}/list"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1197,7 +1197,7 @@ var (
 
 	pattern_PartyService_FeedParty_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "parties", "feed"}, ""))
 
-	pattern_PartyService_ListParty_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "parties", "user_id"}, ""))
+	pattern_PartyService_ListParty_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "parties", "user_id", "list"}, ""))
 
 	pattern_PartyService_AnswerParty_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2, 2, 3}, []string{"v1", "parties", "party_id", "answer"}, ""))
 

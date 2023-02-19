@@ -24,6 +24,8 @@ export interface Party {
   latitude: number;
   /** The longitude in degrees. It must be in the range [-180.0, +180.0]. */
   longitude: number;
+  /** The minimum price */
+  minimumPrice: number;
 }
 
 function createBaseParty(): Party {
@@ -41,6 +43,7 @@ function createBaseParty(): Party {
     createTime: 0,
     latitude: 0,
     longitude: 0,
+    minimumPrice: 0,
   };
 }
 
@@ -84,6 +87,9 @@ export const Party = {
     }
     if (message.longitude !== 0) {
       writer.uint32(121).double(message.longitude);
+    }
+    if (message.minimumPrice !== 0) {
+      writer.uint32(128).int64(message.minimumPrice);
     }
     return writer;
   },
@@ -134,6 +140,9 @@ export const Party = {
         case 15:
           message.longitude = reader.double();
           break;
+        case 16:
+          message.minimumPrice = longToNumber(reader.int64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -157,6 +166,7 @@ export const Party = {
       createTime: isSet(object.createTime) ? Number(object.createTime) : 0,
       latitude: isSet(object.latitude) ? Number(object.latitude) : 0,
       longitude: isSet(object.longitude) ? Number(object.longitude) : 0,
+      minimumPrice: isSet(object.minimumPrice) ? Number(object.minimumPrice) : 0,
     };
   },
 
@@ -175,6 +185,7 @@ export const Party = {
     message.createTime !== undefined && (obj.createTime = Math.round(message.createTime));
     message.latitude !== undefined && (obj.latitude = message.latitude);
     message.longitude !== undefined && (obj.longitude = message.longitude);
+    message.minimumPrice !== undefined && (obj.minimumPrice = Math.round(message.minimumPrice));
     return obj;
   },
 
@@ -197,6 +208,7 @@ export const Party = {
     message.createTime = object.createTime ?? 0;
     message.latitude = object.latitude ?? 0;
     message.longitude = object.longitude ?? 0;
+    message.minimumPrice = object.minimumPrice ?? 0;
     return message;
   },
 };

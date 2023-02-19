@@ -34,6 +34,7 @@ const routes: Routes = [
     },
     {
         path: 'p/:id',
+        resolve: {user: UserResolver, party: PartyResolver},
         loadChildren: () => import('./parties/features/party-detail/party-detail.module').then(m => m.PartyDetailModule)
     },
     {
@@ -42,7 +43,7 @@ const routes: Routes = [
     },
     {
         path: 'manage/parties',
-        component: ManagePartyComponent, resolve: {party: PartyResolver},
+        component: ManagePartyComponent, resolve: {user: UserResolver, party: PartyResolver},
         loadChildren: () => import('./manage-parties/feature/manage-party-shell/manage-party-shell.module').then(m => m.ManagePartyShellModule)
     },
     {

@@ -3,6 +3,10 @@ import {RouterModule, Routes} from '@angular/router';
 
 const routes: Routes = [
     {
+        path: '',
+        loadChildren: () => import('../party-detail/party-detail.module').then(m => m.PartyDetailModule)
+    },
+    {
         path: 'feed',
         loadChildren: () => import('../party-feed/party-feed.module').then(m => m.PartyFeedModule)
     },

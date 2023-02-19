@@ -12,6 +12,7 @@ import {PartyInviteComponent} from "../../ui/party-invite/party-invite.component
 import {WatchStatus} from "../../../../gen/ts/cheers/party/v1/party_service";
 import {PostDeleteDialogComponent} from "../../../posts/ui/post-delete-dialog/post-delete-dialog.component";
 import {PartyTransferComponent} from "../party-transfer/party-transfer.component";
+import {PartyDuplicateComponent} from "../party-duplicate/party-duplicate.component";
 
 @Component({
     selector: 'app-party-detail',
@@ -40,7 +41,7 @@ export class PartyComponent implements OnInit {
             const partyId = params.get("id")
             this.partyId = params.get("id")
             if (partyId)
-                this.party = await this.partyService.getParty(partyId).toPromise()
+                this.party = await firstValueFrom(this.partyService.getParty(partyId));
         })
     }
 
@@ -78,6 +79,20 @@ export class PartyComponent implements OnInit {
             party.going = true
             await this.partyService.answerParty(this.partyId!, WatchStatus.GOING)
         }
+    }
+
+    onDuplicateClick() {
+        const dialogRef = this.matDialog.open(PartyDuplicateComponent, {
+            panelClass: 'cheers-dialog'
+        });
+
+        dialogRef.afterClosed().subscribe(async result => {
+            if (result == false)
+                return;
+
+            await firstValueFrom(this.partyService.duplicateParty(this.partyId!));
+            this.snackBar.open("Duplicated party", "Hide");
+        });
     }
 
     onTransferClick() {

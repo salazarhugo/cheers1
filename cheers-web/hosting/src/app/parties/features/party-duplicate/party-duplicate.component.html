@@ -1,1 +1,11 @@
-<p>party-duplicate works!</p>
+<h1 mat-dialog-title>Duplicate Party</h1>
+
+<div mat-dialog-content>
+    <p>
+        Are you sure you want to duplicate thie party? This will create a new party.
+    </p>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-button (click)="onNoClick()" [mat-dialog-close]="false">Cancel</button>
+    <button mat-flat-button color="primary" [mat-dialog-close]="true">Duplicate</button>
+</div>
