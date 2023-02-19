@@ -41,7 +41,7 @@ func main() {
 
 	httpMux := http.NewServeMux()
 	httpMux.HandleFunc("/", app.PaymentSub)
-	httpMux.HandleFunc("/ticket-sub", app.PaymentSub)
+	httpMux.HandleFunc("/ticket-sub", app.TicketSub)
 
 	grpcS := grpc.NewServer(
 		grpc.UnaryInterceptor(auth.UnaryInterceptor),

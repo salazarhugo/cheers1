@@ -249,6 +249,8 @@ github.com/rogpeppe/fastuuid v1.2.0/go.mod h1:jVj6XXZzXRy/MSR5jhDC/2q6DgLz+nrA6L
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20221209142646-301101629442 h1:ioxbtKvTLvTShwXS5zaGGt3IyE9i74IjBZegTxQgss4=
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20221209142646-301101629442/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
+github.com/salazarhugo/cheers1/gen/go v0.0.0-20230219162711-1aa6b0e41146 h1:BcLjhYfOTMNsYt76R62Gw2m2QTlso1vwBD6OHyFb7KI=
+github.com/salazarhugo/cheers1/gen/go v0.0.0-20230219162711-1aa6b0e41146/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
 github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221113151338-1ae307745902 h1:FUv5o53xNKEz0guaQBsTq4Cl/GWkaT+B0S57qnrNODw=
 github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221113151338-1ae307745902/go.mod h1:OoyrE7E7Em/DgZ/UbFrXaPuUiQZv/VcbJsTuofpA9JY=
 github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221109222439-50f4ec2ba1bb h1:XE7Ae6vhHDI7radUf09o5Oi8Na7+xE6GEQcBToFQMW0=

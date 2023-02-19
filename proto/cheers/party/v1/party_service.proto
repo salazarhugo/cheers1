@@ -190,8 +190,8 @@ message PartyItem {
 }
 
 enum WatchStatus {
-  GOING = 0;
-  INTERESTED = 1;
-  UNWATCHED = 2;
+  UNWATCHED = 0;
+  GOING = 1;
+  INTERESTED = 2;
   MAYBE = 3;
 }

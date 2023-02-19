@@ -21,6 +21,7 @@ type PartyRepository interface {
 	UpdateWatchStatus(userID string, partyID string, status pb.WatchStatus) error
 	ListGoing(userID string, partyID string) ([]*user.UserItem, error)
 	UnGoingParty(userID string, partyID string) error
+	UpdateMinimumPrice(price int64, partyID string) error
 }
 
 type partyRepository struct {

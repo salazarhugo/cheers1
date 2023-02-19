@@ -1,8 +1,6 @@
 package app
 
 import (
-	"context"
-	"github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/ticket/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
@@ -19,52 +17,25 @@ func TicketSub(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Println(event)
 
-	order := event.Order
-
-	userID, err := GetUserId(order.CustomerId)
-	partyID, err := GetPartyId(event.GetPaymentIntentId(), order.CustomerId)
-
 	repo := repository.NewPartyRepository(utils.GetDriver())
-	err = repo.UpdateParty(userID, partyID, party.WatchStatus_GOING)
+
+	switch e := event.Event.(type) {
+	case *ticket.TicketEvent_Create:
+		ticket := e.Create.Ticket
+		err = repo.UpdateMinimumPrice(ticket.Price, ticket.PartyId)
+	case *ticket.TicketEvent_Delete:
+		ticket := e.Delete.Ticket
+		err = repo.UpdateMinimumPrice(-1, ticket.PartyId)
+	case *ticket.TicketEvent_Update:
+		ticket := e.Update.Ticket
+		err = repo.UpdateMinimumPrice(ticket.Price, ticket.PartyId)
+	default:
+	}
+
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	return
-}
-
-func GetPartyId(paymentIntentId string, customerId string) (string, error) {
-	ctx := context.Background()
-	app := utils.InitializeAppDefault()
-	client, err := app.Firestore(ctx)
-	if err != nil {
-		return "", err
-	}
-
-	doc, err := client.Collection("orders").Doc(paymentIntentId).Get(ctx)
-	if err != nil {
-		return "", err
-	}
-	orderMap := doc.Data()
-	partyId := orderMap["partyId"].(string)
-
-	return partyId, nil
-}
-
-func GetUserId(customerId string) (string, error) {
-	ctx := context.Background()
-	app := utils.InitializeAppDefault()
-	client, err := app.Firestore(ctx)
-	if err != nil {
-		return "", err
-	}
-
-	snapshot := client.Collection("stripe_customers").Where("customer_id", "==", customerId).Documents(ctx)
-	doc, err := snapshot.Next()
-	if err != nil {
-		return "", err
-	}
-
-	return doc.Ref.ID, nil
 }

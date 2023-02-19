@@ -7,9 +7,9 @@ import { User, UserItem } from "../../type/user/user";
 export const protobufPackage = "cheers.party.v1";
 
 export enum WatchStatus {
-  GOING = 0,
-  INTERESTED = 1,
-  UNWATCHED = 2,
+  UNWATCHED = 0,
+  GOING = 1,
+  INTERESTED = 2,
   MAYBE = 3,
   UNRECOGNIZED = -1,
 }
@@ -17,14 +17,14 @@ export enum WatchStatus {
 export function watchStatusFromJSON(object: any): WatchStatus {
   switch (object) {
     case 0:
-    case "GOING":
-      return WatchStatus.GOING;
-    case 1:
-    case "INTERESTED":
-      return WatchStatus.INTERESTED;
-    case 2:
     case "UNWATCHED":
       return WatchStatus.UNWATCHED;
+    case 1:
+    case "GOING":
+      return WatchStatus.GOING;
+    case 2:
+    case "INTERESTED":
+      return WatchStatus.INTERESTED;
     case 3:
     case "MAYBE":
       return WatchStatus.MAYBE;
@@ -37,12 +37,12 @@ export function watchStatusFromJSON(object: any): WatchStatus {
 
 export function watchStatusToJSON(object: WatchStatus): string {
   switch (object) {
+    case WatchStatus.UNWATCHED:
+      return "UNWATCHED";
     case WatchStatus.GOING:
       return "GOING";
     case WatchStatus.INTERESTED:
       return "INTERESTED";
-    case WatchStatus.UNWATCHED:
-      return "UNWATCHED";
     case WatchStatus.MAYBE:
       return "MAYBE";
     case WatchStatus.UNRECOGNIZED:
