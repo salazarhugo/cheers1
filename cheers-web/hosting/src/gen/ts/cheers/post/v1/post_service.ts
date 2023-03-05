@@ -22,7 +22,15 @@ export interface CreatePostRequest {
 }
 
 export interface GetPostRequest {
-  id: string;
+  postId: string;
+}
+
+export interface GetPostResponse {
+  post: Post | undefined;
+}
+
+export interface GetPostItemRequest {
+  postId: string;
 }
 
 export interface UpdatePostRequest {
@@ -274,13 +282,13 @@ export const CreatePostRequest = {
 };
 
 function createBaseGetPostRequest(): GetPostRequest {
-  return { id: "" };
+  return { postId: "" };
 }
 
 export const GetPostRequest = {
   encode(message: GetPostRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== "") {
-      writer.uint32(10).string(message.id);
+    if (message.postId !== "") {
+      writer.uint32(10).string(message.postId);
     }
     return writer;
   },
@@ -293,7 +301,7 @@ export const GetPostRequest = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.string();
+          message.postId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -304,12 +312,12 @@ export const GetPostRequest = {
   },
 
   fromJSON(object: any): GetPostRequest {
-    return { id: isSet(object.id) ? String(object.id) : "" };
+    return { postId: isSet(object.postId) ? String(object.postId) : "" };
   },
 
   toJSON(message: GetPostRequest): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = message.id);
+    message.postId !== undefined && (obj.postId = message.postId);
     return obj;
   },
 
@@ -319,7 +327,109 @@ export const GetPostRequest = {
 
   fromPartial<I extends Exact<DeepPartial<GetPostRequest>, I>>(object: I): GetPostRequest {
     const message = createBaseGetPostRequest();
-    message.id = object.id ?? "";
+    message.postId = object.postId ?? "";
+    return message;
+  },
+};
+
+function createBaseGetPostResponse(): GetPostResponse {
+  return { post: undefined };
+}
+
+export const GetPostResponse = {
+  encode(message: GetPostResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.post !== undefined) {
+      Post.encode(message.post, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetPostResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetPostResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.post = Post.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetPostResponse {
+    return { post: isSet(object.post) ? Post.fromJSON(object.post) : undefined };
+  },
+
+  toJSON(message: GetPostResponse): unknown {
+    const obj: any = {};
+    message.post !== undefined && (obj.post = message.post ? Post.toJSON(message.post) : undefined);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetPostResponse>, I>>(base?: I): GetPostResponse {
+    return GetPostResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetPostResponse>, I>>(object: I): GetPostResponse {
+    const message = createBaseGetPostResponse();
+    message.post = (object.post !== undefined && object.post !== null) ? Post.fromPartial(object.post) : undefined;
+    return message;
+  },
+};
+
+function createBaseGetPostItemRequest(): GetPostItemRequest {
+  return { postId: "" };
+}
+
+export const GetPostItemRequest = {
+  encode(message: GetPostItemRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.postId !== "") {
+      writer.uint32(10).string(message.postId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetPostItemRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetPostItemRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.postId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetPostItemRequest {
+    return { postId: isSet(object.postId) ? String(object.postId) : "" };
+  },
+
+  toJSON(message: GetPostItemRequest): unknown {
+    const obj: any = {};
+    message.postId !== undefined && (obj.postId = message.postId);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetPostItemRequest>, I>>(base?: I): GetPostItemRequest {
+    return GetPostItemRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetPostItemRequest>, I>>(object: I): GetPostItemRequest {
+    const message = createBaseGetPostItemRequest();
+    message.postId = object.postId ?? "";
     return message;
   },
 };
@@ -1209,7 +1319,8 @@ export const PostResponse = {
 export interface PostService {
   /** Create a new post */
   CreatePost(request: CreatePostRequest): Promise<PostResponse>;
-  GetPost(request: GetPostRequest): Promise<PostResponse>;
+  GetPost(request: GetPostRequest): Promise<GetPostResponse>;
+  GetPostItem(request: GetPostItemRequest): Promise<PostResponse>;
   UpdatePost(request: UpdatePostRequest): Promise<PostResponse>;
   DeletePost(request: DeletePostRequest): Promise<Empty>;
   /** List posts of a specific user */
@@ -1232,6 +1343,7 @@ export class PostServiceClientImpl implements PostService {
     this.rpc = rpc;
     this.CreatePost = this.CreatePost.bind(this);
     this.GetPost = this.GetPost.bind(this);
+    this.GetPostItem = this.GetPostItem.bind(this);
     this.UpdatePost = this.UpdatePost.bind(this);
     this.DeletePost = this.DeletePost.bind(this);
     this.ListPost = this.ListPost.bind(this);
@@ -1248,9 +1360,15 @@ export class PostServiceClientImpl implements PostService {
     return promise.then((data) => PostResponse.decode(new _m0.Reader(data)));
   }
 
-  GetPost(request: GetPostRequest): Promise<PostResponse> {
+  GetPost(request: GetPostRequest): Promise<GetPostResponse> {
     const data = GetPostRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetPost", data);
+    return promise.then((data) => GetPostResponse.decode(new _m0.Reader(data)));
+  }
+
+  GetPostItem(request: GetPostItemRequest): Promise<PostResponse> {
+    const data = GetPostItemRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetPostItem", data);
     return promise.then((data) => PostResponse.decode(new _m0.Reader(data)));
   }
 

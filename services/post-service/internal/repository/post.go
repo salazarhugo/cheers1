@@ -11,7 +11,8 @@ import (
 
 type PostRepository interface {
 	CreatePost(userID string, post *postpb.Post) (string, error)
-	GetPost(userID string, postID string) (*pb.PostResponse, error)
+	GetPost(postID string) (*postpb.Post, error)
+	GetPostItem(userID string, postID string) (*pb.PostResponse, error)
 	UpdatePostLastComment(user *user.UserItem, comment *comment.Comment) error
 	DeletePost(userID string, postID string) error
 

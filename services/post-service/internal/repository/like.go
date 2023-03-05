@@ -32,8 +32,7 @@ func (p *postRepository) LikePost(
 	}
 
 	go func() {
-		postResponse, err := p.GetPost(userID, postID)
-		post := postResponse.GetPost()
+		post, err := p.GetPost(postID)
 		err = pubsub.PublishProtoWithBinaryEncoding("post-topic", &pb.PostEvent{
 			Event: &pb.PostEvent_Like{
 				Like: &pb.LikePost{

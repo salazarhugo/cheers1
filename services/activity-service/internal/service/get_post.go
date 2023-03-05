@@ -28,7 +28,7 @@ func GetPost(postId string) (*postpb.Post, error) {
 
 	client := post.NewPostServiceClient(conn)
 
-	response, err := client.GetPost(ctx, &post.GetPostRequest{Id: postId})
+	response, err := client.GetPost(ctx, &post.GetPostRequest{PostId: postId})
 	if err != nil {
 		log.Println(err)
 	}

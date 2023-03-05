@@ -2,27 +2,25 @@ package repository
 
 import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
-	pb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
-func (p *userRepository) GetUser(
-	userID string,
-	otherUserID string,
-) (*pb.GetUserResponse, error) {
+func (p *userRepository) GetUserNode(
+	userId string,
+) (*user.User, error) {
 	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close()
 
-	cypher, err := utils.GetCypher("internal/queries/GetUser.cql")
+	cypher, err := utils.GetCypher("internal/queries/GetUserNode.cql")
 	if err != nil {
 		return nil, err
 	}
 
 	params := map[string]interface{}{
-		"userID":      userID,
-		"otherUserID": otherUserID,
+		"userID": userId,
 	}
 
 	result, err := session.Run(*cypher, params)
@@ -30,7 +28,7 @@ func (p *userRepository) GetUser(
 		return nil, err
 	}
 
-	user := &pb.GetUserResponse{}
+	user := &user.User{}
 
 	if result.Next() {
 		m := result.Record().Values[0]

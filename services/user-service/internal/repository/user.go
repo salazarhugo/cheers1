@@ -16,6 +16,7 @@ type UserRepository interface {
 		email string,
 	) (string, error)
 
+	GetUserNode(userId string) (*user.User, error)
 	GetUser(userID string, otherUserID string) (*pb.GetUserResponse, error)
 	UpdateUser(userID string, user *user.User) error
 	DeleteUser(id string) error

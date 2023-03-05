@@ -70,6 +70,10 @@ export interface ListFollowingResponse {
   users: UserItem[];
 }
 
+export interface GetUserNodeResponse {
+  user: User | undefined;
+}
+
 export interface GetUserResponse {
   user: User | undefined;
   postCount: number;
@@ -101,6 +105,10 @@ export interface FollowUserRequest {
 
 export interface SearchUserRequest {
   query: string;
+}
+
+export interface GetUserNodeRequest {
+  userId: string;
 }
 
 export interface GetUserRequest {
@@ -966,6 +974,57 @@ export const ListFollowingResponse = {
   },
 };
 
+function createBaseGetUserNodeResponse(): GetUserNodeResponse {
+  return { user: undefined };
+}
+
+export const GetUserNodeResponse = {
+  encode(message: GetUserNodeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.user !== undefined) {
+      User.encode(message.user, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetUserNodeResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetUserNodeResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.user = User.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetUserNodeResponse {
+    return { user: isSet(object.user) ? User.fromJSON(object.user) : undefined };
+  },
+
+  toJSON(message: GetUserNodeResponse): unknown {
+    const obj: any = {};
+    message.user !== undefined && (obj.user = message.user ? User.toJSON(message.user) : undefined);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetUserNodeResponse>, I>>(base?: I): GetUserNodeResponse {
+    return GetUserNodeResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetUserNodeResponse>, I>>(object: I): GetUserNodeResponse {
+    const message = createBaseGetUserNodeResponse();
+    message.user = (object.user !== undefined && object.user !== null) ? User.fromPartial(object.user) : undefined;
+    return message;
+  },
+};
+
 function createBaseGetUserResponse(): GetUserResponse {
   return {
     user: undefined,
@@ -1366,6 +1425,57 @@ export const SearchUserRequest = {
   },
 };
 
+function createBaseGetUserNodeRequest(): GetUserNodeRequest {
+  return { userId: "" };
+}
+
+export const GetUserNodeRequest = {
+  encode(message: GetUserNodeRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetUserNodeRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseGetUserNodeRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.userId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): GetUserNodeRequest {
+    return { userId: isSet(object.userId) ? String(object.userId) : "" };
+  },
+
+  toJSON(message: GetUserNodeRequest): unknown {
+    const obj: any = {};
+    message.userId !== undefined && (obj.userId = message.userId);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<GetUserNodeRequest>, I>>(base?: I): GetUserNodeRequest {
+    return GetUserNodeRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetUserNodeRequest>, I>>(object: I): GetUserNodeRequest {
+    const message = createBaseGetUserNodeRequest();
+    message.userId = object.userId ?? "";
+    return message;
+  },
+};
+
 function createBaseGetUserRequest(): GetUserRequest {
   return { userId: "" };
 }
@@ -1568,6 +1678,7 @@ export const DeleteUserRequest = {
 
 export interface UserService {
   CreateUser(request: CreateUserRequest): Promise<CreateUserResponse>;
+  GetUserNode(request: GetUserNodeRequest): Promise<GetUserNodeResponse>;
   GetUser(request: GetUserRequest): Promise<GetUserResponse>;
   UpdateUser(request: UpdateUserRequest): Promise<User>;
   DeleteUser(request: DeleteUserRequest): Promise<Empty>;
@@ -1590,6 +1701,7 @@ export class UserServiceClientImpl implements UserService {
     this.service = opts?.service || "cheers.user.v1.UserService";
     this.rpc = rpc;
     this.CreateUser = this.CreateUser.bind(this);
+    this.GetUserNode = this.GetUserNode.bind(this);
     this.GetUser = this.GetUser.bind(this);
     this.UpdateUser = this.UpdateUser.bind(this);
     this.DeleteUser = this.DeleteUser.bind(this);
@@ -1608,6 +1720,12 @@ export class UserServiceClientImpl implements UserService {
     const data = CreateUserRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateUser", data);
     return promise.then((data) => CreateUserResponse.decode(new _m0.Reader(data)));
+  }
+
+  GetUserNode(request: GetUserNodeRequest): Promise<GetUserNodeResponse> {
+    const data = GetUserNodeRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "GetUserNode", data);
+    return promise.then((data) => GetUserNodeResponse.decode(new _m0.Reader(data)));
   }
 
   GetUser(request: GetUserRequest): Promise<GetUserResponse> {
