@@ -22,7 +22,7 @@ func (s *Server) GetUser(
 	response, err := s.userRepository.GetUser(userID, otherUserID)
 	if err != nil {
 		log.Error(err)
-		return nil, status.Error(codes.Internal, "failed to get user")
+		return nil, err
 	}
 
 	return response, nil

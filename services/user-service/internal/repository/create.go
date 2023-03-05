@@ -10,7 +10,10 @@ import (
 
 func (p *userRepository) CreateUser(
 	userID string,
-	user *user.User,
+	username string,
+	name string,
+	picture string,
+	email string,
 ) (string, error) {
 	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close()
@@ -20,8 +23,13 @@ func (p *userRepository) CreateUser(
 		return "", err
 	}
 
+	user := &user.User{}
 	user.Id = userID
 	user.CreateTime = time.Now().Unix()
+	user.Username = username
+	user.Name = name
+	user.Picture = picture
+	user.Email = email
 
 	m, err := utils.ProtoToMap(user)
 	if err != nil {

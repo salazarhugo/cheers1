@@ -37,6 +37,17 @@ func FriendShipSub(w http.ResponseWriter, r *http.Request) {
 		err = repo.SendNotification(map[string][]string{created.To: tokens}, data)
 	case *friendship.FriendshipEvent_DeletedFriendRequest:
 	case *friendship.FriendshipEvent_CreatedFriend:
+		created := event.CreatedFriend
+		user, err := repository.GetUser(created.From)
+		if err != nil {
+			return
+		}
+		tokens, err := repo.GetUserTokens(created.To)
+		if err != nil {
+			return
+		}
+		data := notifications.AcceptedFriendRequestNotification(user.Username, user.Picture)
+		err = repo.SendNotification(map[string][]string{created.To: tokens}, data)
 	case *friendship.FriendshipEvent_DeletedFriend:
 	}
 

@@ -22,21 +22,19 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 
 	repo := repository.NewRepository()
 
-	log.Println(repo)
-
-	switch event.GetType() {
-	case post.PostEvent_LIKE:
-		user := event.
+	switch event := event.Event.(type) {
+	case *post.PostEvent_Like:
+		user := event.Like.User
 		activity := &activity2.Activity{
 			Id:           uuid.New().String(),
-			Type:         activity2.Activity_FOLLOW,
-			Text:         user.Username + " started following you",
+			Type:         activity2.Activity_LIKE_POST,
+			Text:         user.Username + " liked your post",
 			Picture:      user.Picture,
 			UserId:       user.Id,
 			Timestamp:    time.Now().Unix(),
 			MediaPicture: "",
 			MediaId:      "",
 		}
-		err = repo.CreateActivity(event.Follow.FollowedUser.Id, activity)
+		err = repo.CreateActivity(event.Like.Post.CreatorId, activity)
 	}
 }

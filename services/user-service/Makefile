@@ -1,5 +1,8 @@
+build:
+	go build cmd/app/main.go
+
 run:
-	cd cmd/app; go run main.go
+	go run cmd/app/main.go
 
 deploy:
 	./deploy.sh

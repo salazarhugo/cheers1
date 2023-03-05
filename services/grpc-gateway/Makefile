@@ -1,5 +1,5 @@
 run:
-	cd cmd/app;  go run main.go cors.go
+	cd cmd/app;  go run main.go cors.go -prod=false
 
 deploy:
 	./deploy.sh

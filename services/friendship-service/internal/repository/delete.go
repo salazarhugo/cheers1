@@ -10,7 +10,10 @@ func (r repository) DeleteFriendRequest(
 	userId string,
 	friendId string,
 ) error {
-	err := r.redis.ZRem(context.Background(), getKeyFriendRequests(friendId), userId).Err()
+	err := r.redis.SRem(context.Background(), getKeyFriendRequests(userId), friendId).Err()
+	if err != nil {
+		return err
+	}
 
 	err = pubsub.PublishProtoWithBinaryEncoding("friendship-topic", &friendship.FriendshipEvent{
 		Event: &friendship.FriendshipEvent_DeletedFriendRequest{

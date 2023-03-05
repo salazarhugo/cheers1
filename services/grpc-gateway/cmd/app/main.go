@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"crypto/x509"
+	"flag"
 	"github.com/felixge/httpsnoop"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/account/v1"
@@ -27,7 +28,6 @@ import (
 	"log"
 	"net"
 	"net/http"
-	"os"
 	"strings"
 	"time"
 )
@@ -70,12 +70,13 @@ func main() {
 		log.Println(err)
 	}
 
-	cred := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
-	log.Println(cred)
+	//cred := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
+	//log.Println(cred)
 
 	transportCredentials := credentials.NewTLS(&tls.Config{
 		RootCAs: systemRoots,
 	})
+	log.Println(transportCredentials)
 
 	//perRPC, err := oauth.NewServiceAccountFromFile("../../api-gateway-service-account.json", "https://www.googleapis.com/auth/cloud-platform")
 
@@ -84,10 +85,17 @@ func main() {
 	}
 
 	ctx := context.Background()
+	isProd := flag.Bool("prod", true, "True if its in a production environment ")
+	flag.Parse()
+
 	options := []grpc.DialOption{
-		grpc.WithTransportCredentials(transportCredentials),
-		//grpc.WithPerRPCCredentials(perRPC),
 		grpc.WithUnaryInterceptor(clientInterceptor),
+	}
+
+	if !*isProd {
+		options = append(options, grpc.WithTransportCredentials(transportCredentials))
+	} else {
+		options = append(options, grpc.WithInsecure())
 	}
 
 	err = chat.RegisterChatServiceHandlerFromEndpoint(ctx, mux, "chat-service-r3a2dr4u4a-nw.a.run.app:443", options)
