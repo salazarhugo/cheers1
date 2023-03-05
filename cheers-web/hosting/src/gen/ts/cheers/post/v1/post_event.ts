@@ -18,8 +18,8 @@ export interface CreatePost {
 }
 
 export interface LikePost {
-  post: Post | undefined;
-  user: UserItem | undefined;
+  postId: string;
+  userId: string;
 }
 
 export interface DeletePost {
@@ -164,16 +164,16 @@ export const CreatePost = {
 };
 
 function createBaseLikePost(): LikePost {
-  return { post: undefined, user: undefined };
+  return { postId: "", userId: "" };
 }
 
 export const LikePost = {
   encode(message: LikePost, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.post !== undefined) {
-      Post.encode(message.post, writer.uint32(10).fork()).ldelim();
+    if (message.postId !== "") {
+      writer.uint32(10).string(message.postId);
     }
-    if (message.user !== undefined) {
-      UserItem.encode(message.user, writer.uint32(18).fork()).ldelim();
+    if (message.userId !== "") {
+      writer.uint32(18).string(message.userId);
     }
     return writer;
   },
@@ -186,10 +186,10 @@ export const LikePost = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.post = Post.decode(reader, reader.uint32());
+          message.postId = reader.string();
           break;
         case 2:
-          message.user = UserItem.decode(reader, reader.uint32());
+          message.userId = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -201,15 +201,15 @@ export const LikePost = {
 
   fromJSON(object: any): LikePost {
     return {
-      post: isSet(object.post) ? Post.fromJSON(object.post) : undefined,
-      user: isSet(object.user) ? UserItem.fromJSON(object.user) : undefined,
+      postId: isSet(object.postId) ? String(object.postId) : "",
+      userId: isSet(object.userId) ? String(object.userId) : "",
     };
   },
 
   toJSON(message: LikePost): unknown {
     const obj: any = {};
-    message.post !== undefined && (obj.post = message.post ? Post.toJSON(message.post) : undefined);
-    message.user !== undefined && (obj.user = message.user ? UserItem.toJSON(message.user) : undefined);
+    message.postId !== undefined && (obj.postId = message.postId);
+    message.userId !== undefined && (obj.userId = message.userId);
     return obj;
   },
 
@@ -219,8 +219,8 @@ export const LikePost = {
 
   fromPartial<I extends Exact<DeepPartial<LikePost>, I>>(object: I): LikePost {
     const message = createBaseLikePost();
-    message.post = (object.post !== undefined && object.post !== null) ? Post.fromPartial(object.post) : undefined;
-    message.user = (object.user !== undefined && object.user !== null) ? UserItem.fromPartial(object.user) : undefined;
+    message.postId = object.postId ?? "";
+    message.userId = object.userId ?? "";
     return message;
   },
 };

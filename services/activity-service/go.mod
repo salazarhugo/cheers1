@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/google/uuid v1.3.0
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230305102131-77a1ab1e0247
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230305105529-40f05b46a77d
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221028075628-41c8e72f61a4
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221028101521-0cb4516952cb
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20230219213303-2bc75fb8c452
