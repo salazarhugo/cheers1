@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"github.com/google/uuid"
 	activity2 "github.com/salazarhugo/cheers1/gen/go/cheers/activity/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/comment/v1"
@@ -27,11 +28,12 @@ func CommentSub(w http.ResponseWriter, r *http.Request) {
 	switch event := event.Event.(type) {
 	case *comment.CommentEvent_Created:
 		mentions := event.Created.Mentions
+		comment := event.Created.Comment
 		commentCreator, err := service.GetUser(event.Created.User.Id)
 		if err != nil {
 			return
 		}
-		post, err := service.GetPost(event.Created.Comment.PostId)
+		post, err := service.GetPost(comment.PostId)
 		if err != nil {
 			return
 		}
@@ -43,7 +45,8 @@ func CommentSub(w http.ResponseWriter, r *http.Request) {
 		activity := &activity2.Activity{
 			Id:           uuid.New().String(),
 			Type:         activity2.Activity_MENTION_POST,
-			Text:         commentCreator.Username + " mentioned you in a post.",
+			Text:         fmt.Sprintf("%s mentioned you in a comment: %s", commentCreator.Username, comment.Text),
+			Username:     commentCreator.Username,
 			Picture:      commentCreator.Picture,
 			UserId:       commentCreator.Id,
 			Timestamp:    time.Now().Unix(),

@@ -9,14 +9,15 @@ func GetMentions(text string) []string {
 		where a word character is any letter, digit, or underscore.
 		This ensures that usernames do not include symbols or punctuation marks.
 	*/
-	pattern := `@\w{1,30}`
+	pattern := `@(\w{1,30})`
 
 	// Compile regular expression pattern into a regular expression object
 	regex := regexp.MustCompile(pattern)
 
-	// Find all matches of the regular expression pattern in the text
-	matches := regex.FindAllString(text, -1)
+	var mentions []string
+	for _, match := range regex.FindAllStringSubmatch(text, -1) {
+		mentions = append(mentions, match[1])
+	}
 
-	// Return the matches
-	return matches
+	return mentions
 }

@@ -39,4 +39,5 @@ message Activity {
   int64 timestamp  = 5;
   string media_picture = 6;
   string media_id = 7;
+  string username = 9;
 }

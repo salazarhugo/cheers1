@@ -28,6 +28,7 @@ func UserSub(w http.ResponseWriter, r *http.Request) {
 		activity := &activity2.Activity{
 			Id:           uuid.New().String(),
 			Type:         activity2.Activity_FOLLOW,
+			Username:     user.Username,
 			Text:         user.Username + " started following you",
 			Picture:      user.Picture,
 			UserId:       user.Id,

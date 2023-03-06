@@ -31,7 +31,7 @@ func GetUser(userId string) (*user.User, error) {
 
 	response, err := client.GetUserNode(ctx, &userpb.GetUserNodeRequest{UserId: userId})
 	if err != nil {
-		log.Println(err)
+		return nil, err
 	}
 	return response.GetUser(), nil
 }

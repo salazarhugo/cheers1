@@ -51,6 +51,7 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 			Timestamp:    time.Now().Unix(),
 			MediaPicture: postThumbnail,
 			MediaId:      post.Id,
+			Username:     user.Username,
 		}
 		err = repo.CreateActivity(post.CreatorId, activity)
 	}
