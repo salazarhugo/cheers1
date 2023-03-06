@@ -44,7 +44,7 @@ func CommentSub(w http.ResponseWriter, r *http.Request) {
 
 		activity := &activity2.Activity{
 			Id:           uuid.New().String(),
-			Type:         activity2.Activity_MENTION_POST,
+			Type:         activity2.Activity_MENTION_POST_COMMENT,
 			Text:         fmt.Sprintf("%s mentioned you in a comment: %s", commentCreator.Username, comment.Text),
 			Username:     commentCreator.Username,
 			Picture:      commentCreator.Picture,

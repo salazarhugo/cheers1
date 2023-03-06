@@ -21,34 +21,43 @@ export interface Activity {
   timestamp: number;
   mediaPicture: string;
   mediaId: string;
+  username: string;
 }
 
 export enum Activity_ActivityType {
-  LIKE_POST = 0,
-  LIKE_STORY = 1,
-  FOLLOW = 2,
-  COMMENT_POST = 3,
-  MENTION_POST = 4,
+  POST_LIKED = 0,
+  STORY_LIKED = 1,
+  POST_COMMENTED = 2,
+  MENTION_POST_CAPTION = 3,
+  MENTION_POST_COMMENT = 4,
+  FRIEND_ADDED = 5,
+  COMMENT_LIKED = 6,
   UNRECOGNIZED = -1,
 }
 
 export function activity_ActivityTypeFromJSON(object: any): Activity_ActivityType {
   switch (object) {
     case 0:
-    case "LIKE_POST":
-      return Activity_ActivityType.LIKE_POST;
+    case "POST_LIKED":
+      return Activity_ActivityType.POST_LIKED;
     case 1:
-    case "LIKE_STORY":
-      return Activity_ActivityType.LIKE_STORY;
+    case "STORY_LIKED":
+      return Activity_ActivityType.STORY_LIKED;
     case 2:
-    case "FOLLOW":
-      return Activity_ActivityType.FOLLOW;
+    case "POST_COMMENTED":
+      return Activity_ActivityType.POST_COMMENTED;
     case 3:
-    case "COMMENT_POST":
-      return Activity_ActivityType.COMMENT_POST;
+    case "MENTION_POST_CAPTION":
+      return Activity_ActivityType.MENTION_POST_CAPTION;
     case 4:
-    case "MENTION_POST":
-      return Activity_ActivityType.MENTION_POST;
+    case "MENTION_POST_COMMENT":
+      return Activity_ActivityType.MENTION_POST_COMMENT;
+    case 5:
+    case "FRIEND_ADDED":
+      return Activity_ActivityType.FRIEND_ADDED;
+    case 6:
+    case "COMMENT_LIKED":
+      return Activity_ActivityType.COMMENT_LIKED;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -58,16 +67,20 @@ export function activity_ActivityTypeFromJSON(object: any): Activity_ActivityTyp
 
 export function activity_ActivityTypeToJSON(object: Activity_ActivityType): string {
   switch (object) {
-    case Activity_ActivityType.LIKE_POST:
-      return "LIKE_POST";
-    case Activity_ActivityType.LIKE_STORY:
-      return "LIKE_STORY";
-    case Activity_ActivityType.FOLLOW:
-      return "FOLLOW";
-    case Activity_ActivityType.COMMENT_POST:
-      return "COMMENT_POST";
-    case Activity_ActivityType.MENTION_POST:
-      return "MENTION_POST";
+    case Activity_ActivityType.POST_LIKED:
+      return "POST_LIKED";
+    case Activity_ActivityType.STORY_LIKED:
+      return "STORY_LIKED";
+    case Activity_ActivityType.POST_COMMENTED:
+      return "POST_COMMENTED";
+    case Activity_ActivityType.MENTION_POST_CAPTION:
+      return "MENTION_POST_CAPTION";
+    case Activity_ActivityType.MENTION_POST_COMMENT:
+      return "MENTION_POST_COMMENT";
+    case Activity_ActivityType.FRIEND_ADDED:
+      return "FRIEND_ADDED";
+    case Activity_ActivityType.COMMENT_LIKED:
+      return "COMMENT_LIKED";
     case Activity_ActivityType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";
@@ -183,7 +196,17 @@ export const ListActivityResponse = {
 };
 
 function createBaseActivity(): Activity {
-  return { id: "", type: 0, text: "", picture: "", userId: "", timestamp: 0, mediaPicture: "", mediaId: "" };
+  return {
+    id: "",
+    type: 0,
+    text: "",
+    picture: "",
+    userId: "",
+    timestamp: 0,
+    mediaPicture: "",
+    mediaId: "",
+    username: "",
+  };
 }
 
 export const Activity = {
@@ -211,6 +234,9 @@ export const Activity = {
     }
     if (message.mediaId !== "") {
       writer.uint32(58).string(message.mediaId);
+    }
+    if (message.username !== "") {
+      writer.uint32(74).string(message.username);
     }
     return writer;
   },
@@ -246,6 +272,9 @@ export const Activity = {
         case 7:
           message.mediaId = reader.string();
           break;
+        case 9:
+          message.username = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -264,6 +293,7 @@ export const Activity = {
       timestamp: isSet(object.timestamp) ? Number(object.timestamp) : 0,
       mediaPicture: isSet(object.mediaPicture) ? String(object.mediaPicture) : "",
       mediaId: isSet(object.mediaId) ? String(object.mediaId) : "",
+      username: isSet(object.username) ? String(object.username) : "",
     };
   },
 
@@ -277,6 +307,7 @@ export const Activity = {
     message.timestamp !== undefined && (obj.timestamp = Math.round(message.timestamp));
     message.mediaPicture !== undefined && (obj.mediaPicture = message.mediaPicture);
     message.mediaId !== undefined && (obj.mediaId = message.mediaId);
+    message.username !== undefined && (obj.username = message.username);
     return obj;
   },
 
@@ -294,6 +325,7 @@ export const Activity = {
     message.timestamp = object.timestamp ?? 0;
     message.mediaPicture = object.mediaPicture ?? "";
     message.mediaId = object.mediaId ?? "";
+    message.username = object.username ?? "";
     return message;
   },
 };
