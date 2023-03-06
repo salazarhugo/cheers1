@@ -21,6 +21,7 @@ func GetPost(postId string) (*postpb.Post, error) {
 	transportCredentials := credentials.NewTLS(&tls.Config{
 		RootCAs: systemRoots,
 	})
+
 	conn, err := grpc.DialContext(ctx, "post-service-r3a2dr4u4a-nw.a.run.app:443",
 		grpc.WithTransportCredentials(transportCredentials),
 	)

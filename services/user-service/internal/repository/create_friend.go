@@ -5,10 +5,22 @@ import (
 	userpb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"log"
 )
 
 func (p *userRepository) CreateFriend(from string, to string) error {
+	users, err := p.GetUsersIn([]string{from, to})
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
+	if len(users) != 2 {
+		return status.Error(codes.NotFound, "Users not found")
+	}
+
 	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close()
 
@@ -24,12 +36,6 @@ func (p *userRepository) CreateFriend(from string, to string) error {
 
 	_, err = session.Run(*cypher, params)
 	if err != nil {
-		return err
-	}
-
-	users, err := p.GetUsersIn([]string{from, to})
-	if err != nil {
-		log.Println(err)
 		return err
 	}
 

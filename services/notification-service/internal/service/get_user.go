@@ -21,7 +21,6 @@ func GetUser(userId string) (*user.User, error) {
 	transportCredentials := credentials.NewTLS(&tls.Config{
 		RootCAs: systemRoots,
 	})
-
 	conn, err := grpc.DialContext(ctx, "user-service-r3a2dr4u4a-nw.a.run.app:443",
 		grpc.WithTransportCredentials(transportCredentials),
 	)

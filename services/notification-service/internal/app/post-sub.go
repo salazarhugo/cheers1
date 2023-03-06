@@ -5,6 +5,7 @@ import (
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"github.com/salazarhugo/cheers1/services/notification-service/internal/notifications"
 	"github.com/salazarhugo/cheers1/services/notification-service/internal/repository"
+	"github.com/salazarhugo/cheers1/services/notification-service/internal/service"
 	"log"
 	"net/http"
 )
@@ -22,12 +23,13 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 
 	switch event := event.Event.(type) {
 	case *post.PostEvent_Like:
-		user, err := repository.GetUser(event.Like.User.Id)
+		user, err := service.GetUser(event.Like.UserId)
 		if err != nil {
 			log.Println(err)
 			return
 		}
-		postCreatorId := event.Like.Post.CreatorId
+		post, err := service.GetPost(event.Like.GetPostId())
+		postCreatorId := post.CreatorId
 		tokens, err := repo.GetUserTokens(postCreatorId)
 		if err != nil {
 			return
@@ -38,7 +40,7 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 	case *post.PostEvent_Create:
 		post := event.Create.Post
 		creatorId := post.CreatorId
-		user, err := repository.GetUser(event.Create.GetPost().GetCreatorId())
+		user, err := service.GetUser(event.Create.GetPost().GetCreatorId())
 		if err != nil {
 			log.Println(err)
 			return

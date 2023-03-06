@@ -7,6 +7,7 @@ import (
 	"github.com/google/uuid"
 	commentpb "github.com/salazarhugo/cheers1/gen/go/cheers/comment/v1"
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
+	"github.com/salazarhugo/cheers1/services/comment-service/internal/domain"
 	"google.golang.org/protobuf/encoding/protojson"
 	"log"
 	"time"
@@ -28,6 +29,7 @@ func (r repository) CreateComment(
 		UserId:     userId,
 		PostId:     postId,
 	}
+	mentions := domain.GetMentions(text)
 
 	bytes, err := protojson.Marshal(comment)
 
@@ -55,8 +57,9 @@ func (r repository) CreateComment(
 		err := pubsub.PublishProtoWithBinaryEncoding("comment-topic", &commentpb.CommentEvent{
 			Event: &commentpb.CommentEvent_Created{
 				Created: &commentpb.CreatedComment{
-					Comment: item.Comment,
-					User:    item.UserItem,
+					Comment:  item.Comment,
+					User:     item.UserItem,
+					Mentions: mentions,
 				},
 			},
 		})

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
 import { UserItem } from "../../type/user/user";
 import { Comment } from "./comment_service";
@@ -14,6 +13,7 @@ export interface CommentEvent {
 export interface CreatedComment {
   comment: Comment | undefined;
   user: UserItem | undefined;
+  mentions: string[];
 }
 
 export interface DeletedComment {
@@ -90,7 +90,7 @@ export const CommentEvent = {
 };
 
 function createBaseCreatedComment(): CreatedComment {
-  return { comment: undefined, user: undefined };
+  return { comment: undefined, user: undefined, mentions: [] };
 }
 
 export const CreatedComment = {
@@ -100,6 +100,9 @@ export const CreatedComment = {
     }
     if (message.user !== undefined) {
       UserItem.encode(message.user, writer.uint32(18).fork()).ldelim();
+    }
+    for (const v of message.mentions) {
+      writer.uint32(26).string(v!);
     }
     return writer;
   },
@@ -117,6 +120,9 @@ export const CreatedComment = {
         case 2:
           message.user = UserItem.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.mentions.push(reader.string());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -129,6 +135,7 @@ export const CreatedComment = {
     return {
       comment: isSet(object.comment) ? Comment.fromJSON(object.comment) : undefined,
       user: isSet(object.user) ? UserItem.fromJSON(object.user) : undefined,
+      mentions: Array.isArray(object?.mentions) ? object.mentions.map((e: any) => String(e)) : [],
     };
   },
 
@@ -136,6 +143,11 @@ export const CreatedComment = {
     const obj: any = {};
     message.comment !== undefined && (obj.comment = message.comment ? Comment.toJSON(message.comment) : undefined);
     message.user !== undefined && (obj.user = message.user ? UserItem.toJSON(message.user) : undefined);
+    if (message.mentions) {
+      obj.mentions = message.mentions.map((e) => e);
+    } else {
+      obj.mentions = [];
+    }
     return obj;
   },
 
@@ -149,6 +161,7 @@ export const CreatedComment = {
       ? Comment.fromPartial(object.comment)
       : undefined;
     message.user = (object.user !== undefined && object.user !== null) ? UserItem.fromPartial(object.user) : undefined;
+    message.mentions = object.mentions?.map((e) => e) || [];
     return message;
   },
 };
@@ -217,25 +230,6 @@ export const DeletedComment = {
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var tsProtoGlobalThis: any = (() => {
-  if (typeof globalThis !== "undefined") {
-    return globalThis;
-  }
-  if (typeof self !== "undefined") {
-    return self;
-  }
-  if (typeof window !== "undefined") {
-    return window;
-  }
-  if (typeof global !== "undefined") {
-    return global;
-  }
-  throw "Unable to locate global object";
-})();
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
@@ -246,13 +240,6 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
-// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
-if (_m0.util.Long !== Long) {
-  _m0.util.Long = Long as any;
-  _m0.configure();
-}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

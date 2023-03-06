@@ -18,6 +18,7 @@ message CommentEvent {
 message CreatedComment {
   cheers.comment.v1.Comment comment = 1;
   cheers.type.UserItem user = 2;
+  repeated string mentions = 3;
 }
 
 message DeletedComment {
