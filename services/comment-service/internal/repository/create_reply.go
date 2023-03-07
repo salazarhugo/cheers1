@@ -51,7 +51,7 @@ func (r repository) CreateReplyComment(
 	// Add the reply replyComment ID to the replyComment's reply list
 	err = r.redis.ZAdd(
 		ctx,
-		getKeyReplyList(postId),
+		getKeyReplyList(replyCommentId),
 		redis.Z{
 			Score:  float64(time.Now().Unix()),
 			Member: replyComment.Id,

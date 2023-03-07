@@ -41,6 +41,7 @@ export interface Comment {
   createTime: number;
   userId: string;
   postId: string;
+  replyToCommentId: string;
 }
 
 export interface CreateCommentRequest {
@@ -445,7 +446,7 @@ export const CommentItem = {
 };
 
 function createBaseComment(): Comment {
-  return { id: "", text: "", createTime: 0, userId: "", postId: "" };
+  return { id: "", text: "", createTime: 0, userId: "", postId: "", replyToCommentId: "" };
 }
 
 export const Comment = {
@@ -464,6 +465,9 @@ export const Comment = {
     }
     if (message.postId !== "") {
       writer.uint32(34).string(message.postId);
+    }
+    if (message.replyToCommentId !== "") {
+      writer.uint32(50).string(message.replyToCommentId);
     }
     return writer;
   },
@@ -490,6 +494,9 @@ export const Comment = {
         case 4:
           message.postId = reader.string();
           break;
+        case 6:
+          message.replyToCommentId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -505,6 +512,7 @@ export const Comment = {
       createTime: isSet(object.createTime) ? Number(object.createTime) : 0,
       userId: isSet(object.userId) ? String(object.userId) : "",
       postId: isSet(object.postId) ? String(object.postId) : "",
+      replyToCommentId: isSet(object.replyToCommentId) ? String(object.replyToCommentId) : "",
     };
   },
 
@@ -515,6 +523,7 @@ export const Comment = {
     message.createTime !== undefined && (obj.createTime = Math.round(message.createTime));
     message.userId !== undefined && (obj.userId = message.userId);
     message.postId !== undefined && (obj.postId = message.postId);
+    message.replyToCommentId !== undefined && (obj.replyToCommentId = message.replyToCommentId);
     return obj;
   },
 
@@ -529,6 +538,7 @@ export const Comment = {
     message.createTime = object.createTime ?? 0;
     message.userId = object.userId ?? "";
     message.postId = object.postId ?? "";
+    message.replyToCommentId = object.replyToCommentId ?? "";
     return message;
   },
 };
