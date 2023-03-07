@@ -17,6 +17,14 @@ export interface ListCommentRequest {
   postId: string;
 }
 
+export interface ListRepliesRequest {
+  commentId: string;
+}
+
+export interface ListRepliesResponse {
+  items: CommentItem[];
+}
+
 export interface ListCommentResponse {
   items: CommentItem[];
 }
@@ -196,6 +204,112 @@ export const ListCommentRequest = {
   fromPartial<I extends Exact<DeepPartial<ListCommentRequest>, I>>(object: I): ListCommentRequest {
     const message = createBaseListCommentRequest();
     message.postId = object.postId ?? "";
+    return message;
+  },
+};
+
+function createBaseListRepliesRequest(): ListRepliesRequest {
+  return { commentId: "" };
+}
+
+export const ListRepliesRequest = {
+  encode(message: ListRepliesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.commentId !== "") {
+      writer.uint32(10).string(message.commentId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListRepliesRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListRepliesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.commentId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListRepliesRequest {
+    return { commentId: isSet(object.commentId) ? String(object.commentId) : "" };
+  },
+
+  toJSON(message: ListRepliesRequest): unknown {
+    const obj: any = {};
+    message.commentId !== undefined && (obj.commentId = message.commentId);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListRepliesRequest>, I>>(base?: I): ListRepliesRequest {
+    return ListRepliesRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListRepliesRequest>, I>>(object: I): ListRepliesRequest {
+    const message = createBaseListRepliesRequest();
+    message.commentId = object.commentId ?? "";
+    return message;
+  },
+};
+
+function createBaseListRepliesResponse(): ListRepliesResponse {
+  return { items: [] };
+}
+
+export const ListRepliesResponse = {
+  encode(message: ListRepliesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.items) {
+      CommentItem.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListRepliesResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListRepliesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.items.push(CommentItem.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListRepliesResponse {
+    return { items: Array.isArray(object?.items) ? object.items.map((e: any) => CommentItem.fromJSON(e)) : [] };
+  },
+
+  toJSON(message: ListRepliesResponse): unknown {
+    const obj: any = {};
+    if (message.items) {
+      obj.items = message.items.map((e) => e ? CommentItem.toJSON(e) : undefined);
+    } else {
+      obj.items = [];
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListRepliesResponse>, I>>(base?: I): ListRepliesResponse {
+    return ListRepliesResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListRepliesResponse>, I>>(object: I): ListRepliesResponse {
+    const message = createBaseListRepliesResponse();
+    message.items = object.items?.map((e) => CommentItem.fromPartial(e)) || [];
     return message;
   },
 };
@@ -536,6 +650,7 @@ export const CreateCommentResponse = {
 export interface CommentService {
   CreateComment(request: CreateCommentRequest): Promise<CreateCommentResponse>;
   ListComment(request: ListCommentRequest): Promise<ListCommentResponse>;
+  ListReplies(request: ListRepliesRequest): Promise<ListRepliesResponse>;
   DeleteComment(request: DeleteCommentRequest): Promise<DeleteCommentResponse>;
 }
 
@@ -547,6 +662,7 @@ export class CommentServiceClientImpl implements CommentService {
     this.rpc = rpc;
     this.CreateComment = this.CreateComment.bind(this);
     this.ListComment = this.ListComment.bind(this);
+    this.ListReplies = this.ListReplies.bind(this);
     this.DeleteComment = this.DeleteComment.bind(this);
   }
   CreateComment(request: CreateCommentRequest): Promise<CreateCommentResponse> {
@@ -559,6 +675,12 @@ export class CommentServiceClientImpl implements CommentService {
     const data = ListCommentRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListComment", data);
     return promise.then((data) => ListCommentResponse.decode(new _m0.Reader(data)));
+  }
+
+  ListReplies(request: ListRepliesRequest): Promise<ListRepliesResponse> {
+    const data = ListRepliesRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ListReplies", data);
+    return promise.then((data) => ListRepliesResponse.decode(new _m0.Reader(data)));
   }
 
   DeleteComment(request: DeleteCommentRequest): Promise<DeleteCommentResponse> {

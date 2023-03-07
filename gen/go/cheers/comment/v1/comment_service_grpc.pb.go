@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type CommentServiceClient interface {
 	CreateComment(ctx context.Context, in *CreateCommentRequest, opts ...grpc.CallOption) (*CreateCommentResponse, error)
 	ListComment(ctx context.Context, in *ListCommentRequest, opts ...grpc.CallOption) (*ListCommentResponse, error)
+	ListReplies(ctx context.Context, in *ListRepliesRequest, opts ...grpc.CallOption) (*ListRepliesResponse, error)
 	DeleteComment(ctx context.Context, in *DeleteCommentRequest, opts ...grpc.CallOption) (*DeleteCommentResponse, error)
 }
 
@@ -53,6 +54,15 @@ func (c *commentServiceClient) ListComment(ctx context.Context, in *ListCommentR
 	return out, nil
 }
 
+func (c *commentServiceClient) ListReplies(ctx context.Context, in *ListRepliesRequest, opts ...grpc.CallOption) (*ListRepliesResponse, error) {
+	out := new(ListRepliesResponse)
+	err := c.cc.Invoke(ctx, "/cheers.comment.v1.CommentService/ListReplies", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *commentServiceClient) DeleteComment(ctx context.Context, in *DeleteCommentRequest, opts ...grpc.CallOption) (*DeleteCommentResponse, error) {
 	out := new(DeleteCommentResponse)
 	err := c.cc.Invoke(ctx, "/cheers.comment.v1.CommentService/DeleteComment", in, out, opts...)
@@ -68,6 +78,7 @@ func (c *commentServiceClient) DeleteComment(ctx context.Context, in *DeleteComm
 type CommentServiceServer interface {
 	CreateComment(context.Context, *CreateCommentRequest) (*CreateCommentResponse, error)
 	ListComment(context.Context, *ListCommentRequest) (*ListCommentResponse, error)
+	ListReplies(context.Context, *ListRepliesRequest) (*ListRepliesResponse, error)
 	DeleteComment(context.Context, *DeleteCommentRequest) (*DeleteCommentResponse, error)
 	mustEmbedUnimplementedCommentServiceServer()
 }
@@ -81,6 +92,9 @@ func (UnimplementedCommentServiceServer) CreateComment(context.Context, *CreateC
 }
 func (UnimplementedCommentServiceServer) ListComment(context.Context, *ListCommentRequest) (*ListCommentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListComment not implemented")
+}
+func (UnimplementedCommentServiceServer) ListReplies(context.Context, *ListRepliesRequest) (*ListRepliesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListReplies not implemented")
 }
 func (UnimplementedCommentServiceServer) DeleteComment(context.Context, *DeleteCommentRequest) (*DeleteCommentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteComment not implemented")
@@ -134,6 +148,24 @@ func _CommentService_ListComment_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CommentService_ListReplies_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListRepliesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CommentServiceServer).ListReplies(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.comment.v1.CommentService/ListReplies",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CommentServiceServer).ListReplies(ctx, req.(*ListRepliesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _CommentService_DeleteComment_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteCommentRequest)
 	if err := dec(in); err != nil {
@@ -166,6 +198,10 @@ var CommentService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListComment",
 			Handler:    _CommentService_ListComment_Handler,
+		},
+		{
+			MethodName: "ListReplies",
+			Handler:    _CommentService_ListReplies_Handler,
 		},
 		{
 			MethodName: "DeleteComment",
