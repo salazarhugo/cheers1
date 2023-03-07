@@ -37,6 +37,7 @@ export interface Comment {
 export interface CreateCommentRequest {
   postId: string;
   comment: string;
+  replyToCommentId: string;
 }
 
 export interface CreateCommentResponse {
@@ -409,7 +410,7 @@ export const Comment = {
 };
 
 function createBaseCreateCommentRequest(): CreateCommentRequest {
-  return { postId: "", comment: "" };
+  return { postId: "", comment: "", replyToCommentId: "" };
 }
 
 export const CreateCommentRequest = {
@@ -419,6 +420,9 @@ export const CreateCommentRequest = {
     }
     if (message.comment !== "") {
       writer.uint32(18).string(message.comment);
+    }
+    if (message.replyToCommentId !== "") {
+      writer.uint32(26).string(message.replyToCommentId);
     }
     return writer;
   },
@@ -436,6 +440,9 @@ export const CreateCommentRequest = {
         case 2:
           message.comment = reader.string();
           break;
+        case 3:
+          message.replyToCommentId = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -448,6 +455,7 @@ export const CreateCommentRequest = {
     return {
       postId: isSet(object.postId) ? String(object.postId) : "",
       comment: isSet(object.comment) ? String(object.comment) : "",
+      replyToCommentId: isSet(object.replyToCommentId) ? String(object.replyToCommentId) : "",
     };
   },
 
@@ -455,6 +463,7 @@ export const CreateCommentRequest = {
     const obj: any = {};
     message.postId !== undefined && (obj.postId = message.postId);
     message.comment !== undefined && (obj.comment = message.comment);
+    message.replyToCommentId !== undefined && (obj.replyToCommentId = message.replyToCommentId);
     return obj;
   },
 
@@ -466,6 +475,7 @@ export const CreateCommentRequest = {
     const message = createBaseCreateCommentRequest();
     message.postId = object.postId ?? "";
     message.comment = object.comment ?? "";
+    message.replyToCommentId = object.replyToCommentId ?? "";
     return message;
   },
 };

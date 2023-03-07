@@ -7,8 +7,11 @@ import (
 )
 
 const (
-	keyUser        = "user"
-	keyPostComment = "postComment"
+	keyUser     = "user"
+	keyPost     = "post"
+	keyComment  = "comment"
+	keyComments = "comments"
+	keyReplies  = "replies"
 )
 
 func getKeyUser(userUUID string) string {

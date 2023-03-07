@@ -42,7 +42,7 @@ func CommentSub(w http.ResponseWriter, r *http.Request) {
 			postThumbnail = post.Photos[0]
 		}
 
-		activity := &activity2.Activity{
+		activityMention := &activity2.Activity{
 			Id:           uuid.New().String(),
 			Type:         activity2.Activity_MENTION_POST_COMMENT,
 			Text:         fmt.Sprintf("%s mentioned you in a comment: %s", commentCreator.Username, comment.Text),
@@ -54,12 +54,29 @@ func CommentSub(w http.ResponseWriter, r *http.Request) {
 			MediaId:      post.Id,
 		}
 
+		activityComment := &activity2.Activity{
+			Id:           uuid.New().String(),
+			Type:         activity2.Activity_POST_COMMENTED,
+			Text:         fmt.Sprintf("%s commented: %s", commentCreator.Username, comment.Text),
+			Username:     commentCreator.Username,
+			Picture:      commentCreator.Picture,
+			UserId:       commentCreator.Id,
+			Timestamp:    time.Now().Unix(),
+			MediaPicture: postThumbnail,
+			MediaId:      post.Id,
+		}
+		err = repo.CreateActivity(post.CreatorId, activityComment)
+
 		for _, mention := range mentions {
 			userMentioned, err := service.GetUser(mention)
 			if err != nil {
 				continue
 			}
-			err = repo.CreateActivity(userMentioned.Id, activity)
+			// Skip the creator of the post
+			if userMentioned.Id == post.CreatorId {
+				continue
+			}
+			err = repo.CreateActivity(userMentioned.Id, activityMention)
 		}
 	case *comment.CommentEvent_Deleted:
 	}

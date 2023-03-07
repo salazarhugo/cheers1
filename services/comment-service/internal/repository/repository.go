@@ -9,6 +9,7 @@ import (
 
 type Repository interface {
 	CreateComment(userId string, text string, postId string) error
+	CreateReplyComment(userId string, text string, postId string, replyCommentId string) error
 	UpdateUser(user *user.User) error
 	GetLastComment(postId string) (*comment.CommentItem, error)
 	ListComment(postId string) ([]*comment.CommentItem, error)

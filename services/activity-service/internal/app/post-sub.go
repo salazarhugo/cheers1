@@ -44,7 +44,7 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 
 		activity := &activity2.Activity{
 			Id:           uuid.New().String(),
-			Type:         activity2.Activity_LIKE_POST,
+			Type:         activity2.Activity_POST_LIKED,
 			Text:         user.Username + " liked your post",
 			Picture:      user.Picture,
 			UserId:       user.Id,

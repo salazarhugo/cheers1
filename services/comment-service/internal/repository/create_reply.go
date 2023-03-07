@@ -12,20 +12,17 @@ import (
 	"time"
 )
 
-func getKeyComment(commentId string) string {
-	return fmt.Sprintf("%s:%s", keyComment, commentId)
+func getKeyReplyList(commentId string) string {
+	return fmt.Sprintf("%s:%s:%s", keyComment, commentId, keyReplies)
 }
 
-func getKeyPostComment(postId string) string {
-	return fmt.Sprintf("%s:%s:%s", keyPost, postId, keyComments)
-}
-
-func (r repository) CreateComment(
+func (r repository) CreateReplyComment(
 	userId string,
 	text string,
 	postId string,
+	replyCommentId string,
 ) error {
-	comment := &commentpb.Comment{
+	replyComment := &commentpb.Comment{
 		Id:         uuid.New().String(),
 		Text:       text,
 		CreateTime: time.Now().Unix(),
@@ -33,36 +30,36 @@ func (r repository) CreateComment(
 		PostId:     postId,
 	}
 	mentions := domain.GetMentions(text)
-	//bytes, err := protojson.Marshal(comment)
+	//bytes, err := protojson.Marshal(replyComment)
 	ctx := context.Background()
 
-	// Store the comment details in a hash
+	// Store the reply replyComment details in a hash
 	err := r.redis.HSet(
 		ctx,
-		getKeyComment(comment.Id),
-		comment,
+		getKeyComment(replyComment.Id),
+		replyComment,
 	).Err()
 	if err != nil {
 		return err
 	}
 
-	// Add the comment ID to the post's comment set
+	// Add the reply replyComment ID to the replyComment's reply list
 	err = r.redis.ZAdd(
 		ctx,
-		getKeyPostComment(postId),
+		getKeyReplyList(postId),
 		redis.Z{
 			Score:  float64(time.Now().Unix()),
-			Member: comment.Id,
+			Member: replyComment.Id,
 		},
 	).Err()
 	if err != nil {
 		return err
 	}
 
-	userItem, err := r.GetUserItem(comment.UserId)
+	userItem, err := r.GetUserItem(replyComment.UserId)
 
 	item := &commentpb.CommentItem{
-		Comment:  comment,
+		Comment:  replyComment,
 		UserItem: userItem,
 	}
 

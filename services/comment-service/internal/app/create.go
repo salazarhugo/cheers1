@@ -18,11 +18,20 @@ func (s *Server) CreateComment(
 		return nil, status.Error(codes.Internal, "failed to retrieve userID")
 	}
 
-	err = s.commentRepository.CreateComment(
-		userID,
-		request.Comment,
-		request.PostId,
-	)
+	if request.ReplyToCommentId != "" {
+		err = s.commentRepository.CreateReplyComment(
+			userID,
+			request.Comment,
+			request.PostId,
+			request.ReplyToCommentId,
+		)
+	} else {
+		err = s.commentRepository.CreateComment(
+			userID,
+			request.Comment,
+			request.PostId,
+		)
+	}
 	if err != nil {
 		log.Println(err)
 		return nil, err
