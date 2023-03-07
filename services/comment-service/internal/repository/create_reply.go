@@ -24,12 +24,18 @@ func (r repository) CreateReplyComment(
 	replyCommentId string,
 ) error {
 	ctx := context.Background()
+	comment, err := r.GetComment(replyCommentId)
+	if err != nil {
+		return err
+	}
+
 	replyComment := &commentpb.Comment{
-		Id:         uuid.New().String(),
-		Text:       text,
-		CreateTime: time.Now().Unix(),
-		UserId:     userId,
-		PostId:     postId,
+		Id:               uuid.New().String(),
+		Text:             text,
+		CreateTime:       time.Now().Unix(),
+		UserId:           userId,
+		PostId:           postId,
+		ReplyToCommentId: comment.Id,
 	}
 	mentions := domain.GetMentions(text)
 
