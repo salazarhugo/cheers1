@@ -49,6 +49,7 @@ message ListCommentResponse {
 message CommentItem {
   Comment comment = 1;
   cheers.type.UserItem user_item = 2;
+  int64 reply_count = 3;
 }
 
 message Comment {

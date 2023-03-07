@@ -6,7 +6,8 @@ import (
 	"github.com/salazarhugo/cheers1/libs/utils"
 )
 
-func (r repository) ListComment(
+func (r repository) ListReplyComment(
+	parentCommentId string,
 	postID string,
 ) ([]*comment.CommentItem, error) {
 	ctx := context.Background()
@@ -31,18 +32,36 @@ func (r repository) ListComment(
 			continue
 		}
 
-		// Get the number of replies
-		replyCount, err := r.redis.ZCard(ctx, getKeyReplyList(commentID)).Result()
+		comments = append(comments, &comment.CommentItem{
+			Comment:  com,
+			UserItem: userItem,
+		})
+
+		// Get the IDs of the replies for the comment, ordered by their timestamp
+		replyIDs, err := r.redis.ZRevRange(ctx, getKeyReplyList(commentID), 0, 2).Result()
 		if err != nil {
 			continue
 		}
 
-		comments = append(comments, &comment.CommentItem{
-			Comment:    com,
-			UserItem:   userItem,
-			ReplyCount: replyCount,
-		})
+		// Get the details of the reply comments and add them to the comment object
+		for _, replyID := range replyIDs {
+			replyFields, err := r.redis.HGetAll(ctx, getKeyComment(replyID)).Result()
+			if err != nil {
+				continue
+			}
+			com := &comment.Comment{}
+			err = utils.MapToProto(com, replyFields)
 
+			userItem, err := r.GetUserItem(com.UserId)
+			if err != nil {
+				continue
+			}
+
+			comments = append(comments, &comment.CommentItem{
+				Comment:  com,
+				UserItem: userItem,
+			})
+		}
 	}
 
 	return comments, nil

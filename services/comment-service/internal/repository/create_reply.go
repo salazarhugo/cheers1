@@ -6,6 +6,7 @@ import (
 	"github.com/go-redis/redis/v9"
 	"github.com/google/uuid"
 	commentpb "github.com/salazarhugo/cheers1/gen/go/cheers/comment/v1"
+	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"github.com/salazarhugo/cheers1/services/comment-service/internal/domain"
 	"log"
@@ -22,6 +23,7 @@ func (r repository) CreateReplyComment(
 	postId string,
 	replyCommentId string,
 ) error {
+	ctx := context.Background()
 	replyComment := &commentpb.Comment{
 		Id:         uuid.New().String(),
 		Text:       text,
@@ -30,14 +32,17 @@ func (r repository) CreateReplyComment(
 		PostId:     postId,
 	}
 	mentions := domain.GetMentions(text)
-	//bytes, err := protojson.Marshal(replyComment)
-	ctx := context.Background()
+
+	m, err := utils.ProtoToMap(replyComment)
+	if err != nil {
+		return err
+	}
 
 	// Store the reply replyComment details in a hash
-	err := r.redis.HSet(
+	err = r.redis.HSet(
 		ctx,
 		getKeyComment(replyComment.Id),
-		replyComment,
+		m,
 	).Err()
 	if err != nil {
 		return err

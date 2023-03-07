@@ -24,6 +24,7 @@ export interface ListCommentResponse {
 export interface CommentItem {
   comment: Comment | undefined;
   userItem: UserItem | undefined;
+  replyCount: number;
 }
 
 export interface Comment {
@@ -255,7 +256,7 @@ export const ListCommentResponse = {
 };
 
 function createBaseCommentItem(): CommentItem {
-  return { comment: undefined, userItem: undefined };
+  return { comment: undefined, userItem: undefined, replyCount: 0 };
 }
 
 export const CommentItem = {
@@ -265,6 +266,9 @@ export const CommentItem = {
     }
     if (message.userItem !== undefined) {
       UserItem.encode(message.userItem, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.replyCount !== 0) {
+      writer.uint32(24).int64(message.replyCount);
     }
     return writer;
   },
@@ -282,6 +286,9 @@ export const CommentItem = {
         case 2:
           message.userItem = UserItem.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.replyCount = longToNumber(reader.int64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -294,6 +301,7 @@ export const CommentItem = {
     return {
       comment: isSet(object.comment) ? Comment.fromJSON(object.comment) : undefined,
       userItem: isSet(object.userItem) ? UserItem.fromJSON(object.userItem) : undefined,
+      replyCount: isSet(object.replyCount) ? Number(object.replyCount) : 0,
     };
   },
 
@@ -301,6 +309,7 @@ export const CommentItem = {
     const obj: any = {};
     message.comment !== undefined && (obj.comment = message.comment ? Comment.toJSON(message.comment) : undefined);
     message.userItem !== undefined && (obj.userItem = message.userItem ? UserItem.toJSON(message.userItem) : undefined);
+    message.replyCount !== undefined && (obj.replyCount = Math.round(message.replyCount));
     return obj;
   },
 
@@ -316,6 +325,7 @@ export const CommentItem = {
     message.userItem = (object.userItem !== undefined && object.userItem !== null)
       ? UserItem.fromPartial(object.userItem)
       : undefined;
+    message.replyCount = object.replyCount ?? 0;
     return message;
   },
 };
