@@ -40,7 +40,7 @@ func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8081"
-		log.Info("Defaulting to port %s", port)
+		log.Infof("Defaulting to port %s", port)
 	}
 
 	httpMux := http.NewServeMux()

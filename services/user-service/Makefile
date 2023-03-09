@@ -4,6 +4,9 @@ build:
 run:
 	go run cmd/app/main.go
 
+test: build
+	go test
+
 deploy:
 	./deploy.sh
 

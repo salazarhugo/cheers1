@@ -4,48 +4,48 @@ import * as _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "cheers.auth.v1";
 
-export interface ClaimEvent {
-  created?: CreatedClaim | undefined;
-  deleted?: DeletedClaim | undefined;
+export interface AuthEvent {
+  created?: CreatedAuth | undefined;
+  deleted?: DeletedAuth | undefined;
 }
 
-export interface CreatedClaim {
-  userId: string;
-  claim: string;
+export interface CreatedAuth {
+  uid: string;
+  email: string;
 }
 
-export interface DeletedClaim {
-  userId: string;
-  claim: string;
+export interface DeletedAuth {
+  uid: string;
+  email: string;
 }
 
-function createBaseClaimEvent(): ClaimEvent {
+function createBaseAuthEvent(): AuthEvent {
   return { created: undefined, deleted: undefined };
 }
 
-export const ClaimEvent = {
-  encode(message: ClaimEvent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const AuthEvent = {
+  encode(message: AuthEvent, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.created !== undefined) {
-      CreatedClaim.encode(message.created, writer.uint32(10).fork()).ldelim();
+      CreatedAuth.encode(message.created, writer.uint32(10).fork()).ldelim();
     }
     if (message.deleted !== undefined) {
-      DeletedClaim.encode(message.deleted, writer.uint32(18).fork()).ldelim();
+      DeletedAuth.encode(message.deleted, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ClaimEvent {
+  decode(input: _m0.Reader | Uint8Array, length?: number): AuthEvent {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseClaimEvent();
+    const message = createBaseAuthEvent();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.created = CreatedClaim.decode(reader, reader.uint32());
+          message.created = CreatedAuth.decode(reader, reader.uint32());
           break;
         case 2:
-          message.deleted = DeletedClaim.decode(reader, reader.uint32());
+          message.deleted = DeletedAuth.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -55,59 +55,63 @@ export const ClaimEvent = {
     return message;
   },
 
-  fromJSON(object: any): ClaimEvent {
+  fromJSON(object: any): AuthEvent {
     return {
-      created: isSet(object.created) ? CreatedClaim.fromJSON(object.created) : undefined,
-      deleted: isSet(object.deleted) ? DeletedClaim.fromJSON(object.deleted) : undefined,
+      created: isSet(object.created) ? CreatedAuth.fromJSON(object.created) : undefined,
+      deleted: isSet(object.deleted) ? DeletedAuth.fromJSON(object.deleted) : undefined,
     };
   },
 
-  toJSON(message: ClaimEvent): unknown {
+  toJSON(message: AuthEvent): unknown {
     const obj: any = {};
-    message.created !== undefined && (obj.created = message.created ? CreatedClaim.toJSON(message.created) : undefined);
-    message.deleted !== undefined && (obj.deleted = message.deleted ? DeletedClaim.toJSON(message.deleted) : undefined);
+    message.created !== undefined && (obj.created = message.created ? CreatedAuth.toJSON(message.created) : undefined);
+    message.deleted !== undefined && (obj.deleted = message.deleted ? DeletedAuth.toJSON(message.deleted) : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<ClaimEvent>, I>>(object: I): ClaimEvent {
-    const message = createBaseClaimEvent();
+  create<I extends Exact<DeepPartial<AuthEvent>, I>>(base?: I): AuthEvent {
+    return AuthEvent.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<AuthEvent>, I>>(object: I): AuthEvent {
+    const message = createBaseAuthEvent();
     message.created = (object.created !== undefined && object.created !== null)
-      ? CreatedClaim.fromPartial(object.created)
+      ? CreatedAuth.fromPartial(object.created)
       : undefined;
     message.deleted = (object.deleted !== undefined && object.deleted !== null)
-      ? DeletedClaim.fromPartial(object.deleted)
+      ? DeletedAuth.fromPartial(object.deleted)
       : undefined;
     return message;
   },
 };
 
-function createBaseCreatedClaim(): CreatedClaim {
-  return { userId: "", claim: "" };
+function createBaseCreatedAuth(): CreatedAuth {
+  return { uid: "", email: "" };
 }
 
-export const CreatedClaim = {
-  encode(message: CreatedClaim, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
+export const CreatedAuth = {
+  encode(message: CreatedAuth, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.uid !== "") {
+      writer.uint32(10).string(message.uid);
     }
-    if (message.claim !== "") {
-      writer.uint32(18).string(message.claim);
+    if (message.email !== "") {
+      writer.uint32(18).string(message.email);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): CreatedClaim {
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreatedAuth {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCreatedClaim();
+    const message = createBaseCreatedAuth();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.userId = reader.string();
+          message.uid = reader.string();
           break;
         case 2:
-          message.claim = reader.string();
+          message.email = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -117,55 +121,56 @@ export const CreatedClaim = {
     return message;
   },
 
-  fromJSON(object: any): CreatedClaim {
-    return {
-      userId: isSet(object.userId) ? String(object.userId) : "",
-      claim: isSet(object.claim) ? String(object.claim) : "",
-    };
+  fromJSON(object: any): CreatedAuth {
+    return { uid: isSet(object.uid) ? String(object.uid) : "", email: isSet(object.email) ? String(object.email) : "" };
   },
 
-  toJSON(message: CreatedClaim): unknown {
+  toJSON(message: CreatedAuth): unknown {
     const obj: any = {};
-    message.userId !== undefined && (obj.userId = message.userId);
-    message.claim !== undefined && (obj.claim = message.claim);
+    message.uid !== undefined && (obj.uid = message.uid);
+    message.email !== undefined && (obj.email = message.email);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<CreatedClaim>, I>>(object: I): CreatedClaim {
-    const message = createBaseCreatedClaim();
-    message.userId = object.userId ?? "";
-    message.claim = object.claim ?? "";
+  create<I extends Exact<DeepPartial<CreatedAuth>, I>>(base?: I): CreatedAuth {
+    return CreatedAuth.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CreatedAuth>, I>>(object: I): CreatedAuth {
+    const message = createBaseCreatedAuth();
+    message.uid = object.uid ?? "";
+    message.email = object.email ?? "";
     return message;
   },
 };
 
-function createBaseDeletedClaim(): DeletedClaim {
-  return { userId: "", claim: "" };
+function createBaseDeletedAuth(): DeletedAuth {
+  return { uid: "", email: "" };
 }
 
-export const DeletedClaim = {
-  encode(message: DeletedClaim, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.userId !== "") {
-      writer.uint32(10).string(message.userId);
+export const DeletedAuth = {
+  encode(message: DeletedAuth, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.uid !== "") {
+      writer.uint32(10).string(message.uid);
     }
-    if (message.claim !== "") {
-      writer.uint32(18).string(message.claim);
+    if (message.email !== "") {
+      writer.uint32(18).string(message.email);
     }
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): DeletedClaim {
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeletedAuth {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseDeletedClaim();
+    const message = createBaseDeletedAuth();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.userId = reader.string();
+          message.uid = reader.string();
           break;
         case 2:
-          message.claim = reader.string();
+          message.email = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -175,24 +180,25 @@ export const DeletedClaim = {
     return message;
   },
 
-  fromJSON(object: any): DeletedClaim {
-    return {
-      userId: isSet(object.userId) ? String(object.userId) : "",
-      claim: isSet(object.claim) ? String(object.claim) : "",
-    };
+  fromJSON(object: any): DeletedAuth {
+    return { uid: isSet(object.uid) ? String(object.uid) : "", email: isSet(object.email) ? String(object.email) : "" };
   },
 
-  toJSON(message: DeletedClaim): unknown {
+  toJSON(message: DeletedAuth): unknown {
     const obj: any = {};
-    message.userId !== undefined && (obj.userId = message.userId);
-    message.claim !== undefined && (obj.claim = message.claim);
+    message.uid !== undefined && (obj.uid = message.uid);
+    message.email !== undefined && (obj.email = message.email);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<DeletedClaim>, I>>(object: I): DeletedClaim {
-    const message = createBaseDeletedClaim();
-    message.userId = object.userId ?? "";
-    message.claim = object.claim ?? "";
+  create<I extends Exact<DeepPartial<DeletedAuth>, I>>(base?: I): DeletedAuth {
+    return DeletedAuth.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeletedAuth>, I>>(object: I): DeletedAuth {
+    const message = createBaseDeletedAuth();
+    message.uid = object.uid ?? "";
+    message.email = object.email ?? "";
     return message;
   },
 };
@@ -200,7 +206,7 @@ export const DeletedClaim = {
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
-var globalThis: any = (() => {
+var tsProtoGlobalThis: any = (() => {
   if (typeof globalThis !== "undefined") {
     return globalThis;
   }
