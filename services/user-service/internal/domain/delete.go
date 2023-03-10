@@ -1,4 +1,4 @@
-package repository
+package domain
 
 import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
@@ -6,7 +6,7 @@ import (
 	"log"
 )
 
-func (p *userRepository) DeleteUser(
+func (userService *UserService) DeleteUser(
 	userID string,
 ) error {
 	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})

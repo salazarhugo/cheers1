@@ -25,10 +25,11 @@ func (r repository) CreateComment(
 	userId string,
 	text string,
 	postId string,
-) error {
+) (string, error) {
 	ctx := context.Background()
+	commentID := uuid.New().String()
 	comment := &commentpb.Comment{
-		Id:         uuid.New().String(),
+		Id:         commentID,
 		Text:       text,
 		CreateTime: time.Now().Unix(),
 		UserId:     userId,
@@ -38,7 +39,7 @@ func (r repository) CreateComment(
 
 	m, err := utils.ProtoToMap(comment)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	// Store the comment details in a hash
@@ -48,7 +49,7 @@ func (r repository) CreateComment(
 		m,
 	).Err()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	// Add the comment ID to the post's comment set
@@ -61,7 +62,7 @@ func (r repository) CreateComment(
 		},
 	).Err()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	userItem, err := r.GetUserItem(comment.UserId)
@@ -86,5 +87,5 @@ func (r repository) CreateComment(
 		}
 	}()
 
-	return nil
+	return commentID, nil
 }

@@ -51,6 +51,7 @@ export interface CreateCommentRequest {
 }
 
 export interface CreateCommentResponse {
+  item: CommentItem | undefined;
 }
 
 function createBaseDeleteCommentRequest(): DeleteCommentRequest {
@@ -615,11 +616,14 @@ export const CreateCommentRequest = {
 };
 
 function createBaseCreateCommentResponse(): CreateCommentResponse {
-  return {};
+  return { item: undefined };
 }
 
 export const CreateCommentResponse = {
-  encode(_: CreateCommentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: CreateCommentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.item !== undefined) {
+      CommentItem.encode(message.item, writer.uint32(10).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -630,6 +634,9 @@ export const CreateCommentResponse = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.item = CommentItem.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -638,12 +645,13 @@ export const CreateCommentResponse = {
     return message;
   },
 
-  fromJSON(_: any): CreateCommentResponse {
-    return {};
+  fromJSON(object: any): CreateCommentResponse {
+    return { item: isSet(object.item) ? CommentItem.fromJSON(object.item) : undefined };
   },
 
-  toJSON(_: CreateCommentResponse): unknown {
+  toJSON(message: CreateCommentResponse): unknown {
     const obj: any = {};
+    message.item !== undefined && (obj.item = message.item ? CommentItem.toJSON(message.item) : undefined);
     return obj;
   },
 
@@ -651,8 +659,11 @@ export const CreateCommentResponse = {
     return CreateCommentResponse.fromPartial(base ?? {});
   },
 
-  fromPartial<I extends Exact<DeepPartial<CreateCommentResponse>, I>>(_: I): CreateCommentResponse {
+  fromPartial<I extends Exact<DeepPartial<CreateCommentResponse>, I>>(object: I): CreateCommentResponse {
     const message = createBaseCreateCommentResponse();
+    message.item = (object.item !== undefined && object.item !== null)
+      ? CommentItem.fromPartial(object.item)
+      : undefined;
     return message;
   },
 };

@@ -1,3 +1,3 @@
 MATCH
-  (post:Post {id: $postID})
-DETACH DELETE post
+  (user:User {id: $userID})
+DETACH DELETE user

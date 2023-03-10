@@ -22,15 +22,16 @@ func (r repository) CreateReplyComment(
 	text string,
 	postId string,
 	replyCommentId string,
-) error {
+) (string, error) {
 	ctx := context.Background()
 	comment, err := r.GetComment(replyCommentId)
 	if err != nil {
-		return err
+		return "", err
 	}
 
+	commentID := uuid.New().String()
 	replyComment := &commentpb.Comment{
-		Id:               uuid.New().String(),
+		Id:               commentID,
 		Text:             text,
 		CreateTime:       time.Now().Unix(),
 		UserId:           userId,
@@ -41,7 +42,7 @@ func (r repository) CreateReplyComment(
 
 	m, err := utils.ProtoToMap(replyComment)
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	// Store the reply replyComment details in a hash
@@ -51,7 +52,7 @@ func (r repository) CreateReplyComment(
 		m,
 	).Err()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	// Add the reply replyComment ID to the replyComment's reply list
@@ -64,7 +65,7 @@ func (r repository) CreateReplyComment(
 		},
 	).Err()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	userItem, err := r.GetUserItem(replyComment.UserId)
@@ -89,5 +90,5 @@ func (r repository) CreateReplyComment(
 		}
 	}()
 
-	return nil
+	return commentID, nil
 }

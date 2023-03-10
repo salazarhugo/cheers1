@@ -82,4 +82,5 @@ message CreateCommentRequest {
 }
 
 message CreateCommentResponse {
+  CommentItem item = 1;
 }

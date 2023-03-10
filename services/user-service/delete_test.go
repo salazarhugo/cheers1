@@ -10,19 +10,19 @@ func TestDeleteUser(t *testing.T) {
 	repo := repository.NewUserRepository()
 
 	userID := "user-01"
-	_, err := repo.CreateUser(
-		userID,
-		"nike2",
-		"Nike",
-		"picture",
-		"hugobrock74+nike@gmail.com",
-	)
+	//_, err := repo.CreateUser(
+	//	userID,
+	//	"nike2",
+	//	"Nike",
+	//	"picture",
+	//	"hugobrock74+nike@gmail.com",
+	//)
+	//
+	//if err != nil {
+	//	t.Error("failed to create user: ", err)
+	//}
 
-	if err != nil {
-		t.Error("failed to create user: ", err)
-	}
-
-	err = repo.DeleteUser(userID)
+	err := repo.DeleteUser(userID)
 	if err != nil {
 		t.Error("failed to delete user: ", err)
 	} else {

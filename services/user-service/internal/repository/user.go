@@ -19,7 +19,7 @@ type UserRepository interface {
 	GetUserNode(userId string) (*user.User, error)
 	GetUser(userID string, otherUserID string) (*pb.GetUserResponse, error)
 	UpdateUser(userID string, user *user.User) error
-	DeleteUser(id string) error
+	DeleteUser(userID string) error
 
 	UpdateBusinessAccount(userID string, isBusinessAccount bool) error
 	UpdateAdmin(userID string, isAdmin bool) error
