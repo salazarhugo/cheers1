@@ -90,6 +90,7 @@ message CommentItem {
   Comment comment = 1;
   cheers.type.UserItem user_item = 2;
   int64 reply_count = 3;
+  int64 like_count = 4;
 }
 
 message Comment {

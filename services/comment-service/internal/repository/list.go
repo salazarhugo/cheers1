@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/comment/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"log"
 )
 
 func (r repository) ListComment(
@@ -37,10 +38,17 @@ func (r repository) ListComment(
 			continue
 		}
 
+		// Get the number of likes
+		likeCount, err := r.redis.SCard(ctx, getKeyCommentLikes(commentID)).Result()
+		if err != nil {
+			log.Println(err)
+		}
+
 		comments = append(comments, &comment.CommentItem{
 			Comment:    com,
 			UserItem:   userItem,
 			ReplyCount: replyCount,
+			LikeCount:  likeCount,
 		})
 
 	}

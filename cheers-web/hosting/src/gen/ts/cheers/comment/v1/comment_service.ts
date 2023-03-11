@@ -47,6 +47,7 @@ export interface CommentItem {
   comment: Comment | undefined;
   userItem: UserItem | undefined;
   replyCount: number;
+  likeCount: number;
 }
 
 export interface Comment {
@@ -574,7 +575,7 @@ export const ListCommentResponse = {
 };
 
 function createBaseCommentItem(): CommentItem {
-  return { comment: undefined, userItem: undefined, replyCount: 0 };
+  return { comment: undefined, userItem: undefined, replyCount: 0, likeCount: 0 };
 }
 
 export const CommentItem = {
@@ -587,6 +588,9 @@ export const CommentItem = {
     }
     if (message.replyCount !== 0) {
       writer.uint32(24).int64(message.replyCount);
+    }
+    if (message.likeCount !== 0) {
+      writer.uint32(32).int64(message.likeCount);
     }
     return writer;
   },
@@ -607,6 +611,9 @@ export const CommentItem = {
         case 3:
           message.replyCount = longToNumber(reader.int64() as Long);
           break;
+        case 4:
+          message.likeCount = longToNumber(reader.int64() as Long);
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -620,6 +627,7 @@ export const CommentItem = {
       comment: isSet(object.comment) ? Comment.fromJSON(object.comment) : undefined,
       userItem: isSet(object.userItem) ? UserItem.fromJSON(object.userItem) : undefined,
       replyCount: isSet(object.replyCount) ? Number(object.replyCount) : 0,
+      likeCount: isSet(object.likeCount) ? Number(object.likeCount) : 0,
     };
   },
 
@@ -628,6 +636,7 @@ export const CommentItem = {
     message.comment !== undefined && (obj.comment = message.comment ? Comment.toJSON(message.comment) : undefined);
     message.userItem !== undefined && (obj.userItem = message.userItem ? UserItem.toJSON(message.userItem) : undefined);
     message.replyCount !== undefined && (obj.replyCount = Math.round(message.replyCount));
+    message.likeCount !== undefined && (obj.likeCount = Math.round(message.likeCount));
     return obj;
   },
 
@@ -644,6 +653,7 @@ export const CommentItem = {
       ? UserItem.fromPartial(object.userItem)
       : undefined;
     message.replyCount = object.replyCount ?? 0;
+    message.likeCount = object.likeCount ?? 0;
     return message;
   },
 };
