@@ -8,8 +8,8 @@ import (
 	"log"
 )
 
-func (r repository) GetLastComment(postId string) (*comment.CommentItem, error) {
-	values, err := r.redis.ZRevRangeByScore(context.Background(), getKeyPostComment(postId), &redis.ZRangeBy{
+func (repository repository) GetLastComment(postId string) (*comment.CommentItem, error) {
+	values, err := repository.redis.ZRevRangeByScore(context.Background(), getKeyPostComment(postId), &redis.ZRangeBy{
 		Offset: 0,
 		Count:  1,
 	}).Result()
@@ -29,7 +29,7 @@ func (r repository) GetLastComment(postId string) (*comment.CommentItem, error) 
 		return nil, err
 	}
 
-	userItem, err := r.GetUserItem(com.UserId)
+	userItem, err := repository.GetUserItem(com.UserId)
 
 	item := &comment.CommentItem{
 		Comment:  com,

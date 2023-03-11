@@ -13,7 +13,7 @@ func (s *Server) CreateComment(
 	ctx context.Context,
 	request *comment.CreateCommentRequest,
 ) (*comment.CreateCommentResponse, error) {
-	userID, err := utils.GetUserId(ctx)
+	viewerID, err := utils.GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to retrieve userID")
 	}
@@ -21,14 +21,14 @@ func (s *Server) CreateComment(
 	var commentID string
 	if request.ReplyToCommentId != "" {
 		commentID, err = s.commentRepository.CreateReplyComment(
-			userID,
+			viewerID,
 			request.Comment,
 			request.PostId,
 			request.ReplyToCommentId,
 		)
 	} else {
 		commentID, err = s.commentRepository.CreateComment(
-			userID,
+			viewerID,
 			request.Comment,
 			request.PostId,
 		)
@@ -38,7 +38,7 @@ func (s *Server) CreateComment(
 		return nil, err
 	}
 
-	item, err := s.commentRepository.GetCommentItem(commentID)
+	item, err := s.commentRepository.GetCommentItem(viewerID, commentID)
 	if err != nil {
 		return nil, err
 	}

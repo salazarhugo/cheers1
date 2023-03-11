@@ -17,14 +17,14 @@ func getKeyReplyList(commentId string) string {
 	return fmt.Sprintf("%s:%s:%s", keyComment, commentId, keyReplies)
 }
 
-func (r repository) CreateReplyComment(
+func (repository repository) CreateReplyComment(
 	userId string,
 	text string,
 	postId string,
 	replyCommentId string,
 ) (string, error) {
 	ctx := context.Background()
-	comment, err := r.GetComment(replyCommentId)
+	comment, err := repository.GetComment(replyCommentId)
 	if err != nil {
 		return "", err
 	}
@@ -46,7 +46,7 @@ func (r repository) CreateReplyComment(
 	}
 
 	// Store the reply replyComment details in a hash
-	err = r.redis.HSet(
+	err = repository.redis.HSet(
 		ctx,
 		getKeyComment(replyComment.Id),
 		m,
@@ -56,7 +56,7 @@ func (r repository) CreateReplyComment(
 	}
 
 	// Add the reply replyComment ID to the replyComment's reply list
-	err = r.redis.ZAdd(
+	err = repository.redis.ZAdd(
 		ctx,
 		getKeyReplyList(replyCommentId),
 		redis.Z{
@@ -68,7 +68,7 @@ func (r repository) CreateReplyComment(
 		return "", err
 	}
 
-	userItem, err := r.GetUserItem(replyComment.UserId)
+	userItem, err := repository.GetUserItem(replyComment.UserId)
 
 	item := &commentpb.CommentItem{
 		Comment:  replyComment,

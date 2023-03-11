@@ -8,19 +8,68 @@ import (
 )
 
 type Repository interface {
-	CreateComment(userId string, text string, postId string) (string, error)
-	CreateReplyComment(userId string, text string, postId string, replyCommentId string) (string, error)
-	UpdateUser(user *user.User) error
-	GetLastComment(postId string) (*comment.CommentItem, error)
-	GetComment(commentID string) (*comment.Comment, error)
-	GetCommentItem(commentID string) (*comment.CommentItem, error)
-	ListComment(postId string) ([]*comment.CommentItem, error)
-	ListReplies(commentId string) ([]*comment.CommentItem, error)
-	DeleteComment(commentId string) error
-	LikeComment(userID string, commentID string) error
-	UnLikeComment(userID string, commentID string) error
+	CreateComment(
+		userId string,
+		text string,
+		postId string,
+	) (string, error)
 
-	GetUserItem(userId string) (*user.UserItem, error)
+	CreateReplyComment(
+		userId string,
+		text string,
+		postId string,
+		replyCommentId string,
+	) (string, error)
+
+	UpdateUser(
+		user *user.User,
+	) error
+
+	GetLastComment(
+		postId string,
+	) (*comment.CommentItem, error)
+
+	GetComment(
+		commentID string,
+	) (*comment.Comment, error)
+
+	GetCommentItem(
+		viewerID string,
+		commentID string,
+	) (*comment.CommentItem, error)
+
+	ListComment(
+		userID string,
+		postID string,
+	) ([]*comment.CommentItem, error)
+
+	ListReplies(
+		userID string,
+		commentId string,
+	) ([]*comment.CommentItem, error)
+
+	DeleteComment(
+		commentId string,
+	) error
+
+	LikeComment(
+		userID string,
+		commentID string,
+	) error
+
+	UnLikeComment(
+		userID string,
+		commentID string,
+	) error
+
+	GetUserItem(
+		userId string,
+	) (*user.UserItem, error)
+
+	HasUserLikedComment(
+		userID string,
+		commentID string,
+	) (bool, error)
 }
 
 type repository struct {

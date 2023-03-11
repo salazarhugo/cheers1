@@ -21,7 +21,7 @@ func getKeyPostComment(postId string) string {
 	return fmt.Sprintf("%s:%s:%s", keyPost, postId, keyComments)
 }
 
-func (r repository) CreateComment(
+func (repository repository) CreateComment(
 	userId string,
 	text string,
 	postId string,
@@ -43,7 +43,7 @@ func (r repository) CreateComment(
 	}
 
 	// Store the comment details in a hash
-	err = r.redis.HSet(
+	err = repository.redis.HSet(
 		ctx,
 		getKeyComment(comment.Id),
 		m,
@@ -53,7 +53,7 @@ func (r repository) CreateComment(
 	}
 
 	// Add the comment ID to the post's comment set
-	err = r.redis.ZAdd(
+	err = repository.redis.ZAdd(
 		ctx,
 		getKeyPostComment(postId),
 		redis.Z{
@@ -65,7 +65,7 @@ func (r repository) CreateComment(
 		return "", err
 	}
 
-	userItem, err := r.GetUserItem(comment.UserId)
+	userItem, err := repository.GetUserItem(comment.UserId)
 
 	item := &commentpb.CommentItem{
 		Comment:  comment,

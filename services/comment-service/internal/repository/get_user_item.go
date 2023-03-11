@@ -5,10 +5,10 @@ import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 )
 
-func (r repository) GetUserItem(
+func (repository repository) GetUserItem(
 	userId string,
 ) (*user.UserItem, error) {
-	res, err := r.redis.HGetAll(context.Background(), getKeyUser(userId)).Result()
+	res, err := repository.redis.HGetAll(context.Background(), getKeyUser(userId)).Result()
 	if err != nil {
 		return nil, err
 	}

@@ -19,8 +19,8 @@ func getKeyUser(userUUID string) string {
 	return fmt.Sprintf("%s:%s", keyUser, userUUID)
 }
 
-func (r repository) UpdateUser(user *user.User) error {
-	err := r.redis.HSet(context.Background(), getKeyUser(user.Id), map[string]interface{}{
+func (repository repository) UpdateUser(user *user.User) error {
+	err := repository.redis.HSet(context.Background(), getKeyUser(user.Id), map[string]interface{}{
 		"id":       user.Id,
 		"name":     user.Name,
 		"username": user.Username,

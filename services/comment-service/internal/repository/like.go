@@ -12,13 +12,13 @@ func getKeyCommentLikes(commentID string) string {
 	return fmt.Sprintf("%s:%s:%s", keyComment, commentID, keyLikes)
 }
 
-func (r repository) LikeComment(
+func (repository repository) LikeComment(
 	userID string,
 	commentID string,
 ) error {
 	ctx := context.Background()
 
-	err := r.redis.SAdd(
+	err := repository.redis.SAdd(
 		ctx,
 		getKeyCommentLikes(commentID),
 		userID,

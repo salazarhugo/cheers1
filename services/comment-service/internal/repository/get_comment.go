@@ -6,13 +6,13 @@ import (
 	"github.com/salazarhugo/cheers1/libs/utils"
 )
 
-func (r repository) GetComment(
+func (repository repository) GetComment(
 	commentID string,
 ) (*comment.Comment, error) {
 	ctx := context.Background()
 
 	com := &comment.Comment{}
-	commentFields, err := r.redis.HGetAll(ctx, getKeyComment(commentID)).Result()
+	commentFields, err := repository.redis.HGetAll(ctx, getKeyComment(commentID)).Result()
 	if err != nil {
 		return nil, err
 	}

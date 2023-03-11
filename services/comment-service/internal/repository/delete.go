@@ -7,20 +7,20 @@ import (
 	"log"
 )
 
-func (r repository) DeleteComment(
+func (repository repository) DeleteComment(
 	commentId string,
 ) error {
 	ctx := context.Background()
 
 	// Get comment
-	comment, err := r.GetComment(commentId)
+	comment, err := repository.GetComment(commentId)
 	if err != nil {
 		return err
 	}
 
 	isReply := comment.ReplyToCommentId != ""
 
-	pipeline := r.redis.TxPipeline()
+	pipeline := repository.redis.TxPipeline()
 
 	if isReply {
 		// Remove the ID from the list of replies of the parent comment

@@ -4,13 +4,13 @@ import (
 	"context"
 )
 
-func (r repository) UnLikeComment(
+func (repository repository) UnLikeComment(
 	userID string,
 	commentID string,
 ) error {
 	ctx := context.Background()
 
-	err := r.redis.SRem(
+	err := repository.redis.SRem(
 		ctx,
 		getKeyCommentLikes(commentID),
 		userID,

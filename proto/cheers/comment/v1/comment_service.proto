@@ -91,6 +91,7 @@ message CommentItem {
   cheers.type.UserItem user_item = 2;
   int64 reply_count = 3;
   int64 like_count = 4;
+  bool has_liked = 5;
 }
 
 message Comment {

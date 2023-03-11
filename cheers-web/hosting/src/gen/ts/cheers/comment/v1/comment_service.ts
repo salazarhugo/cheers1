@@ -48,6 +48,7 @@ export interface CommentItem {
   userItem: UserItem | undefined;
   replyCount: number;
   likeCount: number;
+  hasLiked: boolean;
 }
 
 export interface Comment {
@@ -575,7 +576,7 @@ export const ListCommentResponse = {
 };
 
 function createBaseCommentItem(): CommentItem {
-  return { comment: undefined, userItem: undefined, replyCount: 0, likeCount: 0 };
+  return { comment: undefined, userItem: undefined, replyCount: 0, likeCount: 0, hasLiked: false };
 }
 
 export const CommentItem = {
@@ -591,6 +592,9 @@ export const CommentItem = {
     }
     if (message.likeCount !== 0) {
       writer.uint32(32).int64(message.likeCount);
+    }
+    if (message.hasLiked === true) {
+      writer.uint32(40).bool(message.hasLiked);
     }
     return writer;
   },
@@ -614,6 +618,9 @@ export const CommentItem = {
         case 4:
           message.likeCount = longToNumber(reader.int64() as Long);
           break;
+        case 5:
+          message.hasLiked = reader.bool();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -628,6 +635,7 @@ export const CommentItem = {
       userItem: isSet(object.userItem) ? UserItem.fromJSON(object.userItem) : undefined,
       replyCount: isSet(object.replyCount) ? Number(object.replyCount) : 0,
       likeCount: isSet(object.likeCount) ? Number(object.likeCount) : 0,
+      hasLiked: isSet(object.hasLiked) ? Boolean(object.hasLiked) : false,
     };
   },
 
@@ -637,6 +645,7 @@ export const CommentItem = {
     message.userItem !== undefined && (obj.userItem = message.userItem ? UserItem.toJSON(message.userItem) : undefined);
     message.replyCount !== undefined && (obj.replyCount = Math.round(message.replyCount));
     message.likeCount !== undefined && (obj.likeCount = Math.round(message.likeCount));
+    message.hasLiked !== undefined && (obj.hasLiked = message.hasLiked);
     return obj;
   },
 
@@ -654,6 +663,7 @@ export const CommentItem = {
       : undefined;
     message.replyCount = object.replyCount ?? 0;
     message.likeCount = object.likeCount ?? 0;
+    message.hasLiked = object.hasLiked ?? false;
     return message;
   },
 };
