@@ -34,6 +34,32 @@ service CommentService {
       delete: "/v1/comments"
     };
   }
+
+  rpc CreateLikeComment(CreateLikeCommentRequest) returns (CreateLikeCommentResponse) {
+    option (google.api.http) = {
+      post: "/v1/comments/{comment_id}/like"
+    };
+  }
+
+  rpc DeleteLikeComment(DeleteLikeCommentRequest) returns (DeleteLikeCommentResponse) {
+    option (google.api.http) = {
+      delete: "/v1/comments/{comment_id}/like"
+    };
+  }
+}
+
+message CreateLikeCommentRequest {
+  string comment_id = 1;
+}
+
+message CreateLikeCommentResponse {
+}
+
+message DeleteLikeCommentRequest {
+  string comment_id = 1;
+}
+
+message DeleteLikeCommentResponse {
 }
 
 message DeleteCommentRequest {

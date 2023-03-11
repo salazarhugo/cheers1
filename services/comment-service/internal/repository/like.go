@@ -18,7 +18,6 @@ func (r repository) LikeComment(
 ) error {
 	ctx := context.Background()
 
-	// Store the comment details in a hash
 	err := r.redis.SAdd(
 		ctx,
 		getKeyCommentLikes(commentID),
@@ -30,11 +29,10 @@ func (r repository) LikeComment(
 
 	go func() {
 		err := pubsub.PublishProtoWithBinaryEncoding("comment-topic", &commentpb.CommentEvent{
-			Event: &commentpb.CommentEvent_Created{
-				Created: &commentpb.CreatedComment{
-					Comment:  item.Comment,
-					User:     item.UserItem,
-					Mentions: mentions,
+			Event: &commentpb.CommentEvent_Liked{
+				Liked: &commentpb.LikedComment{
+					CommentId: commentID,
+					UserId:    userID,
 				},
 			},
 		})

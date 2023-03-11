@@ -17,6 +17,8 @@ type Repository interface {
 	ListComment(postId string) ([]*comment.CommentItem, error)
 	ListReplies(commentId string) ([]*comment.CommentItem, error)
 	DeleteComment(commentId string) error
+	LikeComment(userID string, commentID string) error
+	UnLikeComment(userID string, commentID string) error
 
 	GetUserItem(userId string) (*user.UserItem, error)
 }

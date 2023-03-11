@@ -5,6 +5,20 @@ import { UserItem } from "../../type/user/user";
 
 export const protobufPackage = "cheers.comment.v1";
 
+export interface CreateLikeCommentRequest {
+  commentId: string;
+}
+
+export interface CreateLikeCommentResponse {
+}
+
+export interface DeleteLikeCommentRequest {
+  commentId: string;
+}
+
+export interface DeleteLikeCommentResponse {
+}
+
 export interface DeleteCommentRequest {
   postId: string;
   commentId: string;
@@ -53,6 +67,194 @@ export interface CreateCommentRequest {
 export interface CreateCommentResponse {
   item: CommentItem | undefined;
 }
+
+function createBaseCreateLikeCommentRequest(): CreateLikeCommentRequest {
+  return { commentId: "" };
+}
+
+export const CreateLikeCommentRequest = {
+  encode(message: CreateLikeCommentRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.commentId !== "") {
+      writer.uint32(10).string(message.commentId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateLikeCommentRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateLikeCommentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.commentId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): CreateLikeCommentRequest {
+    return { commentId: isSet(object.commentId) ? String(object.commentId) : "" };
+  },
+
+  toJSON(message: CreateLikeCommentRequest): unknown {
+    const obj: any = {};
+    message.commentId !== undefined && (obj.commentId = message.commentId);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateLikeCommentRequest>, I>>(base?: I): CreateLikeCommentRequest {
+    return CreateLikeCommentRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CreateLikeCommentRequest>, I>>(object: I): CreateLikeCommentRequest {
+    const message = createBaseCreateLikeCommentRequest();
+    message.commentId = object.commentId ?? "";
+    return message;
+  },
+};
+
+function createBaseCreateLikeCommentResponse(): CreateLikeCommentResponse {
+  return {};
+}
+
+export const CreateLikeCommentResponse = {
+  encode(_: CreateLikeCommentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CreateLikeCommentResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCreateLikeCommentResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): CreateLikeCommentResponse {
+    return {};
+  },
+
+  toJSON(_: CreateLikeCommentResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<CreateLikeCommentResponse>, I>>(base?: I): CreateLikeCommentResponse {
+    return CreateLikeCommentResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<CreateLikeCommentResponse>, I>>(_: I): CreateLikeCommentResponse {
+    const message = createBaseCreateLikeCommentResponse();
+    return message;
+  },
+};
+
+function createBaseDeleteLikeCommentRequest(): DeleteLikeCommentRequest {
+  return { commentId: "" };
+}
+
+export const DeleteLikeCommentRequest = {
+  encode(message: DeleteLikeCommentRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.commentId !== "") {
+      writer.uint32(10).string(message.commentId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteLikeCommentRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteLikeCommentRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.commentId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DeleteLikeCommentRequest {
+    return { commentId: isSet(object.commentId) ? String(object.commentId) : "" };
+  },
+
+  toJSON(message: DeleteLikeCommentRequest): unknown {
+    const obj: any = {};
+    message.commentId !== undefined && (obj.commentId = message.commentId);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteLikeCommentRequest>, I>>(base?: I): DeleteLikeCommentRequest {
+    return DeleteLikeCommentRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeleteLikeCommentRequest>, I>>(object: I): DeleteLikeCommentRequest {
+    const message = createBaseDeleteLikeCommentRequest();
+    message.commentId = object.commentId ?? "";
+    return message;
+  },
+};
+
+function createBaseDeleteLikeCommentResponse(): DeleteLikeCommentResponse {
+  return {};
+}
+
+export const DeleteLikeCommentResponse = {
+  encode(_: DeleteLikeCommentResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteLikeCommentResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseDeleteLikeCommentResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): DeleteLikeCommentResponse {
+    return {};
+  },
+
+  toJSON(_: DeleteLikeCommentResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<DeleteLikeCommentResponse>, I>>(base?: I): DeleteLikeCommentResponse {
+    return DeleteLikeCommentResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DeleteLikeCommentResponse>, I>>(_: I): DeleteLikeCommentResponse {
+    const message = createBaseDeleteLikeCommentResponse();
+    return message;
+  },
+};
 
 function createBaseDeleteCommentRequest(): DeleteCommentRequest {
   return { postId: "", commentId: "" };
@@ -673,6 +875,8 @@ export interface CommentService {
   ListComment(request: ListCommentRequest): Promise<ListCommentResponse>;
   ListReplies(request: ListRepliesRequest): Promise<ListRepliesResponse>;
   DeleteComment(request: DeleteCommentRequest): Promise<DeleteCommentResponse>;
+  CreateLikeComment(request: CreateLikeCommentRequest): Promise<CreateLikeCommentResponse>;
+  DeleteLikeComment(request: DeleteLikeCommentRequest): Promise<DeleteLikeCommentResponse>;
 }
 
 export class CommentServiceClientImpl implements CommentService {
@@ -685,6 +889,8 @@ export class CommentServiceClientImpl implements CommentService {
     this.ListComment = this.ListComment.bind(this);
     this.ListReplies = this.ListReplies.bind(this);
     this.DeleteComment = this.DeleteComment.bind(this);
+    this.CreateLikeComment = this.CreateLikeComment.bind(this);
+    this.DeleteLikeComment = this.DeleteLikeComment.bind(this);
   }
   CreateComment(request: CreateCommentRequest): Promise<CreateCommentResponse> {
     const data = CreateCommentRequest.encode(request).finish();
@@ -708,6 +914,18 @@ export class CommentServiceClientImpl implements CommentService {
     const data = DeleteCommentRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteComment", data);
     return promise.then((data) => DeleteCommentResponse.decode(new _m0.Reader(data)));
+  }
+
+  CreateLikeComment(request: CreateLikeCommentRequest): Promise<CreateLikeCommentResponse> {
+    const data = CreateLikeCommentRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "CreateLikeComment", data);
+    return promise.then((data) => CreateLikeCommentResponse.decode(new _m0.Reader(data)));
+  }
+
+  DeleteLikeComment(request: DeleteLikeCommentRequest): Promise<DeleteLikeCommentResponse> {
+    const data = DeleteLikeCommentRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "DeleteLikeComment", data);
+    return promise.then((data) => DeleteLikeCommentResponse.decode(new _m0.Reader(data)));
   }
 }
 
