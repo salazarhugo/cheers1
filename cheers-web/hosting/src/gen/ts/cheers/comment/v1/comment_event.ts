@@ -8,6 +8,12 @@ export const protobufPackage = "cheers.comment.v1";
 export interface CommentEvent {
   created?: CreatedComment | undefined;
   deleted?: DeletedComment | undefined;
+  liked?: LikedComment | undefined;
+}
+
+export interface LikedComment {
+  commentId: string;
+  userId: string;
 }
 
 export interface CreatedComment {
@@ -22,7 +28,7 @@ export interface DeletedComment {
 }
 
 function createBaseCommentEvent(): CommentEvent {
-  return { created: undefined, deleted: undefined };
+  return { created: undefined, deleted: undefined, liked: undefined };
 }
 
 export const CommentEvent = {
@@ -32,6 +38,9 @@ export const CommentEvent = {
     }
     if (message.deleted !== undefined) {
       DeletedComment.encode(message.deleted, writer.uint32(18).fork()).ldelim();
+    }
+    if (message.liked !== undefined) {
+      LikedComment.encode(message.liked, writer.uint32(26).fork()).ldelim();
     }
     return writer;
   },
@@ -49,6 +58,9 @@ export const CommentEvent = {
         case 2:
           message.deleted = DeletedComment.decode(reader, reader.uint32());
           break;
+        case 3:
+          message.liked = LikedComment.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -61,6 +73,7 @@ export const CommentEvent = {
     return {
       created: isSet(object.created) ? CreatedComment.fromJSON(object.created) : undefined,
       deleted: isSet(object.deleted) ? DeletedComment.fromJSON(object.deleted) : undefined,
+      liked: isSet(object.liked) ? LikedComment.fromJSON(object.liked) : undefined,
     };
   },
 
@@ -70,6 +83,7 @@ export const CommentEvent = {
       (obj.created = message.created ? CreatedComment.toJSON(message.created) : undefined);
     message.deleted !== undefined &&
       (obj.deleted = message.deleted ? DeletedComment.toJSON(message.deleted) : undefined);
+    message.liked !== undefined && (obj.liked = message.liked ? LikedComment.toJSON(message.liked) : undefined);
     return obj;
   },
 
@@ -85,6 +99,71 @@ export const CommentEvent = {
     message.deleted = (object.deleted !== undefined && object.deleted !== null)
       ? DeletedComment.fromPartial(object.deleted)
       : undefined;
+    message.liked = (object.liked !== undefined && object.liked !== null)
+      ? LikedComment.fromPartial(object.liked)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseLikedComment(): LikedComment {
+  return { commentId: "", userId: "" };
+}
+
+export const LikedComment = {
+  encode(message: LikedComment, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.commentId !== "") {
+      writer.uint32(10).string(message.commentId);
+    }
+    if (message.userId !== "") {
+      writer.uint32(18).string(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): LikedComment {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseLikedComment();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.commentId = reader.string();
+          break;
+        case 2:
+          message.userId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): LikedComment {
+    return {
+      commentId: isSet(object.commentId) ? String(object.commentId) : "",
+      userId: isSet(object.userId) ? String(object.userId) : "",
+    };
+  },
+
+  toJSON(message: LikedComment): unknown {
+    const obj: any = {};
+    message.commentId !== undefined && (obj.commentId = message.commentId);
+    message.userId !== undefined && (obj.userId = message.userId);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<LikedComment>, I>>(base?: I): LikedComment {
+    return LikedComment.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<LikedComment>, I>>(object: I): LikedComment {
+    const message = createBaseLikedComment();
+    message.commentId = object.commentId ?? "";
+    message.userId = object.userId ?? "";
     return message;
   },
 };

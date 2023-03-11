@@ -12,6 +12,7 @@ const (
 	keyComment  = "comment"
 	keyComments = "comments"
 	keyReplies  = "replies"
+	keyLikes    = "likes"
 )
 
 func getKeyUser(userUUID string) string {

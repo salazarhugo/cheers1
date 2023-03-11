@@ -3,6 +3,7 @@ module github.com/salazarhugo/cheers1/services/post-service
 go 1.19
 
 require (
+	github.com/go-redis/redis/v9 v9.0.0-rc.1
 	github.com/golang/protobuf v1.5.2
 	github.com/google/uuid v1.3.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
@@ -27,6 +28,8 @@ require (
 	cloud.google.com/go/pubsub v1.3.1 // indirect
 	cloud.google.com/go/storage v1.27.0 // indirect
 	firebase.google.com/go/v4 v4.9.0 // indirect
+	github.com/cespare/xxhash/v2 v2.1.2 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/pprof v0.0.0-20220412212628-83db2b799d1f // indirect

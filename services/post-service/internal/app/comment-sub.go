@@ -21,8 +21,13 @@ func CommentSub(w http.ResponseWriter, r *http.Request) {
 
 	switch event := event.Event.(type) {
 	case *comment.CommentEvent_Created:
-		err = repo.UpdatePostLastComment(event.Created.User, event.Created.Comment)
+		user := event.Created.User
+		comment := event.Created.Comment
+		err = repo.UpdatePostLastComment(user, comment)
+		err = repo.IncrementCommentCount(comment.PostId)
 	case *comment.CommentEvent_Deleted:
+		comment := event.Deleted.Comment
+		err = repo.DecrementCommentCount(comment.PostId)
 	}
 
 	if err != nil {

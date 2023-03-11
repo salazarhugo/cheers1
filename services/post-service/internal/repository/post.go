@@ -1,12 +1,14 @@
 package repository
 
 import (
+	"github.com/go-redis/redis/v9"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/comment/v1"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	postpb "github.com/salazarhugo/cheers1/gen/go/cheers/type/post"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"os"
 )
 
 type PostRepository interface {
@@ -21,12 +23,26 @@ type PostRepository interface {
 	ListMapPost(userID string, request *pb.ListMapPostRequest) (*pb.ListMapPostResponse, error)
 	LikePost(userID string, postID string) (*pb.LikePostResponse, error)
 	UnlikePost(userID string, postID string) (*pb.UnlikePostResponse, error)
+	IncrementCommentCount(postID string) error
+	DecrementCommentCount(postID string) error
+	GetCommentCount(postID string) (int, error)
 }
 
 type postRepository struct {
 	driver neo4j.Driver
+	redis  *redis.Client
 }
 
 func NewPostRepository() PostRepository {
-	return &postRepository{driver: utils.GetDriver()}
+	driver := utils.GetDriver()
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     os.Getenv("DB_ENDPOINT"),
+		Password: os.Getenv("DB_PASSWORD"),
+		DB:       0,
+	})
+
+	return &postRepository{
+		driver: driver,
+		redis:  rdb,
+	}
 }

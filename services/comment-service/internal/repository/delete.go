@@ -2,6 +2,8 @@ package repository
 
 import (
 	"context"
+	commentpb "github.com/salazarhugo/cheers1/gen/go/cheers/comment/v1"
+	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"log"
 )
 
@@ -34,7 +36,21 @@ func (r repository) DeleteComment(
 			getKeyPostComment(comment.PostId),
 			commentId,
 		)
-		// Remove all replies
+
+		// Get all replies
+		replyIDs, err := pipeline.ZRange(ctx, getKeyReplyList(comment.Id), 0, -1).Result()
+		if err != nil {
+		}
+
+		// Delete all replies hash
+		for _, replyID := range replyIDs {
+			pipeline.Del(
+				ctx,
+				getKeyComment(replyID),
+			)
+		}
+
+		// Remove reply list
 		pipeline.Del(
 			ctx,
 			getKeyReplyList(comment.Id),
@@ -52,6 +68,20 @@ func (r repository) DeleteComment(
 		log.Println(err)
 		return err
 	}
+
+	go func() {
+		err := pubsub.PublishProtoWithBinaryEncoding("comment-topic", &commentpb.CommentEvent{
+			Event: &commentpb.CommentEvent_Deleted{
+				Deleted: &commentpb.DeletedComment{
+					Comment: comment,
+					User:    nil,
+				},
+			},
+		})
+		if err != nil {
+			log.Println(err)
+		}
+	}()
 
 	return nil
 }

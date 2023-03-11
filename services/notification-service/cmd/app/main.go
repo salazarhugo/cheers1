@@ -35,6 +35,7 @@ func main() {
 	httpMux.HandleFunc("/chat", app.ChatTopic)
 	httpMux.HandleFunc("/user", app.UserTopicSub)
 	httpMux.HandleFunc("/friendship-sub", app.FriendShipSub)
+	httpMux.HandleFunc("/comment-sub", app.CommentSub)
 
 	grpcS := grpc.NewServer(
 		grpc.UnaryInterceptor(auth.UnaryInterceptor),

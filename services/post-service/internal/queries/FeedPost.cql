@@ -22,7 +22,6 @@ RETURN
      post:          PROPERTIES(post),
      user:          PROPERTIES(creator),
      like_count:    like_count,
-     comment_count: 1,
      has_liked:     has_liked,
      is_creator:    is_creator
    }

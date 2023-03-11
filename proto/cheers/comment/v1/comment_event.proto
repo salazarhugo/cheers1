@@ -12,7 +12,13 @@ message CommentEvent {
   oneof event {
     CreatedComment created = 1;
     DeletedComment deleted = 2;
+    LikedComment liked = 3;
   };
+}
+
+message LikedComment {
+  string comment_id = 1;
+  string user_id = 2;
 }
 
 message CreatedComment {

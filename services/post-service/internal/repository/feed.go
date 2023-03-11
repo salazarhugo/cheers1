@@ -4,6 +4,7 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	utils "github.com/salazarhugo/cheers1/libs/utils"
+	"log"
 )
 
 func (p *postRepository) FeedPost(
@@ -44,6 +45,12 @@ func (p *postRepository) FeedPost(
 		if err != nil {
 			return nil, err
 		}
+
+		commentCount, err := p.GetCommentCount(post.Post.Id)
+		if err != nil {
+			log.Println(err)
+		}
+		post.CommentCount = int64(commentCount)
 
 		posts = append(posts, post)
 	}
