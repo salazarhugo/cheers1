@@ -17,6 +17,7 @@ func (c chatRepository) SendMessage(
 	senderID string,
 	roomID string,
 	text string,
+	replyToMessageId string,
 ) (*chat.Message, error) {
 	ctx := context.Background()
 

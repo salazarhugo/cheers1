@@ -160,7 +160,10 @@ func (cache *redisCache) AddToken(userId string, token string) {
 	client.SAdd(context.Background(), GetKeyUserTokens(userId), token)
 }
 
-func (cache *redisCache) ListMessage(roomId string, pageSize int64) []*pb.Message {
+func (cache *redisCache) ListMessage(
+	roomId string,
+	pageSize int64,
+) []*pb.Message {
 	client := cache.client
 
 	values, err := client.ZRevRange(context.Background(), getKeyRoomMessages(roomId), 0, pageSize).Result()
@@ -176,6 +179,10 @@ func (cache *redisCache) ListMessage(roomId string, pageSize int64) []*pb.Messag
 		if err != nil {
 			panic(err)
 		}
+		item, _ := cache.GetUserItem(message.GetSenderId())
+		message.SenderName = item.GetName()
+		message.SenderPicture = item.GetPicture()
+		message.SenderUsername = item.GetUsername()
 		message.Status = pb.Message_DELIVERED
 		messages = append(messages, message)
 	}

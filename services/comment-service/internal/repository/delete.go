@@ -18,7 +18,8 @@ func (repository repository) DeleteComment(
 		return err
 	}
 
-	isReply := comment.ReplyToCommentId != ""
+	isReply := comment.GetReplyToCommentId() != ""
+	log.Println(isReply)
 
 	pipeline := repository.redis.TxPipeline()
 
@@ -38,15 +39,23 @@ func (repository repository) DeleteComment(
 		)
 
 		// Get all replies
-		replyIDs, err := pipeline.ZRange(ctx, getKeyReplyList(comment.Id), 0, -1).Result()
+		replyIDs, err := repository.redis.ZRange(ctx, getKeyReplyList(commentId), 0, -1).Result()
 		if err != nil {
+			log.Println(err)
 		}
+
+		log.Println(replyIDs)
 
 		// Delete all replies hash
 		for _, replyID := range replyIDs {
 			pipeline.Del(
 				ctx,
 				getKeyComment(replyID),
+			)
+			// Delete comment likes
+			pipeline.Del(
+				ctx,
+				getKeyCommentLikes(replyID),
 			)
 		}
 
@@ -61,6 +70,12 @@ func (repository repository) DeleteComment(
 	pipeline.Del(
 		ctx,
 		getKeyComment(commentId),
+	)
+
+	// Delete comment likes
+	pipeline.Del(
+		ctx,
+		getKeyCommentLikes(commentId),
 	)
 
 	_, err = pipeline.Exec(ctx)

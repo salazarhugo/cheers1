@@ -24,6 +24,7 @@ type ChatRepository interface {
 		senderID string,
 		roomId string,
 		text string,
+		replyToMessageId string,
 	) (*pb.Message, error)
 }
 

@@ -22,6 +22,16 @@ func CommentSub(w http.ResponseWriter, r *http.Request) {
 	repo := repository.NewRepository()
 
 	switch event := event.Event.(type) {
+	case *comment.CommentEvent_Liked:
+		userID := event.Liked.UserId
+		user, err := service.GetUser(userID)
+		tokens, err := repo.GetUserTokens(user.Id)
+		if err != nil {
+			return
+		}
+
+		data := notifications.CommentPostNotification(user.Username, user.Picture)
+		err = repo.SendNotification(map[string][]string{post.CreatorId: tokens}, data)
 	case *comment.CommentEvent_Created:
 		user := event.Created.User
 		comment := event.Created.Comment

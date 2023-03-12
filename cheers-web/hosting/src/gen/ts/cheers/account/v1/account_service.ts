@@ -7,6 +7,7 @@ export interface Account {
   id: string;
   balance: number;
   ticketSold: number;
+  coins: number;
 }
 
 export interface CreateAccountRequest {
@@ -50,7 +51,7 @@ export interface ListAccountResponse {
 }
 
 function createBaseAccount(): Account {
-  return { id: "", balance: 0, ticketSold: 0 };
+  return { id: "", balance: 0, ticketSold: 0, coins: 0 };
 }
 
 export const Account = {
@@ -63,6 +64,9 @@ export const Account = {
     }
     if (message.ticketSold !== 0) {
       writer.uint32(24).int32(message.ticketSold);
+    }
+    if (message.coins !== 0) {
+      writer.uint32(32).int32(message.coins);
     }
     return writer;
   },
@@ -83,6 +87,9 @@ export const Account = {
         case 3:
           message.ticketSold = reader.int32();
           break;
+        case 4:
+          message.coins = reader.int32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -96,6 +103,7 @@ export const Account = {
       id: isSet(object.id) ? String(object.id) : "",
       balance: isSet(object.balance) ? Number(object.balance) : 0,
       ticketSold: isSet(object.ticketSold) ? Number(object.ticketSold) : 0,
+      coins: isSet(object.coins) ? Number(object.coins) : 0,
     };
   },
 
@@ -104,6 +112,7 @@ export const Account = {
     message.id !== undefined && (obj.id = message.id);
     message.balance !== undefined && (obj.balance = Math.round(message.balance));
     message.ticketSold !== undefined && (obj.ticketSold = Math.round(message.ticketSold));
+    message.coins !== undefined && (obj.coins = Math.round(message.coins));
     return obj;
   },
 
@@ -116,6 +125,7 @@ export const Account = {
     message.id = object.id ?? "";
     message.balance = object.balance ?? 0;
     message.ticketSold = object.ticketSold ?? 0;
+    message.coins = object.coins ?? 0;
     return message;
   },
 };

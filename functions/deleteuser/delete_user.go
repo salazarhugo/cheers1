@@ -1,4 +1,4 @@
-package delete_user
+package deleteuser
 
 import (
 	"context"
@@ -6,9 +6,6 @@ import (
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"time"
 )
-
-func init() {
-}
 
 // AuthEvent is the payload of a Firestore Auth event.
 type AuthEvent struct {

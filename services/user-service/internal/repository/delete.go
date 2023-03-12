@@ -3,7 +3,6 @@ package repository
 import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	"github.com/salazarhugo/cheers1/libs/utils"
-	"log"
 )
 
 func (p *userRepository) DeleteUser(
@@ -21,11 +20,10 @@ func (p *userRepository) DeleteUser(
 		"userID": userID,
 	}
 
-	result, err := session.Run(*cypher, params)
+	_, err = session.Run(*cypher, params)
 	if err != nil {
 		return err
 	}
-	log.Println(result)
 
 	return nil
 }
