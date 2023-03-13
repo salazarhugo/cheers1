@@ -71,6 +71,20 @@ service UserService {
       post: "/v1/users/{username}/check"
     };
   };
+
+  rpc ListSuggestions(ListSuggestionsRequest) returns (ListSuggestionsResponse) {
+    option (google.api.http) = {
+      get: "/v1/users/{user_id}/suggestions"
+    };
+  };
+}
+
+message ListSuggestionsRequest {
+  string user_id = 1;
+}
+
+message ListSuggestionsResponse {
+  repeated cheers.type.UserItem users = 1;
 }
 
 message CheckUsernameRequest {

@@ -39,6 +39,7 @@ type UserServiceClient interface {
 	ListFollowers(ctx context.Context, in *ListFollowersRequest, opts ...grpc.CallOption) (*ListFollowersResponse, error)
 	ListFollowing(ctx context.Context, in *ListFollowingRequest, opts ...grpc.CallOption) (*ListFollowingResponse, error)
 	CheckUsername(ctx context.Context, in *CheckUsernameRequest, opts ...grpc.CallOption) (*CheckUsernameResponse, error)
+	ListSuggestions(ctx context.Context, in *ListSuggestionsRequest, opts ...grpc.CallOption) (*ListSuggestionsResponse, error)
 }
 
 type userServiceClient struct {
@@ -184,6 +185,15 @@ func (c *userServiceClient) CheckUsername(ctx context.Context, in *CheckUsername
 	return out, nil
 }
 
+func (c *userServiceClient) ListSuggestions(ctx context.Context, in *ListSuggestionsRequest, opts ...grpc.CallOption) (*ListSuggestionsResponse, error) {
+	out := new(ListSuggestionsResponse)
+	err := c.cc.Invoke(ctx, "/cheers.user.v1.UserService/ListSuggestions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -203,6 +213,7 @@ type UserServiceServer interface {
 	ListFollowers(context.Context, *ListFollowersRequest) (*ListFollowersResponse, error)
 	ListFollowing(context.Context, *ListFollowingRequest) (*ListFollowingResponse, error)
 	CheckUsername(context.Context, *CheckUsernameRequest) (*CheckUsernameResponse, error)
+	ListSuggestions(context.Context, *ListSuggestionsRequest) (*ListSuggestionsResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -254,6 +265,9 @@ func (UnimplementedUserServiceServer) ListFollowing(context.Context, *ListFollow
 }
 func (UnimplementedUserServiceServer) CheckUsername(context.Context, *CheckUsernameRequest) (*CheckUsernameResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckUsername not implemented")
+}
+func (UnimplementedUserServiceServer) ListSuggestions(context.Context, *ListSuggestionsRequest) (*ListSuggestionsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListSuggestions not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -538,6 +552,24 @@ func _UserService_CheckUsername_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_ListSuggestions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListSuggestionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).ListSuggestions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.user.v1.UserService/ListSuggestions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).ListSuggestions(ctx, req.(*ListSuggestionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -604,6 +636,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CheckUsername",
 			Handler:    _UserService_CheckUsername_Handler,
+		},
+		{
+			MethodName: "ListSuggestions",
+			Handler:    _UserService_ListSuggestions_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

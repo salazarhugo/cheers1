@@ -5,6 +5,14 @@ import { StoryState, storyStateFromJSON, storyStateToJSON, User, UserItem } from
 
 export const protobufPackage = "cheers.user.v1";
 
+export interface ListSuggestionsRequest {
+  userId: string;
+}
+
+export interface ListSuggestionsResponse {
+  users: UserItem[];
+}
+
 export interface CheckUsernameRequest {
   username: string;
 }
@@ -127,6 +135,112 @@ export interface UpdateUserRequest {
 export interface DeleteUserRequest {
   userId: string;
 }
+
+function createBaseListSuggestionsRequest(): ListSuggestionsRequest {
+  return { userId: "" };
+}
+
+export const ListSuggestionsRequest = {
+  encode(message: ListSuggestionsRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.userId !== "") {
+      writer.uint32(10).string(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListSuggestionsRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListSuggestionsRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.userId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListSuggestionsRequest {
+    return { userId: isSet(object.userId) ? String(object.userId) : "" };
+  },
+
+  toJSON(message: ListSuggestionsRequest): unknown {
+    const obj: any = {};
+    message.userId !== undefined && (obj.userId = message.userId);
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListSuggestionsRequest>, I>>(base?: I): ListSuggestionsRequest {
+    return ListSuggestionsRequest.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListSuggestionsRequest>, I>>(object: I): ListSuggestionsRequest {
+    const message = createBaseListSuggestionsRequest();
+    message.userId = object.userId ?? "";
+    return message;
+  },
+};
+
+function createBaseListSuggestionsResponse(): ListSuggestionsResponse {
+  return { users: [] };
+}
+
+export const ListSuggestionsResponse = {
+  encode(message: ListSuggestionsResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.users) {
+      UserItem.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ListSuggestionsResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseListSuggestionsResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.users.push(UserItem.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): ListSuggestionsResponse {
+    return { users: Array.isArray(object?.users) ? object.users.map((e: any) => UserItem.fromJSON(e)) : [] };
+  },
+
+  toJSON(message: ListSuggestionsResponse): unknown {
+    const obj: any = {};
+    if (message.users) {
+      obj.users = message.users.map((e) => e ? UserItem.toJSON(e) : undefined);
+    } else {
+      obj.users = [];
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ListSuggestionsResponse>, I>>(base?: I): ListSuggestionsResponse {
+    return ListSuggestionsResponse.fromPartial(base ?? {});
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ListSuggestionsResponse>, I>>(object: I): ListSuggestionsResponse {
+    const message = createBaseListSuggestionsResponse();
+    message.users = object.users?.map((e) => UserItem.fromPartial(e)) || [];
+    return message;
+  },
+};
 
 function createBaseCheckUsernameRequest(): CheckUsernameRequest {
   return { username: "" };
@@ -1692,6 +1806,7 @@ export interface UserService {
   ListFollowers(request: ListFollowersRequest): Promise<ListFollowersResponse>;
   ListFollowing(request: ListFollowingRequest): Promise<ListFollowingResponse>;
   CheckUsername(request: CheckUsernameRequest): Promise<CheckUsernameResponse>;
+  ListSuggestions(request: ListSuggestionsRequest): Promise<ListSuggestionsResponse>;
 }
 
 export class UserServiceClientImpl implements UserService {
@@ -1715,6 +1830,7 @@ export class UserServiceClientImpl implements UserService {
     this.ListFollowers = this.ListFollowers.bind(this);
     this.ListFollowing = this.ListFollowing.bind(this);
     this.CheckUsername = this.CheckUsername.bind(this);
+    this.ListSuggestions = this.ListSuggestions.bind(this);
   }
   CreateUser(request: CreateUserRequest): Promise<CreateUserResponse> {
     const data = CreateUserRequest.encode(request).finish();
@@ -1804,6 +1920,12 @@ export class UserServiceClientImpl implements UserService {
     const data = CheckUsernameRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CheckUsername", data);
     return promise.then((data) => CheckUsernameResponse.decode(new _m0.Reader(data)));
+  }
+
+  ListSuggestions(request: ListSuggestionsRequest): Promise<ListSuggestionsResponse> {
+    const data = ListSuggestionsRequest.encode(request).finish();
+    const promise = this.rpc.request(this.service, "ListSuggestions", data);
+    return promise.then((data) => ListSuggestionsResponse.decode(new _m0.Reader(data)));
   }
 }
 

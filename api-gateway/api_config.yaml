@@ -7,6 +7,7 @@ endpoints:
     allow_cors: true
 apis:
   - name: cheers.user.v1.UserService
+  - name: cheers.account.v1.AccountService
   - name: cheers.post.v1.PostService
   - name: cheers.party.v1.PartyService
   - name: cheers.chat.v1.ChatService
@@ -36,6 +37,10 @@ backend:
     # User Service methods
     - selector: cheers.user.v1.*
       address: grpcs://user-service-r3a2dr4u4a-nw.a.run.app
+
+    # Account Service methods
+    - selector: cheers.account.v1.*
+      address: grpcs://account-service-r3a2dr4u4a-nw.a.run.app
 
     # Party Service methods
     - selector: cheers.party.v1.*
