@@ -1,4 +1,4 @@
-module github.com/salazarhugo/cheers1/functions/deleteuser
+module github.com/salazarhugo/cheers1/functions/rechargecoins
 
 go 1.19
 

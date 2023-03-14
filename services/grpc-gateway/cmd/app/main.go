@@ -11,6 +11,7 @@ import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/activity/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/auth/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/location/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/notification/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/order/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
@@ -92,9 +93,11 @@ func main() {
 		grpc.WithUnaryInterceptor(clientInterceptor),
 	}
 
-	if !*isProd {
+	if *isProd {
+		log.Println("Running in production environment")
 		options = append(options, grpc.WithTransportCredentials(transportCredentials))
 	} else {
+		log.Println("Running in test environment")
 		options = append(options, grpc.WithInsecure())
 	}
 
@@ -111,6 +114,7 @@ func main() {
 	err = account.RegisterAccountServiceHandlerFromEndpoint(ctx, mux, "account-service-r3a2dr4u4a-nw.a.run.app:443", options)
 	err = payment.RegisterPaymentServiceHandlerFromEndpoint(ctx, mux, "payment-service-r3a2dr4u4a-nw.a.run.app:443", options)
 	err = ticket.RegisterTicketServiceHandlerFromEndpoint(ctx, mux, "ticket-service-r3a2dr4u4a-nw.a.run.app:443", options)
+	err = location.RegisterLocationServiceHandlerFromEndpoint(ctx, mux, "localhost:8081", options)
 
 	// Creating a normal HTTP server
 	server := http.Server{

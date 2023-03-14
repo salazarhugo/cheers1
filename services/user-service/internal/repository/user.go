@@ -38,6 +38,10 @@ type UserRepository interface {
 	ListFollowers(userID string, request *pb.ListFollowersRequest) ([]*user.UserItem, error)
 	ListFollowing(userID string, request *pb.ListFollowingRequest) ([]*user.UserItem, error)
 
+	ListSuggestions(
+		userID string,
+	) ([]*user.UserItem, error)
+
 	CreateFriend(
 		from string,
 		to string,

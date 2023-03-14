@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/ticket/v1"
 	"github.com/salazarhugo/cheers1/libs/profiler"
-	"github.com/salazarhugo/cheers1/services/email-service/internal/app"
+	"github.com/salazarhugo/cheers1/services/email-service/internal/app/events"
 	"log"
 	"net/http"
 	"os"
@@ -12,7 +12,8 @@ import (
 func main() {
 	go profiler.InitProfiling("email-service", "1.0.0")
 
-	http.HandleFunc("/", app.PaymentSub)
+	http.HandleFunc("/", events.PaymentSub)
+	http.HandleFunc("/auth-sub", events.AuthSub)
 
 	// Determine port for HTTP service.
 	port := os.Getenv("PORT")
@@ -27,7 +28,7 @@ func main() {
 	//	log.Fatal(err)
 	//}
 
-	err := app.SendEmail("hugobrock74@gmail.com", "Hugo", []*ticket.Ticket{}, 12000)
+	err := events.SendEmail("hugobrock74@gmail.com", "Hugo", []*ticket.Ticket{}, 12000)
 	if err != nil {
 		log.Println(err)
 		return

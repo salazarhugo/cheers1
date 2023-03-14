@@ -7,6 +7,7 @@ import (
 	"github.com/salazarhugo/cheers1/libs/auth"
 	"github.com/salazarhugo/cheers1/libs/profiler"
 	"github.com/salazarhugo/cheers1/services/user-service/internal/app"
+	"github.com/salazarhugo/cheers1/services/user-service/internal/app/events"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
@@ -44,9 +45,9 @@ func main() {
 	}
 
 	httpMux := http.NewServeMux()
-	httpMux.HandleFunc("/claim-sub", app.ClaimSub)
-	httpMux.HandleFunc("/friendship-sub", app.FriendShipSub)
-	httpMux.HandleFunc("/auth-sub", app.AuthSub)
+	httpMux.HandleFunc("/claim-sub", events.ClaimSub)
+	httpMux.HandleFunc("/friendship-sub", events.FriendShipSub)
+	httpMux.HandleFunc("/auth-sub", events.AuthSub)
 
 	grpcS := grpc.NewServer(
 		grpc.UnaryInterceptor(auth.UnaryInterceptor),

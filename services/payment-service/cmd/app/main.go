@@ -3,13 +3,11 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/payment/v1"
 	"github.com/salazarhugo/cheers1/libs/auth"
 	"github.com/salazarhugo/cheers1/libs/profiler"
-	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/services/payment-service/internal/app"
+	"github.com/salazarhugo/cheers1/services/payment-service/internal/app/events"
 	"github.com/stripe/stripe-go/v72"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
@@ -25,33 +23,22 @@ import (
 func init() {
 	secret := os.Getenv("STRIPE_SK")
 	stripe.Key = secret
-}
-
-func main() {
 	log.SetFlags(0)
 	go profiler.InitProfiling("payment-service", "1.0.0")
 
-	e := echo.New()
-	e.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
-		return func(c echo.Context) error {
-			cc := &utils.CustomContext{Context: c, Driver: utils.GetDriver()}
-			return next(cc)
-		}
-	})
+}
 
-	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins: []string{"https://web-cheers.web.app", "http://localhost:4200", "https://maparty.fr"},
-		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
-	}))
-
-	// Determine port for HTTP service.
+func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 		log.Printf("defaulting to port %s", port)
 	}
-	e.POST("/handleStripeEvents", app.HandleStripeEvent)
-	e.GET("/ticket/validate", app.ValidateTicket)
+
+	httpMux := http.NewServeMux()
+	httpMux.HandleFunc("/auth-sub", events.AuthSub)
+	httpMux.HandleFunc("/handleStripeEvents", events.HandleStripeEvent)
+	//httpMux.HandleFunc("/ticket/validate", app.ValidateTicket)
 
 	grpcS := grpc.NewServer(
 		grpc.UnaryInterceptor(auth.UnaryInterceptor),
@@ -62,9 +49,11 @@ func main() {
 	grpc_health_v1.RegisterHealthServer(grpcS, server)
 	pb.RegisterPaymentServiceServer(grpcS, server)
 
-	mixedHandler := newHTTPandGRPCMux(e.Server.Handler, grpcS)
+	mixedHandler := newHTTPandGRPCMux(httpMux, grpcS)
 	http2Server := &http2.Server{}
-	http1Server := &http.Server{Handler: h2c.NewHandler(mixedHandler, http2Server)}
+	http1Server := &http.Server{
+		Handler: h2c.NewHandler(mixedHandler, http2Server),
+	}
 
 	listener, err := net.Listen("tcp", ":"+port)
 	if err != nil {

@@ -3,15 +3,17 @@ module github.com/salazarhugo/cheers1/services/user-service
 go 1.19
 
 require (
+	cloud.google.com/go/storage v1.27.0
 	github.com/golang/protobuf v1.5.2
 	github.com/labstack/gommon v0.4.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230311141046-7acc686101cd
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230313150210-30028d6dd327
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221213134422-aa6e73eb6dc9
 	github.com/sirupsen/logrus v1.9.0
 	golang.org/x/net v0.1.0
+	google.golang.org/api v0.100.0
 	google.golang.org/grpc v1.50.1
 	google.golang.org/protobuf v1.28.1
 )
@@ -23,7 +25,6 @@ require (
 	cloud.google.com/go/iam v0.6.0 // indirect
 	cloud.google.com/go/profiler v0.3.0 // indirect
 	cloud.google.com/go/pubsub v1.3.1 // indirect
-	cloud.google.com/go/storage v1.27.0 // indirect
 	firebase.google.com/go/v4 v4.9.0 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
@@ -44,7 +45,6 @@ require (
 	golang.org/x/sys v0.1.0 // indirect
 	golang.org/x/text v0.4.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
-	google.golang.org/api v0.100.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/appengine/v2 v2.0.2 // indirect
 	google.golang.org/genproto v0.0.0-20221027153422-115e99e71e1c // indirect

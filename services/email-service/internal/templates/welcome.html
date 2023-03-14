@@ -1,0 +1,77 @@
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+    <title>Simple Transactional Email</title>
+    <style type="text/css">
+        body {
+            background: #d6d6d5 !important;
+            font-family: 'Open Sans', Arial, sans-serif !important;
+            margin: 0;
+        }
+
+        header, .main, footer {
+            padding: 32px
+        }
+
+        .total-container {
+            display: flex;
+        }
+
+        .container {
+            background-color: white;
+            padding: 5px 20px 0 20px;
+            border: none;
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto
+        }
+
+        .title {
+            font-weight: 700;
+            font-size: 44px;
+            line-height: 48px;
+        }
+
+        footer > p {
+            line-height: 20px;
+            color: #6c737f;
+            font-size: 12px;
+            font-weight: 400;
+            font-family: Roboto, Arial, Helvetica, sans-serif;
+            text-align: left;
+        }
+
+        /* Solid border */
+        hr.solid {
+            margin: 0 32px;
+            border-top: 1px solid #bbb;
+        }
+    </style>
+</head>
+
+<body style="background: #d6d6d5">
+<div class="container">
+    <header>
+        <h1 class="title">Welcome to<br> Cheers, {{.Name}}</h1>
+        <h3 class="subtitle">DISCOVER THE BEST PARTIES NEAR YOU</h3>
+    </header>
+
+    <div class="main">
+    </div>
+
+    <div>
+        <hr class="solid">
+    </div>
+
+    <footer>
+        <p>© 2022 Cheers LLC Tatoi Court Glaudstonos street, Limassol, CY 94343</p>
+        <p>
+            <em>You’re receiving this mandatory email service announcement to update you about important changes to your
+                Cheers Cloud product or account.</em>
+        </p>
+    </footer>
+</div>
+</body>
+</html>

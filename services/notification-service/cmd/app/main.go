@@ -6,7 +6,8 @@ import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/notification/v1"
 	"github.com/salazarhugo/cheers1/libs/auth"
 	"github.com/salazarhugo/cheers1/libs/profiler"
-	"github.com/salazarhugo/cheers1/services/notification-service/internal/app"
+	"github.com/salazarhugo/cheers1/services/notification-service/internal/app/events"
+	http3 "github.com/salazarhugo/cheers1/services/notification-service/internal/app/http"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
@@ -31,17 +32,17 @@ func main() {
 	}
 
 	httpMux := http.NewServeMux()
-	httpMux.HandleFunc("/", app.PostSub)
-	httpMux.HandleFunc("/chat", app.ChatTopic)
-	httpMux.HandleFunc("/user", app.UserTopicSub)
-	httpMux.HandleFunc("/friendship-sub", app.FriendShipSub)
-	httpMux.HandleFunc("/comment-sub", app.CommentSub)
+	httpMux.HandleFunc("/", events.PostSub)
+	httpMux.HandleFunc("/chat", events.ChatTopic)
+	httpMux.HandleFunc("/user", events.UserTopicSub)
+	httpMux.HandleFunc("/friendship-sub", events.FriendShipSub)
+	httpMux.HandleFunc("/comment-sub", events.CommentSub)
 
 	grpcS := grpc.NewServer(
 		grpc.UnaryInterceptor(auth.UnaryInterceptor),
 	)
 
-	server := app.NewServer()
+	server := http3.NewServer()
 
 	grpc_health_v1.RegisterHealthServer(grpcS, server)
 	notification.RegisterNotificationServiceServer(grpcS, server)
