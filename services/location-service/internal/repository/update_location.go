@@ -4,11 +4,14 @@ import (
 	"context"
 	"fmt"
 	"github.com/go-redis/redis/v9"
+	"strconv"
+	"time"
 )
 
 const (
 	keyUser          = "user"
 	keyUserLocations = "locations"
+	keyLastUpdated   = "updated"
 )
 
 func getKeyUserLocations(userId string) string {
@@ -28,6 +31,13 @@ func (r repository) UpdateLocation(
 		Latitude:  latitude,
 		Longitude: longitude,
 	}).Err()
+
+	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
+	// Set last updated timestamp
+	err = r.redis.HSet(ctx, keyLastUpdated,
+		userId,
+		timestamp,
+	).Err()
 
 	return err
 }

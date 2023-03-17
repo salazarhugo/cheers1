@@ -17,6 +17,7 @@ apis:
   - name: cheers.ticket.v1.TicketService
   - name: cheers.comment.v1.CommentService
   - name: cheers.friendship.v1.FriendshipService
+  - name: cheers.location.v1.LocationService
 usage:
   rules:
     # All methods can be called without an API Key.
@@ -77,3 +78,7 @@ backend:
     # Friendship Service methods
     - selector: cheers.friendship.v1.*
       address: grpcs://friendship-service-r3a2dr4u4a-nw.a.run.app
+
+    # Location Service methods
+    - selector: cheers.location.v1.*
+      address: grpcs://location-service-r3a2dr4u4a-nw.a.run.app

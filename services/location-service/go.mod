@@ -4,12 +4,10 @@ go 1.19
 
 require (
 	github.com/go-redis/redis/v9 v9.0.0-rc.1
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230313150210-30028d6dd327
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230314214829-5085074c9a90
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221218220856-ccee71af4142
-	github.com/salazarhugo/cheers1/services/notification-service v0.0.0-20230313150210-30028d6dd327
-	github.com/salazarhugo/cheers1/services/user-service v0.0.0-20230313150210-30028d6dd327
 	github.com/sirupsen/logrus v1.9.0
 	golang.org/x/net v0.1.0
 	google.golang.org/grpc v1.50.1
@@ -22,7 +20,6 @@ require (
 	cloud.google.com/go/firestore v1.6.1 // indirect
 	cloud.google.com/go/iam v0.6.0 // indirect
 	cloud.google.com/go/profiler v0.3.0 // indirect
-	cloud.google.com/go/pubsub v1.3.1 // indirect
 	cloud.google.com/go/storage v1.27.0 // indirect
 	firebase.google.com/go/v4 v4.9.0 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
@@ -45,7 +42,6 @@ require (
 	go.opencensus.io v0.23.0 // indirect
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect
 	golang.org/x/oauth2 v0.0.0-20221014153046-6fdb5e3db783 // indirect
-	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.1.0 // indirect
 	golang.org/x/text v0.4.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
@@ -56,6 +52,6 @@ require (
 	google.golang.org/protobuf v1.28.1 // indirect
 )
 
-//replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
+replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
 
 //replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils
