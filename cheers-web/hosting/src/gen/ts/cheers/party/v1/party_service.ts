@@ -168,19 +168,24 @@ export const DuplicatePartyRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DuplicatePartyRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDuplicatePartyRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.partyId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -216,16 +221,17 @@ export const DuplicatePartyResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DuplicatePartyResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDuplicatePartyResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -265,22 +271,31 @@ export const TransferPartyRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): TransferPartyRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTransferPartyRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.partyId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -321,16 +336,17 @@ export const TransferPartyResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): TransferPartyResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTransferPartyResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -373,25 +389,38 @@ export const ListPartyRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListPartyRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListPartyRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.page = reader.int32();
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.pageSize = reader.int32();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -441,22 +470,31 @@ export const ListPartyResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListPartyResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListPartyResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.items.push(PartyItem.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.nextPageToken = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -504,19 +542,24 @@ export const ListGoingRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListGoingRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListGoingRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.partyId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -555,19 +598,24 @@ export const ListGoingResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListGoingResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListGoingResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.users.push(UserItem.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -613,22 +661,31 @@ export const AnswerPartyRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AnswerPartyRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAnswerPartyRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.partyId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.watchStatus = reader.int32() as any;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -669,16 +726,17 @@ export const AnswerPartyResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AnswerPartyResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAnswerPartyResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -715,19 +773,24 @@ export const CreatePartyRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreatePartyRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreatePartyRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.party = Party.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -766,19 +829,24 @@ export const CreatePartyResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreatePartyResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreatePartyResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.party = Party.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -817,19 +885,24 @@ export const GetPartyRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetPartyRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetPartyRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.partyId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -868,19 +941,24 @@ export const GetPartyResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetPartyResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetPartyResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.party = Party.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -919,19 +997,24 @@ export const GetPartyItemRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetPartyItemRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetPartyItemRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.partyId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -970,19 +1053,24 @@ export const GetPartyItemResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetPartyItemResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetPartyItemResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.item = PartyItem.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1021,19 +1109,24 @@ export const UpdatePartyRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePartyRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUpdatePartyRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.party = Party.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1072,19 +1165,24 @@ export const UpdatePartyResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePartyResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUpdatePartyResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.party = Party.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1123,19 +1221,24 @@ export const DeletePartyRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeletePartyRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeletePartyRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.partyId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1171,16 +1274,17 @@ export const DeletePartyResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeletePartyResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeletePartyResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1223,25 +1327,38 @@ export const FeedPartyRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): FeedPartyRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseFeedPartyRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.parent = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.pageSize = reader.int32();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.pageToken = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1291,22 +1408,31 @@ export const FeedPartyResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): FeedPartyResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseFeedPartyResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.items.push(PartyItem.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.nextPageToken = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1388,43 +1514,80 @@ export const PartyItem = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): PartyItem {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePartyItem();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.party = Party.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.user = User.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag != 24) {
+            break;
+          }
+
           message.goingCount = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 4:
+          if (tag != 32) {
+            break;
+          }
+
           message.interestedCount = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 5:
+          if (tag != 40) {
+            break;
+          }
+
           message.invitedCount = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 8:
+          if (tag != 64) {
+            break;
+          }
+
           message.isCreator = reader.bool();
-          break;
+          continue;
         case 9:
+          if (tag != 72) {
+            break;
+          }
+
           message.viewerWatchStatus = reader.int32() as any;
-          break;
+          continue;
         case 10:
+          if (tag != 82) {
+            break;
+          }
+
           message.mutualUsernames.push(reader.string());
-          break;
+          continue;
         case 11:
+          if (tag != 90) {
+            break;
+          }
+
           message.mutualPictures.push(reader.string());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1520,67 +1683,67 @@ export class PartyServiceClientImpl implements PartyService {
   CreateParty(request: CreatePartyRequest): Promise<CreatePartyResponse> {
     const data = CreatePartyRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateParty", data);
-    return promise.then((data) => CreatePartyResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => CreatePartyResponse.decode(_m0.Reader.create(data)));
   }
 
   GetParty(request: GetPartyRequest): Promise<GetPartyResponse> {
     const data = GetPartyRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetParty", data);
-    return promise.then((data) => GetPartyResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetPartyResponse.decode(_m0.Reader.create(data)));
   }
 
   UpdateParty(request: UpdatePartyRequest): Promise<UpdatePartyResponse> {
     const data = UpdatePartyRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UpdateParty", data);
-    return promise.then((data) => UpdatePartyResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => UpdatePartyResponse.decode(_m0.Reader.create(data)));
   }
 
   DeleteParty(request: DeletePartyRequest): Promise<DeletePartyResponse> {
     const data = DeletePartyRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteParty", data);
-    return promise.then((data) => DeletePartyResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => DeletePartyResponse.decode(_m0.Reader.create(data)));
   }
 
   GetPartyItem(request: GetPartyItemRequest): Promise<GetPartyItemResponse> {
     const data = GetPartyItemRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetPartyItem", data);
-    return promise.then((data) => GetPartyItemResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetPartyItemResponse.decode(_m0.Reader.create(data)));
   }
 
   FeedParty(request: FeedPartyRequest): Promise<FeedPartyResponse> {
     const data = FeedPartyRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "FeedParty", data);
-    return promise.then((data) => FeedPartyResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => FeedPartyResponse.decode(_m0.Reader.create(data)));
   }
 
   ListParty(request: ListPartyRequest): Promise<ListPartyResponse> {
     const data = ListPartyRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListParty", data);
-    return promise.then((data) => ListPartyResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ListPartyResponse.decode(_m0.Reader.create(data)));
   }
 
   AnswerParty(request: AnswerPartyRequest): Promise<AnswerPartyResponse> {
     const data = AnswerPartyRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "AnswerParty", data);
-    return promise.then((data) => AnswerPartyResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => AnswerPartyResponse.decode(_m0.Reader.create(data)));
   }
 
   ListGoing(request: ListGoingRequest): Promise<ListGoingResponse> {
     const data = ListGoingRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListGoing", data);
-    return promise.then((data) => ListGoingResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ListGoingResponse.decode(_m0.Reader.create(data)));
   }
 
   TransferParty(request: TransferPartyRequest): Promise<TransferPartyResponse> {
     const data = TransferPartyRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "TransferParty", data);
-    return promise.then((data) => TransferPartyResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => TransferPartyResponse.decode(_m0.Reader.create(data)));
   }
 
   DuplicateParty(request: DuplicatePartyRequest): Promise<DuplicatePartyResponse> {
     const data = DuplicatePartyRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DuplicateParty", data);
-    return promise.then((data) => DuplicatePartyResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => DuplicatePartyResponse.decode(_m0.Reader.create(data)));
   }
 }
 

@@ -95,6 +95,7 @@ message ListMapPostResponse {
 
 message CreatePostRequest {
   cheers.type.Post post = 1;
+  bool send_notification_to_friends = 2;
 }
 
 message GetPostRequest {

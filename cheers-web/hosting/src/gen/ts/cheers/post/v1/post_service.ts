@@ -19,6 +19,7 @@ export interface ListMapPostResponse {
 
 export interface CreatePostRequest {
   post: Post | undefined;
+  sendNotificationToFriends: boolean;
 }
 
 export interface GetPostRequest {
@@ -123,25 +124,38 @@ export const ListMapPostRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListMapPostRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListMapPostRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.parent = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.pageSize = reader.int32();
-          break;
+          continue;
         case 3:
+          if (tag != 24) {
+            break;
+          }
+
           message.page = reader.int32();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -188,19 +202,24 @@ export const ListMapPostResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListMapPostResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListMapPostResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.posts.push(PostResponse.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -231,7 +250,7 @@ export const ListMapPostResponse = {
 };
 
 function createBaseCreatePostRequest(): CreatePostRequest {
-  return { post: undefined };
+  return { post: undefined, sendNotificationToFriends: false };
 }
 
 export const CreatePostRequest = {
@@ -239,34 +258,56 @@ export const CreatePostRequest = {
     if (message.post !== undefined) {
       Post.encode(message.post, writer.uint32(10).fork()).ldelim();
     }
+    if (message.sendNotificationToFriends === true) {
+      writer.uint32(16).bool(message.sendNotificationToFriends);
+    }
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreatePostRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreatePostRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.post = Post.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
+        case 2:
+          if (tag != 16) {
+            break;
+          }
+
+          message.sendNotificationToFriends = reader.bool();
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
 
   fromJSON(object: any): CreatePostRequest {
-    return { post: isSet(object.post) ? Post.fromJSON(object.post) : undefined };
+    return {
+      post: isSet(object.post) ? Post.fromJSON(object.post) : undefined,
+      sendNotificationToFriends: isSet(object.sendNotificationToFriends)
+        ? Boolean(object.sendNotificationToFriends)
+        : false,
+    };
   },
 
   toJSON(message: CreatePostRequest): unknown {
     const obj: any = {};
     message.post !== undefined && (obj.post = message.post ? Post.toJSON(message.post) : undefined);
+    message.sendNotificationToFriends !== undefined &&
+      (obj.sendNotificationToFriends = message.sendNotificationToFriends);
     return obj;
   },
 
@@ -277,6 +318,7 @@ export const CreatePostRequest = {
   fromPartial<I extends Exact<DeepPartial<CreatePostRequest>, I>>(object: I): CreatePostRequest {
     const message = createBaseCreatePostRequest();
     message.post = (object.post !== undefined && object.post !== null) ? Post.fromPartial(object.post) : undefined;
+    message.sendNotificationToFriends = object.sendNotificationToFriends ?? false;
     return message;
   },
 };
@@ -294,19 +336,24 @@ export const GetPostRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetPostRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetPostRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.postId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -345,19 +392,24 @@ export const GetPostResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetPostResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetPostResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.post = Post.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -396,19 +448,24 @@ export const GetPostItemRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetPostItemRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetPostItemRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.postId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -447,19 +504,24 @@ export const UpdatePostRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UpdatePostRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUpdatePostRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.post = Post.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -498,19 +560,24 @@ export const DeletePostRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeletePostRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeletePostRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -555,25 +622,38 @@ export const ListPostRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListPostRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListPostRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.username = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.pageSize = reader.int32();
-          break;
+          continue;
         case 3:
+          if (tag != 24) {
+            break;
+          }
+
           message.page = reader.int32();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -623,22 +703,31 @@ export const ListPostResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListPostResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListPostResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.posts.push(PostResponse.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.nextPageToken = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -692,25 +781,38 @@ export const FeedPostRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): FeedPostRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseFeedPostRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.parent = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.pageSize = reader.int32();
-          break;
+          continue;
         case 3:
+          if (tag != 24) {
+            break;
+          }
+
           message.page = reader.int32();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -760,22 +862,31 @@ export const FeedPostResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): FeedPostResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseFeedPostResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.posts.push(PostResponse.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.nextPageToken = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -823,19 +934,24 @@ export const LikePostRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): LikePostRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseLikePostRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.postId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -874,19 +990,24 @@ export const LikePostResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): LikePostResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseLikePostResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.success = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -925,19 +1046,24 @@ export const UnlikePostRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UnlikePostRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUnlikePostRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.postId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -976,19 +1102,24 @@ export const UnlikePostResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UnlikePostResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUnlikePostResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.success = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1027,19 +1158,24 @@ export const SavePostRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): SavePostRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSavePostRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.postId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1078,19 +1214,24 @@ export const SavePostResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): SavePostResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSavePostResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.success = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1129,19 +1270,24 @@ export const UnsavePostRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UnsavePostRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUnsavePostRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.postId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1180,19 +1326,24 @@ export const UnsavePostResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UnsavePostResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUnsavePostResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.success = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1246,34 +1397,59 @@ export const PostResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): PostResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePostResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.post = Post.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.user = User.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag != 24) {
+            break;
+          }
+
           message.likeCount = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 4:
+          if (tag != 32) {
+            break;
+          }
+
           message.commentCount = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 5:
+          if (tag != 40) {
+            break;
+          }
+
           message.hasLiked = reader.bool();
-          break;
+          continue;
         case 6:
+          if (tag != 48) {
+            break;
+          }
+
           message.isCreator = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1357,73 +1533,73 @@ export class PostServiceClientImpl implements PostService {
   CreatePost(request: CreatePostRequest): Promise<PostResponse> {
     const data = CreatePostRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreatePost", data);
-    return promise.then((data) => PostResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => PostResponse.decode(_m0.Reader.create(data)));
   }
 
   GetPost(request: GetPostRequest): Promise<GetPostResponse> {
     const data = GetPostRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetPost", data);
-    return promise.then((data) => GetPostResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetPostResponse.decode(_m0.Reader.create(data)));
   }
 
   GetPostItem(request: GetPostItemRequest): Promise<PostResponse> {
     const data = GetPostItemRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetPostItem", data);
-    return promise.then((data) => PostResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => PostResponse.decode(_m0.Reader.create(data)));
   }
 
   UpdatePost(request: UpdatePostRequest): Promise<PostResponse> {
     const data = UpdatePostRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UpdatePost", data);
-    return promise.then((data) => PostResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => PostResponse.decode(_m0.Reader.create(data)));
   }
 
   DeletePost(request: DeletePostRequest): Promise<Empty> {
     const data = DeletePostRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeletePost", data);
-    return promise.then((data) => Empty.decode(new _m0.Reader(data)));
+    return promise.then((data) => Empty.decode(_m0.Reader.create(data)));
   }
 
   ListPost(request: ListPostRequest): Promise<ListPostResponse> {
     const data = ListPostRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListPost", data);
-    return promise.then((data) => ListPostResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ListPostResponse.decode(_m0.Reader.create(data)));
   }
 
   FeedPost(request: FeedPostRequest): Promise<FeedPostResponse> {
     const data = FeedPostRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "FeedPost", data);
-    return promise.then((data) => FeedPostResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => FeedPostResponse.decode(_m0.Reader.create(data)));
   }
 
   ListMapPost(request: ListMapPostRequest): Promise<ListMapPostResponse> {
     const data = ListMapPostRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListMapPost", data);
-    return promise.then((data) => ListMapPostResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ListMapPostResponse.decode(_m0.Reader.create(data)));
   }
 
   LikePost(request: LikePostRequest): Promise<LikePostResponse> {
     const data = LikePostRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "LikePost", data);
-    return promise.then((data) => LikePostResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => LikePostResponse.decode(_m0.Reader.create(data)));
   }
 
   UnlikePost(request: UnlikePostRequest): Promise<UnlikePostResponse> {
     const data = UnlikePostRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UnlikePost", data);
-    return promise.then((data) => UnlikePostResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => UnlikePostResponse.decode(_m0.Reader.create(data)));
   }
 
   SavePost(request: SavePostRequest): Promise<SavePostResponse> {
     const data = SavePostRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "SavePost", data);
-    return promise.then((data) => SavePostResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => SavePostResponse.decode(_m0.Reader.create(data)));
   }
 
   UnsavePost(request: UnsavePostRequest): Promise<UnsavePostResponse> {
     const data = UnsavePostRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UnsavePost", data);
-    return promise.then((data) => UnsavePostResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => UnsavePostResponse.decode(_m0.Reader.create(data)));
   }
 }
 

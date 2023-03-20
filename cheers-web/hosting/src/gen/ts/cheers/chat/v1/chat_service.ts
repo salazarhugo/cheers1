@@ -391,19 +391,24 @@ export const PinRoomRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): PinRoomRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePinRoomRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.roomId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -439,16 +444,17 @@ export const PinRoomResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): PinRoomResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePinRoomResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -482,16 +488,17 @@ export const UnPinRoomResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UnPinRoomResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUnPinRoomResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -528,19 +535,24 @@ export const UnPinRoomRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UnPinRoomRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUnPinRoomRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.roomId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -588,28 +600,45 @@ export const SendMessageRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): SendMessageRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSendMessageRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.text = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.roomId = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.replyTo = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.clientId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -659,19 +688,24 @@ export const SendMessageResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): SendMessageResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSendMessageResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.message = Message.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -715,22 +749,31 @@ export const GetInboxRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetInboxRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetInboxRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.page = reader.int32();
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.pageSize = reader.int32();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -774,19 +817,24 @@ export const GetInboxResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetInboxResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetInboxResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.inbox.push(RoomWithMessages.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -829,19 +877,24 @@ export const DeleteRoomRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeleteRoomRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteRoomRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.roomId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -877,16 +930,17 @@ export const DeleteRoomResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeleteRoomResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteRoomResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -929,25 +983,38 @@ export const TypingEvent = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): TypingEvent {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTypingEvent();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.roomId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 24) {
+            break;
+          }
+
           message.type = reader.int32() as any;
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -997,22 +1064,31 @@ export const CreateRoomRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreateRoomRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateRoomRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.groupName = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.recipientUsers.push(reader.string());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1060,19 +1136,24 @@ export const CreateRoomResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreateRoomResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateRoomResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.room = Room.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1117,25 +1198,38 @@ export const ListRoomMessagesRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListRoomMessagesRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListRoomMessagesRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.roomId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.pageSize = reader.int32();
-          break;
+          continue;
         case 3:
+          if (tag != 24) {
+            break;
+          }
+
           message.page = reader.int32();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1182,19 +1276,24 @@ export const ListRoomMessagesResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListRoomMessagesResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListRoomMessagesResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.messages.push(MessageItem.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1242,22 +1341,31 @@ export const ListRoomRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListRoomRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListRoomRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.pageSize = reader.int32();
-          break;
+          continue;
         case 3:
+          if (tag != 24) {
+            break;
+          }
+
           message.page = reader.int32();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1301,19 +1409,24 @@ export const ListRoomResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListRoomResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListRoomResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.rooms.push(Room.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1362,25 +1475,38 @@ export const ListMembersRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListMembersRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListMembersRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.roomId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.pageSize = reader.int32();
-          break;
+          continue;
         case 3:
+          if (tag != 24) {
+            break;
+          }
+
           message.page = reader.int32();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1427,19 +1553,24 @@ export const ListMembersResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListMembersResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListMembersResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.users.push(UserItem.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1482,19 +1613,24 @@ export const UserIdReq = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UserIdReq {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUserIdReq();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1530,16 +1666,17 @@ export const Empty = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Empty {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseEmpty();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1576,19 +1713,24 @@ export const AddTokenReq = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AddTokenReq {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAddTokenReq();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.token = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1633,25 +1775,38 @@ export const TypingReq = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): TypingReq {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTypingReq();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.roomId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.username = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.avatarUrl = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1698,19 +1853,24 @@ export const JoinRoomRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): JoinRoomRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseJoinRoomRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.roomId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1749,19 +1909,24 @@ export const RoomId = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): RoomId {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRoomId();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.roomId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1800,19 +1965,24 @@ export const GetRoomIdReq = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetRoomIdReq {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetRoomIdReq();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.recipientId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1854,22 +2024,31 @@ export const RoomWithMessages = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): RoomWithMessages {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRoomWithMessages();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.room = Room.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.messages.push(Message.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1979,64 +2158,129 @@ export const Room = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Room {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRoom();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 32) {
+            break;
+          }
+
           message.verified = reader.bool();
-          break;
+          continue;
         case 3:
+          if (tag != 24) {
+            break;
+          }
+
           message.typing = reader.bool();
-          break;
+          continue;
         case 5:
+          if (tag != 42) {
+            break;
+          }
+
           message.owner = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag != 48) {
+            break;
+          }
+
           message.type = reader.int32() as any;
-          break;
+          continue;
         case 8:
+          if (tag != 64) {
+            break;
+          }
+
           message.status = reader.int32() as any;
-          break;
+          continue;
         case 9:
+          if (tag != 74) {
+            break;
+          }
+
           message.admins.push(reader.string());
-          break;
+          continue;
         case 10:
+          if (tag != 82) {
+            break;
+          }
+
           message.members.push(reader.string());
-          break;
+          continue;
         case 11:
+          if (tag != 90) {
+            break;
+          }
+
           message.lastMessageText = reader.string();
-          break;
+          continue;
         case 12:
+          if (tag != 98) {
+            break;
+          }
+
           message.picture = reader.string();
-          break;
+          continue;
         case 13:
+          if (tag != 104) {
+            break;
+          }
+
           message.lastMessageType = reader.int32() as any;
-          break;
+          continue;
         case 14:
+          if (tag != 112) {
+            break;
+          }
+
           message.createTime = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 15:
+          if (tag != 120) {
+            break;
+          }
+
           message.lastMessageTime = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 17:
+          if (tag != 136) {
+            break;
+          }
+
           message.lastMessageSeen = reader.bool();
-          break;
+          continue;
         case 16:
+          if (tag != 128) {
+            break;
+          }
+
           message.archived = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2133,22 +2377,31 @@ export const LikeMessageReq = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): LikeMessageReq {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseLikeMessageReq();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.roomId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.messageId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2238,52 +2491,101 @@ export const Message = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Message {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMessage();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.roomId = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.text = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.picture = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 42) {
+            break;
+          }
+
           message.senderId = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag != 50) {
+            break;
+          }
+
           message.senderPicture = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag != 58) {
+            break;
+          }
+
           message.senderName = reader.string();
-          break;
+          continue;
         case 8:
+          if (tag != 66) {
+            break;
+          }
+
           message.senderUsername = reader.string();
-          break;
+          continue;
         case 9:
+          if (tag != 72) {
+            break;
+          }
+
           message.likeCount = reader.int32();
-          break;
+          continue;
         case 10:
+          if (tag != 80) {
+            break;
+          }
+
           message.type = reader.int32() as any;
-          break;
+          continue;
         case 11:
+          if (tag != 88) {
+            break;
+          }
+
           message.status = reader.int32() as any;
-          break;
+          continue;
         case 12:
+          if (tag != 96) {
+            break;
+          }
+
           message.createTime = longToNumber(reader.int64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2363,25 +2665,38 @@ export const MessageItem = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): MessageItem {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseMessageItem();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.message = Message.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.sender = reader.bool();
-          break;
+          continue;
         case 3:
+          if (tag != 24) {
+            break;
+          }
+
           message.liked = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -2466,109 +2781,109 @@ export class ChatServiceClientImpl implements ChatService {
   CreateRoom(request: CreateRoomRequest): Promise<CreateRoomResponse> {
     const data = CreateRoomRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateRoom", data);
-    return promise.then((data) => CreateRoomResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => CreateRoomResponse.decode(_m0.Reader.create(data)));
   }
 
   JoinRoom(request: JoinRoomRequest): Observable<Message> {
     const data = JoinRoomRequest.encode(request).finish();
     const result = this.rpc.serverStreamingRequest(this.service, "JoinRoom", data);
-    return result.pipe(map((data) => Message.decode(new _m0.Reader(data))));
+    return result.pipe(map((data) => Message.decode(_m0.Reader.create(data))));
   }
 
   GetInbox(request: GetInboxRequest): Promise<GetInboxResponse> {
     const data = GetInboxRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetInbox", data);
-    return promise.then((data) => GetInboxResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetInboxResponse.decode(_m0.Reader.create(data)));
   }
 
   ListRoomMessages(request: ListRoomMessagesRequest): Promise<ListRoomMessagesResponse> {
     const data = ListRoomMessagesRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListRoomMessages", data);
-    return promise.then((data) => ListRoomMessagesResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ListRoomMessagesResponse.decode(_m0.Reader.create(data)));
   }
 
   DeleteRoom(request: DeleteRoomRequest): Promise<DeleteRoomResponse> {
     const data = DeleteRoomRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteRoom", data);
-    return promise.then((data) => DeleteRoomResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => DeleteRoomResponse.decode(_m0.Reader.create(data)));
   }
 
   GetRoomId(request: GetRoomIdReq): Promise<RoomId> {
     const data = GetRoomIdReq.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetRoomId", data);
-    return promise.then((data) => RoomId.decode(new _m0.Reader(data)));
+    return promise.then((data) => RoomId.decode(_m0.Reader.create(data)));
   }
 
   ListMembers(request: ListMembersRequest): Promise<ListMembersResponse> {
     const data = ListMembersRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListMembers", data);
-    return promise.then((data) => ListMembersResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ListMembersResponse.decode(_m0.Reader.create(data)));
   }
 
   LeaveRoom(request: RoomId): Promise<Empty> {
     const data = RoomId.encode(request).finish();
     const promise = this.rpc.request(this.service, "LeaveRoom", data);
-    return promise.then((data) => Empty.decode(new _m0.Reader(data)));
+    return promise.then((data) => Empty.decode(_m0.Reader.create(data)));
   }
 
   SendMessage(request: SendMessageRequest): Promise<SendMessageResponse> {
     const data = SendMessageRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "SendMessage", data);
-    return promise.then((data) => SendMessageResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => SendMessageResponse.decode(_m0.Reader.create(data)));
   }
 
   PinRoom(request: PinRoomRequest): Promise<PinRoomResponse> {
     const data = PinRoomRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "PinRoom", data);
-    return promise.then((data) => PinRoomResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => PinRoomResponse.decode(_m0.Reader.create(data)));
   }
 
   UnPinRoom(request: UnPinRoomRequest): Promise<UnPinRoomResponse> {
     const data = UnPinRoomRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UnPinRoom", data);
-    return promise.then((data) => UnPinRoomResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => UnPinRoomResponse.decode(_m0.Reader.create(data)));
   }
 
   LikeMessage(request: LikeMessageReq): Promise<Empty> {
     const data = LikeMessageReq.encode(request).finish();
     const promise = this.rpc.request(this.service, "LikeMessage", data);
-    return promise.then((data) => Empty.decode(new _m0.Reader(data)));
+    return promise.then((data) => Empty.decode(_m0.Reader.create(data)));
   }
 
   UnlikeMessage(request: LikeMessageReq): Promise<Empty> {
     const data = LikeMessageReq.encode(request).finish();
     const promise = this.rpc.request(this.service, "UnlikeMessage", data);
-    return promise.then((data) => Empty.decode(new _m0.Reader(data)));
+    return promise.then((data) => Empty.decode(_m0.Reader.create(data)));
   }
 
   TypingChannel(request: Observable<TypingEvent>): Observable<TypingEvent> {
     const data = request.pipe(map((request) => TypingEvent.encode(request).finish()));
     const result = this.rpc.bidirectionalStreamingRequest(this.service, "TypingChannel", data);
-    return result.pipe(map((data) => TypingEvent.decode(new _m0.Reader(data))));
+    return result.pipe(map((data) => TypingEvent.decode(_m0.Reader.create(data))));
   }
 
   TypingStart(request: TypingReq): Promise<Empty> {
     const data = TypingReq.encode(request).finish();
     const promise = this.rpc.request(this.service, "TypingStart", data);
-    return promise.then((data) => Empty.decode(new _m0.Reader(data)));
+    return promise.then((data) => Empty.decode(_m0.Reader.create(data)));
   }
 
   TypingEnd(request: TypingReq): Promise<Empty> {
     const data = TypingReq.encode(request).finish();
     const promise = this.rpc.request(this.service, "TypingEnd", data);
-    return promise.then((data) => Empty.decode(new _m0.Reader(data)));
+    return promise.then((data) => Empty.decode(_m0.Reader.create(data)));
   }
 
   AddToken(request: AddTokenReq): Promise<Empty> {
     const data = AddTokenReq.encode(request).finish();
     const promise = this.rpc.request(this.service, "AddToken", data);
-    return promise.then((data) => Empty.decode(new _m0.Reader(data)));
+    return promise.then((data) => Empty.decode(_m0.Reader.create(data)));
   }
 
   DeleteUser(request: UserIdReq): Promise<Empty> {
     const data = UserIdReq.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteUser", data);
-    return promise.then((data) => Empty.decode(new _m0.Reader(data)));
+    return promise.then((data) => Empty.decode(_m0.Reader.create(data)));
   }
 }
 

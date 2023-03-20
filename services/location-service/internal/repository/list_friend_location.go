@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/location/v1"
 	"github.com/salazarhugo/cheers1/services/location-service/internal/service"
+	"log"
 	"strconv"
 )
 
@@ -43,16 +44,17 @@ func (r repository) ListFriendLocation(
 
 		// Get the last updated timestamp
 		str, err := r.redis.HGet(ctx, keyLastUpdated,
-			userId,
+			friend.Id,
 		).Result()
 		if err != nil {
-			return nil, err
+			log.Println(err)
 		}
 
 		// Convert the timestamp string to an int64
 		lastUpdated, err := strconv.ParseInt(str, 10, 64)
 		if err != nil {
-			return nil, err
+			log.Println(err)
+			lastUpdated = 0
 		}
 
 		items = append(items, &location.Location{

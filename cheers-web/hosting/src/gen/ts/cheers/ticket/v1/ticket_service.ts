@@ -130,58 +130,115 @@ export const Ticket = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Ticket {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseTicket();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.price = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 3:
+          if (tag != 24) {
+            break;
+          }
+
           message.quantity = reader.uint32();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 42) {
+            break;
+          }
+
           message.description = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag != 50) {
+            break;
+          }
+
           message.partyId = reader.string();
-          break;
+          continue;
         case 10:
+          if (tag != 82) {
+            break;
+          }
+
           message.partyName = reader.string();
-          break;
+          continue;
         case 11:
+          if (tag != 88) {
+            break;
+          }
+
           message.partyStartTime = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 12:
+          if (tag != 96) {
+            break;
+          }
+
           message.partyEndTime = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 13:
+          if (tag != 106) {
+            break;
+          }
+
           message.locationName = reader.string();
-          break;
+          continue;
         case 14:
+          if (tag != 114) {
+            break;
+          }
+
           message.organizer = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag != 58) {
+            break;
+          }
+
           message.paymentIntentId = reader.string();
-          break;
+          continue;
         case 8:
+          if (tag != 66) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
+          continue;
         case 9:
+          if (tag != 72) {
+            break;
+          }
+
           message.validated = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -261,19 +318,24 @@ export const CreateTicketRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreateTicketRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateTicketRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.ticket = Ticket.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -314,19 +376,24 @@ export const CreateTicketResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreateTicketResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateTicketResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.ticket = Ticket.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -367,19 +434,24 @@ export const GetTicketRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetTicketRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetTicketRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.ticketId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -418,19 +490,24 @@ export const GetTicketResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetTicketResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetTicketResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.ticket = Ticket.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -471,19 +548,24 @@ export const UpdateTicketRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTicketRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUpdateTicketRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.ticket = Ticket.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -524,19 +606,24 @@ export const UpdateTicketResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UpdateTicketResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUpdateTicketResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.ticket = Ticket.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -577,19 +664,24 @@ export const DeleteTicketRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTicketRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteTicketRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.ticketId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -625,16 +717,17 @@ export const DeleteTicketResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeleteTicketResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteTicketResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -674,22 +767,31 @@ export const ListTicketRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListTicketRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListTicketRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.partyId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -733,19 +835,24 @@ export const ListTicketResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListTicketResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListTicketResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.tickets.push(Ticket.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -798,31 +905,31 @@ export class TicketServiceClientImpl implements TicketService {
   CreateTicket(request: CreateTicketRequest): Promise<CreateTicketResponse> {
     const data = CreateTicketRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateTicket", data);
-    return promise.then((data) => CreateTicketResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => CreateTicketResponse.decode(_m0.Reader.create(data)));
   }
 
   GetTicket(request: GetTicketRequest): Promise<GetTicketResponse> {
     const data = GetTicketRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetTicket", data);
-    return promise.then((data) => GetTicketResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetTicketResponse.decode(_m0.Reader.create(data)));
   }
 
   UpdateTicket(request: UpdateTicketRequest): Promise<UpdateTicketResponse> {
     const data = UpdateTicketRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UpdateTicket", data);
-    return promise.then((data) => UpdateTicketResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => UpdateTicketResponse.decode(_m0.Reader.create(data)));
   }
 
   DeleteTicket(request: DeleteTicketRequest): Promise<DeleteTicketResponse> {
     const data = DeleteTicketRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteTicket", data);
-    return promise.then((data) => DeleteTicketResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => DeleteTicketResponse.decode(_m0.Reader.create(data)));
   }
 
   ListTicket(request: ListTicketRequest): Promise<ListTicketResponse> {
     const data = ListTicketRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListTicket", data);
-    return promise.then((data) => ListTicketResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ListTicketResponse.decode(_m0.Reader.create(data)));
   }
 }
 

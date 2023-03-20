@@ -100,19 +100,24 @@ export const ListActivityRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListActivityRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListActivityRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -151,19 +156,24 @@ export const ListActivityResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListActivityResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListActivityResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.activities.push(Activity.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -242,43 +252,80 @@ export const Activity = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Activity {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseActivity();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 8:
+          if (tag != 66) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
+          continue;
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.type = reader.int32() as any;
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.text = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.picture = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 40) {
+            break;
+          }
+
           message.timestamp = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 6:
+          if (tag != 50) {
+            break;
+          }
+
           message.mediaPicture = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag != 58) {
+            break;
+          }
+
           message.mediaId = reader.string();
-          break;
+          continue;
         case 9:
+          if (tag != 74) {
+            break;
+          }
+
           message.username = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -345,7 +392,7 @@ export class ActivityServiceClientImpl implements ActivityService {
   ListActivity(request: ListActivityRequest): Promise<ListActivityResponse> {
     const data = ListActivityRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListActivity", data);
-    return promise.then((data) => ListActivityResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ListActivityResponse.decode(_m0.Reader.create(data)));
   }
 }
 

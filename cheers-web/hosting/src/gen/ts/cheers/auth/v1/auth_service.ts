@@ -1,5 +1,4 @@
 /* eslint-disable */
-import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "cheers.auth.v1";
@@ -45,19 +44,24 @@ export const VerifyUserRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): VerifyUserRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseVerifyUserRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -93,16 +97,17 @@ export const VerifyUserResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): VerifyUserResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseVerifyUserResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -139,19 +144,24 @@ export const DeleteModeratorRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeleteModeratorRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteModeratorRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -187,16 +197,17 @@ export const DeleteModeratorResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeleteModeratorResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteModeratorResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -233,19 +244,24 @@ export const CreateModeratorRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreateModeratorRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateModeratorRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -281,16 +297,17 @@ export const CreateModeratorResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreateModeratorResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateModeratorResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -327,19 +344,24 @@ export const CreateBusinessAccountRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreateBusinessAccountRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateBusinessAccountRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -375,16 +397,17 @@ export const CreateBusinessAccountResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreateBusinessAccountResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateBusinessAccountResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -431,31 +454,31 @@ export class AuthServiceClientImpl implements AuthService {
   CreateModerator(request: CreateModeratorRequest): Promise<CreateModeratorResponse> {
     const data = CreateModeratorRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateModerator", data);
-    return promise.then((data) => CreateModeratorResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => CreateModeratorResponse.decode(_m0.Reader.create(data)));
   }
 
   DeleteModerator(request: DeleteModeratorRequest): Promise<DeleteModeratorResponse> {
     const data = DeleteModeratorRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteModerator", data);
-    return promise.then((data) => DeleteModeratorResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => DeleteModeratorResponse.decode(_m0.Reader.create(data)));
   }
 
   CreateBusinessAccount(request: CreateBusinessAccountRequest): Promise<CreateBusinessAccountResponse> {
     const data = CreateBusinessAccountRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateBusinessAccount", data);
-    return promise.then((data) => CreateBusinessAccountResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => CreateBusinessAccountResponse.decode(_m0.Reader.create(data)));
   }
 
   VerifyUser(request: VerifyUserRequest): Promise<VerifyUserResponse> {
     const data = VerifyUserRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "VerifyUser", data);
-    return promise.then((data) => VerifyUserResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => VerifyUserResponse.decode(_m0.Reader.create(data)));
   }
 
   DeleteVerifyUser(request: VerifyUserRequest): Promise<VerifyUserResponse> {
     const data = VerifyUserRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteVerifyUser", data);
-    return promise.then((data) => VerifyUserResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => VerifyUserResponse.decode(_m0.Reader.create(data)));
   }
 }
 

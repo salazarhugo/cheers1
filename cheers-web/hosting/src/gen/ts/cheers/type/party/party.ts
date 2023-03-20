@@ -95,58 +95,115 @@ export const Party = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Party {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseParty();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.description = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.address = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag != 48) {
+            break;
+          }
+
           message.privacy = reader.int32() as any;
-          break;
+          continue;
         case 7:
+          if (tag != 58) {
+            break;
+          }
+
           message.bannerUrl = reader.string();
-          break;
+          continue;
         case 8:
+          if (tag != 64) {
+            break;
+          }
+
           message.startDate = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 9:
+          if (tag != 72) {
+            break;
+          }
+
           message.endDate = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 10:
+          if (tag != 82) {
+            break;
+          }
+
           message.hostId = reader.string();
-          break;
+          continue;
         case 12:
+          if (tag != 98) {
+            break;
+          }
+
           message.locationName = reader.string();
-          break;
+          continue;
         case 13:
+          if (tag != 104) {
+            break;
+          }
+
           message.createTime = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 14:
+          if (tag != 113) {
+            break;
+          }
+
           message.latitude = reader.double();
-          break;
+          continue;
         case 15:
+          if (tag != 121) {
+            break;
+          }
+
           message.longitude = reader.double();
-          break;
+          continue;
         case 16:
+          if (tag != 128) {
+            break;
+          }
+
           message.minimumPrice = longToNumber(reader.int64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },

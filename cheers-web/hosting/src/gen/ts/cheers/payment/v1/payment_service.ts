@@ -1,5 +1,4 @@
 /* eslint-disable */
-import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "cheers.payment.v1";
@@ -53,34 +52,55 @@ export const CreatePaymentRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreatePaymentRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreatePaymentRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.partyId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           const entry2 = CreatePaymentRequest_TicketsEntry.decode(reader, reader.uint32());
           if (entry2.value !== undefined) {
             message.tickets[entry2.key] = entry2.value;
           }
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.firstName = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.lastName = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 42) {
+            break;
+          }
+
           message.email = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -151,22 +171,31 @@ export const CreatePaymentRequest_TicketsEntry = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreatePaymentRequest_TicketsEntry {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreatePaymentRequest_TicketsEntry();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.key = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.value = reader.uint32();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -211,19 +240,24 @@ export const CreatePaymentResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreatePaymentResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreatePaymentResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.clientSecret = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -262,19 +296,24 @@ export const RefundPaymentRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): RefundPaymentRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRefundPaymentRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.paymentIntentId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -310,16 +349,17 @@ export const RefundPaymentResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): RefundPaymentResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseRefundPaymentResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -360,13 +400,13 @@ export class PaymentServiceClientImpl implements PaymentService {
   CreatePayment(request: CreatePaymentRequest): Promise<CreatePaymentResponse> {
     const data = CreatePaymentRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreatePayment", data);
-    return promise.then((data) => CreatePaymentResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => CreatePaymentResponse.decode(_m0.Reader.create(data)));
   }
 
   RefundPayment(request: RefundPaymentRequest): Promise<RefundPaymentResponse> {
     const data = RefundPaymentRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "RefundPayment", data);
-    return promise.then((data) => RefundPaymentResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => RefundPaymentResponse.decode(_m0.Reader.create(data)));
   }
 }
 

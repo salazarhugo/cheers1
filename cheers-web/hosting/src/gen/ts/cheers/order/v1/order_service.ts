@@ -150,61 +150,122 @@ export const Order = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Order {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseOrder();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.status = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 24) {
+            break;
+          }
+
           message.amount = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.customerId = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag != 50) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag != 56) {
+            break;
+          }
+
           message.createTime = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 8:
+          if (tag != 66) {
+            break;
+          }
+
           message.tickets.push(Ticket.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 9:
+          if (tag != 74) {
+            break;
+          }
+
           message.partyId = reader.string();
-          break;
+          continue;
         case 10:
+          if (tag != 82) {
+            break;
+          }
+
           message.partyName = reader.string();
-          break;
+          continue;
         case 11:
+          if (tag != 90) {
+            break;
+          }
+
           message.partyHostId = reader.string();
-          break;
+          continue;
         case 12:
+          if (tag != 98) {
+            break;
+          }
+
           message.email = reader.string();
-          break;
+          continue;
         case 13:
+          if (tag != 106) {
+            break;
+          }
+
           message.firstName = reader.string();
-          break;
+          continue;
         case 14:
+          if (tag != 114) {
+            break;
+          }
+
           message.lastName = reader.string();
-          break;
+          continue;
         case 15:
+          if (tag != 122) {
+            break;
+          }
+
           message.paymentMethodTypes.push(reader.string());
-          break;
+          continue;
         case 16:
+          if (tag != 130) {
+            break;
+          }
+
           message.paymentMethodType = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -297,19 +358,24 @@ export const CreateOrderRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreateOrderRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateOrderRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.order = Order.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -348,19 +414,24 @@ export const CreateOrderResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreateOrderResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateOrderResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.order = Order.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -399,19 +470,24 @@ export const GetOrderRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetOrderRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetOrderRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.orderId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -450,19 +526,24 @@ export const GetOrderResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetOrderResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetOrderResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.order = Order.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -501,19 +582,24 @@ export const UpdateOrderRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UpdateOrderRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUpdateOrderRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.order = Order.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -552,19 +638,24 @@ export const UpdateOrderResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UpdateOrderResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUpdateOrderResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.order = Order.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -603,19 +694,24 @@ export const DeleteOrderRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeleteOrderRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteOrderRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.orderId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -651,16 +747,17 @@ export const DeleteOrderResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeleteOrderResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteOrderResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -694,16 +791,17 @@ export const ListUserOrdersRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListUserOrdersRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListUserOrdersRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -740,19 +838,24 @@ export const ListUserOrdersResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListUserOrdersResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListUserOrdersResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.orders.push(Order.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -795,19 +898,24 @@ export const ListOrganizerOrdersRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListOrganizerOrdersRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListOrganizerOrdersRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.query = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -846,19 +954,24 @@ export const ListOrganizerOrdersResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListOrganizerOrdersResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListOrganizerOrdersResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.orders.push(Order.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -901,19 +1014,24 @@ export const ListPartyOrdersRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListPartyOrdersRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListPartyOrdersRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.partyId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -952,19 +1070,24 @@ export const ListPartyOrdersResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListPartyOrdersResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListPartyOrdersResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.orders.push(Order.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1021,43 +1144,43 @@ export class OrderServiceClientImpl implements OrderService {
   CreateOrder(request: CreateOrderRequest): Promise<CreateOrderResponse> {
     const data = CreateOrderRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateOrder", data);
-    return promise.then((data) => CreateOrderResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => CreateOrderResponse.decode(_m0.Reader.create(data)));
   }
 
   GetOrder(request: GetOrderRequest): Promise<GetOrderResponse> {
     const data = GetOrderRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetOrder", data);
-    return promise.then((data) => GetOrderResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetOrderResponse.decode(_m0.Reader.create(data)));
   }
 
   UpdateOrder(request: UpdateOrderRequest): Promise<UpdateOrderResponse> {
     const data = UpdateOrderRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UpdateOrder", data);
-    return promise.then((data) => UpdateOrderResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => UpdateOrderResponse.decode(_m0.Reader.create(data)));
   }
 
   DeleteOrder(request: DeleteOrderRequest): Promise<DeleteOrderResponse> {
     const data = DeleteOrderRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteOrder", data);
-    return promise.then((data) => DeleteOrderResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => DeleteOrderResponse.decode(_m0.Reader.create(data)));
   }
 
   ListUserOrders(request: ListUserOrdersRequest): Promise<ListUserOrdersResponse> {
     const data = ListUserOrdersRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListUserOrders", data);
-    return promise.then((data) => ListUserOrdersResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ListUserOrdersResponse.decode(_m0.Reader.create(data)));
   }
 
   ListOrganizerOrders(request: ListOrganizerOrdersRequest): Promise<ListOrganizerOrdersResponse> {
     const data = ListOrganizerOrdersRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListOrganizerOrders", data);
-    return promise.then((data) => ListOrganizerOrdersResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ListOrganizerOrdersResponse.decode(_m0.Reader.create(data)));
   }
 
   ListPartyOrders(request: ListPartyOrdersRequest): Promise<ListPartyOrdersResponse> {
     const data = ListPartyOrdersRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListPartyOrders", data);
-    return promise.then((data) => ListPartyOrdersResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ListPartyOrdersResponse.decode(_m0.Reader.create(data)));
   }
 }
 

@@ -194,73 +194,150 @@ export const Post = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Post {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePost();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.creatorId = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.caption = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.address = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 40) {
+            break;
+          }
+
           message.privacy = reader.int32() as any;
-          break;
+          continue;
         case 6:
+          if (tag != 50) {
+            break;
+          }
+
           message.photos.push(reader.string());
-          break;
+          continue;
         case 8:
+          if (tag != 66) {
+            break;
+          }
+
           message.locationName = reader.string();
-          break;
+          continue;
         case 9:
+          if (tag != 74) {
+            break;
+          }
+
           message.drink = reader.string();
-          break;
+          continue;
         case 10:
+          if (tag != 80) {
+            break;
+          }
+
           message.drunkenness = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 11:
+          if (tag != 88) {
+            break;
+          }
+
           message.type = reader.int32() as any;
-          break;
+          continue;
         case 12:
+          if (tag != 96) {
+            break;
+          }
+
           message.createTime = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 13:
+          if (tag != 104) {
+            break;
+          }
+
           message.canComment = reader.bool();
-          break;
+          continue;
         case 14:
+          if (tag != 112) {
+            break;
+          }
+
           message.canShare = reader.bool();
-          break;
+          continue;
         case 15:
+          if (tag != 120) {
+            break;
+          }
+
           message.ratio = reader.int32() as any;
-          break;
+          continue;
         case 16:
+          if (tag != 129) {
+            break;
+          }
+
           message.latitude = reader.double();
-          break;
+          continue;
         case 17:
+          if (tag != 137) {
+            break;
+          }
+
           message.longitude = reader.double();
-          break;
+          continue;
         case 18:
+          if (tag != 146) {
+            break;
+          }
+
           message.lastCommentText = reader.string();
-          break;
+          continue;
         case 19:
+          if (tag != 154) {
+            break;
+          }
+
           message.lastCommentUsername = reader.string();
-          break;
+          continue;
         case 20:
+          if (tag != 160) {
+            break;
+          }
+
           message.lastCommentCreateTime = longToNumber(reader.int64() as Long);
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },

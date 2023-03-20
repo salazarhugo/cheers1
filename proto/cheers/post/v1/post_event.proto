@@ -20,6 +20,7 @@ message PostEvent {
 message CreatePost {
   cheers.type.Post post = 1;
   cheers.type.UserItem user = 2;
+  bool send_notification_to_friends = 3;
 }
 
 message LikePost {

@@ -62,19 +62,24 @@ export const AcceptFriendRequestRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AcceptFriendRequestRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAcceptFriendRequestRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -110,16 +115,17 @@ export const AcceptFriendRequestResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AcceptFriendRequestResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseAcceptFriendRequestResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -156,19 +162,24 @@ export const DeleteFriendRequestRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFriendRequestRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteFriendRequestRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -204,16 +215,17 @@ export const DeleteFriendRequestResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFriendRequestResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteFriendRequestResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -250,19 +262,24 @@ export const ListFriendResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListFriendResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListFriendResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.items.push(UserItem.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -308,22 +325,31 @@ export const DeleteFriendRequest2 = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFriendRequest2 {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteFriendRequest2();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.friendshipId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -364,16 +390,17 @@ export const DeleteFriendResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeleteFriendResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteFriendResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -410,19 +437,24 @@ export const ListFriendRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListFriendRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListFriendRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -461,19 +493,24 @@ export const ListFriendRequestsRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListFriendRequestsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListFriendRequestsRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -512,19 +549,24 @@ export const ListFriendRequestsResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListFriendRequestsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListFriendRequestsResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.items.push(UserItem.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -567,19 +609,24 @@ export const CreateFriendRequestRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreateFriendRequestRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateFriendRequestRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -615,16 +662,17 @@ export const CreateFriendRequestResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreateFriendRequestResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateFriendRequestResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -679,37 +727,37 @@ export class FriendshipServiceClientImpl implements FriendshipService {
   CreateFriendRequest(request: CreateFriendRequestRequest): Promise<CreateFriendRequestResponse> {
     const data = CreateFriendRequestRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateFriendRequest", data);
-    return promise.then((data) => CreateFriendRequestResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => CreateFriendRequestResponse.decode(_m0.Reader.create(data)));
   }
 
   AcceptFriendRequest(request: AcceptFriendRequestRequest): Promise<AcceptFriendRequestResponse> {
     const data = AcceptFriendRequestRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "AcceptFriendRequest", data);
-    return promise.then((data) => AcceptFriendRequestResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => AcceptFriendRequestResponse.decode(_m0.Reader.create(data)));
   }
 
   ListFriend(request: ListFriendRequest): Promise<ListFriendResponse> {
     const data = ListFriendRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListFriend", data);
-    return promise.then((data) => ListFriendResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ListFriendResponse.decode(_m0.Reader.create(data)));
   }
 
   ListFriendRequests(request: ListFriendRequestsRequest): Promise<ListFriendRequestsResponse> {
     const data = ListFriendRequestsRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListFriendRequests", data);
-    return promise.then((data) => ListFriendRequestsResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ListFriendRequestsResponse.decode(_m0.Reader.create(data)));
   }
 
   DeleteFriendRequest(request: DeleteFriendRequestRequest): Promise<DeleteFriendRequestResponse> {
     const data = DeleteFriendRequestRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteFriendRequest", data);
-    return promise.then((data) => DeleteFriendRequestResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => DeleteFriendRequestResponse.decode(_m0.Reader.create(data)));
   }
 
   DeleteFriend(request: DeleteFriendRequest2): Promise<DeleteFriendResponse> {
     const data = DeleteFriendRequest2.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteFriend", data);
-    return promise.then((data) => DeleteFriendResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => DeleteFriendResponse.decode(_m0.Reader.create(data)));
   }
 }
 

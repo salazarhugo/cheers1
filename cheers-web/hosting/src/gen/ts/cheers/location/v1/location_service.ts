@@ -1,4 +1,5 @@
 /* eslint-disable */
+import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "cheers.location.v1";
@@ -18,6 +19,8 @@ export interface Location {
   username: string;
   picture: string;
   verified: boolean;
+  locationName: string;
+  lastUpdated: number;
 }
 
 export interface UpdateLocationRequest {
@@ -41,16 +44,17 @@ export const ListFriendLocationRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListFriendLocationRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListFriendLocationRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -87,19 +91,24 @@ export const ListFriendLocationResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListFriendLocationResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListFriendLocationResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.items.push(Location.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -130,7 +139,17 @@ export const ListFriendLocationResponse = {
 };
 
 function createBaseLocation(): Location {
-  return { latitude: 0, longitude: 0, userId: "", name: "", username: "", picture: "", verified: false };
+  return {
+    latitude: 0,
+    longitude: 0,
+    userId: "",
+    name: "",
+    username: "",
+    picture: "",
+    verified: false,
+    locationName: "",
+    lastUpdated: 0,
+  };
 }
 
 export const Location = {
@@ -156,41 +175,90 @@ export const Location = {
     if (message.verified === true) {
       writer.uint32(56).bool(message.verified);
     }
+    if (message.locationName !== "") {
+      writer.uint32(66).string(message.locationName);
+    }
+    if (message.lastUpdated !== 0) {
+      writer.uint32(72).int64(message.lastUpdated);
+    }
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Location {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseLocation();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 9) {
+            break;
+          }
+
           message.latitude = reader.double();
-          break;
+          continue;
         case 2:
+          if (tag != 17) {
+            break;
+          }
+
           message.longitude = reader.double();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 42) {
+            break;
+          }
+
           message.username = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag != 50) {
+            break;
+          }
+
           message.picture = reader.string();
-          break;
+          continue;
         case 7:
+          if (tag != 56) {
+            break;
+          }
+
           message.verified = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
+        case 8:
+          if (tag != 66) {
+            break;
+          }
+
+          message.locationName = reader.string();
+          continue;
+        case 9:
+          if (tag != 72) {
+            break;
+          }
+
+          message.lastUpdated = longToNumber(reader.int64() as Long);
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -204,6 +272,8 @@ export const Location = {
       username: isSet(object.username) ? String(object.username) : "",
       picture: isSet(object.picture) ? String(object.picture) : "",
       verified: isSet(object.verified) ? Boolean(object.verified) : false,
+      locationName: isSet(object.locationName) ? String(object.locationName) : "",
+      lastUpdated: isSet(object.lastUpdated) ? Number(object.lastUpdated) : 0,
     };
   },
 
@@ -216,6 +286,8 @@ export const Location = {
     message.username !== undefined && (obj.username = message.username);
     message.picture !== undefined && (obj.picture = message.picture);
     message.verified !== undefined && (obj.verified = message.verified);
+    message.locationName !== undefined && (obj.locationName = message.locationName);
+    message.lastUpdated !== undefined && (obj.lastUpdated = Math.round(message.lastUpdated));
     return obj;
   },
 
@@ -232,6 +304,8 @@ export const Location = {
     message.username = object.username ?? "";
     message.picture = object.picture ?? "";
     message.verified = object.verified ?? false;
+    message.locationName = object.locationName ?? "";
+    message.lastUpdated = object.lastUpdated ?? 0;
     return message;
   },
 };
@@ -255,25 +329,38 @@ export const UpdateLocationRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UpdateLocationRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUpdateLocationRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 17) {
+            break;
+          }
+
           message.latitude = reader.double();
-          break;
+          continue;
         case 3:
+          if (tag != 25) {
+            break;
+          }
+
           message.longitude = reader.double();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -317,16 +404,17 @@ export const UpdateLocationResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UpdateLocationResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUpdateLocationResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -367,19 +455,38 @@ export class LocationServiceClientImpl implements LocationService {
   UpdateLocation(request: UpdateLocationRequest): Promise<UpdateLocationResponse> {
     const data = UpdateLocationRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UpdateLocation", data);
-    return promise.then((data) => UpdateLocationResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => UpdateLocationResponse.decode(_m0.Reader.create(data)));
   }
 
   ListFriendLocation(request: ListFriendLocationRequest): Promise<ListFriendLocationResponse> {
     const data = ListFriendLocationRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListFriendLocation", data);
-    return promise.then((data) => ListFriendLocationResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ListFriendLocationResponse.decode(_m0.Reader.create(data)));
   }
 }
 
 interface Rpc {
   request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;
 }
+
+declare var self: any | undefined;
+declare var window: any | undefined;
+declare var global: any | undefined;
+var tsProtoGlobalThis: any = (() => {
+  if (typeof globalThis !== "undefined") {
+    return globalThis;
+  }
+  if (typeof self !== "undefined") {
+    return self;
+  }
+  if (typeof window !== "undefined") {
+    return window;
+  }
+  if (typeof global !== "undefined") {
+    return global;
+  }
+  throw "Unable to locate global object";
+})();
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
@@ -391,6 +498,20 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new tsProtoGlobalThis.Error("Value is larger than Number.MAX_SAFE_INTEGER");
+  }
+  return long.toNumber();
+}
+
+// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
+// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
+if (_m0.util.Long !== Long) {
+  _m0.util.Long = Long as any;
+  _m0.configure();
+}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

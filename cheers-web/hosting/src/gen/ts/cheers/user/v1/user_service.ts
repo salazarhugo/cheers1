@@ -149,19 +149,24 @@ export const ListSuggestionsRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListSuggestionsRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListSuggestionsRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -200,19 +205,24 @@ export const ListSuggestionsResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListSuggestionsResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListSuggestionsResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.users.push(UserItem.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -255,19 +265,24 @@ export const CheckUsernameRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CheckUsernameRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCheckUsernameRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.username = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -306,19 +321,24 @@ export const CheckUsernameResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CheckUsernameResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCheckUsernameResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.valid = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -366,28 +386,45 @@ export const CreateUserRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreateUserRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateUserRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.email = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.picture = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 42) {
+            break;
+          }
+
           message.username = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -437,19 +474,24 @@ export const CreateUserResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreateUserResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateUserResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.user = User.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -485,16 +527,17 @@ export const BlockUserResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): BlockUserResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBlockUserResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -528,16 +571,17 @@ export const UnblockUserResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UnblockUserResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUnblockUserResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -574,19 +618,24 @@ export const GetUsersInRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetUsersInRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetUsersInRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userIds.push(reader.string());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -629,19 +678,24 @@ export const GetUsersInResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetUsersInResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetUsersInResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.users.push(User.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -684,19 +738,24 @@ export const GetUserItemsInRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetUserItemsInRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetUserItemsInRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userIds.push(reader.string());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -739,19 +798,24 @@ export const GetUserItemsInResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetUserItemsInResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetUserItemsInResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.users.push(UserItem.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -794,19 +858,24 @@ export const SearchUserResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): SearchUserResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSearchUserResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.users.push(UserItem.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -855,25 +924,38 @@ export const ListFollowersRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListFollowersRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListFollowersRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.pageSize = reader.int32();
-          break;
+          continue;
         case 3:
+          if (tag != 24) {
+            break;
+          }
+
           message.page = reader.int32();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -926,25 +1008,38 @@ export const ListFollowingRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListFollowingRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListFollowingRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.pageSize = reader.int32();
-          break;
+          continue;
         case 3:
+          if (tag != 24) {
+            break;
+          }
+
           message.page = reader.int32();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -991,19 +1086,24 @@ export const ListFollowersResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListFollowersResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListFollowersResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.users.push(UserItem.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1046,19 +1146,24 @@ export const ListFollowingResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListFollowingResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListFollowingResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.users.push(UserItem.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1101,19 +1206,24 @@ export const GetUserNodeResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetUserNodeResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetUserNodeResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.user = User.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1190,46 +1300,87 @@ export const GetUserResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetUserResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetUserResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.user = User.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.postCount = reader.int32();
-          break;
+          continue;
         case 3:
+          if (tag != 24) {
+            break;
+          }
+
           message.followersCount = reader.int32();
-          break;
+          continue;
         case 4:
+          if (tag != 32) {
+            break;
+          }
+
           message.followingCount = reader.int32();
-          break;
+          continue;
         case 5:
+          if (tag != 40) {
+            break;
+          }
+
           message.hasFollowed = reader.bool();
-          break;
+          continue;
         case 6:
+          if (tag != 48) {
+            break;
+          }
+
           message.storyState = reader.int32() as any;
-          break;
+          continue;
         case 7:
+          if (tag != 56) {
+            break;
+          }
+
           message.friend = reader.bool();
-          break;
+          continue;
         case 8:
+          if (tag != 64) {
+            break;
+          }
+
           message.requested = reader.bool();
-          break;
+          continue;
         case 9:
+          if (tag != 72) {
+            break;
+          }
+
           message.hasRequestedViewer = reader.bool();
-          break;
+          continue;
         case 10:
+          if (tag != 80) {
+            break;
+          }
+
           message.friendsCount = reader.int32();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1297,19 +1448,24 @@ export const BlockUserRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): BlockUserRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseBlockUserRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1348,19 +1504,24 @@ export const UnblockUserRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UnblockUserRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUnblockUserRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1399,19 +1560,24 @@ export const UnfollowUserRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UnfollowUserRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUnfollowUserRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1450,19 +1616,24 @@ export const FollowUserRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): FollowUserRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseFollowUserRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1501,19 +1672,24 @@ export const SearchUserRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): SearchUserRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSearchUserRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.query = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1552,19 +1728,24 @@ export const GetUserNodeRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetUserNodeRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetUserNodeRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1603,19 +1784,24 @@ export const GetUserRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetUserRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetUserRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1669,34 +1855,59 @@ export const UpdateUserRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UpdateUserRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUpdateUserRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.name = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.picture = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.bio = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.website = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 42) {
+            break;
+          }
+
           message.birthday = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag != 50) {
+            break;
+          }
+
           message.phoneNumber = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1752,19 +1963,24 @@ export const DeleteUserRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeleteUserRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteUserRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1835,97 +2051,97 @@ export class UserServiceClientImpl implements UserService {
   CreateUser(request: CreateUserRequest): Promise<CreateUserResponse> {
     const data = CreateUserRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateUser", data);
-    return promise.then((data) => CreateUserResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => CreateUserResponse.decode(_m0.Reader.create(data)));
   }
 
   GetUserNode(request: GetUserNodeRequest): Promise<GetUserNodeResponse> {
     const data = GetUserNodeRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetUserNode", data);
-    return promise.then((data) => GetUserNodeResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetUserNodeResponse.decode(_m0.Reader.create(data)));
   }
 
   GetUser(request: GetUserRequest): Promise<GetUserResponse> {
     const data = GetUserRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetUser", data);
-    return promise.then((data) => GetUserResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetUserResponse.decode(_m0.Reader.create(data)));
   }
 
   UpdateUser(request: UpdateUserRequest): Promise<User> {
     const data = UpdateUserRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UpdateUser", data);
-    return promise.then((data) => User.decode(new _m0.Reader(data)));
+    return promise.then((data) => User.decode(_m0.Reader.create(data)));
   }
 
   DeleteUser(request: DeleteUserRequest): Promise<Empty> {
     const data = DeleteUserRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteUser", data);
-    return promise.then((data) => Empty.decode(new _m0.Reader(data)));
+    return promise.then((data) => Empty.decode(_m0.Reader.create(data)));
   }
 
   GetUsersIn(request: GetUsersInRequest): Promise<GetUsersInResponse> {
     const data = GetUsersInRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetUsersIn", data);
-    return promise.then((data) => GetUsersInResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetUsersInResponse.decode(_m0.Reader.create(data)));
   }
 
   GetUserItemsIn(request: GetUserItemsInRequest): Promise<GetUserItemsInResponse> {
     const data = GetUserItemsInRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetUserItemsIn", data);
-    return promise.then((data) => GetUserItemsInResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => GetUserItemsInResponse.decode(_m0.Reader.create(data)));
   }
 
   SearchUser(request: SearchUserRequest): Promise<SearchUserResponse> {
     const data = SearchUserRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "SearchUser", data);
-    return promise.then((data) => SearchUserResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => SearchUserResponse.decode(_m0.Reader.create(data)));
   }
 
   FollowUser(request: FollowUserRequest): Promise<Empty> {
     const data = FollowUserRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "FollowUser", data);
-    return promise.then((data) => Empty.decode(new _m0.Reader(data)));
+    return promise.then((data) => Empty.decode(_m0.Reader.create(data)));
   }
 
   UnfollowUser(request: UnfollowUserRequest): Promise<Empty> {
     const data = UnfollowUserRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UnfollowUser", data);
-    return promise.then((data) => Empty.decode(new _m0.Reader(data)));
+    return promise.then((data) => Empty.decode(_m0.Reader.create(data)));
   }
 
   BlockUser(request: BlockUserRequest): Promise<BlockUserResponse> {
     const data = BlockUserRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "BlockUser", data);
-    return promise.then((data) => BlockUserResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => BlockUserResponse.decode(_m0.Reader.create(data)));
   }
 
   UnblockUser(request: UnblockUserRequest): Promise<UnblockUserResponse> {
     const data = UnblockUserRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UnblockUser", data);
-    return promise.then((data) => UnblockUserResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => UnblockUserResponse.decode(_m0.Reader.create(data)));
   }
 
   ListFollowers(request: ListFollowersRequest): Promise<ListFollowersResponse> {
     const data = ListFollowersRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListFollowers", data);
-    return promise.then((data) => ListFollowersResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ListFollowersResponse.decode(_m0.Reader.create(data)));
   }
 
   ListFollowing(request: ListFollowingRequest): Promise<ListFollowingResponse> {
     const data = ListFollowingRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListFollowing", data);
-    return promise.then((data) => ListFollowingResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ListFollowingResponse.decode(_m0.Reader.create(data)));
   }
 
   CheckUsername(request: CheckUsernameRequest): Promise<CheckUsernameResponse> {
     const data = CheckUsernameRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CheckUsername", data);
-    return promise.then((data) => CheckUsernameResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => CheckUsernameResponse.decode(_m0.Reader.create(data)));
   }
 
   ListSuggestions(request: ListSuggestionsRequest): Promise<ListSuggestionsResponse> {
     const data = ListSuggestionsRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListSuggestions", data);
-    return promise.then((data) => ListSuggestionsResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ListSuggestionsResponse.decode(_m0.Reader.create(data)));
   }
 }
 

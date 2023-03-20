@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/go-redis/redis/v9 v9.0.0-rc.1
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230314214829-5085074c9a90
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230317143537-3890742850f7
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221218220856-ccee71af4142
@@ -52,6 +52,6 @@ require (
 	google.golang.org/protobuf v1.28.1 // indirect
 )
 
-replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
+//replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
 
 //replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils

@@ -1,5 +1,4 @@
 /* eslint-disable */
-import * as Long from "long";
 import * as _m0 from "protobufjs/minimal";
 import { Post } from "../../type/post/post";
 import { UserItem } from "../../type/user/user";
@@ -15,6 +14,7 @@ export interface PostEvent {
 export interface CreatePost {
   post: Post | undefined;
   user: UserItem | undefined;
+  sendNotificationToFriends: boolean;
 }
 
 export interface LikePost {
@@ -45,25 +45,38 @@ export const PostEvent = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): PostEvent {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBasePostEvent();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.create = CreatePost.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.like = LikePost.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.delete = DeletePost.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -102,7 +115,7 @@ export const PostEvent = {
 };
 
 function createBaseCreatePost(): CreatePost {
-  return { post: undefined, user: undefined };
+  return { post: undefined, user: undefined, sendNotificationToFriends: false };
 }
 
 export const CreatePost = {
@@ -113,26 +126,45 @@ export const CreatePost = {
     if (message.user !== undefined) {
       UserItem.encode(message.user, writer.uint32(18).fork()).ldelim();
     }
+    if (message.sendNotificationToFriends === true) {
+      writer.uint32(24).bool(message.sendNotificationToFriends);
+    }
     return writer;
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreatePost {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreatePost();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.post = Post.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.user = UserItem.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
+        case 3:
+          if (tag != 24) {
+            break;
+          }
+
+          message.sendNotificationToFriends = reader.bool();
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -141,6 +173,9 @@ export const CreatePost = {
     return {
       post: isSet(object.post) ? Post.fromJSON(object.post) : undefined,
       user: isSet(object.user) ? UserItem.fromJSON(object.user) : undefined,
+      sendNotificationToFriends: isSet(object.sendNotificationToFriends)
+        ? Boolean(object.sendNotificationToFriends)
+        : false,
     };
   },
 
@@ -148,6 +183,8 @@ export const CreatePost = {
     const obj: any = {};
     message.post !== undefined && (obj.post = message.post ? Post.toJSON(message.post) : undefined);
     message.user !== undefined && (obj.user = message.user ? UserItem.toJSON(message.user) : undefined);
+    message.sendNotificationToFriends !== undefined &&
+      (obj.sendNotificationToFriends = message.sendNotificationToFriends);
     return obj;
   },
 
@@ -159,6 +196,7 @@ export const CreatePost = {
     const message = createBaseCreatePost();
     message.post = (object.post !== undefined && object.post !== null) ? Post.fromPartial(object.post) : undefined;
     message.user = (object.user !== undefined && object.user !== null) ? UserItem.fromPartial(object.user) : undefined;
+    message.sendNotificationToFriends = object.sendNotificationToFriends ?? false;
     return message;
   },
 };
@@ -179,22 +217,31 @@ export const LikePost = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): LikePost {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseLikePost();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.postId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -238,19 +285,24 @@ export const DeletePost = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeletePost {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeletePost();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.sender = UserItem.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -278,25 +330,6 @@ export const DeletePost = {
   },
 };
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
-var tsProtoGlobalThis: any = (() => {
-  if (typeof globalThis !== "undefined") {
-    return globalThis;
-  }
-  if (typeof self !== "undefined") {
-    return self;
-  }
-  if (typeof window !== "undefined") {
-    return window;
-  }
-  if (typeof global !== "undefined") {
-    return global;
-  }
-  throw "Unable to locate global object";
-})();
-
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;
 
 export type DeepPartial<T> = T extends Builtin ? T
@@ -307,13 +340,6 @@ export type DeepPartial<T> = T extends Builtin ? T
 type KeysOfUnion<T> = T extends T ? keyof T : never;
 export type Exact<P, I extends P> = P extends Builtin ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & { [K in Exclude<keyof I, KeysOfUnion<P>>]: never };
-
-// If you get a compile-error about 'Constructor<Long> and ... have no overlap',
-// add '--ts_proto_opt=esModuleInterop=true' as a flag when calling 'protoc'.
-if (_m0.util.Long !== Long) {
-  _m0.util.Long = Long as any;
-  _m0.configure();
-}
 
 function isSet(value: any): boolean {
   return value !== null && value !== undefined;

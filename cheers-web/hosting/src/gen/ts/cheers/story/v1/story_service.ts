@@ -111,19 +111,24 @@ export const ListUserStoryRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListUserStoryRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListUserStoryRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -165,22 +170,31 @@ export const ListUserStoryResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListUserStoryResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListUserStoryResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.user = User.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.stories.push(StoryResponse.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -228,19 +242,24 @@ export const CreateStoryRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreateStoryRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateStoryRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.story = Story.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -279,19 +298,24 @@ export const GetStoryRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): GetStoryRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseGetStoryRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -330,19 +354,24 @@ export const UpdateStoryRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UpdateStoryRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUpdateStoryRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.story = Story.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -381,19 +410,24 @@ export const DeleteStoryRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeleteStoryRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteStoryRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -438,25 +472,38 @@ export const FeedStoryRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): FeedStoryRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseFeedStoryRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.parent = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 16) {
+            break;
+          }
+
           message.pageSize = reader.int32();
-          break;
+          continue;
         case 3:
+          if (tag != 24) {
+            break;
+          }
+
           message.page = reader.int32();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -506,22 +553,31 @@ export const FeedStoryResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): FeedStoryResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseFeedStoryResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.items.push(UserWithStories.decode(reader, reader.uint32()));
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.nextPageToken = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -569,19 +625,24 @@ export const ViewStoryRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ViewStoryRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseViewStoryRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -620,19 +681,24 @@ export const ViewStoryResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ViewStoryResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseViewStoryResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.success = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -671,19 +737,24 @@ export const LikeStoryRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): LikeStoryRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseLikeStoryRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -722,19 +793,24 @@ export const LikeStoryResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): LikeStoryResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseLikeStoryResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.success = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -773,19 +849,24 @@ export const UnlikeStoryRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UnlikeStoryRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUnlikeStoryRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -824,19 +905,24 @@ export const UnlikeStoryResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UnlikeStoryResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUnlikeStoryResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.success = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -875,19 +961,24 @@ export const SaveStoryRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): SaveStoryRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSaveStoryRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -926,19 +1017,24 @@ export const SaveStoryResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): SaveStoryResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseSaveStoryResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.success = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -977,19 +1073,24 @@ export const UnsaveStoryRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UnsaveStoryRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUnsaveStoryRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1028,19 +1129,24 @@ export const UnsaveStoryResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UnsaveStoryResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUnsaveStoryResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 8) {
+            break;
+          }
+
           message.success = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1082,22 +1188,31 @@ export const ListStoryResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListStoryResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListStoryResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.user = User.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.items.push(UserWithStories.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1148,22 +1263,31 @@ export const UserWithStories = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): UserWithStories {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseUserWithStories();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.user = User.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.stories.push(StoryResponse.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1217,25 +1341,38 @@ export const StoryResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): StoryResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseStoryResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.story = Story.decode(reader, reader.uint32());
-          break;
+          continue;
         case 5:
+          if (tag != 40) {
+            break;
+          }
+
           message.hasLiked = reader.bool();
-          break;
+          continue;
         case 6:
+          if (tag != 48) {
+            break;
+          }
+
           message.hasViewed = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -1305,67 +1442,67 @@ export class StoryServiceClientImpl implements StoryService {
   CreateStory(request: CreateStoryRequest): Promise<StoryResponse> {
     const data = CreateStoryRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateStory", data);
-    return promise.then((data) => StoryResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => StoryResponse.decode(_m0.Reader.create(data)));
   }
 
   GetStory(request: GetStoryRequest): Promise<StoryResponse> {
     const data = GetStoryRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "GetStory", data);
-    return promise.then((data) => StoryResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => StoryResponse.decode(_m0.Reader.create(data)));
   }
 
   UpdateStory(request: UpdateStoryRequest): Promise<StoryResponse> {
     const data = UpdateStoryRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UpdateStory", data);
-    return promise.then((data) => StoryResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => StoryResponse.decode(_m0.Reader.create(data)));
   }
 
   DeleteStory(request: DeleteStoryRequest): Promise<Empty> {
     const data = DeleteStoryRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteStory", data);
-    return promise.then((data) => Empty.decode(new _m0.Reader(data)));
+    return promise.then((data) => Empty.decode(_m0.Reader.create(data)));
   }
 
   FeedStory(request: FeedStoryRequest): Promise<FeedStoryResponse> {
     const data = FeedStoryRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "FeedStory", data);
-    return promise.then((data) => FeedStoryResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => FeedStoryResponse.decode(_m0.Reader.create(data)));
   }
 
   ListUserStory(request: ListUserStoryRequest): Promise<ListUserStoryResponse> {
     const data = ListUserStoryRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListUserStory", data);
-    return promise.then((data) => ListUserStoryResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ListUserStoryResponse.decode(_m0.Reader.create(data)));
   }
 
   ViewStory(request: ViewStoryRequest): Promise<ViewStoryResponse> {
     const data = ViewStoryRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ViewStory", data);
-    return promise.then((data) => ViewStoryResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ViewStoryResponse.decode(_m0.Reader.create(data)));
   }
 
   LikeStory(request: LikeStoryRequest): Promise<LikeStoryResponse> {
     const data = LikeStoryRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "LikeStory", data);
-    return promise.then((data) => LikeStoryResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => LikeStoryResponse.decode(_m0.Reader.create(data)));
   }
 
   UnlikeStory(request: UnlikeStoryRequest): Promise<UnlikeStoryResponse> {
     const data = UnlikeStoryRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UnlikeStory", data);
-    return promise.then((data) => UnlikeStoryResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => UnlikeStoryResponse.decode(_m0.Reader.create(data)));
   }
 
   SaveStory(request: SaveStoryRequest): Promise<SaveStoryResponse> {
     const data = SaveStoryRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "SaveStory", data);
-    return promise.then((data) => SaveStoryResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => SaveStoryResponse.decode(_m0.Reader.create(data)));
   }
 
   UnsaveStory(request: UnsaveStoryRequest): Promise<UnsaveStoryResponse> {
     const data = UnsaveStoryRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "UnsaveStory", data);
-    return promise.then((data) => UnsaveStoryResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => UnsaveStoryResponse.decode(_m0.Reader.create(data)));
   }
 }
 

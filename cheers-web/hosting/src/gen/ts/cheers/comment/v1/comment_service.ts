@@ -83,19 +83,24 @@ export const CreateLikeCommentRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreateLikeCommentRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateLikeCommentRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.commentId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -131,16 +136,17 @@ export const CreateLikeCommentResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreateLikeCommentResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateLikeCommentResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -177,19 +183,24 @@ export const DeleteLikeCommentRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeleteLikeCommentRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteLikeCommentRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.commentId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -225,16 +236,17 @@ export const DeleteLikeCommentResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeleteLikeCommentResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteLikeCommentResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -274,22 +286,31 @@ export const DeleteCommentRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeleteCommentRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteCommentRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.postId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.commentId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -330,16 +351,17 @@ export const DeleteCommentResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): DeleteCommentResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseDeleteCommentResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        default:
-          reader.skipType(tag & 7);
-          break;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -376,19 +398,24 @@ export const ListCommentRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListCommentRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListCommentRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.postId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -427,19 +454,24 @@ export const ListRepliesRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListRepliesRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListRepliesRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.commentId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -478,19 +510,24 @@ export const ListRepliesResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListRepliesResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListRepliesResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.items.push(CommentItem.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -533,19 +570,24 @@ export const ListCommentResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): ListCommentResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseListCommentResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.items.push(CommentItem.decode(reader, reader.uint32()));
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -600,31 +642,52 @@ export const CommentItem = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CommentItem {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCommentItem();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.comment = Comment.decode(reader, reader.uint32());
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.userItem = UserItem.decode(reader, reader.uint32());
-          break;
+          continue;
         case 3:
+          if (tag != 24) {
+            break;
+          }
+
           message.replyCount = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 4:
+          if (tag != 32) {
+            break;
+          }
+
           message.likeCount = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 5:
+          if (tag != 40) {
+            break;
+          }
+
           message.hasLiked = reader.bool();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -696,34 +759,59 @@ export const Comment = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Comment {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseComment();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.id = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.text = reader.string();
-          break;
+          continue;
         case 5:
+          if (tag != 40) {
+            break;
+          }
+
           message.createTime = longToNumber(reader.int64() as Long);
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.userId = reader.string();
-          break;
+          continue;
         case 4:
+          if (tag != 34) {
+            break;
+          }
+
           message.postId = reader.string();
-          break;
+          continue;
         case 6:
+          if (tag != 50) {
+            break;
+          }
+
           message.replyToCommentId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -785,25 +873,38 @@ export const CreateCommentRequest = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreateCommentRequest {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateCommentRequest();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.postId = reader.string();
-          break;
+          continue;
         case 2:
+          if (tag != 18) {
+            break;
+          }
+
           message.comment = reader.string();
-          break;
+          continue;
         case 3:
+          if (tag != 26) {
+            break;
+          }
+
           message.replyToCommentId = reader.string();
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -850,19 +951,24 @@ export const CreateCommentResponse = {
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): CreateCommentResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    const reader = input instanceof _m0.Reader ? input : _m0.Reader.create(input);
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = createBaseCreateCommentResponse();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
+          if (tag != 10) {
+            break;
+          }
+
           message.item = CommentItem.decode(reader, reader.uint32());
-          break;
-        default:
-          reader.skipType(tag & 7);
-          break;
+          continue;
       }
+      if ((tag & 7) == 4 || tag == 0) {
+        break;
+      }
+      reader.skipType(tag & 7);
     }
     return message;
   },
@@ -915,37 +1021,37 @@ export class CommentServiceClientImpl implements CommentService {
   CreateComment(request: CreateCommentRequest): Promise<CreateCommentResponse> {
     const data = CreateCommentRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateComment", data);
-    return promise.then((data) => CreateCommentResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => CreateCommentResponse.decode(_m0.Reader.create(data)));
   }
 
   ListComment(request: ListCommentRequest): Promise<ListCommentResponse> {
     const data = ListCommentRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListComment", data);
-    return promise.then((data) => ListCommentResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ListCommentResponse.decode(_m0.Reader.create(data)));
   }
 
   ListReplies(request: ListRepliesRequest): Promise<ListRepliesResponse> {
     const data = ListRepliesRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "ListReplies", data);
-    return promise.then((data) => ListRepliesResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => ListRepliesResponse.decode(_m0.Reader.create(data)));
   }
 
   DeleteComment(request: DeleteCommentRequest): Promise<DeleteCommentResponse> {
     const data = DeleteCommentRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteComment", data);
-    return promise.then((data) => DeleteCommentResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => DeleteCommentResponse.decode(_m0.Reader.create(data)));
   }
 
   CreateLikeComment(request: CreateLikeCommentRequest): Promise<CreateLikeCommentResponse> {
     const data = CreateLikeCommentRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "CreateLikeComment", data);
-    return promise.then((data) => CreateLikeCommentResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => CreateLikeCommentResponse.decode(_m0.Reader.create(data)));
   }
 
   DeleteLikeComment(request: DeleteLikeCommentRequest): Promise<DeleteLikeCommentResponse> {
     const data = DeleteLikeCommentRequest.encode(request).finish();
     const promise = this.rpc.request(this.service, "DeleteLikeComment", data);
-    return promise.then((data) => DeleteLikeCommentResponse.decode(new _m0.Reader(data)));
+    return promise.then((data) => DeleteLikeCommentResponse.decode(_m0.Reader.create(data)));
   }
 }
 
