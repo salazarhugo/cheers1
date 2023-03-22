@@ -43,15 +43,6 @@ func main() {
 		log.Infof("Defaulting to port %s", port)
 	}
 
-	err := os.Setenv("DB_ENDPOINT", "redis-19389.c228.us-central1-1.gce.cloud.redislabs.com:19389")
-	if err != nil {
-		return
-	}
-	err = os.Setenv("DB_PASSWORD", "dTKDFKHvXp2owoeLiaRy57nZwJKodH58")
-	if err != nil {
-		return
-	}
-
 	httpMux := http.NewServeMux()
 
 	grpcS := grpc.NewServer(

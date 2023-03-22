@@ -1,12 +1,12 @@
 package events
 
 import (
+	"github.com/labstack/gommon/log"
 	post "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"github.com/salazarhugo/cheers1/services/notification-service/internal/notifications"
 	"github.com/salazarhugo/cheers1/services/notification-service/internal/repository"
 	"github.com/salazarhugo/cheers1/services/notification-service/internal/service"
-	"log"
 	"net/http"
 )
 
@@ -17,7 +17,7 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Println(event)
+	log.Info(event)
 
 	repo := repository.NewRepository()
 
@@ -25,7 +25,7 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 	case *post.PostEvent_Like:
 		user, err := service.GetUser(event.Like.UserId)
 		if err != nil {
-			log.Println(err)
+			log.Error(err)
 			return
 		}
 		post, err := service.GetPost(event.Like.GetPostId())
@@ -38,26 +38,30 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 		data := notifications.LikePostNotification(user.Username, user.Picture)
 		err = repo.SendNotification(map[string][]string{postCreatorId: tokens}, data)
 	case *post.PostEvent_Create:
+		if event.Create.SendNotificationToFriends == false {
+			log.Info("skipping: send notification to friends is false.")
+			return
+		}
 		post := event.Create.Post
 		creatorId := post.CreatorId
 		user, err := service.GetUser(event.Create.GetPost().GetCreatorId())
 		if err != nil {
-			log.Println(err)
+			log.Error(err)
 			return
 		}
 
 		friends, err := repository.ListFriend(creatorId)
 		if err != nil {
-			log.Println(err)
+			log.Error(err)
 			return
 		}
 
 		usersWithTokens, err := repo.GetUsersTokens(friends)
 		if err != nil {
-			log.Println(err)
+			log.Error(err)
 			return
 		}
-		log.Println(usersWithTokens)
+		log.Debug(usersWithTokens)
 
 		data := notifications.CreatePostNotification(
 			user.Name,
@@ -75,7 +79,7 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err != nil {
-		log.Println(err)
+		log.Error(err)
 		return
 	}
 }

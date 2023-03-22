@@ -25,7 +25,7 @@ func (s *Server) CreatePost(
 		return nil, status.Error(codes.InvalidArgument, "empty caption and photos")
 	}
 
-	postID, err := s.postRepository.CreatePost(userID, partyReq)
+	postID, err := s.postRepository.CreatePost(userID, request)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to create post")
 	}

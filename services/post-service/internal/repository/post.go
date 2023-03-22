@@ -12,7 +12,7 @@ import (
 )
 
 type PostRepository interface {
-	CreatePost(userID string, post *postpb.Post) (string, error)
+	CreatePost(userID string, request *pb.CreatePostRequest) (string, error)
 	GetPost(postID string) (*postpb.Post, error)
 	GetPostItem(userID string, postID string) (*pb.PostResponse, error)
 	UpdatePostLastComment(user *user.UserItem, comment *comment.Comment) error
