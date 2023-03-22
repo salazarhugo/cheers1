@@ -15,12 +15,14 @@ type Repository interface {
 		name string,
 		icon string,
 		category string,
-	) error
+	) (string, error)
+
+	GetDrink(
+		drinkID string,
+	) (*drink.Drink, error)
 
 	UpdateDrink(
 		userId string,
-		latitude float64,
-		longitude float64,
 	) error
 
 	ListDrink(
@@ -31,6 +33,21 @@ type Repository interface {
 type repository struct {
 	redis     *redis.Client
 	firestore *firestore.Client
+}
+
+func (r repository) GetDrink(drinkID string) (*drink.Drink, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (r repository) UpdateDrink(userId string) error {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (r repository) ListDrink(userId string) ([]*drink.Drink, error) {
+	//TODO implement me
+	panic("implement me")
 }
 
 func NewRepository() Repository {

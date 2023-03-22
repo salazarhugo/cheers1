@@ -9,10 +9,10 @@ import (
 	"log"
 )
 
-func (s *Server) ListFriendDrink(
+func (s *Server) ListDrink(
 	ctx context.Context,
-	request *drink.ListFriendDrinkRequest,
-) (*drink.ListFriendDrinkResponse, error) {
+	request *drink.ListDrinkRequest,
+) (*drink.ListDrinkResponse, error) {
 	userID, err := utils.GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to retrieve userID")
@@ -27,7 +27,7 @@ func (s *Server) ListFriendDrink(
 		return nil, err
 	}
 
-	return &drink.ListFriendDrinkResponse{
+	return &drink.ListDrinkResponse{
 		Items: items,
 	}, nil
 }

@@ -2,78 +2,16 @@ package utils
 
 import (
 	"context"
-	"encoding/json"
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/auth"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
-	"github.com/sirupsen/logrus"
 	"google.golang.org/api/option"
 	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
-	"google.golang.org/protobuf/encoding/protojson"
-	"google.golang.org/protobuf/proto"
-	"net/http"
 	"os"
-	"strings"
-	"time"
 )
-
-func GetUserId(ctx context.Context) (string, error) {
-	md, ok := metadata.FromIncomingContext(ctx)
-	if !ok {
-		return "", status.Error(codes.InvalidArgument, "failed retrieving metadata")
-	}
-
-	if len(md["user-id"]) < 1 {
-		return "", status.Error(codes.InvalidArgument, "missing user-id")
-	}
-
-	return md["user-id"][0], nil
-}
-
-func MapToProto(out proto.Message, data interface{}) error {
-	bytes, err := json.Marshal(data)
-	if err != nil {
-		return err
-	}
-	err = (protojson.UnmarshalOptions{DiscardUnknown: true}).Unmarshal(bytes, out)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func ProtoToMap(m proto.Message) (map[string]interface{}, error) {
-	bytes, err := protojson.Marshal(m)
-	if err != nil {
-		return nil, err
-	}
-	var res = make(map[string]interface{}, 0)
-	err = json.Unmarshal(bytes, &res)
-	if err != nil {
-		return nil, err
-	}
-	return res, nil
-}
-
-func InitLogrus() *logrus.Logger {
-	log := logrus.New()
-	log.Level = logrus.DebugLevel
-	log.Formatter = &logrus.JSONFormatter{
-		FieldMap: logrus.FieldMap{
-			logrus.FieldKeyTime:  "timestamp",
-			logrus.FieldKeyLevel: "severity",
-			logrus.FieldKeyMsg:   "message",
-		},
-		TimestampFormat: time.RFC3339Nano,
-	}
-	log.Out = os.Stdout
-
-	return log
-}
 
 func GetCypher(name string) (*string, error) {
 	bytes, err := os.ReadFile(name)
@@ -133,16 +71,6 @@ func InitializeAppDefault() *firebase.App {
 	}
 
 	return app
-}
-
-func NewHTTPandGRPCMux(httpHand http.Handler, grpcHandler http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.ProtoMajor == 2 && strings.HasPrefix(r.Header.Get("content-type"), "application/grpc") {
-			grpcHandler.ServeHTTP(w, r)
-			return
-		}
-		httpHand.ServeHTTP(w, r)
-	})
 }
 
 type Properties struct {

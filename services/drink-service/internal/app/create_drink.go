@@ -6,7 +6,6 @@ import (
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"log"
 )
 
 func (s *Server) CreateDrink(
@@ -18,16 +17,29 @@ func (s *Server) CreateDrink(
 		return nil, status.Error(codes.Internal, "failed to retrieve userID")
 	}
 
-	err = s.repository.CreateDrink(
+	if request.Name == "" {
+		return nil, status.Error(codes.InvalidArgument, "empty field: name")
+	}
+
+	drinkID, err := s.repository.CreateDrink(
 		userID,
 		request.Name,
 		request.Icon,
 		request.Category,
 	)
 	if err != nil {
-		log.Println(err)
+		s.logger.Error(err)
 		return nil, err
 	}
 
-	return &drink.CreateDrinkResponse{}, nil
+	res, err := s.repository.GetDrink(drinkID)
+
+	if err != nil {
+		s.logger.Error(err)
+		return nil, err
+	}
+
+	return &drink.CreateDrinkResponse{
+		Drink: res,
+	}, nil
 }

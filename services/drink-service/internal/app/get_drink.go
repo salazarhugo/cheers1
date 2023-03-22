@@ -6,26 +6,27 @@ import (
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"log"
 )
 
-func (s *Server) UpdateDrink(
+func (s *Server) GetDrink(
 	ctx context.Context,
-	request *drink.UpdateDrinkRequest,
-) (*drink.UpdateDrinkResponse, error) {
-	userID, err := utils.GetUserId(ctx)
+	request *drink.GetDrinkRequest,
+) (*drink.GetDrinkResponse, error) {
+	_, err := utils.GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to retrieve userID")
 	}
 
-	err = s.repository.UpdateDrink(
-		userID,
+	res, err := s.repository.GetDrink(
+		request.GetDrinkId(),
 	)
 
 	if err != nil {
-		log.Println(err)
+		s.logger.Error(err)
 		return nil, err
 	}
 
-	return &drink.UpdateDrinkResponse{}, nil
+	return &drink.GetDrinkResponse{
+		Drink: res,
+	}, nil
 }
