@@ -94,7 +94,7 @@ func main() {
 		grpc.WithUnaryInterceptor(clientInterceptor),
 	}
 
-	if !*isProd {
+	if *isProd {
 		log.Println("Running in production environment")
 		options = append(options, grpc.WithTransportCredentials(transportCredentials))
 	} else {
@@ -115,7 +115,7 @@ func main() {
 	err = account.RegisterAccountServiceHandlerFromEndpoint(ctx, mux, "account-service-r3a2dr4u4a-nw.a.run.app:443", options)
 	err = payment.RegisterPaymentServiceHandlerFromEndpoint(ctx, mux, "payment-service-r3a2dr4u4a-nw.a.run.app:443", options)
 	err = ticket.RegisterTicketServiceHandlerFromEndpoint(ctx, mux, "ticket-service-r3a2dr4u4a-nw.a.run.app:443", options)
-	err = location.RegisterLocationServiceHandlerFromEndpoint(ctx, mux, "localhost:8081", options)
+	err = location.RegisterLocationServiceHandlerFromEndpoint(ctx, mux, "location-service-r3a2dr4u4a-nw.a.run.app:443", options)
 	err = drink.RegisterDrinkServiceHandlerFromEndpoint(ctx, mux, "drink-service-r3a2dr4u4a-nw.a.run.app:443", options)
 
 	// Creating a normal HTTP server

@@ -14,6 +14,12 @@ service LocationService {
       body: "*"
     };
   }
+  rpc UpdateGhostMode (UpdateGhostModeRequest) returns (UpdateGhostModeResponse) {
+    option (google.api.http) = {
+      patch: "/v1/locations/ghost"
+      body: "*"
+    };
+  }
   rpc ListFriendLocation (ListFriendLocationRequest) returns (ListFriendLocationResponse) {
     option (google.api.http) = {
       get: "/v1/locations/friends"
@@ -38,6 +44,13 @@ message Location {
   bool verified = 7;
   string location_name = 8;
   int64 last_updated = 9;
+}
+
+message UpdateGhostModeRequest {
+  bool ghost_mode = 1;
+}
+
+message UpdateGhostModeResponse {
 }
 
 message UpdateLocationRequest {

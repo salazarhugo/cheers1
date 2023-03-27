@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"fmt"
 	"github.com/go-redis/redis/v9"
 	"strconv"
 	"time"
@@ -12,11 +11,8 @@ const (
 	keyUser          = "user"
 	keyUserLocations = "locations"
 	keyLastUpdated   = "updated"
+	keyGhostMode     = "ghostMode"
 )
-
-func getKeyUserLocations(userId string) string {
-	return fmt.Sprintf("%s:%s", userId, userId)
-}
 
 func (r repository) UpdateLocation(
 	userId string,

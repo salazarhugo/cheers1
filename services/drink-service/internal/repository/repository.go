@@ -25,9 +25,7 @@ type Repository interface {
 		userId string,
 	) error
 
-	ListDrink(
-		userId string,
-	) ([]*drink.Drink, error)
+	ListDrink() ([]*drink.Drink, error)
 }
 
 type repository struct {
@@ -35,17 +33,7 @@ type repository struct {
 	firestore *firestore.Client
 }
 
-func (r repository) GetDrink(drinkID string) (*drink.Drink, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
 func (r repository) UpdateDrink(userId string) error {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (r repository) ListDrink(userId string) ([]*drink.Drink, error) {
 	//TODO implement me
 	panic("implement me")
 }

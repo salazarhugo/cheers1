@@ -25,4 +25,5 @@ protoc \
   cheers/notification/v1/notification_service.proto \
   cheers/friendship/v1/friendship_service.proto \
   cheers/comment/v1/comment_service.proto \
-  cheers/location/v1/location_service.proto
+  cheers/location/v1/location_service.proto \
+  cheers/drink/v1/drink_service.proto

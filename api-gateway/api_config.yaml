@@ -18,6 +18,7 @@ apis:
   - name: cheers.comment.v1.CommentService
   - name: cheers.friendship.v1.FriendshipService
   - name: cheers.location.v1.LocationService
+  - name: cheers.drink.v1.DrinkService
 usage:
   rules:
     # All methods can be called without an API Key.
@@ -82,3 +83,7 @@ backend:
     # Location Service methods
     - selector: cheers.location.v1.*
       address: grpcs://location-service-r3a2dr4u4a-nw.a.run.app
+
+    # Drink Service methods
+    - selector: cheers.drink.v1.*
+      address: grpcs://drink-service-r3a2dr4u4a-nw.a.run.app

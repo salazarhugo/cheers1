@@ -13,14 +13,12 @@ func (s *Server) ListDrink(
 	ctx context.Context,
 	request *drink.ListDrinkRequest,
 ) (*drink.ListDrinkResponse, error) {
-	userID, err := utils.GetUserId(ctx)
+	_, err := utils.GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to retrieve userID")
 	}
 
-	items, err := s.repository.ListDrink(
-		userID,
-	)
+	items, err := s.repository.ListDrink()
 
 	if err != nil {
 		log.Println(err)

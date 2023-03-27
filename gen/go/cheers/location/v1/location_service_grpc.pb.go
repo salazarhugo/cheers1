@@ -23,6 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LocationServiceClient interface {
 	UpdateLocation(ctx context.Context, in *UpdateLocationRequest, opts ...grpc.CallOption) (*UpdateLocationResponse, error)
+	UpdateGhostMode(ctx context.Context, in *UpdateGhostModeRequest, opts ...grpc.CallOption) (*UpdateGhostModeResponse, error)
 	ListFriendLocation(ctx context.Context, in *ListFriendLocationRequest, opts ...grpc.CallOption) (*ListFriendLocationResponse, error)
 }
 
@@ -43,6 +44,15 @@ func (c *locationServiceClient) UpdateLocation(ctx context.Context, in *UpdateLo
 	return out, nil
 }
 
+func (c *locationServiceClient) UpdateGhostMode(ctx context.Context, in *UpdateGhostModeRequest, opts ...grpc.CallOption) (*UpdateGhostModeResponse, error) {
+	out := new(UpdateGhostModeResponse)
+	err := c.cc.Invoke(ctx, "/cheers.location.v1.LocationService/UpdateGhostMode", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *locationServiceClient) ListFriendLocation(ctx context.Context, in *ListFriendLocationRequest, opts ...grpc.CallOption) (*ListFriendLocationResponse, error) {
 	out := new(ListFriendLocationResponse)
 	err := c.cc.Invoke(ctx, "/cheers.location.v1.LocationService/ListFriendLocation", in, out, opts...)
@@ -57,6 +67,7 @@ func (c *locationServiceClient) ListFriendLocation(ctx context.Context, in *List
 // for forward compatibility
 type LocationServiceServer interface {
 	UpdateLocation(context.Context, *UpdateLocationRequest) (*UpdateLocationResponse, error)
+	UpdateGhostMode(context.Context, *UpdateGhostModeRequest) (*UpdateGhostModeResponse, error)
 	ListFriendLocation(context.Context, *ListFriendLocationRequest) (*ListFriendLocationResponse, error)
 	mustEmbedUnimplementedLocationServiceServer()
 }
@@ -67,6 +78,9 @@ type UnimplementedLocationServiceServer struct {
 
 func (UnimplementedLocationServiceServer) UpdateLocation(context.Context, *UpdateLocationRequest) (*UpdateLocationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateLocation not implemented")
+}
+func (UnimplementedLocationServiceServer) UpdateGhostMode(context.Context, *UpdateGhostModeRequest) (*UpdateGhostModeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateGhostMode not implemented")
 }
 func (UnimplementedLocationServiceServer) ListFriendLocation(context.Context, *ListFriendLocationRequest) (*ListFriendLocationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListFriendLocation not implemented")
@@ -102,6 +116,24 @@ func _LocationService_UpdateLocation_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LocationService_UpdateGhostMode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateGhostModeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LocationServiceServer).UpdateGhostMode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.location.v1.LocationService/UpdateGhostMode",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LocationServiceServer).UpdateGhostMode(ctx, req.(*UpdateGhostModeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _LocationService_ListFriendLocation_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListFriendLocationRequest)
 	if err := dec(in); err != nil {
@@ -130,6 +162,10 @@ var LocationService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateLocation",
 			Handler:    _LocationService_UpdateLocation_Handler,
+		},
+		{
+			MethodName: "UpdateGhostMode",
+			Handler:    _LocationService_UpdateGhostMode_Handler,
 		},
 		{
 			MethodName: "ListFriendLocation",

@@ -13,6 +13,15 @@ type Repository interface {
 		longitude float64,
 	) error
 
+	UpdateGhostMode(
+		userId string,
+		ghostMode bool,
+	) error
+
+	GetGhostMode(
+		userId string,
+	) (bool, error)
+
 	ListFriendLocation(
 		userId string,
 	) ([]*location.Location, error)

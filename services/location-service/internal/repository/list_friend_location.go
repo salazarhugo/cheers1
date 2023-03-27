@@ -42,6 +42,15 @@ func (r repository) ListFriendLocation(
 		}
 		friend := friends[i]
 
+		ghostMode, err := r.GetGhostMode(friend.Id)
+		if err != nil {
+			log.Println(err)
+		}
+
+		if ghostMode == true {
+			continue
+		}
+
 		// Get the last updated timestamp
 		str, err := r.redis.HGet(ctx, keyLastUpdated,
 			friend.Id,
