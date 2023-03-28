@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"context"
+	"fmt"
 	"github.com/go-redis/redis/v9"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/location/v1"
 	"os"
@@ -37,6 +39,8 @@ func NewRepository() Repository {
 		Password: os.Getenv("DB_PASSWORD"),
 		DB:       0,
 	})
+	pong, err := rdb.Ping(context.Background()).Result()
+	fmt.Println(pong, err)
 
 	return &repository{
 		redis: rdb,
