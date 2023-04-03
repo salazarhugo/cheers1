@@ -33,6 +33,7 @@ message Activity {
     MENTION_POST_COMMENT = 4;
     FRIEND_ADDED = 5;
     COMMENT_LIKED = 6;
+    FOLLOW = 7;
   }
   ActivityType type = 1;
   string text = 2;

@@ -13,6 +13,7 @@ import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/drink/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/location/v1"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/note/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/notification/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/order/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
@@ -94,7 +95,7 @@ func main() {
 		grpc.WithUnaryInterceptor(clientInterceptor),
 	}
 
-	if *isProd {
+	if !*isProd {
 		log.Println("Running in production environment")
 		options = append(options, grpc.WithTransportCredentials(transportCredentials))
 	} else {
@@ -117,6 +118,7 @@ func main() {
 	err = ticket.RegisterTicketServiceHandlerFromEndpoint(ctx, mux, "ticket-service-r3a2dr4u4a-nw.a.run.app:443", options)
 	err = location.RegisterLocationServiceHandlerFromEndpoint(ctx, mux, "location-service-r3a2dr4u4a-nw.a.run.app:443", options)
 	err = drink.RegisterDrinkServiceHandlerFromEndpoint(ctx, mux, "drink-service-r3a2dr4u4a-nw.a.run.app:443", options)
+	err = note.RegisterNoteServiceHandlerFromEndpoint(ctx, mux, "note-service-r3a2dr4u4a-nw.a.run.app:443", options)
 
 	// Creating a normal HTTP server
 	server := http.Server{

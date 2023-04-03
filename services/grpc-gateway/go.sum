@@ -235,6 +235,8 @@ github.com/rogpeppe/fastuuid v1.2.0/go.mod h1:jVj6XXZzXRy/MSR5jhDC/2q6DgLz+nrA6L
 github.com/rogpeppe/go-internal v1.3.0/go.mod h1:M8bDsm7K2OlrFYOpmOWEs/qY81heoFRclV5y23lUDJ4=
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20230322151652-b1e627f408fc h1:hgsNBsdONgJrYwtvKTeApGFwf1aSszXDlOJdbum88OQ=
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20230322151652-b1e627f408fc/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
+github.com/salazarhugo/cheers1/gen/go v0.0.0-20230328021114-ee1af08f7fa0 h1:9DCqf4czu03Livn3g4eYtlO20KnJRJ2tOpkgyeXSx5Y=
+github.com/salazarhugo/cheers1/gen/go v0.0.0-20230328021114-ee1af08f7fa0/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
 github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221212124142-487686407e9e h1:bftow35rgJuHtYqdXJZXwjPbwV1eWiM6riNLoEExckQ=
 github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221212124142-487686407e9e/go.mod h1:Y3ukOBJ0HP5DJfZLKxw0QBbfOlGIQD/nXNAkzTf6Kp0=
 github.com/sirupsen/logrus v1.9.0 h1:trlNQbNUG3OdDrDil03MCb1H2o9nJ1x4/5LYw7byDE0=

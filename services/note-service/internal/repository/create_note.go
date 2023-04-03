@@ -30,6 +30,7 @@ func (r repository) CreateNote(
 	}
 
 	m, err := mapper.ProtoToMap(note)
+	m["deleteAt"] = time.Now().AddDate(0, 0, 1)
 	_, err = doc.Set(ctx, m)
 	if err != nil {
 		return "", err

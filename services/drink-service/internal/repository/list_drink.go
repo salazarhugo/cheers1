@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"cloud.google.com/go/firestore"
 	"context"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/drink/v1"
 	"github.com/salazarhugo/cheers1/libs/utils/mapper"
@@ -9,7 +10,7 @@ import (
 
 func (r repository) ListDrink() ([]*drink.Drink, error) {
 	ctx := context.Background()
-	documents := r.firestore.Collection("drinks").Documents(ctx)
+	documents := r.firestore.Collection("drinks").OrderBy("name", firestore.Asc).Documents(ctx)
 
 	drinks := make([]*drink.Drink, 0)
 

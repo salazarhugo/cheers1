@@ -9,7 +9,7 @@ import (
 	"log"
 )
 
-func (s *Server) ListNote(
+func (s *Server) ListFriendNote(
 	ctx context.Context,
 	request *note.ListFriendNoteRequest,
 ) (*note.ListFriendNoteResponse, error) {

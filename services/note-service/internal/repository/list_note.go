@@ -6,6 +6,7 @@ import (
 	"github.com/salazarhugo/cheers1/libs/utils/mapper"
 	"github.com/salazarhugo/cheers1/services/note-service/internal/service"
 	"google.golang.org/api/iterator"
+	"log"
 )
 
 func (r repository) ListNote(
@@ -23,6 +24,8 @@ func (r repository) ListNote(
 	for i, friend := range friends {
 		friendIDs[i] = friend.Id
 	}
+	// Add current user
+	friendIDs = append(friendIDs, userID)
 
 	documents := r.firestore.Collection("notes").Where("userId", "in", friendIDs).Documents(ctx)
 
@@ -33,9 +36,15 @@ func (r repository) ListNote(
 		if err == iterator.Done {
 			break
 		}
+		if err != nil {
+			log.Println(err)
+		}
 		item := &note.Note{}
 		m := doc.Data()
 		err = mapper.MapToProto(item, m)
+		if err != nil {
+			log.Println(err)
+		}
 		notes = append(notes, item)
 	}
 

@@ -32,6 +32,7 @@ export enum Activity_ActivityType {
   MENTION_POST_COMMENT = 4,
   FRIEND_ADDED = 5,
   COMMENT_LIKED = 6,
+  FOLLOW = 7,
   UNRECOGNIZED = -1,
 }
 
@@ -58,6 +59,9 @@ export function activity_ActivityTypeFromJSON(object: any): Activity_ActivityTyp
     case 6:
     case "COMMENT_LIKED":
       return Activity_ActivityType.COMMENT_LIKED;
+    case 7:
+    case "FOLLOW":
+      return Activity_ActivityType.FOLLOW;
     case -1:
     case "UNRECOGNIZED":
     default:
@@ -81,6 +85,8 @@ export function activity_ActivityTypeToJSON(object: Activity_ActivityType): stri
       return "FRIEND_ADDED";
     case Activity_ActivityType.COMMENT_LIKED:
       return "COMMENT_LIKED";
+    case Activity_ActivityType.FOLLOW:
+      return "FOLLOW";
     case Activity_ActivityType.UNRECOGNIZED:
     default:
       return "UNRECOGNIZED";

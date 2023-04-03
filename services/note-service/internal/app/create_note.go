@@ -21,6 +21,10 @@ func (s *Server) CreateNote(
 		return nil, status.Error(codes.InvalidArgument, "empty field: text")
 	}
 
+	if len(request.GetText()) > 60 {
+		return nil, status.Error(codes.InvalidArgument, "text must be less or equal to 60 characters")
+	}
+
 	noteID, err := s.repository.CreateNote(
 		userID,
 		request.GetText(),

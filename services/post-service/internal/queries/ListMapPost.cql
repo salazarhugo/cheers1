@@ -4,6 +4,7 @@ MATCH
   (creator:User)-[:POSTED]->(post:Post)
 WHERE
   creator.id = $userIdOrUsername OR creator.username = $userIdOrUsername
+AND post.createTime >
 WITH
   u,
   creator,
