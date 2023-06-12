@@ -25,9 +25,15 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = SendEmail(order.Email, order.FirstName, order.Tickets, totalPrice)
+	//err = SendEmail(order.Email, order.FirstName, order.Tickets, totalPrice)
+	err = SendEmail(
+		order.Email,
+		order.FirstName,
+		"d-5b37c1f03f4d4551abbdc1f6b02d493f",
+	)
 	if err != nil {
 		log.Println(err)
 		return
 	}
+	log.Println(totalPrice)
 }

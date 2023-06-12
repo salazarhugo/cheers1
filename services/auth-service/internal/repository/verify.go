@@ -10,7 +10,9 @@ import (
 	"log"
 )
 
-func (a authRepository) CreateModerator(userID string) error {
+func (r authRepository) VerifyUser(
+	userID string,
+) error {
 	ctx := context.Background()
 
 	app := utils.InitializeAppDefault()
@@ -20,13 +22,16 @@ func (a authRepository) CreateModerator(userID string) error {
 	}
 
 	otherUser, err := client.GetUser(ctx, userID)
+	if err != nil {
+		return status.Error(codes.Internal, "failed to get auth user")
+	}
 
 	claims := otherUser.CustomClaims
 	if claims == nil {
 		claims = make(map[string]interface{}, 0)
 	}
 
-	claims["moderator"] = true
+	claims["verified"] = true
 
 	err = client.SetCustomUserClaims(ctx, userID, claims)
 	if err != nil {
@@ -38,10 +43,14 @@ func (a authRepository) CreateModerator(userID string) error {
 		Event: &claim.ClaimEvent_Created{
 			Created: &claim.CreatedClaim{
 				UserId: userID,
-				Claim:  "moderator",
+				Claim:  "verified",
 			},
 		},
 	})
+
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

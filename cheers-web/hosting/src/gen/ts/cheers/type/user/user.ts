@@ -99,6 +99,7 @@ export interface User {
   isBusinessAccount: boolean;
   isAdmin: boolean;
   isModerator: boolean;
+  banner: string;
 }
 
 export interface UserItem {
@@ -112,6 +113,7 @@ export interface UserItem {
   friend: boolean;
   requested: boolean;
   hasRequestedViewer: boolean;
+  banner: string;
 }
 
 function createBaseUser(): User {
@@ -132,6 +134,7 @@ function createBaseUser(): User {
     isBusinessAccount: false,
     isAdmin: false,
     isModerator: false,
+    banner: "",
   };
 }
 
@@ -184,6 +187,9 @@ export const User = {
     }
     if (message.isModerator === true) {
       writer.uint32(128).bool(message.isModerator);
+    }
+    if (message.banner !== "") {
+      writer.uint32(138).string(message.banner);
     }
     return writer;
   },
@@ -307,6 +313,13 @@ export const User = {
 
           message.isModerator = reader.bool();
           continue;
+        case 17:
+          if (tag != 138) {
+            break;
+          }
+
+          message.banner = reader.string();
+          continue;
       }
       if ((tag & 7) == 4 || tag == 0) {
         break;
@@ -336,6 +349,7 @@ export const User = {
       isBusinessAccount: isSet(object.isBusinessAccount) ? Boolean(object.isBusinessAccount) : false,
       isAdmin: isSet(object.isAdmin) ? Boolean(object.isAdmin) : false,
       isModerator: isSet(object.isModerator) ? Boolean(object.isModerator) : false,
+      banner: isSet(object.banner) ? String(object.banner) : "",
     };
   },
 
@@ -361,6 +375,7 @@ export const User = {
     message.isBusinessAccount !== undefined && (obj.isBusinessAccount = message.isBusinessAccount);
     message.isAdmin !== undefined && (obj.isAdmin = message.isAdmin);
     message.isModerator !== undefined && (obj.isModerator = message.isModerator);
+    message.banner !== undefined && (obj.banner = message.banner);
     return obj;
   },
 
@@ -386,6 +401,7 @@ export const User = {
     message.isBusinessAccount = object.isBusinessAccount ?? false;
     message.isAdmin = object.isAdmin ?? false;
     message.isModerator = object.isModerator ?? false;
+    message.banner = object.banner ?? "";
     return message;
   },
 };
@@ -402,6 +418,7 @@ function createBaseUserItem(): UserItem {
     friend: false,
     requested: false,
     hasRequestedViewer: false,
+    banner: "",
   };
 }
 
@@ -436,6 +453,9 @@ export const UserItem = {
     }
     if (message.hasRequestedViewer === true) {
       writer.uint32(80).bool(message.hasRequestedViewer);
+    }
+    if (message.banner !== "") {
+      writer.uint32(90).string(message.banner);
     }
     return writer;
   },
@@ -517,6 +537,13 @@ export const UserItem = {
 
           message.hasRequestedViewer = reader.bool();
           continue;
+        case 11:
+          if (tag != 90) {
+            break;
+          }
+
+          message.banner = reader.string();
+          continue;
       }
       if ((tag & 7) == 4 || tag == 0) {
         break;
@@ -538,6 +565,7 @@ export const UserItem = {
       friend: isSet(object.friend) ? Boolean(object.friend) : false,
       requested: isSet(object.requested) ? Boolean(object.requested) : false,
       hasRequestedViewer: isSet(object.hasRequestedViewer) ? Boolean(object.hasRequestedViewer) : false,
+      banner: isSet(object.banner) ? String(object.banner) : "",
     };
   },
 
@@ -553,6 +581,7 @@ export const UserItem = {
     message.friend !== undefined && (obj.friend = message.friend);
     message.requested !== undefined && (obj.requested = message.requested);
     message.hasRequestedViewer !== undefined && (obj.hasRequestedViewer = message.hasRequestedViewer);
+    message.banner !== undefined && (obj.banner = message.banner);
     return obj;
   },
 
@@ -572,6 +601,7 @@ export const UserItem = {
     message.friend = object.friend ?? false;
     message.requested = object.requested ?? false;
     message.hasRequestedViewer = object.hasRequestedViewer ?? false;
+    message.banner = object.banner ?? "";
     return message;
   },
 };

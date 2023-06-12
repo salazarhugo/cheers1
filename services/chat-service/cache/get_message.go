@@ -5,6 +5,6 @@ import (
 )
 
 func (cache *redisCache) GetMessage(messageID string) ([]*pb.Message, error) {
-	res, err := cache.client.Lin(context.Background(), getKeyUser(userId)).Result()
-	return rooms, nil
+	//res, err := cache.client.LIndex(context.Background(), getKeyUser(userId)).Result()
+	return []*pb.Message{}, nil
 }

@@ -3,11 +3,13 @@ package main
 import (
 	"context"
 	"errors"
+	"firebase.google.com/go/v4/auth"
 	"fmt"
 	"github.com/go-redis/redis/v9"
 	websocket "github.com/gorilla/websocket"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
-	"github.com/salazarhugo/cheers1/libs/auth"
+	mauth "github.com/salazarhugo/cheers1/libs/auth"
+	"github.com/salazarhugo/cheers1/libs/auth/utils"
 	profiler "github.com/salazarhugo/cheers1/libs/profiler"
 	"github.com/salazarhugo/cheers1/services/chat-service/internal/app"
 	"github.com/salazarhugo/cheers1/services/chat-service/internal/repository"
@@ -22,6 +24,7 @@ import (
 	"os"
 	"strings"
 	"sync"
+	"time"
 )
 
 func init() {
@@ -40,7 +43,7 @@ func main() {
 	httpMux.HandleFunc("/user-sub", app.UserSub)
 
 	grpcS := grpc.NewServer(
-		grpc.UnaryInterceptor(auth.UnaryInterceptor),
+		grpc.UnaryInterceptor(mauth.UnaryInterceptor),
 	)
 
 	server := app.NewServer()
@@ -67,12 +70,21 @@ func main() {
 
 // serveWs handles websocket requests from the peer.
 func serveWs(w http.ResponseWriter, r *http.Request) {
-	var userID string
-	h := http.Header{}
-	for _, sub := range websocket.Subprotocols(r) {
-		h.Set("Sec-WebSocket-Protocol", sub)
-		userID = sub
+	// Parse query parameters
+	query := r.URL.Query()
+	authToken := query.Get("token")
+
+	// Validate JWT token
+	token, err := validateJwt(authToken)
+	if err != nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
 	}
+
+	userID := token.UID
+
+	h := http.Header{}
+	h.Set("Sec-WebSocket-Protocol", userID)
 
 	upgrader := websocket.Upgrader{
 		CheckOrigin: func(r *http.Request) bool {
@@ -86,6 +98,7 @@ func serveWs(w http.ResponseWriter, r *http.Request) {
 	connection := new(Connection)
 	connection.Socket = conn
 
+	log.Println("WS: " + userID)
 	go ListenMessages(connection, userID)
 	//go SendMessage(connection)
 }
@@ -182,4 +195,33 @@ func newHTTPandGRPCMux(httpHand http.Handler, grpcHandler http.Handler) http.Han
 		log.Println("HTTP")
 		httpHand.ServeHTTP(w, r)
 	})
+}
+
+func validateJwt(token string) (*auth.Token, error) {
+	// Initialize Firebase app
+	ctx := context.Background()
+	app := utils.InitializeAppDefault()
+
+	// Get auth client
+	client, err := app.Auth(ctx)
+	if err != nil {
+		log.Fatalf("Error getting Auth client: %v\n", err)
+		return nil, err
+	}
+
+	// Verify ID token
+	idToken, err := client.VerifyIDToken(ctx, token)
+	if err != nil {
+		log.Printf("Error verifying ID token: %v\n", err)
+		return nil, err
+	}
+
+	// Check if token is valid
+	if idToken.Expires < time.Now().Unix() {
+		log.Printf("Token has expired\n")
+		return nil, err
+	}
+
+	// Token is valid
+	return idToken, nil
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/labstack/gommon/log"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
+	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -18,12 +19,24 @@ func (s *Server) CreateUser(
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")
 	}
 
+	app := utils.InitializeAppDefault()
+	auth, err := app.Auth(ctx)
+	user, err := auth.GetUserByEmail(ctx, request.Email)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = s.userRepository.GetUserNode(userID)
+	if err == nil {
+		return nil, status.Error(codes.AlreadyExists, "user already exist")
+	}
+
 	userID, err = s.userRepository.CreateUser(
 		userID,
 		request.Username,
-		request.Name,
-		request.Picture,
-		request.Email,
+		user.DisplayName,
+		user.PhotoURL,
+		user.Email,
 	)
 
 	if err != nil {

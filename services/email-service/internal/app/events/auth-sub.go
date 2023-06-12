@@ -20,7 +20,12 @@ func AuthSub(w http.ResponseWriter, r *http.Request) {
 	switch event := event.Event.(type) {
 	case *auth.AuthEvent_Created:
 		log.Println(event.Created)
-		//_, err = repository.GetOrder(event.Created.Uid, event.Created.Email)
+		user := event.Created
+		err := SendEmail(user.Email, "Test", "d-636b81638b4e4f068c3f181a450c3b13")
+		if err != nil {
+			log.Println(err)
+			return
+		}
 	}
 
 	if err != nil {

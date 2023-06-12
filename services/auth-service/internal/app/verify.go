@@ -3,9 +3,7 @@ package app
 import (
 	"context"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/auth/v1"
-	"github.com/salazarhugo/cheers1/gen/go/cheers/claim/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
-	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"log"
@@ -32,34 +30,7 @@ func (s *Server) VerifyUser(
 		return nil, status.Error(codes.PermissionDenied, "insufficient permissions")
 	}
 
-	otherUser, err := client.GetUser(ctx, request.UserId)
-	if err != nil {
-		log.Println(err)
-		return nil, status.Error(codes.Internal, "failed to get auth user")
-	}
-
-	claims := otherUser.CustomClaims
-	if claims == nil {
-		claims = make(map[string]interface{}, 0)
-	}
-
-	claims["verified"] = true
-
-	err = client.SetCustomUserClaims(ctx, request.UserId, claims)
-	if err != nil {
-		log.Println(err)
-		return nil, status.Error(codes.Internal, "error setting custom claims")
-	}
-
-	err = pubsub.PublishProtoWithBinaryEncoding("claim-topic", &claim.ClaimEvent{
-		Event: &claim.ClaimEvent_Created{
-			Created: &claim.CreatedClaim{
-				UserId: request.UserId,
-				Claim:  "verified",
-			},
-		},
-	})
-
+	err = s.authRepository.VerifyUser(userID)
 	if err != nil {
 		log.Println(err)
 		return nil, err
