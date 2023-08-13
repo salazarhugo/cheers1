@@ -32,8 +32,12 @@ type CustomContext struct {
 
 func GetDriver() neo4j.Driver {
 	driver, err := neo4j.NewDriver(
-		"neo4j+s://528a253a.databases.neo4j.io:7687",
-		neo4j.BasicAuth("neo4j", "XRoQ6Lmz9QlFFTcwCWIWwR1o88hLfzV_HnP9mzDJuwc", ""))
+		os.Getenv("NEO4J_URI"),
+		neo4j.BasicAuth(
+			"neo4j",
+			os.Getenv("NEO4J_PASSWORD"),
+			"",
+		))
 	if err != nil {
 		panic(err)
 	}
