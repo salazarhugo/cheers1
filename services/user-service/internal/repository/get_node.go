@@ -4,6 +4,7 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/mapper"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -32,7 +33,7 @@ func (p *userRepository) GetUserNode(
 
 	if result.Next() {
 		m := result.Record().Values[0]
-		err := utils.MapToProto(user, m)
+		err := mapper.MapToProto(user, m)
 		if err != nil {
 			return nil, err
 		}

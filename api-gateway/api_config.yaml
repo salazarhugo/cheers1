@@ -6,6 +6,7 @@ endpoints:
   - name: android-2c1jeuamu4xtp.apigateway.cheers-a275e.cloud.goog
     allow_cors: true
 apis:
+  - name: cheers.auth.v1.AuthService
   - name: cheers.user.v1.UserService
   - name: cheers.account.v1.AccountService
   - name: cheers.post.v1.PostService
@@ -35,8 +36,13 @@ authentication:
     - selector: "*"
       requirements:
         - provider_id: firebase
+    - selector: cheers.auth.v1.*
 backend:
   rules:
+    # Auth Service methods
+    - selector: cheers.auth.v1.*
+      address: grpcs://auth-service-r3a2dr4u4a-nw.a.run.app
+
     # User Service methods
     - selector: cheers.user.v1.*
       address: grpcs://user-service-r3a2dr4u4a-nw.a.run.app

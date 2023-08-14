@@ -4,6 +4,7 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/mapper"
 	"log"
 	"time"
 )
@@ -31,7 +32,7 @@ func (p *userRepository) CreateUser(
 	user.Picture = picture
 	user.Email = email
 
-	m, err := utils.ProtoToMap(user)
+	m, err := mapper.ProtoToMap(user)
 	if err != nil {
 		log.Println(err)
 		return "", err

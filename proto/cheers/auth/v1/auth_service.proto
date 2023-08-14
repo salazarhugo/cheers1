@@ -2,12 +2,21 @@ syntax = "proto3";
 
 package cheers.auth.v1;
 
+import "cheers/type/user/user.proto";
 import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
 
 option java_multiple_files = true;
 option go_package = "github.com/salazarhugo/cheers1/gen/go/cheers/auth/v1;auth";
 
 service AuthService {
+  rpc Login(LoginRequest) returns (LoginResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/login"
+      body: "*"
+    };
+  }
+
   rpc CreateModerator(CreateModeratorRequest) returns (CreateModeratorResponse) {
     option (google.api.http) = {
       post: "/v1/auths/moderator"
@@ -40,6 +49,14 @@ service AuthService {
       delete: "/v1/auths/verify"
     };
   }
+}
+
+message LoginRequest {
+  string id_token = 1;
+}
+
+message LoginResponse {
+  cheers.type.User user = 1;
 }
 
 message VerifyUserRequest {
