@@ -27,4 +27,5 @@ protoc \
   cheers/comment/v1/comment_service.proto \
   cheers/location/v1/location_service.proto \
   cheers/note/v1/note_service.proto \
+  cheers/auth/v1/auth_service.proto \
   cheers/drink/v1/drink_service.proto

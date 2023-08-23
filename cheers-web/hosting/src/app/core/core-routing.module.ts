@@ -4,11 +4,31 @@ import {ChatComponent} from "../chats/feature/chat.component";
 import {HomeComponent} from "../home/features/home/home.component";
 import {MapComponent} from "../map/map.component";
 import {TicketsComponent} from "../shared/ui/tickets/tickets.component";
+import {PartyResolver} from "../manage-parties/data/party.resolver";
+import {ProfileResolver} from "../users/data/profile.resolver";
 
 const routes: Routes = [
     {
         path: 'home',
         component: HomeComponent,
+    },
+    {
+        path: 'profile',
+        loadChildren: () => import('../users/feature/profile/profile.module').then(m => m.ProfileModule),
+    },
+    {
+        path: 'p/:id',
+        resolve: {party: PartyResolver},
+        loadChildren: () => import('../parties/features/party-detail/party-detail.module').then(m => m.PartyDetailModule)
+    },
+    {
+        path: 'u/:username',
+        resolve: {user: ProfileResolver},
+        loadChildren: () => import('../users/feature/user-profile/user-profile.module').then(m => m.UserProfileModule),
+    },
+    {
+        path: 'parties',
+        loadChildren: () => import('../parties/features/party-feed/party-feed.module').then(m => m.PartyFeedModule)
     },
     {
         path: 'tickets',

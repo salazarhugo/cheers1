@@ -5,7 +5,7 @@ go 1.19
 require google.golang.org/protobuf v1.28.1 // indirect
 
 require (
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230313150210-30028d6dd327
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230814193002-ccda85dd57dc
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221208094612-0cd8a5fa5c43
 	github.com/sendgrid/sendgrid-go v3.12.0+incompatible

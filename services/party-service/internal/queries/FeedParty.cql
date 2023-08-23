@@ -1,9 +1,9 @@
-MATCH
+OPTIONAL MATCH
   (me:User {id: $userID})
 MATCH
   (creator:User)-[:POSTED]->(party:Party)
-WHERE
-  toFloat(party.startDate) > timestamp() / 1000
+//WHERE
+//  toFloat(party.startDate) > timestamp() / 1000
 OPTIONAL MATCH
   (me)-[:FRIENDS]->(friend:User)-[w:WATCH_STATUS]->(party) WHERE w.value = "GOING"
 OPTIONAL MATCH
@@ -11,7 +11,7 @@ OPTIONAL MATCH
 WITH
   creator,
   party,
-  me.id = creator.id AS is_creator,
+  me.id IS NOT NULL AND me.id = creator.id AS is_creator,
   count(DISTINCT watchStatus) AS interested_count,
   count(DISTINCT watchStatus) AS going_count,
   count(DISTINCT watchStatus) AS invited_count,

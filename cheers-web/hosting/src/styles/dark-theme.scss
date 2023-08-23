@@ -10,7 +10,7 @@ $dark-warn: mat.define-palette(mat.$red-palette);
 
 $dark-theme: mat.define-dark-theme($dark-primary, $dark-accent, $dark-warn);
 
-$custom-background-color: #101010;
+$custom-background-color: #1f1f1f;
 $background: map-get($dark-theme, background);
 $background: map_merge($background, (background: $custom-background-color));
 $dark-theme: map_merge($dark-theme, (background: $background));

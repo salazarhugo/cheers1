@@ -44,7 +44,7 @@ export class AuthService {
             const result = await this.afAuth.signInWithPopup(new GoogleAuthProvider())
             if (result.user) {
                 console.log('You have been successfully logged in!');
-                await this.router.navigate(['profile'])
+                await this.router.navigate(['parties'])
             }
         } catch (e) {
             console.log(e);
@@ -54,7 +54,7 @@ export class AuthService {
     async signInWithEmailAndPassword(email: string, password: string) {
         try {
             const res = await this.afAuth.signInWithEmailAndPassword(email, password)
-            await this.router.navigate(['profile'])
+            await this.router.navigate(['parties'])
         } catch (e) {
             console.log(e);
         }

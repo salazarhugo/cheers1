@@ -1,17 +1,24 @@
 <mat-card>
+    <img class="snapchat-icon" src="../../../../assets/cheers-logo.png" alt="Snapchat">
+    <h1 class="title">Sign Up</h1>
+
     <form (ngSubmit)="onSubmit()" [formGroup]="userForm" fxLayout="column">
 
-        <div class="form-group has-success">
+        <div class="form-group has-success" *ngIf="!this.signInLinkSent">
             <label class="control-label">Email</label>
             <input class="form-control" formControlName="email" required type="email">
         </div>
-
         <div *ngIf="this.signInLinkSent" fxLayout="column" fxLayoutAlign="none center">
-            <div class="check"></div>
-            <p>A sign in link has been sent to your email account</p>
+            <span>Congratulations 🎉</span>
+            <p style="margin-top: 20px">Please check your inbox to confirm your registration.</p>
         </div>
     </form>
 
-    <button (click)="onSubmit()" *ngIf="!this.signInLinkSent" color="primary" mat-flat-button>Register</button>
+    <button (click)="onSubmit()" *ngIf="!this.signInLinkSent" color="primary" [disabled]="this.isLoading" mat-flat-button>
+        <div fxLayoutAlign="center center" fxLayoutGap="16px">
+            <mat-spinner *ngIf="isLoading" [diameter]="16" [strokeWidth]="1"></mat-spinner>
+            <span> Register </span>
+        </div>
+    </button>
 
 </mat-card>

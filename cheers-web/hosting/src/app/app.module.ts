@@ -27,6 +27,7 @@ import {ManagePartyModule} from "./manage-parties/feature/manage-party/manage-pa
 import { RefundPaymentDialogComponent } from './business/ui/refund-payment-dialog/refund-payment-dialog.component';
 import {MapModule} from "./map/map.module";
 import {PostCreateDialogModule} from "./posts/ui/post-create-dialog/post-create-dialog.module";
+import {TopbarModule} from "./home/ui/topbar/topbar.module";
 
 
 export function playerFactory(): any {
@@ -66,6 +67,7 @@ if (!environment.production)
         PartyShellModule,
         MapModule,
         PostCreateDialogModule,
+        TopbarModule,
     ],
     providers: [
         httpInterceptorProviders,

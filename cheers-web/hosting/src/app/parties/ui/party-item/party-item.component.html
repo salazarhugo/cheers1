@@ -1,5 +1,5 @@
-<mat-card [routerLink]="['/p', party.id]" class="party" matRipple>
-    <div class="party-image-container">
+<div [routerLink]="['/p', party.id]" class="party" fxFill>
+    <div class="party-image-container mat-elevation-z4">
         <img (error)="onImgError($event)" *ngIf="party.bannerUrl" [src]="party.bannerUrl"
              class="party-image"/>
         <button mat-icon-button [mat-menu-trigger-for]="menu" (click)="$event.stopPropagation()">
@@ -23,13 +23,12 @@
 
     <div class="party-body" fxLayout="column" fxLayoutAlign="space-between none">
         <div class="party-header">
-            <div fxLayoutAlign="space-between center">
-                <span class="party-date">{{party.startDate * 1000 | date}}</span>
-                <span *ngIf="party.endDate != 0" class="party-date">{{party.endDate * 1000 | date}}</span>
-            </div>
-            <h1 class="party-title"> {{party.name}} </h1>
+            <h2 class="party-title"> {{party.name}} </h2>
             <div class="party-location">
                 <span class="party-location"> {{party.locationName}}</span>
+            </div>
+            <div fxLayoutAlign="space-between center">
+                <span class="party-date">{{party.startDate * 1000 | partyDate}}</span>
             </div>
             <div class="party-interested-going">
                 <span *ngIf="party.interestedCount > 0">{{party.interestedCount}} interested</span>
@@ -53,4 +52,4 @@
             </div>
         </div>
     </div>
-</mat-card>
+</div>

@@ -13,6 +13,7 @@ import {WatchStatus} from "../../../../gen/ts/cheers/party/v1/party_service";
 import {PostDeleteDialogComponent} from "../../../posts/ui/post-delete-dialog/post-delete-dialog.component";
 import {PartyTransferComponent} from "../party-transfer/party-transfer.component";
 import {PartyDuplicateComponent} from "../party-duplicate/party-duplicate.component";
+import {User} from "../../../shared/data/models/user.model";
 
 @Component({
     selector: 'app-party-detail',
@@ -23,6 +24,7 @@ export class PartyComponent implements OnInit {
 
     party: Party | undefined
     partyId: string | null
+    viewer: User | null
 
     constructor(
         public router: Router,
@@ -37,12 +39,8 @@ export class PartyComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.route.paramMap.subscribe(async (params: ParamMap) => {
-            const partyId = params.get("id")
-            this.partyId = params.get("id")
-            if (partyId)
-                this.party = await firstValueFrom(this.partyService.getParty(partyId));
-        })
+        // From PartyResolver
+        this.party = this.route.snapshot.data['party'] as Party;
     }
 
     onInterestedClick() {

@@ -18,6 +18,7 @@ export class FinishSignUpComponent implements OnInit {
         username: new UntypedFormControl(''),
     });
     errorMessage: string | null = null
+    isLoading = false
 
     constructor(
         private userService: UserService,
@@ -45,6 +46,7 @@ export class FinishSignUpComponent implements OnInit {
     }
 
     async onSubmit() {
+        this.isLoading = true
         const userForm = this.userForm.value
         const afUser = await this.afAuth.currentUser
 
@@ -60,10 +62,11 @@ export class FinishSignUpComponent implements OnInit {
         }
         try {
             await firstValueFrom(this.userService.register(userReq))
-            await this.router.navigate(['profile'])
+            await this.router.navigate(['parties'])
         } catch (e: any) {
             this.errorMessage = e
             console.log("Failed to create User", e)
         }
+        this.isLoading = false
     }
 }

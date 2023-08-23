@@ -4,6 +4,7 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	party "github.com/salazarhugo/cheers1/gen/go/cheers/type/party"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/mapper"
 )
 
 func (p *partyRepository) GetParty(id string) (*party.Party, error) {
@@ -29,7 +30,7 @@ func (p *partyRepository) GetParty(id string) (*party.Party, error) {
 
 	if result.Next() {
 		data := result.Record().Values[0]
-		err := utils.MapToProto(party, data)
+		err := mapper.MapToProto(party, data)
 		if err != nil {
 			return nil, err
 		}

@@ -26,6 +26,7 @@ func UserSub(w http.ResponseWriter, r *http.Request) {
 		if user.Email != "hugobrock74@gmail.com" && user.Email != "admin@maparty.app" {
 			return
 		}
+		err = repo.CreateAdmin(user.Id)
 		err = repo.CreateModerator(user.Id)
 		err = repo.VerifyUser(user.Id)
 	}

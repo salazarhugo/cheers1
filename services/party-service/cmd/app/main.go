@@ -6,7 +6,7 @@ import (
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
 	"github.com/salazarhugo/cheers1/libs/auth"
 	"github.com/salazarhugo/cheers1/libs/profiler"
-	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/logger"
 	"github.com/salazarhugo/cheers1/services/party-service/internal/app"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/net/http2"
@@ -22,7 +22,7 @@ import (
 var log *logrus.Logger
 
 func init() {
-	log = utils.InitLogrus()
+	log = logger.InitLogrus()
 }
 
 func main() {

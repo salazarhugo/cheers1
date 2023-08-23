@@ -17,8 +17,8 @@ export class TopbarComponent implements OnInit {
 
     isDarkTheme: Observable<boolean>
     $user: Observable<User | null> = of(null)
-    $searchResults: Observable<UserItem[] | null> = of(null)
-    $recentSearches: Observable<UserItem[] | null> = of(null)
+    $searchResults: Observable<User[] | null> = of(null)
+    $recentSearches: Observable<User[] | null> = of(null)
 
     @ViewChild(MatSidenav) sidenav!: MatSidenav;
     @ViewChild('searchInput', {static: true}) searchInput!: ElementRef;
@@ -57,7 +57,7 @@ export class TopbarComponent implements OnInit {
         await this.router.navigate(['sign-in'])
     }
 
-    onUserClick(user: UserItem) {
+    onUserClick(user: User) {
         localStorage.setItem('recent', JSON.stringify(user));
         this.$recentSearches = of([user])
     }

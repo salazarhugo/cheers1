@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../../shared/data/services/user.service";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
-import {firstValueFrom, Observable, of} from "rxjs";
+import {firstValueFrom, map, Observable, of} from "rxjs";
 import {User} from "../../../shared/data/models/user.model";
 import {PostService} from "../../../posts/data/post.service";
 import {Post} from "../../../shared/data/models/post.model";
@@ -40,10 +40,7 @@ export class OtherProfileComponent implements OnInit {
     }
 
     async ngOnInit() {
-        const token = await firstValueFrom(this.auth.idTokenResult)
-        if (token == null)
-            return
-        this.isAdmin = token.claims["admin"] != null
+        this.userService.user$.subscribe(user => this.isAdmin = user.moderator)
 
         this.route.paramMap.subscribe((params: ParamMap) => {
             const username = params.get("username")

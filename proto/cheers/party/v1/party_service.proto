@@ -168,13 +168,15 @@ message DeletePartyResponse {
 
 message FeedPartyRequest {
   string parent = 1;
+  // Optional. The maximum number of Parties to return in the response.
   int32 page_size = 2;
-  string page_token = 3;
+  int32 page = 3;
 }
 
 message FeedPartyResponse {
   repeated PartyItem items = 1;
   string next_page_token = 2;
+  int32 total_page = 3;
 }
 
 message PartyItem {

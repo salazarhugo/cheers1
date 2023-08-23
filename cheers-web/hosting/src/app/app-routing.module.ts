@@ -10,6 +10,8 @@ import {CompleteComponent} from "./shared/ui/complete/complete.component";
 import {StoriesComponent} from "./stories/features/story-feed/stories.component";
 import {ManagePartyComponent} from "./manage-parties/feature/manage-party/manage-party.component";
 import {PartyResolver} from "./manage-parties/data/party.resolver";
+import {ProfileResolver} from "./users/data/profile.resolver";
+import {SignUpComponent} from "./sign-up/sign-up.component";
 
 const routes: Routes = [
     {
@@ -33,13 +35,17 @@ const routes: Routes = [
         component: TicketingComponent,
     },
     {
-        path: 'p/:id',
-        resolve: {user: UserResolver, party: PartyResolver},
-        loadChildren: () => import('./parties/features/party-detail/party-detail.module').then(m => m.PartyDetailModule)
+        path: 'events',
+        redirectTo: 'parties',
     },
     {
         path: 'sign-in',
         component: SignInComponent,
+    },
+    {
+        path: 'sign-up',
+        component: SignUpComponent,
+        loadChildren: () => import('./sign-up/sign-up.module').then(m => m.SignUpModule)
     },
     {
         path: 'manage/parties',
@@ -48,10 +54,20 @@ const routes: Routes = [
     },
     {
         path: '',
-        component: CoreComponent, resolve: {data: UserResolver},
+        redirectTo: 'sign-in',
+        pathMatch: 'full',
+    },
+    {
+        path: '',
+        component: CoreComponent,
+        resolve: {data: UserResolver},
         loadChildren: () => import('./core/core.module').then(m => m.CoreModule)
     },
-    {path: '**', redirectTo: 'sign-in'},
+    // { path: '**', component: PageNotFoundComponent },  // Wildcard route for a 404 page
+    // {
+    //     path: '404',
+    //     redirectTo: 'sign-in',
+    // },
 ];
 
 @NgModule({

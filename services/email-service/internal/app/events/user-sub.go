@@ -1,14 +1,15 @@
 package events
 
 import (
-	"github.com/salazarhugo/cheers1/gen/go/cheers/auth/v1"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
+	"github.com/salazarhugo/cheers1/services/email-service/internal/emails"
 	"log"
 	"net/http"
 )
 
-func AuthSub(w http.ResponseWriter, r *http.Request) {
-	event := &auth.AuthEvent{}
+func UserSub(w http.ResponseWriter, r *http.Request) {
+	event := &user.UserEvent{}
 	err := pubsub.UnmarshalPubSubMessage(r, event)
 	if err != nil {
 		log.Fatal(err)
@@ -18,10 +19,10 @@ func AuthSub(w http.ResponseWriter, r *http.Request) {
 	log.Println(event)
 
 	switch event := event.Event.(type) {
-	case *auth.AuthEvent_Created:
-		log.Println(event.Created)
-		user := event.Created
-		err := SendEmail(user.Email, "Test", "d-636b81638b4e4f068c3f181a450c3b13")
+	case *user.UserEvent_Create:
+		log.Println(event.Create)
+		user := event.Create.User
+		err := emails.SendWelcomeEmail(user.Email, user.Name)
 		if err != nil {
 			log.Println(err)
 			return

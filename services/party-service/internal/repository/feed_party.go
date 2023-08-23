@@ -4,6 +4,7 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/mapper"
 )
 
 func (p *partyRepository) FeedParty(
@@ -13,8 +14,11 @@ func (p *partyRepository) FeedParty(
 	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close()
 
-	pageSize := 50
-	skip := 0
+	pageSize := request.GetPageSize()
+	if pageSize == 0 {
+		pageSize = 18
+	}
+	skip := request.GetPage() * request.GetPageSize()
 
 	cypher, err := utils.GetCypher("internal/queries/FeedParty.cql")
 	if err != nil {
@@ -37,7 +41,7 @@ func (p *partyRepository) FeedParty(
 	for result.Next() {
 		party := &pb.PartyItem{}
 		data := result.Record().Values[0]
-		err = utils.MapToProto(party, data)
+		err = mapper.MapToProto(party, data)
 		if err != nil {
 			return nil, err
 		}

@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 
 import {PartyInviteRoutingModule} from './party-invite-routing.module';
 import {PartyInviteComponent} from './party-invite.component';
-import {MatDialogModule} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
 import {MatChipsModule} from '@angular/material/chips';
 import {UserItemModule} from "../../../users/ui/user-item/user-item.module";
@@ -30,6 +30,10 @@ import {FlexModule} from "@angular/flex-layout";
     ],
     exports: [
         PartyInviteComponent
+    ],
+    providers: [
+        { provide: MatDialogRef, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: {} },
     ],
 })
 export class PartyInviteModule {

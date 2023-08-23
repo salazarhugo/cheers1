@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
 
     ngOnInit(): void {
         this.isDarkTheme = this.themeService.isDarkTheme;
-        this.requestPermission();
+        // this.requestPermission();
         this.listen();
         if (this.isDarkTheme) {
             this.overlay.getContainerElement().classList.add('dark-theme');

@@ -7,10 +7,6 @@ const routes: Routes = [
         loadChildren: () => import('../party-detail/party-detail.module').then(m => m.PartyDetailModule)
     },
     {
-        path: 'feed',
-        loadChildren: () => import('../party-feed/party-feed.module').then(m => m.PartyFeedModule)
-    },
-    {
         path: 'hosting',
         loadChildren: () => import('../party-hosting/party-hosting.module').then(m => m.PartyHostingModule)
     },

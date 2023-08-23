@@ -9,7 +9,7 @@
         </button>
     </div>
     <div (click)="onUserClick(user)" *ngFor="let user of ($searchResults | async)">
-        <app-user-item [user]="user"></app-user-item>
+<!--        <app-user-item [user]="user"></app-user-item>-->
     </div>
 </div>
 <div mat-dialog-actions align="end">

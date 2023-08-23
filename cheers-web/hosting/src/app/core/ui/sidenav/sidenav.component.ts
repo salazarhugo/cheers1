@@ -57,7 +57,7 @@ export class SidenavComponent implements OnInit {
         {
             title: "Parties",
             icon: "celebration",
-            routerLink: "/parties/feed",
+            routerLink: "/parties",
         },
         {
             title: "Tickets",
@@ -82,12 +82,12 @@ export class SidenavComponent implements OnInit {
         {
             title: "Profile",
             icon: "account_circle",
-            routerLink: "/u/profile",
+            routerLink: "/profile",
         },
     ]
 
     constructor(
-        private auth: AngularFireAuth,
+        public auth: AngularFireAuth,
     ) {
     }
 

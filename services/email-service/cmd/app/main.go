@@ -14,7 +14,7 @@ func init() {
 
 func main() {
 	http.HandleFunc("/", events.PaymentSub)
-	http.HandleFunc("/auth-sub", events.AuthSub)
+	http.HandleFunc("/user-sub", events.UserSub)
 
 	// Determine port for HTTP service.
 	port := os.Getenv("PORT")

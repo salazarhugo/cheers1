@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
-	"github.com/salazarhugo/cheers1/libs/auth/utils"
+	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/services/party-service/internal/repository"
 	"sync"
 )

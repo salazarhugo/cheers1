@@ -4,16 +4,8 @@ import {OtherProfileComponent} from "../user-profile/other-profile.component";
 
 const routes: Routes = [
     {
-        path: 'profile',
-        loadChildren: () => import('../profile/profile.module').then(m => m.ProfileModule),
-    },
-    {
         path: 'edit',
         loadChildren: () => import('../user-edit/edit.module').then(m => m.EditModule),
-    },
-    {
-        path: ':username',
-        loadChildren: () => import('../user-profile/user-profile.module').then(m => m.UserProfileModule),
     },
     {
         path: ':username/followers',

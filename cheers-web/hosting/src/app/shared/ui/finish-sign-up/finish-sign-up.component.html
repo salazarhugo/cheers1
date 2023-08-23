@@ -22,7 +22,12 @@
             how we use cookies and similar technology in our Cookies Policy.
         </p>
 
-        <button (click)="onSubmit()" color="primary" mat-flat-button>Register</button>
+        <button (click)="onSubmit()" color="primary" [disabled]="this.isLoading" mat-flat-button>
+            <div fxLayoutAlign="center center" fxLayoutGap="16px">
+                <mat-spinner *ngIf="isLoading" [diameter]="16" [strokeWidth]="1"></mat-spinner>
+                <span> Register </span>
+            </div>
+        </button>
 
     </mat-card>
 </div>

@@ -7,4 +7,6 @@ gcloud run deploy post-service \
   --use-http2 \
   --set-env-vars GATEWAY_URL=$GATEWAY_URL \
   --set-secrets="DB_ENDPOINT=POST_DB_ENDPOINT:latest" \
-  --set-secrets="DB_PASSWORD=POST_DB_PASSWORD:latest"
+  --set-secrets="DB_PASSWORD=POST_DB_PASSWORD:latest" \
+  --set-secrets="NEO4J_URI=NEO4J_URI:latest" \
+  --set-secrets="NEO4J_PASSWORD=NEO4J_PASSWORD:latest"

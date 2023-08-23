@@ -1,15 +1,24 @@
 .party
     padding: 16px
 
+.party-banner-blurry
+    position: absolute
+    width: 100%
+    height:  400px
+    filter: blur(50px)
+    z-index: -1
+
 .party-banner
     border-radius: 22px
     background-size: cover
+    width: 100%
+    height: 100%
     object-fit: cover
-    height: 350px
 
 .party-banner-container
-    width: 100%
-    height: 350px
+    max-height: 400px
+    border-radius: 22px
+    aspect-ratio: 16/9
 
 .party-header
     padding: 16px 0

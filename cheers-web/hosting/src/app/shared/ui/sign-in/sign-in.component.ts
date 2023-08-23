@@ -8,16 +8,9 @@ import {Component, OnInit} from '@angular/core';
 })
 export class SignInComponent implements OnInit {
 
-    registerPage: boolean = false
-
     constructor() {
     }
 
     ngOnInit(): void {
     }
-
-    onRegisterToggle() {
-        this.registerPage = !this.registerPage
-    }
-
 }

@@ -18,6 +18,7 @@ export class RegisterComponent implements OnInit {
     });
 
     public signInLinkSent: boolean = false
+    isLoading = false
 
     constructor(
         private userService: UserService,
@@ -29,9 +30,11 @@ export class RegisterComponent implements OnInit {
     }
 
     onSubmit() {
+        this.isLoading = true
         const userForm = this.userForm.value
         this.authService.sendSignUpLinkToEmail(userForm["email"]).then(() => {
             this.signInLinkSent = true
+            this.isLoading = false
         })
     }
 }

@@ -30,12 +30,12 @@ export class PartyResolver implements Resolve<Party> {
         return reject();
 
       const party = await firstValueFrom(this.partyService.getParty(partyId))
-      const user = await firstValueFrom(this.userService.user$)
+      // const user = await firstValueFrom(this.userService.user$)
 
       // Only the host of the party can edit it or admin
-      if (!party.isHost && !user.admin) {
-        return reject("You are not the host of the party");
-      }
+      // if (!party.isHost && !user.moderator) {
+      //   return reject("You are not the host of the party");
+      // }
 
       this.partyService.setParty(party)
       console.log(party)

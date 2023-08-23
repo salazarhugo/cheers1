@@ -1,4 +1,4 @@
-package events
+package repository
 
 import (
 	"github.com/sendgrid/sendgrid-go"
@@ -14,6 +14,7 @@ func SendEmail(
 	email string,
 	name string,
 	templateID string,
+	data map[string]string,
 ) error {
 	client := sendgrid.NewSendClient(token)
 
@@ -22,7 +23,10 @@ func SendEmail(
 
 	p := mail.NewPersonalization()
 	p.AddTos(to)
-	p.SetDynamicTemplateData("name", name)
+
+	for key, value := range data {
+		p.SetDynamicTemplateData(key, value)
+	}
 
 	message := mail.NewV3Mail()
 	message.SetFrom(from)

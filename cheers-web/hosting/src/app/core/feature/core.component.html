@@ -1,11 +1,12 @@
 <app-topbar></app-topbar>
 <mat-sidenav-container>
-    <mat-sidenav fixedInViewport="true" fixedTopGap="56" [mode]="mode" opened>
+    <mat-sidenav *ngIf="userService.user$ | async" fixedInViewport="true" fixedTopGap="56" [mode]="mode" opened>
         <app-sidenav></app-sidenav>
     </mat-sidenav>
     <mat-sidenav-content style="margin-top: 56px">
         <main [@fadeAnimation]="outlet.isActivated ? outlet.activatedRoute : ''">
             <router-outlet #outlet="outlet"></router-outlet>
         </main>
+        <app-footer></app-footer>
     </mat-sidenav-content>
 </mat-sidenav-container>

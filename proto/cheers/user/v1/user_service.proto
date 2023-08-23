@@ -36,7 +36,12 @@ service UserService {
 
   rpc GetUsersIn (GetUsersInRequest) returns (GetUsersInResponse);
   rpc GetUserItemsIn (GetUserItemsInRequest) returns (GetUserItemsInResponse);
-  rpc SearchUser (SearchUserRequest) returns (SearchUserResponse);
+
+  rpc SearchUser (SearchUserRequest) returns (SearchUserResponse) {
+    option (google.api.http) = {
+      get: "/v1/users/search/{query}"
+    };
+  }
 
   rpc FollowUser (FollowUserRequest) returns (google.protobuf.Empty) {
     option (google.api.http) = {

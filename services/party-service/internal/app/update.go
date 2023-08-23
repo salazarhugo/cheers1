@@ -61,7 +61,13 @@ func AuthorizeUpdatePartyRequest(
 		return err
 	}
 
+	log.Println(userID)
 	user, err := client.GetUser(ctx, userID)
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+
 	isAdmin := user.CustomClaims["admin"] != nil
 
 	if isAdmin == true {

@@ -3,6 +3,7 @@ package events
 import (
 	payment "github.com/salazarhugo/cheers1/gen/go/cheers/payment/v1"
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
+	"github.com/salazarhugo/cheers1/services/email-service/internal/emails"
 	"github.com/salazarhugo/cheers1/services/email-service/internal/repository"
 	"log"
 	"net/http"
@@ -16,6 +17,8 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Println(event)
+
 	order := event.Order
 	totalPrice, err := repository.CalculateTotalPrice(order.Tickets)
 
@@ -25,12 +28,12 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//err = SendEmail(order.Email, order.FirstName, order.Tickets, totalPrice)
-	err = SendEmail(
+	err = emails.SendPartyReceiptEmail(
 		order.Email,
 		order.FirstName,
-		"d-5b37c1f03f4d4551abbdc1f6b02d493f",
+		order.PartyName,
 	)
+
 	if err != nil {
 		log.Println(err)
 		return

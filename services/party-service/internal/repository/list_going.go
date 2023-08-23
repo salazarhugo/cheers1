@@ -4,6 +4,7 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/mapper"
 )
 
 func (p *partyRepository) ListGoing(
@@ -34,7 +35,7 @@ func (p *partyRepository) ListGoing(
 	for results.Next() {
 		m := results.Record().Values[0]
 		userItem := &user.UserItem{}
-		err := utils.MapToProto(userItem, m)
+		err := mapper.MapToProto(userItem, m)
 		if err != nil {
 			return nil, err
 		}

@@ -1,4 +1,3 @@
-import {UserItem} from "../../../../gen/ts/cheers/type/user/user";
 
 
 export class User {
@@ -17,6 +16,7 @@ export class User {
     online: boolean = false
     followBack: boolean = false
     created: number = 0
+    moderator: boolean = false
     admin: boolean = false
     business: boolean = false
     storyState: StoryState = StoryState.EMPTY

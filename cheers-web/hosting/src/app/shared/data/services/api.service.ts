@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {map, Observable} from "rxjs";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {catchError, map, Observable, of, throwError} from "rxjs";
 import {StoryState, toUser, User, UserResponse} from "../models/user.model";
 import {Post} from "../models/post.model";
 import {Story, toStory} from "../models/story.model";
@@ -19,6 +19,7 @@ import {ListUserOrdersResponse, Order} from "../../../../gen/ts/cheers/order/v1/
 import {ListTicketResponse} from "../../../../gen/ts/cheers/ticket/v1/ticket";
 import {FeedStoryResponse} from "../../../../gen/ts/cheers/story/v1/story_service";
 import {UserItem} from "../../../../gen/ts/cheers/type/user/user";
+import {SearchUserResponse} from "../response/search-user.response";
 
 @Injectable({
     providedIn: 'root'
@@ -70,8 +71,9 @@ export class ApiService {
         return this.http.delete(`${environment.GATEWAY_URL}/v1/users/${username}/unfollow`)
     }
 
-    searchUser(query: string): Observable<UserItem[]> {
-        return this.http.get<UserItem[]>(`${this.BASE_URL}/users/search/${query}`)
+    searchUser(query: string): Observable<User[]> {
+        return this.http.get<SearchUserResponse>(`${environment.GATEWAY_URL}/v1/users/search/${query}`)
+            .pipe(map(response => response.users))
     }
 
     getAccount(accountId: string): Observable<Account | undefined> {
@@ -81,7 +83,18 @@ export class ApiService {
 
     getUser(userIdOrUsername: string): Observable<User | null> {
         return this.http.get<UserResponse>(`${environment.GATEWAY_URL}/v1/users/${userIdOrUsername}`)
-            .pipe(map(res => toUser(res)))
+            .pipe(
+                map(res => toUser(res)),
+                catchError(this.handleError),
+            )
+    }
+
+    private handleError(error: HttpErrorResponse) {
+        if (error.status === 404) {
+            return of(null);
+        }
+        // Return an observable with a user-facing error message.
+        return throwError(() => new Error('Something bad happened; please try again later.'));
     }
 
     verifyUser(uid: string): Observable<Empty> {

@@ -3,7 +3,6 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {debounceTime, distinctUntilChanged, fromEvent, map, Observable, of} from "rxjs";
 import {User} from "../../../shared/data/models/user.model";
 import {UserService} from "../../../shared/data/services/user.service";
-import {UserItem} from "../../../../gen/ts/cheers/type/user/user";
 
 @Component({
     selector: 'app-party-transfer',
@@ -12,8 +11,8 @@ import {UserItem} from "../../../../gen/ts/cheers/type/user/user";
 })
 export class PartyTransferComponent implements OnInit {
 
-    selectedUser: UserItem | null;
-    $searchResults: Observable<UserItem[] | null> = of(null)
+    selectedUser: User | null;
+    $searchResults: Observable<User[] | null> = of(null)
     @ViewChild('searchInput', {static: true}) searchInput!: ElementRef;
 
     constructor(
@@ -40,7 +39,7 @@ export class PartyTransferComponent implements OnInit {
         this.dialogRef.close();
     }
 
-    onUserClick(user: UserItem) {
+    onUserClick(user: User) {
         this.selectedUser = user;
     }
 

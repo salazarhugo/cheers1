@@ -10,7 +10,7 @@ import {EMPTY, firstValueFrom, throwError} from "rxjs";
 @Injectable({
   providedIn: 'root'
 })
-export class UserResolver implements Resolve<User> {
+export class UserResolver implements Resolve<User | null> {
 
   constructor(
       public userService: UserService,
@@ -20,34 +20,34 @@ export class UserResolver implements Resolve<User> {
   ) {
   }
 
-  resolve(route: ActivatedRouteSnapshot): Promise<User> {
+  resolve(route: ActivatedRouteSnapshot): Promise<User | null> {
     return new Promise(async (resolve, reject) => {
 
         const authUser = await firstValueFrom(this.afAuth.authState)
-        const token = await authUser?.getIdTokenResult()
-        if (!token)
-            return
 
-        // Check if user is signed in
-        if (!authUser) {
-            await this.router.navigate(['sign-in']);
-            return reject();
+        if (authUser) {
+            let user = await firstValueFrom(this.api.getUser(authUser.uid))
+
+            if (user == null) {
+                console.log("User doesn't exist")
+                await this.router.navigate(['finish-sign-up']);
+                return reject();
+            }
+
+            const token = await authUser?.getIdTokenResult()
+            if (!token)
+                return
+
+            user.admin = token.claims["admin"] != null
+            user.moderator = token.claims["moderator"] != null
+            user.business = token.claims["business"] != null
+
+            this.userService.setUser(user)
+            return resolve(user)
         }
-
-        let user = await firstValueFrom(this.api.getUser(authUser.uid))
-
-        // Check if user document exists
-        if (!user) {
-            console.log("User doesn't exist")
-            await this.router.navigate(['finish-sign-up']);
-            return reject();
+        else {
+            return resolve(null)
         }
-
-        user.admin = token.claims["admin"] != null
-        user.business = token.claims["business"] != null
-
-        this.userService.setUser(user)
-        resolve(user)
     })
   }
 }

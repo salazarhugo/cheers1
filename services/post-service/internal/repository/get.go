@@ -4,6 +4,7 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	postpb "github.com/salazarhugo/cheers1/gen/go/cheers/type/post"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/mapper"
 )
 
 func (p *postRepository) GetPost(
@@ -30,7 +31,7 @@ func (p *postRepository) GetPost(
 
 	if result.Next() {
 		m := result.Record().Values[0]
-		err := utils.MapToProto(post, m)
+		err := mapper.MapToProto(post, m)
 		if err != nil {
 			return nil, err
 		}

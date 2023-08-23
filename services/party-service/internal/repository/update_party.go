@@ -4,6 +4,7 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	party "github.com/salazarhugo/cheers1/gen/go/cheers/type/party"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/mapper"
 )
 
 func (p *partyRepository) UpdateParty(
@@ -17,7 +18,7 @@ func (p *partyRepository) UpdateParty(
 		return "", err
 	}
 
-	m, err := utils.ProtoToMap(party)
+	m, err := mapper.ProtoToMap(party)
 	if err != nil {
 		return "", err
 	}

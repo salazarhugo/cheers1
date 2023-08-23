@@ -7,10 +7,10 @@ require (
 	github.com/golang/protobuf v1.5.2
 	github.com/google/uuid v1.3.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230320172703-7791c9f6d9ce
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230814193002-ccda85dd57dc
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221231184455-4409be1c01d8
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20230814193002-ccda85dd57dc
 	github.com/sirupsen/logrus v1.9.0
 	golang.org/x/net v0.1.0
 	google.golang.org/grpc v1.50.1
@@ -24,7 +24,7 @@ require (
 	cloud.google.com/go/firestore v1.6.1 // indirect
 	cloud.google.com/go/iam v0.6.0 // indirect
 	cloud.google.com/go/kms v1.6.0 // indirect
-	cloud.google.com/go/profiler v0.3.0 // indirect
+	cloud.google.com/go/profiler v0.3.1 // indirect
 	cloud.google.com/go/pubsub v1.3.1 // indirect
 	cloud.google.com/go/storage v1.27.0 // indirect
 	firebase.google.com/go/v4 v4.9.0 // indirect
@@ -32,9 +32,9 @@ require (
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
-	github.com/google/pprof v0.0.0-20220412212628-83db2b799d1f // indirect
+	github.com/google/pprof v0.0.0-20221103000818-d260c55eee4c // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
-	github.com/googleapis/gax-go/v2 v2.6.0 // indirect
+	github.com/googleapis/gax-go/v2 v2.7.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.12.0 // indirect
 	github.com/labstack/echo/v4 v4.9.1 // indirect
 	github.com/labstack/gommon v0.4.0 // indirect

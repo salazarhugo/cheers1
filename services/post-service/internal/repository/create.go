@@ -5,6 +5,7 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	utils "github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/mapper"
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"log"
 	"time"
@@ -27,7 +28,7 @@ func (p *postRepository) CreatePost(
 	post.CreatorId = userID
 	post.CreateTime = time.Now().Unix()
 
-	m, err := utils.ProtoToMap(post)
+	m, err := mapper.ProtoToMap(post)
 	if err != nil {
 		return "", err
 	}

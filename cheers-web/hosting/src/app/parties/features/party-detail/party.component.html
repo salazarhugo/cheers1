@@ -1,6 +1,9 @@
-<div class="party-container" fxLayout="column" *ngIf="userService.user$ | async as viewer">
-    <div *ngIf="party as party" class="party" fxLayout="column">
-        <div class="party-banner-container image-placeholder" fxLayoutAlign="center center">
+<div *ngIf="party as party" class="party-banner-blurry-container" >
+    <img *ngIf="party.bannerUrl" [src]="party.bannerUrl" alt="party banner" class="party-banner-blurry">
+</div>
+<div *ngIf="party as party" class="party-container" fxLayout="column">
+    <div class="party" fxLayout="column">
+        <div class="party-banner-container mat-elevation-z4" fxLayoutAlign="center center">
             <img *ngIf="party.bannerUrl" [src]="party.bannerUrl" alt="party banner" class="party-banner">
         </div>
         <div class="party-header">
@@ -9,17 +12,17 @@
             <h3> {{party.locationName}}</h3>
             <mat-divider></mat-divider>
             <div class="party-header-buttons" fxLayoutAlign="end" fxLayoutGap="20px">
-                <admin-button [isAdmin]="viewer.admin" (click)="onTransferClick()">
+                <admin-button [isAdmin]="viewer?.moderator == true" (click)="onTransferClick()">
                     <mat-icon>transfer_within_a_station</mat-icon>
                     <span class="button-span">Transfer</span>
                 </admin-button>
 
-                <admin-button [isAdmin]="viewer.admin" (click)="onDuplicateClick()">
+                <admin-button [isAdmin]="viewer?.moderator == true" (click)="onDuplicateClick()">
                     <mat-icon>content_copy</mat-icon>
                     <span class="button-span">Duplicate</span>
                 </admin-button>
 
-                <button *ngIf="party.isHost || viewer.admin" [routerLink]="['/manage/parties', party.id, 'basicinfo']" mat-flat-button>
+                <button *ngIf="party.isHost || viewer?.moderator" [routerLink]="['/manage/parties', party.id, 'basicinfo']" mat-flat-button>
                     <mat-icon>edit</mat-icon>
                     <span class="button-span">Edit</span>
                 </button>
@@ -54,46 +57,46 @@
 
         <div class="party-body" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="16px">
             <div fxFlex="500px" fxFlex.lt-md="0" fxLayout="column" fxLayoutGap="16px">
-                <mat-card>
+                <div>
                     <h2>Details</h2>
                     <div class="party-details" fxLayout="column" fxLayoutGap="8px">
                         <div fxLayoutAlign="none center">
-                            <mat-icon>people</mat-icon>
-                            <span class="button-span">{{party.goingCount}} people going</span>
+                            <mat-icon class="material-icons-outlined">people</mat-icon>
+                            <span class="button-span mat-body-1">{{party.goingCount}} people going</span>
                             <!--                            <span class="button-span">{{party-detail.interestedCount}} people interested</span>-->
                         </div>
                         <div fxLayoutAlign="none center">
-                            <mat-icon>flag_outline</mat-icon>
-                            <span class="button-span">Party by {{party.hostName}}</span>
+                            <mat-icon class="material-icons-outlined">flag_outline</mat-icon>
+                            <span class="button-span mat-body-1">Party by {{party.hostName}}</span>
                         </div>
                         <div fxLayoutAlign="none center">
-                            <mat-icon>location_on_outline</mat-icon>
-                            <span class="button-span">{{party.locationName}}</span>
+                            <mat-icon class="material-icons-outlined">location_on_outline</mat-icon>
+                            <span class="button-span mat-body-1">{{party.locationName}}</span>
                         </div>
                         <div fxLayoutAlign="none center">
                             <mat-icon>public_outline</mat-icon>
-                            <span class="button-span">{{party.privacy}}</span>
+                            <span class="button-span mat-body-1">{{party.privacy}}</span>
                         </div>
                     </div>
-                </mat-card>
+                </div>
 
-                <mat-card *ngIf="party.description">
+                <div *ngIf="party.description">
                     <h2>Description</h2>
-                    <p style="white-space: pre-line">{{party.description}}</p>
-                </mat-card>
+                    <p class="mat-body-1" style="white-space: pre-line; margin-top: 16px;">{{party.description}}</p>
+                </div>
 
             </div>
 
             <div fxFlex="360" fxFlex.lt-md="0" fxLayout="column" fxLayoutGap="16px">
-                <mat-card>
+                <div>
                     <h2>Tickets</h2>
                     <button [routerLink]="['/ticketing', party.id]" color="primary" mat-flat-button
                             style="margin-top: 16px">
                         <mat-icon>confirmation_number_outline</mat-icon>
                         <span class="button-span">Buy tickets</span>
                     </button>
-                </mat-card>
-                <mat-card style="padding: 0">
+                </div>
+                <div style="padding: 0">
                     <a [href]="'https://www.google.com/maps/@' + party.latitude + ',' + party.longitude + ',18z/'">
                         <img alt='static Mapbox map of the San Francisco bay area' class="party-location"
                              [src]="'https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-s+555555(' + party.longitude + ',' + party.latitude + '/' + party.longitude + ',' + party.latitude + ',13.75,0.00,0.00/1000x600@2x?access_token=pk.eyJ1Ijoic2FsYXphcmJyb2NrIiwiYSI6ImNqd3hxaDBleTFobGQ0Y2sxc3lpdnNwYXMifQ.TgYFgyclmL6pGXXANhnlsw'">
@@ -101,9 +104,9 @@
                     <div class="" fxLayout="column">
                         <h2 style="padding: 16px">{{party.locationName}}</h2>
                     </div>
-                </mat-card>
+                </div>
 
-                <mat-card>
+                <div>
                     <div fxLayoutAlign="space-between center">
                         <h2>Guest list</h2>
                         <button color="primary" mat-button routerLink="./guestlist">See all</button>
@@ -122,7 +125,7 @@
                             <span class="party-counter-subtitle">INVITED</span>
                         </div>
                     </div>
-                </mat-card>
+                </div>
             </div>
 
         </div>
