@@ -7,7 +7,7 @@
 <!--                </mat-chip>-->
 <!--            </mat-chip-list>-->
             <div class="parties-header">
-                <button color="primary" mat-flat-button routerLink="/parties/create">Create New Party</button>
+                <button *ngIf="$user | async as user" color="primary" mat-flat-button routerLink="/parties/create">Create New Party</button>
             </div>
         </header>
 
@@ -23,7 +23,7 @@
                 </ng-container>
             </div>
         </section>
-        <section *ngIf="$parties | async as parties">
+        <section *ngIf="partyList as parties">
             <h1 class="mat-h1" style="padding-bottom: 16px">Discover parties</h1>
             <div *ngIf="parties.length == 0" fxLayout="column" fxLayoutAlign="center center">
                 <h1> No parties at the moment</h1>
@@ -34,6 +34,7 @@
                     <app-party-item fxFlex="calc(33.33% - 16px)" fxFlex.lt-lg="calc(50% - 16px)" fxFlex.lt-md="calc(100% - 16px)" [party]="party"></app-party-item>
                 </ng-container>
             </div>
+            <button *ngIf="!endReached" mat-flat-button (click)="loadParties()">More</button>
         </section>
     </div>
 </div>

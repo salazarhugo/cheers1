@@ -9,7 +9,10 @@ import (
 
 type PartyRepository interface {
 	CreateParty(userID string, party *party.Party) (*party.Party, error)
+	InsertParty(party *party.Party) (string, error)
 	GetParty(id string) (*party.Party, error)
+	GetPartyWithSlug(slug string) (*party.Party, error)
+	GetPartyWithName(name string) (*party.Party, error)
 	UpdateParty(party *party.Party) (string, error)
 	DeleteParty(id string) error
 

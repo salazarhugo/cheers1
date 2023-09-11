@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type PartyServiceClient interface {
 	CreateParty(ctx context.Context, in *CreatePartyRequest, opts ...grpc.CallOption) (*CreatePartyResponse, error)
 	GetParty(ctx context.Context, in *GetPartyRequest, opts ...grpc.CallOption) (*GetPartyResponse, error)
+	UpsertParty(ctx context.Context, in *UpsertPartyRequest, opts ...grpc.CallOption) (*UpsertPartyResponse, error)
 	UpdateParty(ctx context.Context, in *UpdatePartyRequest, opts ...grpc.CallOption) (*UpdatePartyResponse, error)
 	DeleteParty(ctx context.Context, in *DeletePartyRequest, opts ...grpc.CallOption) (*DeletePartyResponse, error)
 	GetPartyItem(ctx context.Context, in *GetPartyItemRequest, opts ...grpc.CallOption) (*GetPartyItemResponse, error)
@@ -57,6 +58,15 @@ func (c *partyServiceClient) CreateParty(ctx context.Context, in *CreatePartyReq
 func (c *partyServiceClient) GetParty(ctx context.Context, in *GetPartyRequest, opts ...grpc.CallOption) (*GetPartyResponse, error) {
 	out := new(GetPartyResponse)
 	err := c.cc.Invoke(ctx, "/cheers.party.v1.PartyService/GetParty", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *partyServiceClient) UpsertParty(ctx context.Context, in *UpsertPartyRequest, opts ...grpc.CallOption) (*UpsertPartyResponse, error) {
+	out := new(UpsertPartyResponse)
+	err := c.cc.Invoke(ctx, "/cheers.party.v1.PartyService/UpsertParty", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -150,6 +160,7 @@ func (c *partyServiceClient) DuplicateParty(ctx context.Context, in *DuplicatePa
 type PartyServiceServer interface {
 	CreateParty(context.Context, *CreatePartyRequest) (*CreatePartyResponse, error)
 	GetParty(context.Context, *GetPartyRequest) (*GetPartyResponse, error)
+	UpsertParty(context.Context, *UpsertPartyRequest) (*UpsertPartyResponse, error)
 	UpdateParty(context.Context, *UpdatePartyRequest) (*UpdatePartyResponse, error)
 	DeleteParty(context.Context, *DeletePartyRequest) (*DeletePartyResponse, error)
 	GetPartyItem(context.Context, *GetPartyItemRequest) (*GetPartyItemResponse, error)
@@ -173,6 +184,9 @@ func (UnimplementedPartyServiceServer) CreateParty(context.Context, *CreateParty
 }
 func (UnimplementedPartyServiceServer) GetParty(context.Context, *GetPartyRequest) (*GetPartyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetParty not implemented")
+}
+func (UnimplementedPartyServiceServer) UpsertParty(context.Context, *UpsertPartyRequest) (*UpsertPartyResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpsertParty not implemented")
 }
 func (UnimplementedPartyServiceServer) UpdateParty(context.Context, *UpdatePartyRequest) (*UpdatePartyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateParty not implemented")
@@ -246,6 +260,24 @@ func _PartyService_GetParty_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PartyServiceServer).GetParty(ctx, req.(*GetPartyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PartyService_UpsertParty_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpsertPartyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PartyServiceServer).UpsertParty(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.party.v1.PartyService/UpsertParty",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PartyServiceServer).UpsertParty(ctx, req.(*UpsertPartyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -426,6 +458,10 @@ var PartyService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetParty",
 			Handler:    _PartyService_GetParty_Handler,
+		},
+		{
+			MethodName: "UpsertParty",
+			Handler:    _PartyService_UpsertParty_Handler,
 		},
 		{
 			MethodName: "UpdateParty",

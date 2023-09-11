@@ -23,6 +23,13 @@ service PartyService {
     };
   }
 
+  rpc UpsertParty (UpsertPartyRequest) returns (UpsertPartyResponse) {
+    option (google.api.http) = {
+      put: "/v1/parties"
+      body: "*"
+    };
+  }
+
   rpc UpdateParty (UpdatePartyRequest) returns (UpdatePartyResponse) {
     option (google.api.http) = {
       patch: "/v1/parties"
@@ -149,6 +156,14 @@ message GetPartyItemRequest {
 
 message GetPartyItemResponse {
   PartyItem item = 1;
+}
+
+message UpsertPartyRequest {
+  cheers.type.Party party = 1;
+}
+
+message UpsertPartyResponse {
+  cheers.type.Party party = 1;
 }
 
 message UpdatePartyRequest {

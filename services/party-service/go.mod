@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go/datastore v1.12.0
 	github.com/google/uuid v1.3.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230814193002-ccda85dd57dc
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230823173929-d056b20f582b
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221113151338-1ae307745902
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20230814193002-ccda85dd57dc

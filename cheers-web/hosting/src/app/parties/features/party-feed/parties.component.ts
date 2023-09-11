@@ -1,12 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {firstValueFrom, map, Observable, of} from "rxjs";
-import {Post} from "../../../shared/data/models/post.model";
-import {Story} from "../../../shared/data/models/story.model";
+import {concat, firstValueFrom, map, merge, Observable, of, Subject} from "rxjs";
 import {UserService} from "../../../shared/data/services/user.service";
-import {StoryService} from "../../../stories/data/story.service";
 import {PartyService} from "../../data/party.service";
 import {Party} from "../../../shared/data/models/party.model";
-import {orderBy} from "@angular/fire/firestore";
+import {User} from "../../../shared/data/models/user.model";
 
 @Component({
     selector: 'app-parties',
@@ -15,30 +12,36 @@ import {orderBy} from "@angular/fire/firestore";
 })
 export class PartiesComponent implements OnInit {
 
-    $parties: Observable<Party[] | null> = of(null)
+    $user: Observable<User | null> = of(null)
+    partyList: Party[] = []
+    private contactsList = [];
     $myParties: Observable<Party[] | null> = of(null)
     chips: string[] = ["All", "Mix", "Outside", "Indoor", "Gadgets", "Android", "Piano", "Cloud computing", "Nouveaute", "Echecs"];
+    page = 1
+    pageSize = 18
+    endReached = false
 
     constructor(
         private userService: UserService,
         private partyService: PartyService,
     ) {
+        this.$user = this.userService.user$
     }
 
     async ngOnInit() {
-        // const user = await firstValueFrom(this.userService.user$)
-        // this.$myParties = this.partyService.getMyParties(user.id)
-        this.$parties = this.partyService.getPartyFeed().pipe(
-            map(parties => parties.map(party => {
-                // party.owner = party.hostId == user.id
-                console.log(party.hostId)
-                return party
-            })),
-            map(results => results.sort((a, b) => (a.createTime < b.createTime) ? 1 : -1))
-        )
+        this.loadParties()
     }
 
     onImgError(event: any) {
         event.target.src = 'assets/default_profile_picture.png';
+    }
+
+    loadParties() {
+        this.partyService.getPartyFeed(this.page, this.pageSize).subscribe(parties => {
+            this.endReached = parties.length < this.pageSize
+            if (!this.endReached)
+                this.page++;
+            this.partyList.push(...parties)
+        })
     }
 }

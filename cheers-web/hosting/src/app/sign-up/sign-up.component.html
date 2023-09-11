@@ -1,12 +1,12 @@
 <div fxLayout="row" style="height: 100vh">
-   <div fxFlex="50" fxLayoutAlign="center center" fxLayout="column">
+   <div fxFlex="50" fxFlex.lt-md="100" fxLayoutAlign="center center" fxLayout="column">
        <app-register></app-register>
        <div class="create-account" fxLayoutAlign="center">
            <span>Already have an account? </span>
            <a routerLink="/sign-in" style="margin-left: 8px"><b> Sign In</b></a>
        </div>
    </div>
-    <div fxFlex="50" class="sign-up-container-right" fxLayoutAlign="space-between center" fxLayout="column">
+    <div fxHide.lt-md fxFlex="50" class="sign-up-container-right" fxLayoutAlign="space-between center" fxLayout="column">
         <div class="sign-up-right-text-container">
             <h1 class="mat-h1">Sell your event better, faster, stronger.</h1>
             <span class="mat-body-strong" style="font-size: 16px;color: rgb(150, 150, 150)">We make it easier to sell tickets and grow your communities, so you can focus on creating amazing events.<br><br>Join us to release your event to our community of 1,5 millions+ registered users worldwide with over 2 millions visits per month.</span>

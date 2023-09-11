@@ -118,8 +118,8 @@ export class PartyService {
         return this.partyFeed$
     }
 
-    getPartyFeed(): Observable<Party[]> {
-        return this.http.get<FeedPartyResponse>(`${environment.GATEWAY_URL}/v1/parties/feed`)
+    getPartyFeed(page: number = 1, pageSize: number = 18): Observable<Party[]> {
+        return this.http.get<FeedPartyResponse>(`${environment.GATEWAY_URL}/v1/parties/feed?page=${page}&pageSize=${pageSize}`)
             .pipe(map(res => res.items.map(p => toParty(p))));
     }
 }

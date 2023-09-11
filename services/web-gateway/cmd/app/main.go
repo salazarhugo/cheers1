@@ -5,6 +5,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"flag"
+	"fmt"
 	"github.com/felixge/httpsnoop"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/account/v1"
@@ -23,6 +24,7 @@ import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/ticket/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"google.golang.org/api/idtoken"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
@@ -49,11 +51,10 @@ func main() {
 			if err != nil {
 				log.Printf("error getting Auth client: %v\n", err)
 			} else {
-				token, err := client.VerifyIDToken(ctx, jwt)
+				_, err := client.VerifyIDToken(ctx, jwt)
 				if err != nil {
 					log.Printf("error verifying ID token: %v\n", err)
 				}
-				log.Printf("Verified ID token: %v\n", token)
 			}
 
 			jwtPayload := strings.Split(jwt, ".")[1]
@@ -73,15 +74,9 @@ func main() {
 		log.Println(err)
 	}
 
-	//cred := os.Getenv("GOOGLE_APPLICATION_CREDENTIALS")
-	//log.Println(cred)
-
 	transportCredentials := credentials.NewTLS(&tls.Config{
 		RootCAs: systemRoots,
 	})
-	log.Println(transportCredentials)
-
-	//perRPC, err := oauth.NewServiceAccountFromFile("../../api-gateway-service-account.json", "https://www.googleapis.com/auth/cloud-platform")
 
 	if err != nil {
 		log.Println(err)
@@ -95,13 +90,11 @@ func main() {
 		grpc.WithUnaryInterceptor(clientInterceptor),
 	}
 
-	if !*isProd {
+	if *isProd {
 		log.Println("Running in production environment")
-		options = append(options, grpc.WithTransportCredentials(transportCredentials))
-	} else {
-		log.Println("Running in test environment")
-		options = append(options, grpc.WithInsecure())
 	}
+
+	options = append(options, grpc.WithTransportCredentials(transportCredentials))
 
 	err = chat.RegisterChatServiceHandlerFromEndpoint(ctx, mux, "chat-service-r3a2dr4u4a-nw.a.run.app:443", options)
 	err = user.RegisterUserServiceHandlerFromEndpoint(ctx, mux, "user-service-r3a2dr4u4a-nw.a.run.app:443", options)
@@ -158,19 +151,51 @@ func clientInterceptor(
 		return status.Errorf(codes.InvalidArgument, "Failed retrieving metadata")
 	}
 
-	//option := idtoken.WithCredentialsFile("../../api-gateway-service-account.json")
-	//res, err := idtoken.NewTokenSource(ctx, "https://story-service-r3a2dr4u4a-nw.a.run.app", option)
-	//token, err := res.Token()
-	//md.Delete("authorization")
-	//
-	//md.Set("Authorization", fmt.Sprintf("Bearer %s", token.AccessToken))
-	//
-	log.Println(md)
+	audience, err := getAudience(cc.Target())
+	if err != nil {
+		log.Println(err)
+	}
+
+	accessToken, err := generateAccessToken(ctx, audience)
+	if err != nil {
+		log.Println(err)
+	}
+
+	log.Println(audience, accessToken)
+
+	md.Set("Authorization", fmt.Sprintf("Bearer %s", accessToken))
+	md.Set("X-Serverless-Authorization", fmt.Sprintf("Bearer %s", accessToken))
+
+	ctx = metadata.NewOutgoingContext(ctx, md)
 
 	// Calls the invoker to execute RPC
-	err := invoker(ctx, method, req, reply, cc, opts...)
+	err = invoker(ctx, method, req, reply, cc, opts...)
+
 	// Logic after invoking the invoker
 	log.Printf("Invoked RPC method=%s; Duration=%s; Error=%v", method, time.Since(start), err)
 
 	return err
+}
+
+func getAudience(target string) (string, error) {
+	host, _, err := net.SplitHostPort(target)
+	if err != nil {
+		return "", err
+	}
+
+	return fmt.Sprintf("https://%s", host), nil
+}
+
+func generateAccessToken(ctx context.Context, audience string) (string, error) {
+	tokenSource, err := idtoken.NewTokenSource(ctx, audience)
+	if err != nil {
+		return "", err
+	}
+
+	token, err := tokenSource.Token()
+	if err != nil {
+		log.Println(err)
+	}
+
+	return token.AccessToken, nil
 }

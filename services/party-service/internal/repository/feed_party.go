@@ -14,11 +14,15 @@ func (p *partyRepository) FeedParty(
 	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
 	defer session.Close()
 
+	page := request.GetPage()
+	if page == 0 {
+		page = 1
+	}
 	pageSize := request.GetPageSize()
 	if pageSize == 0 {
 		pageSize = 18
 	}
-	skip := request.GetPage() * request.GetPageSize()
+	skip := pageSize * (page - 1)
 
 	cypher, err := utils.GetCypher("internal/queries/FeedParty.cql")
 	if err != nil {

@@ -1,0 +1,2 @@
+CREATE
+  (party: Party $party)
