@@ -5,9 +5,7 @@ import (
 	"fmt"
 	"google.golang.org/api/idtoken"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
-	"google.golang.org/grpc/status"
 	"log"
 	"net"
 	"time"
@@ -26,7 +24,7 @@ func CloudRunInterceptor(
 	start := time.Now()
 	md, ok := metadata.FromOutgoingContext(ctx)
 	if !ok {
-		return status.Errorf(codes.InvalidArgument, "Failed retrieving metadata")
+		md = metadata.New(map[string]string{})
 	}
 
 	audience, err := getAudience(cc.Target())

@@ -6,6 +6,7 @@ import {PartiesComponent} from "./parties.component";
 import {PartyItemModule} from "../../ui/party-item/party-item.module";
 import {MatChipsModule} from "@angular/material/chips";
 import {MaterialModule} from "../../../material/material.module";
+import {SHIMMER_OPTIONS, ShimmerModule} from "@sreyaj/ng-shimmer";
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import {MaterialModule} from "../../../material/material.module";
         PartyItemModule,
         MatChipsModule,
         MaterialModule,
+        ShimmerModule,
     ],
     exports: [PartiesComponent],
 })
