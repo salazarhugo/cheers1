@@ -1,7 +1,9 @@
 MATCH
   (me:User {id: $userID})
 MATCH
-  (user:User)-[:POSTED]->(party:Party {id: $partyID})
+  (party:Party {id: $partyID})
+OPTIONAL MATCH
+  (user:User)-[:POSTED]->(party)
 OPTIONAL MATCH
   (me)-[:FRIENDS]->(friend:User)-[w:WATCH_STATUS]->(party) WHERE w.value = "GOING"
 OPTIONAL MATCH
@@ -30,4 +32,3 @@ RETURN
     mutual_usernames: mutual_usernames,
     mutual_pictures: mutual_pictures
   }
-  ORDER BY party.createTime DESC

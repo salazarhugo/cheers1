@@ -1,9 +1,11 @@
 OPTIONAL MATCH
   (me:User {id: $userID})
 MATCH
-  (creator:User)-[:POSTED]->(party:Party)
-//WHERE
-//  toFloat(party.startDate) > timestamp() / 1000
+  (party:Party)
+WHERE
+  toFloat(party.startDate) > timestamp() / 1000
+OPTIONAL MATCH
+  (creator:User)-[:POSTED]->(party)
 OPTIONAL MATCH
   (me)-[:FRIENDS]->(friend:User)-[w:WATCH_STATUS]->(party) WHERE w.value = "GOING"
 OPTIONAL MATCH
@@ -18,9 +20,10 @@ WITH
   watchStatus.value AS watch_status,
   collect(friend.username) AS mutual_usernames,
   collect(friend.picture) AS mutual_pictures
-  SKIP
+ORDER BY party.startDate
+SKIP
   $skip
-  LIMIT
+LIMIT
   $pageSize
 RETURN
   {
@@ -34,4 +37,3 @@ RETURN
     mutual_usernames: mutual_usernames,
     mutual_pictures: mutual_pictures
   }
-  ORDER BY party.startDate DESC

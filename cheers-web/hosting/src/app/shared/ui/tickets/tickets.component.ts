@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {UserService} from "../../data/services/user.service";
-import {Observable} from "rxjs";
+import {Observable, tap} from "rxjs";
 import {Ticket} from "../../data/models/ticket.model";
 
 @Component({
@@ -11,14 +11,19 @@ import {Ticket} from "../../data/models/ticket.model";
 })
 export class TicketsComponent implements OnInit {
 
+  isLoading: boolean = true
+
   constructor(
       private userService: UserService,
   ) { }
 
-    tickets$: Observable<Ticket[]>
+    tickets: Ticket[] | null
 
     ngOnInit(): void {
-      this.tickets$ = this.userService.getUserTickets()
+      this.userService.getUserTickets().subscribe(value => {
+        this.tickets = value
+        this.isLoading = false
+      })
   }
 
 }

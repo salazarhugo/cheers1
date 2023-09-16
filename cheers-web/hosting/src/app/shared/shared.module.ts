@@ -17,6 +17,7 @@ import {TicketingComponent} from "./ui/ticketing/ticketing.component";
 import {LottieModule} from "ngx-lottie";
 import {CoreRoutingModule} from "../core/core-routing.module";
 import {DropzoneDirective} from './data/dropzone.directive';
+import {CheersSpinnerModule} from "./ui/cheers-spinner/cheers-spinner.module";
 
 
 const components = [
@@ -42,6 +43,7 @@ const components = [
         LottieModule,
         CoreRoutingModule,
         RouterModule,
+        CheersSpinnerModule,
     ],
     exports: [
         ...components

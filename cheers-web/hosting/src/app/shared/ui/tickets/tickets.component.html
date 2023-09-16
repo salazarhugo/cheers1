@@ -1,20 +1,25 @@
-<section class="tickets-header">
-    <h2>Your Tickets</h2>
-</section>
-<div *ngIf="tickets$ | async as tickets" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
-    <mat-card *ngFor="let ticket of tickets" class="ticket" fxLayoutAlign="space-between center">
-        <div>
-            <h1>{{ticket.partyName}}</h1>
-            <h4>{{ticket.name}}</h4>
-            <h3>{{ticket.description}}</h3>
-<!--            <span class="mat-step-label">{{ticket.validated ? "Validated" : "Not validated"}}</span>-->
-            <span class="mat-step-label">Ticket Price</span>
-            <h2>{{ticket.price / 100 | currency: 'EUR'}} </h2>
-        </div>
-        <div>
-            <div fxLayout="row" fxLayoutAlign="space-between center">
-                <qr-code [size]="100" [value]="ticket.id"></qr-code>
-            </div>
-        </div>
-    </mat-card>
+<div *ngIf="isLoading else main" fxLayoutAlign="center center" style="height: 100vh">
+    <cheers-spinner ></cheers-spinner>
 </div>
+<ng-template #main>
+    <section class="tickets-header">
+        <h2>Your Tickets</h2>
+    </section>
+    <div *ngIf="tickets" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
+        <mat-card *ngFor="let ticket of tickets" class="ticket" fxLayoutAlign="space-between center">
+            <div>
+                <h1>{{ticket.partyName}}</h1>
+                <h4>{{ticket.name}}</h4>
+                <h3>{{ticket.description}}</h3>
+                <!--            <span class="mat-step-label">{{ticket.validated ? "Validated" : "Not validated"}}</span>-->
+                <span class="mat-step-label">Ticket Price</span>
+                <h2>{{ticket.price / 100 | currency: 'EUR'}} </h2>
+            </div>
+            <div>
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <qr-code [size]="100" [value]="ticket.id"></qr-code>
+                </div>
+            </div>
+        </mat-card>
+    </div>
+</ng-template>

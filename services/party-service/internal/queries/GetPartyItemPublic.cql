@@ -1,5 +1,7 @@
 MATCH
-  (user:User)-[:POSTED]->(party:Party {id: $partyID})
+  (party:Party {id: $partyID})
+OPTIONAL MATCH
+  (user:User)-[:POSTED]->(party)
 OPTIONAL MATCH
   (:User)-[interest:INTERESTED]->(party)
 OPTIONAL MATCH

@@ -20,7 +20,8 @@ export const environment = {
     stripe: {
         public_key: 'pk_test_51KWqPTAga4Q2CELOu5oK8GHRPlQwVPvcISBMuoWU5yxP8VrtmBhRGm0TBKaKeKm1tz2EY7gmmvvYuFWMJEzWvFhC00qOX6gQb1'
     },
-    GATEWAY_URL: "http://localhost:8080",
+    // GATEWAY_URL: "http://localhost:8080",
+    GATEWAY_URL: "https://web-gateway-r3a2dr4u4a-nw.a.run.app",
     // GATEWAY_URL: "http://35.230.155.254:80",
 };
 

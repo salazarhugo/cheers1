@@ -5,8 +5,6 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"flag"
-	"fmt"
-	"github.com/felixge/httpsnoop"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/account/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/activity/v1"
@@ -24,17 +22,14 @@ import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/ticket/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
-	"google.golang.org/api/idtoken"
+	"github.com/salazarhugo/cheers1/services/grpc-gateway/internal"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"
-	"google.golang.org/grpc/status"
 	"log"
 	"net"
 	"net/http"
 	"strings"
-	"time"
 )
 
 func main() {
@@ -87,7 +82,7 @@ func main() {
 	flag.Parse()
 
 	options := []grpc.DialOption{
-		grpc.WithUnaryInterceptor(clientInterceptor),
+		grpc.WithUnaryInterceptor(internal.CloudRunInterceptor),
 	}
 
 	if *isProd {
@@ -113,9 +108,15 @@ func main() {
 	err = drink.RegisterDrinkServiceHandlerFromEndpoint(ctx, mux, "drink-service-r3a2dr4u4a-nw.a.run.app:443", options)
 	err = note.RegisterNoteServiceHandlerFromEndpoint(ctx, mux, "note-service-r3a2dr4u4a-nw.a.run.app:443", options)
 
+	handler := internal.ChainMiddleware(mux,
+		internal.Cors,
+		internal.LoggerMiddleware,
+		//internal.BlockEndpointMiddleware,
+	)
+
 	// Creating a normal HTTP server
 	server := http.Server{
-		Handler: withLogger(Cors(mux)),
+		Handler: handler,
 	}
 
 	l, err := net.Listen("tcp", ":8080")
@@ -126,76 +127,4 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-func withLogger(handler http.Handler) http.Handler {
-	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
-		m := httpsnoop.CaptureMetrics(handler, writer, request)
-		log.Printf("http[%d]-- %s -- %s\n", m.Code, m.Duration, request.URL.Path)
-	})
-}
-
-func clientInterceptor(
-	ctx context.Context,
-	method string,
-	req interface{},
-	reply interface{},
-	cc *grpc.ClientConn,
-	invoker grpc.UnaryInvoker,
-	opts ...grpc.CallOption,
-) error {
-	// Logic before invoking the invoker
-	start := time.Now()
-	md, ok := metadata.FromOutgoingContext(ctx)
-	if !ok {
-		return status.Errorf(codes.InvalidArgument, "Failed retrieving metadata")
-	}
-
-	audience, err := getAudience(cc.Target())
-	if err != nil {
-		log.Println(err)
-	}
-
-	accessToken, err := generateAccessToken(ctx, audience)
-	if err != nil {
-		log.Println(err)
-	}
-
-	log.Println(audience, accessToken)
-
-	md.Set("Authorization", fmt.Sprintf("Bearer %s", accessToken))
-	md.Set("X-Serverless-Authorization", fmt.Sprintf("Bearer %s", accessToken))
-
-	ctx = metadata.NewOutgoingContext(ctx, md)
-
-	// Calls the invoker to execute RPC
-	err = invoker(ctx, method, req, reply, cc, opts...)
-
-	// Logic after invoking the invoker
-	log.Printf("Invoked RPC method=%s; Duration=%s; Error=%v", method, time.Since(start), err)
-
-	return err
-}
-
-func getAudience(target string) (string, error) {
-	host, _, err := net.SplitHostPort(target)
-	if err != nil {
-		return "", err
-	}
-
-	return fmt.Sprintf("https://%s", host), nil
-}
-
-func generateAccessToken(ctx context.Context, audience string) (string, error) {
-	tokenSource, err := idtoken.NewTokenSource(ctx, audience)
-	if err != nil {
-		return "", err
-	}
-
-	token, err := tokenSource.Token()
-	if err != nil {
-		log.Println(err)
-	}
-
-	return token.AccessToken, nil
 }

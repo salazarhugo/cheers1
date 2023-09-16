@@ -23,17 +23,23 @@
                 </ng-container>
             </div>
         </section>
-        <section *ngIf="partyList as parties">
-            <h1 class="mat-h1" style="padding-bottom: 16px">Discover parties</h1>
-            <div *ngIf="parties.length == 0" fxLayout="column" fxLayoutAlign="center center">
+
+        <section *ngIf="parties">
+            <div *ngIf="parties.size == 0" fxLayout="column" fxLayoutAlign="center center">
                 <h1> No parties at the moment</h1>
                 <h3> Follow people to start seeing parties they share</h3>
             </div>
-            <div fxLayout="row wrap" fxLayoutAlign="flex-start" fxLayoutGap="16px">
-                <ng-container *ngFor="let party of parties">
-                    <app-party-item fxFlex="calc(33.33% - 16px)" fxFlex.lt-lg="calc(50% - 16px)" fxFlex.lt-md="calc(100% - 16px)" [party]="party"></app-party-item>
-                </ng-container>
+
+            <div *ngFor="let p of parties | keyvalue: originalOrder">
+                <h1 class="mat-h1" style="padding-bottom: 16px">{{p.key}}</h1>
+
+                <div fxLayout="row wrap" fxLayoutAlign="flex-start" fxLayoutGap="16px">
+                    <ng-container *ngFor="let party of p.value">
+                        <app-party-item fxFlex="calc(33.33% - 16px)" fxFlex.lt-lg="calc(50% - 16px)" fxFlex.lt-md="calc(100% - 16px)" [party]="party"></app-party-item>
+                    </ng-container>
+                </div>
             </div>
+
             <button *ngIf="!endReached" mat-flat-button (click)="loadParties()">More</button>
         </section>
     </div>

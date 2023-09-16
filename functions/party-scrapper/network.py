@@ -1,9 +1,11 @@
+import os
+
 import requests
 
-USERNAME = "exologo"
-PASSWORD = "AqwXsz123987"
-HOST = "geo.iproyal.com"
-PORT = "32325"
+USERNAME = os.environ.get("PROXY_USERNAME")
+PASSWORD = os.environ.get("PROXY_PASSWORD")
+HOST = os.environ.get("PROXY_HOST")
+PORT = os.environ.get("PROXY_PORT")
 
 
 def get_with_proxy(url):

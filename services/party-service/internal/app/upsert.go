@@ -17,7 +17,7 @@ func (s *Server) UpsertParty(
 	}
 
 	party, err := s.partyRepository.GetPartyWithSlug(partyReq.Slug)
-	if err != nil {
+	if party != nil {
 		partyReq.Id = party.Id
 		newPartyId, err := s.partyRepository.UpdateParty(partyReq)
 		if err != nil {

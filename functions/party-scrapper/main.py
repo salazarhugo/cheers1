@@ -1,37 +1,12 @@
-import json
+import os
 
 import requests
 from bs4 import BeautifulSoup
-import firebase_admin
 import network
 import utils
 from utils import convert_to_epoch
-
-def update_parties(request):
-    total_page = 10
-    events = []
-    for page in range(1, total_page):
-        url = f"https://shotgun.live/paris?page={page}"
-        print(url)
-        events.extend(get_all_events(url))
-    print(events)
-
-    token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjYzODBlZjEyZjk1ZjkxNmNhZDdhNGNlMzg4ZDJjMmMzYzIzMDJmZGUiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiSHVnbyBTYWxhemFyIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FBY0hUdGVwQmJRMjA0SGtTM0VmemNLUFdjVk41SVZfUlkzS19HY2RaTVpPeGR6Ui1IVT1zOTYtYyIsImFkbWluIjp0cnVlLCJtb2RlcmF0b3IiOnRydWUsInZlcmlmaWVkIjp0cnVlLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vY2hlZXJzLWEyNzVlIiwiYXVkIjoiY2hlZXJzLWEyNzVlIiwiYXV0aF90aW1lIjoxNjkyODkyMjc1LCJ1c2VyX2lkIjoibUlGclZwQ0NKcGJjU3dNTFo0OVJCWDEyRThtMSIsInN1YiI6Im1JRnJWcENDSnBiY1N3TUxaNDlSQlgxMkU4bTEiLCJpYXQiOjE2OTI4OTIyNzUsImV4cCI6MTY5Mjg5NTg3NSwiZW1haWwiOiJodWdvYnJvY2s3NEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjEwNjgxNTcyOTkwNzU5NzQxNDk0MiJdLCJlbWFpbCI6WyJodWdvYnJvY2s3NEBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.i3brKKb5OrR5kZo0ltATG06p1D6a5II9LWXrL2JI59pJ93bNzPdIxSM8K5y5978KlVQECZQ93MTZHnmtPwPoQutWiqVrHoEtYG9hAnJoTmYPiXZNzelQil-a1pzTCDKOgT_X8qK23FcW2Is56AjA-B5FPHkiDdq6O3dc_wIoN6TesGlBqpi--yVO_n-tnbHEg_KSGnLoYjy_i7aFuRfs3Shz3XwSfvDTwuCe2YtuQYA-SKiDG4QDxEF31xGO5fhNCsBmlvl6abGffpVtbgZ9Voh0wa8SLNEBybWJaktxfZF34vl1B_fFFghVoUhG7ztv_fTvUBaIAm99iIiJ4SLNjw"
-
-    for event in events:
-        res = scrape_party(event)
-        print(json.dumps(res, indent=4))
-        x = requests.patch(
-            "https://android-gateway-clzdlli7.nw.gateway.dev/v1/parties",
-            json={
-                "party": res,
-            },
-            headers={
-                "Authorization": "Bearer " + token,
-            }
-        )
-        print(x)
-
+import functions_framework
+import multiprocessing
 
 def safe_list_get(l, idx, default):
     try:
@@ -83,6 +58,7 @@ def scrape_party(url):
         event_start_date = start_date
         event_end_date = end_date
 
+    print(event_slug)
     return {
         "slug": event_slug,
         "name": event_name,
@@ -97,5 +73,52 @@ def scrape_party(url):
         "longitude": longitude,
     }
 
+@functions_framework.http
+def scrape_parties(request):
+    os.environ["TOTAL_PAGE"] = "10"
+    os.environ["SCRAPE_URL"] ="https://shotgun.live/paris"
+    os.environ["GATEWAY_URL"] = "https://web-gateway-r3a2dr4u4a-nw.a.run.app"
+    os.environ["PROXY_USERNAME"] = "exologo"
+    os.environ["PROXY_PASSWORD"] = "AqwXsz123987"
+    os.environ["PROXY_HOST"] ="geo.iproyal.com"
+    os.environ["PROXY_PORT"] ="32325"
 
-update_parties("")
+    scrape_url = os.environ.get("SCRAPE_URL")
+    gateway_url = os.environ.get("GATEWAY_URL")
+    total_page = os.environ.get("TOTAL_PAGE")
+    eventsUrl = []
+    events = []
+
+
+    for page in range(1, int(total_page)):
+        url = f"{scrape_url}?page={page}"
+        eventsUrl.extend(get_all_events(url))
+
+    success_count = 0
+
+     # Create a pool of workers
+    with multiprocessing.Pool(len(eventsUrl)) as pool:
+        events = pool.map(scrape_party, eventsUrl)
+
+    print(events)
+
+    for event in events:
+        try:
+            x = requests.put(
+                f"{gateway_url}/v1/parties",
+                json={
+                    "party": event,
+                },
+                timeout=3,
+            )
+            print(x)
+            success_count += 1
+        except:
+            print("An exception occurred")
+
+        print(f"{success_count}/{len(eventsUrl)} successful updates")
+
+    return f"Done {success_count}/{len(eventsUrl)} successful updates"
+
+
+scrape_parties("")
