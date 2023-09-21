@@ -7,6 +7,7 @@ import (
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	userpb "github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
+	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"log"
@@ -24,6 +25,7 @@ func GetUsers(userIds []string) ([]*pb.UserItem, error) {
 	})
 	conn, err := grpc.DialContext(ctx, "user-service-r3a2dr4u4a-nw.a.run.app:443",
 		grpc.WithTransportCredentials(transportCredentials),
+		grpc.WithUnaryInterceptor(utils.CloudRunInterceptor),
 	)
 	defer conn.Close()
 

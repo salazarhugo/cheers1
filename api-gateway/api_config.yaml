@@ -37,6 +37,7 @@ authentication:
       requirements:
         - provider_id: firebase
     - selector: cheers.auth.v1.*
+    - selector: cheers.party.v1.*
 backend:
   rules:
     # Auth Service methods

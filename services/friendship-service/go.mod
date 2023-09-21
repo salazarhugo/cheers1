@@ -4,10 +4,10 @@ go 1.19
 
 require (
 	github.com/go-redis/redis/v9 v9.0.0-rc.1
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230814193002-ccda85dd57dc
-	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230916203241-51cf8e6d4bec
+	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20230916203241-51cf8e6d4bec
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20230814193002-ccda85dd57dc
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20230916203241-51cf8e6d4bec
 	github.com/sirupsen/logrus v1.9.0
 	golang.org/x/net v0.1.0
 	google.golang.org/grpc v1.50.1

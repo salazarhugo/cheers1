@@ -6,7 +6,6 @@ import network
 import utils
 from utils import convert_to_epoch
 import functions_framework
-import multiprocessing
 
 def safe_list_get(l, idx, default):
     try:
@@ -58,7 +57,6 @@ def scrape_party(url):
         event_start_date = start_date
         event_end_date = end_date
 
-    print(event_slug)
     return {
         "slug": event_slug,
         "name": event_name,
@@ -86,39 +84,32 @@ def scrape_parties(request):
     scrape_url = os.environ.get("SCRAPE_URL")
     gateway_url = os.environ.get("GATEWAY_URL")
     total_page = os.environ.get("TOTAL_PAGE")
-    eventsUrl = []
     events = []
-
 
     for page in range(1, int(total_page)):
         url = f"{scrape_url}?page={page}"
-        eventsUrl.extend(get_all_events(url))
+        events.extend(get_all_events(url))
 
     success_count = 0
-
-     # Create a pool of workers
-    with multiprocessing.Pool(len(eventsUrl)) as pool:
-        events = pool.map(scrape_party, eventsUrl)
-
-    print(events)
-
     for event in events:
+        res = scrape_party(event)
+        # print(json.dumps(res, indent=4))
         try:
             x = requests.put(
                 f"{gateway_url}/v1/parties",
                 json={
-                    "party": event,
+                    "party": res,
                 },
-                timeout=3,
+                timeout=5,
             )
             print(x)
             success_count += 1
         except:
             print("An exception occurred")
 
-        print(f"{success_count}/{len(eventsUrl)} successful updates")
+        print(f"{success_count}/{len(events)} successful updates")
 
-    return f"Done {success_count}/{len(eventsUrl)} successful updates"
+    return f"Done {success_count}/{len(events)} successful updates"
 
 
 scrape_parties("")

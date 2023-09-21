@@ -105,8 +105,8 @@ github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a h1:n
 github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a/go.mod h1:OoyrE7E7Em/DgZ/UbFrXaPuUiQZv/VcbJsTuofpA9JY=
 github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8 h1:h7xy7Td8H9Iubde5mKJPZqZXTCZs+ttug8gZZ0vqKLk=
 github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8/go.mod h1:r9VVw/Y+1GW5JrqrRZLxVctRHwXEqB6DZEWHCgnx//k=
-github.com/salazarhugo/cheers1/libs/utils v0.0.0-20230916192557-8bb9ad681013 h1:ogXfe1Oj6Ga7Rhfu2Y/SSZKz9z/kadfeUkET8ewIMFg=
-github.com/salazarhugo/cheers1/libs/utils v0.0.0-20230916192557-8bb9ad681013/go.mod h1:Q50n2ANxIH4iaFpEYmgm//5Bori5nMyxHfOb41VPtTA=
+github.com/salazarhugo/cheers1/libs/utils v0.0.0-20230916203241-51cf8e6d4bec h1:FOJyXwy7xbLeaq1AHsC+HMOCZidDtUqLc+JmKORjw9o=
+github.com/salazarhugo/cheers1/libs/utils v0.0.0-20230916203241-51cf8e6d4bec/go.mod h1:Q50n2ANxIH4iaFpEYmgm//5Bori5nMyxHfOb41VPtTA=
 github.com/sirupsen/logrus v1.9.0 h1:trlNQbNUG3OdDrDil03MCb1H2o9nJ1x4/5LYw7byDE0=
 github.com/sirupsen/logrus v1.9.0/go.mod h1:naHLuLoDiP4jHNo9R0sCBMtWGeIprob74mVsIT4qYEQ=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
