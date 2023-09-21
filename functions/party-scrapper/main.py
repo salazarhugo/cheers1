@@ -7,6 +7,7 @@ import utils
 from utils import convert_to_epoch
 import functions_framework
 
+
 def safe_list_get(l, idx, default):
     try:
         return l[idx]['src']
@@ -41,7 +42,7 @@ def scrape_party(url):
 
     svgs = soup.select("div.r-k200y svg")
     event_location = svgs[-1].parent.parent.findChildren("span")[0].text  # Dernier svg = location
-    (latitude, longitude) = utils.get_latitude_longitude_from_address(event_location)
+    (longitude, latitude) = utils.get_latitude_longitude_from_address(event_location)
     container = svgs[0].parent.parent.findChildren("div")[1].findChildren("div")
 
     event_end_date = 0
@@ -71,15 +72,16 @@ def scrape_party(url):
         "longitude": longitude,
     }
 
+
 @functions_framework.http
 def scrape_parties(request):
     os.environ["TOTAL_PAGE"] = "10"
-    os.environ["SCRAPE_URL"] ="https://shotgun.live/paris"
+    os.environ["SCRAPE_URL"] = "https://shotgun.live/paris"
     os.environ["GATEWAY_URL"] = "https://web-gateway-r3a2dr4u4a-nw.a.run.app"
     os.environ["PROXY_USERNAME"] = "exologo"
     os.environ["PROXY_PASSWORD"] = "AqwXsz123987"
-    os.environ["PROXY_HOST"] ="geo.iproyal.com"
-    os.environ["PROXY_PORT"] ="32325"
+    os.environ["PROXY_HOST"] = "geo.iproyal.com"
+    os.environ["PROXY_PORT"] = "32325"
 
     scrape_url = os.environ.get("SCRAPE_URL")
     gateway_url = os.environ.get("GATEWAY_URL")
@@ -103,13 +105,12 @@ def scrape_parties(request):
                 timeout=5,
             )
             print(x)
+            print(f"{event.name}")
+            print(f"{success_count}/{len(events)} successful updates")
             success_count += 1
         except:
             print("An exception occurred")
 
-        print(f"{success_count}/{len(events)} successful updates")
-
     return f"Done {success_count}/{len(events)} successful updates"
 
-
-scrape_parties("")
+# scrape_parties("")
