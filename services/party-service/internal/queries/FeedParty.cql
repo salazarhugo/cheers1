@@ -7,7 +7,9 @@ WHERE
 OPTIONAL MATCH
   (creator:User)-[:POSTED]->(party)
 OPTIONAL MATCH
-  (me)-[:FRIENDS]->(friend:User)-[w:WATCH_STATUS]->(party) WHERE w.value = "GOING"
+  (me)-[:FRIENDS]->(friend_going:User)-[w:WATCH_STATUS]->(party) WHERE w.value = "GOING"
+OPTIONAL MATCH
+  (me)-[:FRIENDS]->(friend_interested:User)-[w:WATCH_STATUS]->(party) WHERE w.value = "INTERESTED"
 OPTIONAL MATCH
   (me)-[watchStatus:WATCH_STATUS]->(party)
 WITH
@@ -18,8 +20,8 @@ WITH
   count(DISTINCT watchStatus) AS going_count,
   count(DISTINCT watchStatus) AS invited_count,
   watchStatus.value AS watch_status,
-  collect(friend.username) AS mutual_usernames,
-  collect(friend.picture) AS mutual_pictures
+  collect(DISTINCT properties(friend_going)) AS mutual_going,
+  collect(DISTINCT properties(friend_interested)) AS mutual_interested
 ORDER BY party.startDate
 SKIP
   $skip
@@ -34,6 +36,6 @@ RETURN
     invited_count:    invited_count,
     is_creator:       is_creator,
     viewer_watch_status: watch_status,
-    mutual_usernames: mutual_usernames,
-    mutual_pictures: mutual_pictures
+    mutual_going: mutual_going,
+    mutual_interested: mutual_interested
   }

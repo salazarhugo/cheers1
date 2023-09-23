@@ -30,7 +30,8 @@ func (s *Server) UpdateUser(
 	user.Bio = request.Bio
 	user.Website = request.Website
 	user.Birthday = request.Birthday
-	user.PhoneNumber = request.Birthday
+	user.PhoneNumber = request.PhoneNumber
+	user.Banner = request.Banner
 
 	err = s.userRepository.UpdateUser(userID, user)
 	if err != nil {

@@ -4,10 +4,10 @@ go 1.19
 
 require (
 	cloud.google.com/go/firestore v1.6.1
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230328021114-ee1af08f7fa0
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230921195226-8ae04f0f8ffe
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20230322151652-b1e627f408fc
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20230921195226-8ae04f0f8ffe
 	github.com/sirupsen/logrus v1.9.0
 	google.golang.org/api v0.102.0
 	google.golang.org/grpc v1.50.1

@@ -14,7 +14,6 @@ func (s *Server) FeedParty(
 	userID, _ := utils.GetUserId(ctx)
 
 	log.Println(request)
-	log.Println(request.GetPage())
 	response, err := s.partyRepository.FeedParty(userID, request)
 	if err != nil {
 		return nil, err
