@@ -1,0 +1,22 @@
+<div class="main" fxLayout="column" fxLayoutAlign="space-between">
+    <div class="parties-container" fxLayout="column">
+        <header class="party-feed-header">
+        </header>
+
+        <section class="your-parties m0">
+            <div fxLayoutAlign="space-between center">
+                <h1 class="mat-h1" style="padding-bottom: 16px">Your parties</h1>
+                <div class="parties-header">
+                    <button *ngIf="$user | async as user" color="primary" mat-flat-button routerLink="/parties/create">Create New Party</button>
+                </div>
+            </div>
+
+            <div *ngIf="$myParties | async as parties" fxLayout="row wrap" fxLayoutAlign="flex-start" fxLayoutGap="16px">
+                <ng-container *ngFor="let party of parties">
+                    <app-party-item fxFlex="none" [ngStyle]="{ 'width': 'calc(33.33% - 16px)' }" [ngStyle.lt-lg]="{ 'width': 'calc(50% - 16px)' }" [ngStyle.lt-md]="{ 'width': 'calc(100% - 16px)' }" [party]="party"></app-party-item>
+                </ng-container>
+            </div>
+        </section>
+
+    </div>
+</div>

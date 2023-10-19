@@ -1,4 +1,12 @@
-import {PartyItem, WatchStatus} from "../../../../gen/ts/cheers/party/v1/party_service";
+import {PartyItem, WatchStatus as WatchStatusPb} from "../../../../gen/ts/cheers/party/v1/party_service";
+import {User} from "./user.model";
+
+export enum WatchStatus {
+    GOING = "Going",
+    INTERESTED = "Interested",
+    NOT_INTERESTED = "Not interested",
+    MAYBE = "Maybe",
+}
 
 export class Party {
     isHost: boolean = false
@@ -12,6 +20,7 @@ export class Party {
     privacy: string = ""
     type: string = ""
     mutualCount: number = 0
+    mutualGoing: User[]
     price: number = 0
     bannerUrl: string = ""
     id: string = ""
@@ -21,18 +30,18 @@ export class Party {
     longitude: number = 0.0
     address: string = ""
     locationName: string = ""
-    going: boolean = false
     createTime: number = 0
     hostId: string = ""
     name: string = ""
-    interested: boolean = false
+    isNotInterested: boolean = true
+    watchStatus: WatchStatus = WatchStatus.NOT_INTERESTED
 }
 
 export function toParty(value: PartyItem): Party {
     const party = new Party()
     Object.assign(party, value.party)
-    party.going = value.viewerWatchStatus.toString() == "GOING"
-    party.interested = value.viewerWatchStatus == WatchStatus.INTERESTED
+    party.watchStatus = toWatchStatus(value.viewerWatchStatus)
+    party.isNotInterested = party.watchStatus == WatchStatus.NOT_INTERESTED
     party.goingCount = value.goingCount
     party.interestedCount = value.interestedCount
     party.invitedCount = value.invitedCount
@@ -40,5 +49,26 @@ export function toParty(value: PartyItem): Party {
     party.hostName = value.user?.name  || ""
     party.startDate = Number(value.party?.startDate)
     party.endDate = Number(value.party?.endDate)
+    console.log(party)
     return party
+}
+
+function toWatchStatus(value: any): WatchStatus {
+    switch (value) {
+        case "GOING": return WatchStatus.GOING;
+        case "UNWATCHED": return WatchStatus.NOT_INTERESTED;
+        case "INTERESTED": return WatchStatus.INTERESTED;
+        case "MAYBE": return WatchStatus.MAYBE;
+        case "UNRECOGNIZED": return WatchStatus.NOT_INTERESTED;
+        default: return WatchStatus.NOT_INTERESTED;
+    }
+}
+
+export function toWatchStatusPb(value: WatchStatus): WatchStatusPb {
+    switch (value) {
+        case WatchStatus.INTERESTED: return WatchStatusPb.INTERESTED;
+        case WatchStatus.MAYBE: return WatchStatusPb.MAYBE;
+        case WatchStatus.GOING: return WatchStatusPb.GOING;
+        default: return WatchStatusPb.UNWATCHED;
+    }
 }

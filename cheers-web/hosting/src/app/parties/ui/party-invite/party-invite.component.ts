@@ -13,8 +13,8 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 export class PartyInviteComponent implements OnInit {
 
     isLoading = false
-    selectedUsers: Set<UserItem> = new Set()
-    users: UserItem[]
+    selectedUsers: Set<User> = new Set()
+    users: User[]
 
     constructor(
         public dialogRef: MatDialogRef<PartyInviteComponent>,
@@ -29,7 +29,7 @@ export class PartyInviteComponent implements OnInit {
         this.users = users
     }
 
-    onSelectUser($event: UserItem) {
+    onSelectUser($event: User) {
         if (this.selectedUsers.has($event))
             this.selectedUsers.delete($event)
         else

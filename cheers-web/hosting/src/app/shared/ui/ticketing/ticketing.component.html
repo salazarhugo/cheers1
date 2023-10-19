@@ -118,9 +118,7 @@
                                 <p>* Mandatory field</p>
                             </div>
                             <div fxLayoutAlign="end">
-                                <button (click)="checkout()" color="primary" mat-flat-button
-                                        [disabled]="!hasAcceptedTerms" class="ticketing-next">Checkout
-                                </button>
+                                <cheers-button text="Checkout" (click)="checkout()" [isLoading]="isLoading" [disabled]="!hasAcceptedTerms"></cheers-button>
                             </div>
                         </mat-step>
                     </mat-stepper>

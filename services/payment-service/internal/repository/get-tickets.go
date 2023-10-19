@@ -4,7 +4,7 @@ import (
 	"cloud.google.com/go/firestore"
 	"context"
 	ticketpb "github.com/salazarhugo/cheers1/gen/go/cheers/ticket/v1"
-	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/mapper"
 )
 
 func GetTickets(
@@ -25,7 +25,7 @@ func GetTickets(
 			return nil, err
 		}
 		ticket := &ticketpb.Ticket{}
-		err = utils.MapToProto(ticket, doc.Data())
+		err = mapper.MapToProto(ticket, doc.Data())
 		if err != nil {
 			return nil, err
 		}

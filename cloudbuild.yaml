@@ -1,0 +1,8 @@
+steps:
+  # Run tests
+  - name: golang:1.21
+    entrypoint: /bin/bash
+    args:
+      - -c
+      - |
+        go test 

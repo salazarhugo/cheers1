@@ -8,13 +8,14 @@ import {
     CreatePartyResponse, DuplicatePartyRequest, DuplicatePartyResponse,
     FeedPartyResponse,
     GetPartyItemResponse, ListGoingRequest, ListGoingResponse, ListPartyResponse,
-    PartyItem, UpdatePartyRequest, UpdatePartyResponse, WatchStatus
+    PartyItem, UpdatePartyRequest, UpdatePartyResponse, watchStatusToJSON
 } from "../../../gen/ts/cheers/party/v1/party_service";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
-import {Party, toParty} from "../../shared/data/models/party.model";
+import {Party, toParty, toWatchStatusPb, WatchStatus} from "../../shared/data/models/party.model";
 import {ListPartyOrdersResponse, Order as OrderGen} from "../../../gen/ts/cheers/order/v1/order_service";
 import {UserItem} from "../../../gen/ts/cheers/type/user/user";
+import {toUser, toUserFromUserItem, User} from "../../shared/data/models/user.model";
 
 @Injectable({
     providedIn: 'root'
@@ -49,14 +50,14 @@ export class PartyService {
         }))
     }
 
-    listGoing(partyId: string): Promise<UserItem[]> {
+    listGoing(partyId: string): Promise<User[]> {
         return firstValueFrom(this.http.get<ListGoingResponse>(`${environment.GATEWAY_URL}/v1/parties/${partyId}/going`)
-            .pipe(map(r => r.users)))
+            .pipe(map(r => r.users.map(userItem => toUserFromUserItem(userItem)))))
     }
 
     answerParty(id: string, answer: WatchStatus): Promise<AnswerPartyResponse> {
         return firstValueFrom(this.http.post<AnswerPartyResponse>(`${environment.GATEWAY_URL}/v1/parties/${id}/answer`, {
-            answer: answer
+            watch_status: watchStatusToJSON(toWatchStatusPb(answer)),
         }))
     }
 
@@ -89,14 +90,6 @@ export class PartyService {
 
     getPartyTickets(id: string) {
         return firstValueFrom(this.fs.collection("ticketing").doc(id).collection<Ticket>("tickets").valueChanges())
-    }
-
-    interested(id: string) {
-        return this.api.interestParty(id)
-    }
-
-    uninterested(id: string) {
-        return this.api.uninterestParty(id)
     }
 
     getPartyOrders(partyId: string): Observable<OrderGen[]> {

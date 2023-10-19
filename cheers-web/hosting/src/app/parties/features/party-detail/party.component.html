@@ -12,12 +12,12 @@
             <h3> {{party.locationName}}</h3>
             <mat-divider></mat-divider>
             <div class="party-header-buttons" fxLayoutAlign="end" fxLayoutGap="20px">
-                <admin-button [isAdmin]="viewer?.moderator == true" (click)="onTransferClick()">
+                <admin-button [isAdmin]="viewer?.moderator == true || viewer?.admin == true" (click)="onTransferClick()">
                     <mat-icon>transfer_within_a_station</mat-icon>
                     <span class="button-span">Transfer</span>
                 </admin-button>
 
-                <admin-button [isAdmin]="viewer?.moderator == true" (click)="onDuplicateClick()">
+                <admin-button [isAdmin]="viewer?.moderator == true || viewer?.admin == true" (click)="onDuplicateClick()">
                     <mat-icon>content_copy</mat-icon>
                     <span class="button-span">Duplicate</span>
                 </admin-button>
@@ -27,16 +27,32 @@
                     <span class="button-span">Edit</span>
                 </button>
 
-                <button *ngIf="!party.isHost" [color]="party.interested ? 'primary' : undefined" mat-flat-button
-                        (click)="onInterestedClick()">
-                    <mat-icon *ngIf="party.interested">star</mat-icon>
-                    <mat-icon *ngIf="!party.interested">star_border</mat-icon>
-                    <span class="button-span">Interested</span>
+                <ng-template [ngIf]="party.isNotInterested">
+                    <button mat-flat-button (click)="onInterestedClick()">
+                        <mat-icon>star_border</mat-icon>
+                        <span class="button-span">Interested</span>
+                    </button>
+
+                    <!--                        [ngClass]="party.isNotInterested ? 'blue': ''">-->
+                    <button (click)="onGoingClick()" mat-flat-button>
+                        <mat-icon fontSet="material-icons-outlined">check_circle</mat-icon>
+                        <span class="button-span">Going</span>
+                    </button>
+                </ng-template>
+
+                <button [mat-menu-trigger-for]="watchStatusMenu" *ngIf="!party.isNotInterested" mat-flat-button class="blue">
+<!--                    <mat-icon [fontSet]="party.going ? '': 'material-icons-outlined'">check_circle</mat-icon>-->
+                    <span class="button-span">{{party.watchStatus}}</span>
+                    <mat-icon>expand_more</mat-icon>
                 </button>
-                <button (click)="onGoingToggle()" mat-flat-button [ngClass]="party.going ? 'blue': ''">
-                    <mat-icon [fontSet]="party.going ? '': 'material-icons-outlined'">check_circle</mat-icon>
-                    <span class="button-span">Going</span>
-                </button>
+
+                <mat-menu #watchStatusMenu="matMenu" class="watch-status-menu" fxLayoutAlign="none none" xPosition="before">
+                    <div *ngFor="let status of watchStatusNames" mat-menu-item fxLayoutAlign="space-between center" (click)="onAnswerClick(status)">
+                        <span class="mat-body-strong" [ngClass]="(party.watchStatus == status) ? 'color-blue' : ''">{{status}}</span>
+                        <mat-radio-button [checked]="party.watchStatus == status"></mat-radio-button>
+                    </div>
+                </mat-menu>
+
                 <button mat-flat-button fxHide.lt-sm (click)="onInviteClick()">
                     <mat-icon>mail_outline</mat-icon>
                     <span class="button-span">Invite</span>
@@ -97,7 +113,7 @@
                     </button>
                 </div>
                 <div style="padding: 0">
-                    <a [href]="'https://www.google.com/maps/@' + party.latitude + ',' + party.longitude + ',18z/'">
+                    <a (click)="goToGoogleMapsLink(party.latitude, party.longitude)">
                         <img alt='static Mapbox map of the San Francisco bay area' class="party-location"
                              [src]="'https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-s+555555(' + party.longitude + ',' + party.latitude + '/' + party.longitude + ',' + party.latitude + ',13.75,0.00,0.00/1000x600@2x?access_token=pk.eyJ1Ijoic2FsYXphcmJyb2NrIiwiYSI6ImNqd3hxaDBleTFobGQ0Y2sxc3lpdnNwYXMifQ.TgYFgyclmL6pGXXANhnlsw'">
                     </a>

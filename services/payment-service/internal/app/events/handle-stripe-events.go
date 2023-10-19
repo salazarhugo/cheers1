@@ -3,7 +3,6 @@ package events
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/services/payment-service/internal/repository"
 	"github.com/stripe/stripe-go/v72"
 	"net/http"
@@ -14,9 +13,6 @@ func HandleStripeEvent(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	session := utils.GetSession(utils.GetDriver())
-	defer session.Close()
-
 	stripe.Key = os.Getenv("STRIPE_SK")
 
 	event := repository.ValidateStripeRequest(w, r)

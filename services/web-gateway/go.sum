@@ -237,6 +237,8 @@ github.com/salazarhugo/cheers1/gen/go v0.0.0-20230823194035-d7807164f8d3 h1:noQx
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20230823194035-d7807164f8d3/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20230911185814-87ab461eea64 h1:M0Ng8UiXly/czSgXKKHjs6ZIL9+vxxYhCw8D8ecFtbk=
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20230911185814-87ab461eea64/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
+github.com/salazarhugo/cheers1/gen/go v0.0.0-20230923211420-f4d53454379d h1:wjqhRVkliMg5v64QLQ5H9jDhww2ZD/Pb9dc2dpImfAA=
+github.com/salazarhugo/cheers1/gen/go v0.0.0-20230923211420-f4d53454379d/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
 github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221212124142-487686407e9e h1:bftow35rgJuHtYqdXJZXwjPbwV1eWiM6riNLoEExckQ=
 github.com/salazarhugo/cheers1/libs/utils v0.0.0-20221212124142-487686407e9e/go.mod h1:Y3ukOBJ0HP5DJfZLKxw0QBbfOlGIQD/nXNAkzTf6Kp0=
 github.com/sirupsen/logrus v1.9.0 h1:trlNQbNUG3OdDrDil03MCb1H2o9nJ1x4/5LYw7byDE0=

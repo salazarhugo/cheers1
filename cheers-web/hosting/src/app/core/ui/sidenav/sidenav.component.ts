@@ -14,6 +14,11 @@ export class SidenavComponent implements OnInit {
 
     businessItems = [
         {
+            title: "My parties",
+            icon: "event_list",
+            routerLink: "/business/parties",
+        },
+        {
             title: "Payouts",
             icon: "account_balance",
             routerLink: "/business/payouts",

@@ -131,14 +131,6 @@ export class ApiService {
         })
     }
 
-    interestParty(partyId: string): Observable<any> {
-        return this.http.post(`${this.BASE_URL}/party/interest?partyId=${partyId}`, {})
-    }
-
-    uninterestParty(partyId: string): Observable<any> {
-        return this.http.post(`${this.BASE_URL}/party/uninterest?partyId=${partyId}`, {})
-    }
-
     getUserPosts(username: string): Observable<PostResponse[]> {
         return this.http.get<ListPostResponse>(`${environment.GATEWAY_URL}/v1/posts/list?username=${username}&pageSize=10&page=0`)
             .pipe(map(r => r.posts))

@@ -1,7 +1,9 @@
 MATCH
   (receiver:User {id: $userID})
 MATCH
-  (creator:User)-[r:POSTED]->(party: Party {id: $partyID})
+  (party: Party {id: $partyID})
+OPTIONAL MATCH
+  (creator:User)-[r:POSTED]->(party)
 DELETE
   r
 CREATE

@@ -32,7 +32,12 @@
             </div>
             <div class="party-interested-going">
                 <span *ngIf="party.interestedCount > 0">{{party.interestedCount}} interested</span>
-                <span *ngIf="party.goingCount > 0" class="party-date">{{party.goingCount}} going</span>
+                <span *ngIf="party.goingCount > 0" style="margin-left: 8px">{{party.goingCount}} going</span>
+            </div>
+            <div class="party-mutual-going">
+                <span *ngFor="let user of party.mutualGoing">
+                    {{user.username}}
+                </span>
             </div>
         </div>
         <div class="party-footer" fxLayout="column">

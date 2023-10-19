@@ -8,23 +8,13 @@
         <mat-menu #menu="matMenu" class="search-menu" fxLayoutAlign="none none" xPosition="before">
             <div *ngIf="$recentSearches | async as recentUsers">
                 <h3 style="padding: 16px">Recent searches</h3>
-                <div *ngFor="let user of recentUsers" [routerLink]="['u', user.username]" class="user-item"
-                     fxLayoutAlign="none" mat-menu-item>
-                    <img (error)="onImgError($event)" [src]="user.picture" class="avatar--small">
-                    <div class="user-text" fxLayout="column">
-                        <span class="username">{{user.username}}</span>
-                        <span class="name">{{user.name}}</span>
-                    </div>
+                <div *ngFor="let user of recentUsers" [routerLink]="['u', user.username]">
+                    <app-user-item [user]="user"></app-user-item>
                 </div>
             </div>
             <div (click)="onUserClick(user)" *ngFor="let user of ($searchResults | async)"
-                 [routerLink]="['u', user.username]" class="user-item"
-                 fxLayoutAlign="none" mat-menu-item>
-                <img (error)="onImgError($event)" [src]="user.picture" class="avatar--small">
-                <div class="user-text" fxLayout="column">
-                    <span class="username">{{user.username}}</span>
-                    <span class="name">{{user.name}}</span>
-                </div>
+                 [routerLink]="['u', user.username]">
+                <app-user-item [user]="user"></app-user-item>
             </div>
         </mat-menu>
     </div>

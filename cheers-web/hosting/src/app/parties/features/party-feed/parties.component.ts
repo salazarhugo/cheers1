@@ -18,9 +18,6 @@ export class PartiesComponent implements OnInit {
     $user: Observable<User | null> = of(null)
     partyList: Party[] = []
     parties: Map<string, Party[]>
-
-    private contactsList = [];
-    $myParties: Observable<Party[] | null> = of(null)
     chips: string[] = ["All", "Mix", "Outside", "Indoor", "Gadgets", "Android", "Piano", "Cloud computing", "Nouveaute", "Echecs"];
     page = 1
     pageSize = 18

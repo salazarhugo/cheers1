@@ -14,7 +14,7 @@ func SendEmail(
 	email string,
 	name string,
 	templateID string,
-	data map[string]string,
+	data map[string]interface{},
 ) error {
 	client := sendgrid.NewSendClient(token)
 

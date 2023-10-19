@@ -33,9 +33,15 @@ func (s *Server) TransferParty(
 		return nil, status.Error(codes.PermissionDenied, "insufficient permissions")
 	}
 
+	// Check if party exists
+	party, err := s.partyRepository.GetParty(request.PartyId)
+	if err != nil {
+		return nil, err
+	}
+
 	err = s.partyRepository.TransferParty(
 		request.UserId,
-		request.PartyId,
+		party.Id,
 	)
 
 	if err != nil {

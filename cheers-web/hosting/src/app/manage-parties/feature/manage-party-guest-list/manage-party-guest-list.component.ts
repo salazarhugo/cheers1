@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {PartyService} from "../../../parties/data/party.service";
 import {firstValueFrom} from "rxjs";
-import {UserItem} from "../../../../gen/ts/cheers/type/user/user";
 import {Party} from "../../../shared/data/models/party.model";
+import {User} from "../../../shared/data/models/user.model";
 
 @Component({
     selector: 'app-manage-party-guest-list',
@@ -11,7 +11,7 @@ import {Party} from "../../../shared/data/models/party.model";
 })
 export class ManagePartyGuestListComponent implements OnInit {
 
-    users: UserItem[] = []
+    users: User[] = []
     party: Party
 
     constructor(

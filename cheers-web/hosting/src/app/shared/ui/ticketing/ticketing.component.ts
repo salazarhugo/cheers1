@@ -25,6 +25,7 @@ export class TicketingComponent implements OnInit {
     tickets: Ticket[]
     ticketingForm = new UntypedFormGroup({});
     partyId: string | null
+    isLoading: boolean = false
 
     userForm = this.fb.group({
             firstName: ['', [
@@ -109,6 +110,7 @@ export class TicketingComponent implements OnInit {
     }
 
     async checkout() {
+        this.isLoading = true
         const order = this.ticketingForm.getRawValue()
         console.log(order)
         const clientSecret = await firstValueFrom(this.paymentService.createPaymentIntent(
@@ -119,5 +121,6 @@ export class TicketingComponent implements OnInit {
             this.userForm.get("email")?.value,
         ))
         await this.router.navigate(['payment', clientSecret])
+        this.isLoading = false
     }
 }

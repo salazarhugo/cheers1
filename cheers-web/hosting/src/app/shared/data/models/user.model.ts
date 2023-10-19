@@ -1,3 +1,6 @@
+import {PartyItem, WatchStatus} from "../../../../gen/ts/cheers/party/v1/party_service";
+import {Party} from "./party.model";
+import {UserItem} from "../../../../gen/ts/cheers/type/user/user";
 
 
 export class User {
@@ -48,5 +51,11 @@ export function toUser(res: UserResponse): User | null {
     user.followBack = res.hasFollowed
     const strEnum = res.storyState as unknown as StoryState;
     user.storyState = strEnum
+    return user
+}
+
+export function toUserFromUserItem(value: UserItem): User {
+    const user = new User()
+    Object.assign(user, value)
     return user
 }

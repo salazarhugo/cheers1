@@ -19,12 +19,7 @@ func (s *Server) GetPartyItem(
 		return nil, err
 	}
 
-	var item *pb.PartyItem
-	if userID == "" {
-		item, err = s.partyRepository.GetPartyItemPublic(request.PartyId)
-	} else {
-		item, err = s.partyRepository.GetPartyItem(userID, request.PartyId)
-	}
+	item, err := s.partyRepository.GetPartyItem(userID, request.PartyId)
 
 	if err != nil {
 		return nil, err

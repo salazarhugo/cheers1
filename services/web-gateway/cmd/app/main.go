@@ -5,6 +5,11 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"flag"
+	"log"
+	"net"
+	"net/http"
+	"strings"
+
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/account/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/activity/v1"
@@ -26,10 +31,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/metadata"
-	"log"
-	"net"
-	"net/http"
-	"strings"
 )
 
 func main() {

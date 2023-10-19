@@ -104,13 +104,13 @@ def scrape_parties(request):
                 },
                 timeout=5,
             )
-            print(x)
-            print(f"{event.name}")
-            print(f"{success_count}/{len(events)} successful updates")
             success_count += 1
+            print(x)
+            print(res["name"])
+            print(f"{success_count}/{len(events)} successful updates")
         except:
             print("An exception occurred")
 
     return f"Done {success_count}/{len(events)} successful updates"
 
-# scrape_parties("")
+scrape_parties("")

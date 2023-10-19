@@ -23,7 +23,7 @@ const routes: Routes = [
     },
     {
         path: 'u/:username',
-        resolve: {user: ProfileResolver},
+        // resolve: {user: ProfileResolver},
         loadChildren: () => import('../users/feature/user-profile/user-profile.module').then(m => m.UserProfileModule),
     },
     {

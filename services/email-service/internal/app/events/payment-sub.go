@@ -28,10 +28,22 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	tickets := make([]*emails.EmailTicket, 0)
+
+	for i := 0; i < len(order.Tickets); i++ {
+		ticket := emails.New(
+			order.Tickets[i].Name,
+			order.Tickets[i].Quantity,
+			order.Tickets[i].Price,
+		)
+		tickets = append(tickets, ticket)
+	}
+
 	err = emails.SendPartyReceiptEmail(
 		order.Email,
 		order.FirstName,
 		order.PartyName,
+		tickets,
 	)
 
 	if err != nil {

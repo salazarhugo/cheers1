@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, ParamMap, Router} from "@angular/router";
-import {Party} from "../../../shared/data/models/party.model";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Party, WatchStatus} from "../../../shared/data/models/party.model";
 import {PartyService} from "../../data/party.service";
 import {Clipboard} from '@angular/cdk/clipboard';
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -9,11 +9,10 @@ import {firstValueFrom} from "rxjs";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {MatDialog} from "@angular/material/dialog";
 import {PartyInviteComponent} from "../../ui/party-invite/party-invite.component";
-import {WatchStatus} from "../../../../gen/ts/cheers/party/v1/party_service";
-import {PostDeleteDialogComponent} from "../../../posts/ui/post-delete-dialog/post-delete-dialog.component";
 import {PartyTransferComponent} from "../party-transfer/party-transfer.component";
 import {PartyDuplicateComponent} from "../party-duplicate/party-duplicate.component";
 import {User} from "../../../shared/data/models/user.model";
+
 
 @Component({
     selector: 'app-party-detail',
@@ -23,8 +22,13 @@ import {User} from "../../../shared/data/models/user.model";
 export class PartyComponent implements OnInit {
 
     party: Party | undefined
-    partyId: string | null
     viewer: User | null
+    watchStatusNames: WatchStatus[] =
+        Object.keys(WatchStatus)
+            .filter((v) => isNaN(Number(v)))
+            .map((name) => {
+                return WatchStatus[name as keyof typeof WatchStatus]
+            });
 
     constructor(
         public router: Router,
@@ -41,15 +45,18 @@ export class PartyComponent implements OnInit {
     ngOnInit(): void {
         // From PartyResolver
         this.party = this.route.snapshot.data['party'] as Party;
+        this.userService.user$.subscribe(res => this.viewer = res)
     }
 
-    onInterestedClick() {
-        if (this.party!.interested)
-            this.partyService.uninterested(this.partyId!).subscribe(res => console.log(res))
-        else
-            this.partyService.interested(this.partyId!).subscribe(res => console.log(res))
+    async onInterestedClick() {
+        const partyId = this.party?.id
+        if (partyId == undefined)
+            return
 
-        this.party!.interested = !this.party!.interested
+        // this.party = undefined
+        await this.partyService.answerParty(partyId, WatchStatus.INTERESTED)
+        this.party!.watchStatus = WatchStatus.INTERESTED
+        this.party!.isNotInterested = false
     }
 
     copyLink() {
@@ -63,23 +70,26 @@ export class PartyComponent implements OnInit {
         this.matDialog.open(PartyInviteComponent)
     }
 
-    async onGoingToggle() {
+    async onGoingClick() {
         const user = await firstValueFrom(this.afAuth.authState)
         if (user == null) {
             await this.router.navigate(['sign-in'])
         }
-        const party = this.party!!
-        if (party.going) {
-            party.going = false
-            await this.partyService.answerParty(this.partyId!, WatchStatus.UNWATCHED)
-        }
-        else {
-            party.going = true
-            await this.partyService.answerParty(this.partyId!, WatchStatus.GOING)
-        }
+
+        const partyId = this.party?.id
+        if (partyId == undefined)
+            return
+
+        await this.partyService.answerParty(partyId, WatchStatus.GOING)
+        this.party!.watchStatus = WatchStatus.GOING
+        this.party!.isNotInterested = false
     }
 
     onDuplicateClick() {
+        const partyId = this.party?.id
+        if (partyId == undefined)
+            return
+
         const dialogRef = this.matDialog.open(PartyDuplicateComponent, {
             panelClass: 'cheers-dialog'
         });
@@ -88,22 +98,36 @@ export class PartyComponent implements OnInit {
             if (result == false)
                 return;
 
-            await firstValueFrom(this.partyService.duplicateParty(this.partyId!));
+            await firstValueFrom(this.partyService.duplicateParty(partyId));
             this.snackBar.open("Duplicated party", "Hide");
         });
     }
 
     onTransferClick() {
+        const partyId = this.party?.id
+        if (partyId == undefined)
+            return
+
         const dialogRef = this.matDialog.open(PartyTransferComponent, {
-            panelClass: 'cheers-dialog'
+            panelClass: 'cheers-dialog',
+            data: partyId,
         });
+    }
 
-        dialogRef.afterClosed().subscribe(async userId => {
-            if (userId == "")
-                return;
+    goToGoogleMapsLink(latitude: number, longitude: number){
+        const url = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`
+        window.open(url, "_blank");
+    }
 
-            await this.partyService.transferParty(userId, this.partyId!)
-            this.snackBar.open("Transfered party", "Hide");
-        });
+    async onAnswerClick(status: WatchStatus) {
+        const partyId = this.party?.id
+        if (partyId == undefined)
+            return
+
+        await this.partyService.answerParty(partyId, status)
+        this.party!.watchStatus = status
+
+        if (status == WatchStatus.NOT_INTERESTED)
+            this.party!.isNotInterested = true
     }
 }

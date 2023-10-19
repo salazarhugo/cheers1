@@ -3,6 +3,8 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {debounceTime, distinctUntilChanged, fromEvent, map, Observable, of} from "rxjs";
 import {User} from "../../../shared/data/models/user.model";
 import {UserService} from "../../../shared/data/services/user.service";
+import {PartyService} from "../../data/party.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-party-transfer',
@@ -10,15 +12,17 @@ import {UserService} from "../../../shared/data/services/user.service";
     styleUrls: ['./party-transfer.component.sass']
 })
 export class PartyTransferComponent implements OnInit {
-
+    isLoading: boolean = false
     selectedUser: User | null;
     $searchResults: Observable<User[] | null> = of(null)
     @ViewChild('searchInput', {static: true}) searchInput!: ElementRef;
 
     constructor(
         public dialogRef: MatDialogRef<PartyTransferComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: any,
+        @Inject(MAT_DIALOG_DATA) public data: string,
         private userService: UserService,
+        private partyService: PartyService,
+        private snackBar: MatSnackBar,
     ) { }
 
     ngOnInit(): void {
@@ -45,5 +49,17 @@ export class PartyTransferComponent implements OnInit {
 
     onImgError($event: ErrorEvent) {
 
+    }
+
+    async onTransferClick() {
+        const userId = this.selectedUser?.id
+        if (!userId) {
+            return
+        }
+        this.isLoading = true
+        await this.partyService.transferParty(userId, this.data)
+        this.snackBar.open("Party transferred successfully", "Hide");
+        this.dialogRef.close()
+        this.isLoading = false
     }
 }

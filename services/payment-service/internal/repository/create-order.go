@@ -7,7 +7,7 @@ import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/payment/v1"
 	ticketpb "github.com/salazarhugo/cheers1/gen/go/cheers/ticket/v1"
 	partypb "github.com/salazarhugo/cheers1/gen/go/cheers/type/party"
-	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/mapper"
 	"github.com/stripe/stripe-go/v72"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -57,7 +57,7 @@ func CreateOrder(
 		Tickets:            tickets,
 	}
 
-	m, err := utils.ProtoToMap(order)
+	m, err := mapper.ProtoToMap(order)
 	if err != nil {
 		log.Println(err)
 		return err

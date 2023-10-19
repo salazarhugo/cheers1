@@ -54,11 +54,13 @@ export class AppComponent implements OnInit {
         this.isDarkTheme = this.themeService.isDarkTheme;
         // this.requestPermission();
         this.listen();
-        if (this.isDarkTheme) {
-            this.overlay.getContainerElement().classList.add('dark-theme');
-        } else {
-            this.overlay.getContainerElement().classList.remove('dark-theme');
-        }
+        this.isDarkTheme.subscribe(isDarkTheme => {
+            if (isDarkTheme) {
+                this.overlay.getContainerElement().classList.add('dark-theme');
+            } else {
+                this.overlay.getContainerElement().classList.remove('dark-theme');
+            }
+        })
     }
 
     openSnackBar(message: string) {

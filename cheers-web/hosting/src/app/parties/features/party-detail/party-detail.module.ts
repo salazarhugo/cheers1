@@ -5,6 +5,7 @@ import {PartyDetailRoutingModule} from './party-detail-routing.module';
 import {PartyComponent} from "./party.component";
 import {MaterialModule} from "../../../material/material.module";
 import {AdminButtonModule} from "../../../shared/ui/admin-button/admin-button.module";
+import {MatRadioModule} from "@angular/material/radio";
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import {AdminButtonModule} from "../../../shared/ui/admin-button/admin-button.mo
         CommonModule,
         PartyDetailRoutingModule,
         MaterialModule,
-        AdminButtonModule
+        AdminButtonModule,
+        MatRadioModule
     ],
     exports: [
         PartyComponent,

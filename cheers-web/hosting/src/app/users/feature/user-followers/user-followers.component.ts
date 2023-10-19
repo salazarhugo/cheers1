@@ -11,8 +11,8 @@ import {UserItem} from "../../../../gen/ts/cheers/type/user/user";
 })
 export class UserFollowersComponent implements OnInit {
 
-    followers: UserItem[] = []
-    following: UserItem[] = []
+    followers: User[] = []
+    following: User[] = []
 
   constructor(
       private userService: UserService,

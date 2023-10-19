@@ -5,6 +5,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/order/v1"
+	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"log"
@@ -22,6 +23,7 @@ func GetOrder(orderId string) (*order.Order, error) {
 	})
 	conn, err := grpc.DialContext(ctx, "order-service-r3a2dr4u4a-nw.a.run.app:443",
 		grpc.WithTransportCredentials(transportCredentials),
+		grpc.WithUnaryInterceptor(utils.CloudRunInterceptor),
 	)
 	defer conn.Close()
 

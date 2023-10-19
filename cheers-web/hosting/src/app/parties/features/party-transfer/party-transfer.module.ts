@@ -10,6 +10,7 @@ import {MatMenuModule} from "@angular/material/menu";
 import {FlexModule} from "@angular/flex-layout";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {UserItemModule} from "../../../users/ui/user-item/user-item.module";
+import {SharedModule} from "../../../shared/shared.module";
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import {UserItemModule} from "../../../users/ui/user-item/user-item.module";
         MatMenuModule,
         FlexModule,
         MatFormFieldModule,
-        UserItemModule
+        UserItemModule,
+        SharedModule
     ]
 })
 export class PartyTransferModule { }
