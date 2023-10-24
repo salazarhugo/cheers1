@@ -8,14 +8,14 @@ go_library(
         "friendship-sub.go",
     ],
     importpath = "github.com/salazarhugo/cheers1/services/user-service/internal/app/events",
-    visibility = ["//services/user-service:__subpackages__"],
+    visibility = ["//visibility:public"],
     deps = [
         "@gen_go//cheers/auth/v1:auth",
         "@gen_go//cheers/claim/v1:claim",
         "@gen_go//cheers/friendship/v1:friendship",
         "@libs_utils//:utils",
         "@libs_utils//pubsub:pubsub",
-        "//services/user-service/internal/domain",
-        "//services/user-service/internal/repository",
+        "//internal/domain",
+        "//internal/repository",
     ],
 )

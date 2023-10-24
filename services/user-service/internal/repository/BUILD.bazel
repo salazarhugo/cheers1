@@ -31,7 +31,7 @@ go_library(
         "verify.go",
     ],
     importpath = "github.com/salazarhugo/cheers1/services/user-service/internal/repository",
-    visibility = ["//services/user-service:__subpackages__"],
+    visibility = ["//visibility:public"],
     deps = [
         "@gen_go//cheers/type/user:user",
         "@gen_go//cheers/user/v1:user",

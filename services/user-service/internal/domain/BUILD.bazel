@@ -9,10 +9,10 @@ go_library(
         "domain.go",
     ],
     importpath = "github.com/salazarhugo/cheers1/services/user-service/internal/domain",
-    visibility = ["//services/user-service:__subpackages__"],
+    visibility = ["//visibility:public"],
     deps = [
         "@libs_utils//:utils",
-        "//services/user-service/internal/repository",
+        "//internal/repository",
         "@com_google_cloud_go_storage//:storage",
         "@org_golang_google_api//iterator",
     ],

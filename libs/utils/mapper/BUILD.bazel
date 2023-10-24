@@ -1,0 +1,12 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "mapper",
+    srcs = ["proto_mapper.go"],
+    importpath = "github.com/salazarhugo/cheers1/libs/utils/mapper",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@org_golang_google_protobuf//encoding/protojson",
+        "@org_golang_google_protobuf//proto",
+    ],
+)

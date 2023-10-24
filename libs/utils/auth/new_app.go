@@ -1,8 +1,8 @@
-package utils
+package auth
 
 import (
 	"context"
-	firebase "firebase.google.com/go/v4"
+	"firebase.google.com/go/v4"
 	"github.com/labstack/gommon/log"
 )
 

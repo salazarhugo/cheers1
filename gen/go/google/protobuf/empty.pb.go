@@ -34,7 +34,7 @@
 // 	protoc        (unknown)
 // source: google/protobuf/empty.proto
 
-package emptypb
+package protobuf
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"

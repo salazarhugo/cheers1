@@ -1,6 +1,6 @@
 ## MODULE.bazel
 module(
-    name = "cheers1_module",
+    name = "user-service",
     version = "1.0",
 )
 
@@ -9,26 +9,20 @@ bazel_dep(name = "gazelle", version = "0.33.0")
 bazel_dep(name = "protobuf", version = "21.7")
 bazel_dep(name = "grpc", version = "1.48.1")
 bazel_dep(name = "gen_go", version = "1.0")
-bazel_dep(name = "libs_auth", version = "1.0")
 bazel_dep(name = "libs_utils", version = "1.0")
 
 local_path_override(
     module_name = "gen_go",
-    path = "./gen/go",
-)
-
-local_path_override(
-    module_name = "libs_auth",
-    path = "./libs/auth",
+    path = "../../gen/go",
 )
 
 local_path_override(
     module_name = "libs_utils",
-    path = "./libs/utils",
+    path = "../../libs/utils",
 )
 
 go_deps = use_extension("@gazelle//:extensions.bzl", "go_deps")
-go_deps.from_file(go_mod = "//services/user-service:go.mod")
+go_deps.from_file(go_mod = "//:go.mod")
 
 # All *direct* Go dependencies of the module have to be listed explicitly.
 use_repo(
@@ -41,4 +35,5 @@ use_repo(
     "org_golang_google_grpc",
     "org_golang_google_protobuf",
     "org_golang_x_net",
+    "com_github_salazarhugo_cheers1_libs_auth",
 )

@@ -73,7 +73,7 @@
 //
 //	ts := timestamppb.Now()
 //	... // make use of ts as a *timestamppb.Timestamp
-package timestamppb
+package protobuf
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"

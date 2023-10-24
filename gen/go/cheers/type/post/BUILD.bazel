@@ -1,0 +1,13 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "post",
+    srcs = ["post.pb.go"],
+    importpath = "github.com/salazarhugo/cheers1/gen/go/cheers/type/post",
+    visibility = ["//visibility:public"],
+    deps = [
+        "//cheers/type/privacy",
+        "@org_golang_google_protobuf//reflect/protoreflect",
+        "@org_golang_google_protobuf//runtime/protoimpl",
+    ],
+)
