@@ -3,12 +3,13 @@ package main
 import (
 	"errors"
 	"fmt"
+	"github.com/labstack/gommon/log"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
-	"github.com/salazarhugo/cheers1/libs/auth"
-	"github.com/salazarhugo/cheers1/libs/profiler"
+	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/auth"
+	"github.com/salazarhugo/cheers1/libs/utils/profiler"
 	"github.com/salazarhugo/cheers1/services/user-service/internal/app"
 	"github.com/salazarhugo/cheers1/services/user-service/internal/app/events"
-	"github.com/sirupsen/logrus"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
@@ -16,41 +17,27 @@ import (
 	"net"
 	"net/http"
 	"os"
-	"strings"
-	"time"
 )
-
-var log *logrus.Logger
 
 func init() {
 	go profiler.InitProfiling("user-service", "1.0.0")
-	log = logrus.New()
-	log.Level = logrus.DebugLevel
-	log.Formatter = &logrus.JSONFormatter{
-		FieldMap: logrus.FieldMap{
-			logrus.FieldKeyTime:  "timestamp",
-			logrus.FieldKeyLevel: "severity",
-			logrus.FieldKeyMsg:   "message",
-		},
-		TimestampFormat: time.RFC3339Nano,
-	}
-	log.Out = os.Stdout
 }
 
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8081"
+		port = "8080"
 		log.Infof("Defaulting to port %s", port)
 	}
 
 	httpMux := http.NewServeMux()
+	log.Info(httpMux)
 	httpMux.HandleFunc("/claim-sub", events.ClaimSub)
 	httpMux.HandleFunc("/friendship-sub", events.FriendShipSub)
 	httpMux.HandleFunc("/auth-sub", events.AuthSub)
 
 	grpcS := grpc.NewServer(
-		grpc.UnaryInterceptor(auth.UnaryInterceptor),
+		grpc.UnaryInterceptor(auth.AuthInterceptor),
 	)
 
 	server := app.NewServer()
@@ -58,7 +45,7 @@ func main() {
 	pb.RegisterUserServiceServer(grpcS, server)
 	grpc_health_v1.RegisterHealthServer(grpcS, server)
 
-	mixedHandler := newHTTPandGRPCMux(httpMux, grpcS)
+	mixedHandler := utils.NewHttpAndGrpcMux(httpMux, grpcS)
 	http2Server := &http2.Server{}
 	http1Server := &http.Server{
 		Handler: h2c.NewHandler(mixedHandler, http2Server),
@@ -75,14 +62,4 @@ func main() {
 	} else if err != nil {
 		panic(err)
 	}
-}
-
-func newHTTPandGRPCMux(httpHand http.Handler, grpcHandler http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.ProtoMajor == 2 && strings.HasPrefix(r.Header.Get("content-type"), "application/grpc") {
-			grpcHandler.ServeHTTP(w, r)
-			return
-		}
-		httpHand.ServeHTTP(w, r)
-	})
 }

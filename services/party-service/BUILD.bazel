@@ -1,19 +1,5 @@
 load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
 
-go_binary(
-    name="party_binary",
-    srcs= [
-        "cmd/app/main.go",
-#        "internal/app/create_party.go",
-        ],
-    deps= [
-        "github.com/salazarhugo/cheers1/genproto/cheers/api/v1",
-        "github.com/salazarhugo/cheers1/libs/auth",
-        "github.com/salazarhugo/cheers1/services/party-service/internal/app",
-        "google.golang.org/grpc",
-    ]
-)
-
 #go_library(
 #    name="mock_library",
 #    importpath="cheers/user",

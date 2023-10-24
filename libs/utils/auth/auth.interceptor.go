@@ -38,7 +38,7 @@ type Firebase struct {
 	SignInProvider string     `json:"sign_in_provider"`
 }
 
-func UnaryInterceptor(
+func AuthInterceptor(
 	ctx context.Context,
 	req interface{},
 	info *grpc.UnaryServerInfo,

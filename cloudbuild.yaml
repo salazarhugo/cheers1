@@ -1,8 +1,31 @@
 steps:
-  # Run tests
-  - name: golang:1.21
+  # List microservices that changed
+  - name: 'gcr.io/cloud-builders/git'
     entrypoint: /bin/bash
     args:
       - -c
       - |
-        go test 
+        git fetch --depth=2 origin main
+        echo hello
+        git  log
+        git --no-pager diff --name-only HEAD^ HEAD | grep "/" | cut -d/ -f1 | sort | uniq > /workspace/diff.txt
+
+  # Run cloud builds of every microservice that changed
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: /bin/bash
+    args:
+      - -c
+      - |
+        while read line
+        do 
+        config="${line}/cloudbuild.yaml"
+        echo $config
+        if [[ ! -f "${config}" ]]; then
+         echo "no such file"
+         continue
+        fi
+        gcloud builds submit $line --config=${config}
+        done < /workspace/diff.txt
+
+options:
+ logging: CLOUD_LOGGING_ONLY

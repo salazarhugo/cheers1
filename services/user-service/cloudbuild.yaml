@@ -1,11 +1,27 @@
 steps:
-  # Run tests
-  - name: golang:1.21
-    entrypoint: /bin/bash
-    args:
-      - go test -timeout 1m -v
+  # Bazel Build
+  - name: 'gcr.io/cloud-marketplace-containers/google/bazel'
+    entrypoint: 'bazel'
+    args: ['build', '//cmd/app:app']
     secretEnv: ['NEO4J_URI', 'NEO4J_PASSWORD']
 
+  # Bazel Test
+  - name: 'gcr.io/cloud-marketplace-containers/google/bazel'
+    entrypoint: 'bazel'
+    args: ['test', '//...']
+    secretEnv: ['NEO4J_URI', 'NEO4J_PASSWORD']
+
+  # Docker Build
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/myimage:$SHORT_SHA', '.']
+
+  # Docker push to Google Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/myimage:$SHORT_SHA']
+
+# Store images in Google Artifact Registry
+images:
+  - us-central1-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/myimage:$SHORT_SHA
 availableSecrets:
   secretManager:
   - versionName: projects/$PROJECT_ID/secrets/NEO4J_URI/versions/latest

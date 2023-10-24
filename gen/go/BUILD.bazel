@@ -1,0 +1,10 @@
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "com_github_salazarhugo_cheers1_gen_go",
+    srcs = ["main.go"],
+    importpath = "github.com/salazarhugo/cheers1/services/user-service/cmd/app",
+    visibility = ["//visibility:public"],
+    deps = [
+    ],
+)

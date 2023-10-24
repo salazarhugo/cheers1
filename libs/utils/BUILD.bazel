@@ -1,0 +1,29 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "utils",
+    srcs = [
+        "authorization.interceptor.go",
+        "get_user_id.go",
+        "http_grpc_mux.go",
+        "serve.go",
+        "utils.go",
+    ],
+    importpath = "github.com/salazarhugo/cheers1/libs/utils",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_labstack_echo_v4//:echo",
+        "@com_github_labstack_gommon//log",
+        "@com_github_neo4j_neo4j_go_driver_v4//neo4j",
+        "@com_google_firebase_go_v4//:go",
+        "@com_google_firebase_go_v4//auth",
+        "@org_golang_google_api//idtoken",
+        "@org_golang_google_api//option",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//metadata",
+        "@org_golang_google_grpc//status",
+        "@org_golang_x_net//http2",
+        "@org_golang_x_net//http2/h2c",
+    ],
+)

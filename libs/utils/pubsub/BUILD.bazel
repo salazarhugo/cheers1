@@ -1,0 +1,15 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "pubsub",
+    srcs = [
+        "publish-proto-binary.go",
+        "unmarshal-message.go",
+    ],
+    importpath = "github.com/salazarhugo/cheers1/libs/utils/pubsub",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_google_cloud_go_pubsub//:pubsub",
+        "@org_golang_google_protobuf//proto",
+    ],
+)

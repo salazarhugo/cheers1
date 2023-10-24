@@ -9,9 +9,7 @@ require (
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
 	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230921195226-8ae04f0f8ffe
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
-	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20230813153844-331eff049bf0
-	github.com/sirupsen/logrus v1.9.0
 	golang.org/x/net v0.1.0
 	google.golang.org/api v0.102.0
 	google.golang.org/grpc v1.50.1
@@ -24,12 +22,10 @@ require (
 	cloud.google.com/go/compute/metadata v0.2.1 // indirect
 	cloud.google.com/go/firestore v1.6.1 // indirect
 	cloud.google.com/go/iam v0.6.0 // indirect
-	cloud.google.com/go/profiler v0.3.1 // indirect
 	cloud.google.com/go/pubsub v1.3.1 // indirect
 	firebase.google.com/go/v4 v4.9.0 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
-	github.com/google/pprof v0.0.0-20221103000818-d260c55eee4c // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
 	github.com/googleapis/gax-go/v2 v2.7.0 // indirect
@@ -52,5 +48,4 @@ require (
 )
 
 //replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
-
 //replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils

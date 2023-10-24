@@ -42,7 +42,7 @@
 // 	protoc        (unknown)
 // source: google/protobuf/descriptor.proto
 
-package descriptorpb
+package protobuf
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
