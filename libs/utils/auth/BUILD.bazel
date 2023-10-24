@@ -1,0 +1,17 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "auth",
+    srcs = [
+        "check_admin.go",
+        "new_app.go",
+    ],
+    importpath = "github.com/salazarhugo/cheers1/libs/utils/auth",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_labstack_gommon//log",
+        "@com_google_firebase_go_v4//:go",
+        "@org_golang_google_grpc//codes",
+        "@org_golang_google_grpc//status",
+    ],
+)

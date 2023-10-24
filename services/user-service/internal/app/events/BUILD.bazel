@@ -1,0 +1,21 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "events",
+    srcs = [
+        "auth-sub.go",
+        "claim-sub.go",
+        "friendship-sub.go",
+    ],
+    importpath = "github.com/salazarhugo/cheers1/services/user-service/internal/app/events",
+    visibility = ["//services/user-service:__subpackages__"],
+    deps = [
+        "@gen_go//cheers/auth/v1:auth",
+        "@gen_go//cheers/claim/v1:claim",
+        "@gen_go//cheers/friendship/v1:friendship",
+        "@libs_utils//:utils",
+        "@libs_utils//pubsub:pubsub",
+        "//services/user-service/internal/domain",
+        "//services/user-service/internal/repository",
+    ],
+)

@@ -1,0 +1,27 @@
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "app_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/salazarhugo/cheers1/services/user-service/cmd/app",
+    visibility = ["//visibility:private"],
+    deps = [
+        "@gen_go//cheers/user/v1:user",
+        "@libs_auth//:auth",
+        "@libs_utils//profiler:profiler",
+        "@libs_utils//:utils",
+        "//services/user-service/internal/app",
+        "//services/user-service/internal/app/events",
+        "@com_github_labstack_gommon//log",
+        "@org_golang_google_grpc//:go_default_library",
+        "@org_golang_google_grpc//health/grpc_health_v1",
+        "@org_golang_x_net//http2",
+        "@org_golang_x_net//http2/h2c",
+    ],
+)
+
+go_binary(
+    name = "app",
+    embed = [":app_lib"],
+    visibility = ["//visibility:public"],
+)

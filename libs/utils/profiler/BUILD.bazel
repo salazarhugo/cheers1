@@ -1,0 +1,12 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "profiler",
+    srcs = ["init_profiling.go"],
+    importpath = "github.com/salazarhugo/cheers1/libs/utils/profiler",
+    visibility = ["//visibility:public"],
+    deps = [
+        "@com_github_labstack_gommon//log",
+        "@com_google_cloud_go_profiler//:profiler",
+    ],
+)

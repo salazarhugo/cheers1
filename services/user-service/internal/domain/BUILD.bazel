@@ -1,0 +1,19 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "domain",
+    srcs = [
+        "delete.go",
+        "delete_user_document.go",
+        "delete_user_storage.go",
+        "domain.go",
+    ],
+    importpath = "github.com/salazarhugo/cheers1/services/user-service/internal/domain",
+    visibility = ["//services/user-service:__subpackages__"],
+    deps = [
+        "@libs_utils//:utils",
+        "//services/user-service/internal/repository",
+        "@com_google_cloud_go_storage//:storage",
+        "@org_golang_google_api//iterator",
+    ],
+)

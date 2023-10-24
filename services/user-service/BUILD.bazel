@@ -1,0 +1,9 @@
+load("@rules_go//go:def.bzl", "go_test")
+
+go_test(
+    name = "user-service_test",
+    srcs = [
+        "create_test.go",
+        "delete_test.go",
+    ],
+)
