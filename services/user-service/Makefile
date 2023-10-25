@@ -9,5 +9,6 @@ deploy:
 
 clean:
 	rm -rf pkg
+
 update:
 	go get github.com/salazarhugo/cheers1/gen/go@main
