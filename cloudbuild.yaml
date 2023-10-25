@@ -7,7 +7,7 @@ steps:
       - |
         git fetch --depth=2 origin main
         git  log
-        git diff --name-only main HEAD | grep "services/" | cut -d/ -f2 | sort | uniq > /workspace/diff.txt
+        git diff --name-only origin/main HEAD | grep "services/" | cut -d/ -f2 | sort | uniq > /workspace/diff.txt
 
   # Run cloud builds of every microservice that changed
   - name: 'gcr.io/cloud-builders/gcloud'
