@@ -1,13 +1,13 @@
 steps:
   # Bazel Build
-  - name: 'gcr.io/cloud-marketplace-containers/google/bazel'
+  - name: 'cockroachdb/bazel'
     entrypoint: 'bazel'
     args: ['build', '//cmd/app:app']
     secretEnv: ['NEO4J_URI', 'NEO4J_PASSWORD']
     dir: 'services/user-service'
 
   # Bazel Test
-  - name: 'gcr.io/cloud-marketplace-containers/google/bazel'
+  - name: 'cockroachdb/bazel'
     entrypoint: 'bazel'
     args: ['test', '//...']
     secretEnv: ['NEO4J_URI', 'NEO4J_PASSWORD']
