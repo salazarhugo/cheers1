@@ -23,7 +23,7 @@ steps:
          echo "no such file"
          continue
         fi
-        gcloud builds submit $line --config=${config}
+        gcloud builds submit services/$line --config=${config}
         done < /workspace/diff.txt
 
 options:
