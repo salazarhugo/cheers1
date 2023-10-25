@@ -8,3 +8,4 @@ gcloud run deploy user-service \
     --set-env-vars GATEWAY_URL=$GATEWAY_URL \
     --set-secrets="NEO4J_URI=NEO4J_URI:latest" \
     --set-secrets="NEO4J_PASSWORD=NEO4J_PASSWORD:latest"
+
