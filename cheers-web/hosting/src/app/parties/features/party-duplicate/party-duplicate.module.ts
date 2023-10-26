@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 
 import { PartyDuplicateRoutingModule } from './party-duplicate-routing.module';
 import { PartyDuplicateComponent } from './party-duplicate.component';
-import {MatDialogModule} from "@angular/material/dialog";
+import {MatLegacyDialogModule as MatDialogModule} from "@angular/material/legacy-dialog";
 import {FlexModule} from "@angular/flex-layout";
 import {MatIconModule} from "@angular/material/icon";
-import {MatButtonModule} from "@angular/material/button";
+import {MatLegacyButtonModule as MatButtonModule} from "@angular/material/legacy-button";
 
 
 @NgModule({

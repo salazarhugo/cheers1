@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { PostDeleteDialogRoutingModule } from './post-delete-dialog-routing.module';
 import { PostDeleteDialogComponent } from './post-delete-dialog.component';
-import {MatDialogModule} from "@angular/material/dialog";
-import {MatButtonModule} from "@angular/material/button";
+import {MatLegacyDialogModule as MatDialogModule} from "@angular/material/legacy-dialog";
+import {MatLegacyButtonModule as MatButtonModule} from "@angular/material/legacy-button";
 
 
 @NgModule({

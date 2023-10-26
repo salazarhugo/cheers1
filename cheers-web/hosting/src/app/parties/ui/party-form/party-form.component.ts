@@ -5,13 +5,13 @@ import {Feature, MapboxGeocodingService} from "../../../shared/data/services/map
 import {debounceTime, distinctUntilChanged, finalize, fromEvent, map, Observable, of} from "rxjs";
 import {UserService} from "../../../shared/data/services/user.service";
 import {PartyService} from "../../data/party.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
 import {Router} from "@angular/router";
 import {User} from "../../../shared/data/models/user.model";
 import {Privacy} from "../../../shared/data/enum/privacy.enum";
 import {Party} from "../../../shared/data/models/party.model";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-party-form',

@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 
 import {CheersSpinnerRoutingModule} from './cheers-spinner-routing.module';
 import {CheersSpinnerComponent} from './cheers-spinner.component';
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatLegacyProgressSpinnerModule as MatProgressSpinnerModule} from "@angular/material/legacy-progress-spinner";
 import {FlexModule} from "@angular/flex-layout";
 
 

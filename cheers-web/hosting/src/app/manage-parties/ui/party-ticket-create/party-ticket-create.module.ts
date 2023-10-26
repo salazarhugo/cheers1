@@ -2,14 +2,14 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {PartyTicketCreateRoutingModule} from './party-ticket-create-routing.module';
 import {PartyTicketCreateComponent} from './party-ticket-create.component';
-import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatLegacyFormFieldModule as MatFormFieldModule} from "@angular/material/legacy-form-field";
 import {FlexModule} from "@angular/flex-layout";
 import {ReactiveFormsModule} from "@angular/forms";
-import {MatButtonModule} from "@angular/material/button";
-import {MatInputModule} from "@angular/material/input";
+import {MatLegacyButtonModule as MatButtonModule} from "@angular/material/legacy-button";
+import {MatLegacyInputModule as MatInputModule} from "@angular/material/legacy-input";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
-import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatLegacySlideToggleModule as MatSlideToggleModule} from "@angular/material/legacy-slide-toggle";
 import {PriceModule} from "../../../shared/data/directives/price/price.module";
 
 

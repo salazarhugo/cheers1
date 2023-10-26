@@ -2,9 +2,9 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {TicketItemRoutingModule} from './ticket-item-routing.module';
 import {TicketItemComponent} from "./ticket-item.component";
-import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {FlexModule} from "@angular/flex-layout";
+import {MatButtonModule} from "@angular/material/button";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatCardModule} from "@angular/material/card";
 

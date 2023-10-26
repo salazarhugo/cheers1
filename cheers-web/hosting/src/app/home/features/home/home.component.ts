@@ -8,8 +8,8 @@ import {User} from "../../../shared/data/models/user.model";
 import {UntypedFormControl, Validators} from "@angular/forms";
 import {PostService} from "../../../posts/data/post.service";
 import {PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
-import {MatDialog} from "@angular/material/dialog";
 import {PostCreateDialogComponent} from "../../../posts/ui/post-create-dialog/post-create-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
     selector: 'app-home',

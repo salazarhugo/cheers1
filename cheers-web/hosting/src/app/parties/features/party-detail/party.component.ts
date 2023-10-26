@@ -3,15 +3,15 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Party, WatchStatus} from "../../../shared/data/models/party.model";
 import {PartyService} from "../../data/party.service";
 import {Clipboard} from '@angular/cdk/clipboard';
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {UserService} from "../../../shared/data/services/user.service";
 import {firstValueFrom} from "rxjs";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
-import {MatDialog} from "@angular/material/dialog";
 import {PartyInviteComponent} from "../../ui/party-invite/party-invite.component";
 import {PartyTransferComponent} from "../party-transfer/party-transfer.component";
 import {PartyDuplicateComponent} from "../party-duplicate/party-duplicate.component";
 import {User} from "../../../shared/data/models/user.model";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatDialog} from "@angular/material/dialog";
 
 
 @Component({

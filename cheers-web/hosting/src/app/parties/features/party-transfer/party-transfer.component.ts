@@ -1,9 +1,9 @@
 import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {debounceTime, distinctUntilChanged, fromEvent, map, Observable, of} from "rxjs";
 import {User} from "../../../shared/data/models/user.model";
 import {UserService} from "../../../shared/data/services/user.service";
 import {PartyService} from "../../data/party.service";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({

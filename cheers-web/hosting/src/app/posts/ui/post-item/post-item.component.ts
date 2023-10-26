@@ -1,9 +1,8 @@
 import {Component, EventEmitter, Inject, Input, OnInit, Output} from '@angular/core';
-import {Post} from "../../../shared/data/models/post.model";
 import {PostService} from "../../data/post.service";
 import {PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {PostDeleteDialogComponent} from "../post-delete-dialog/post-delete-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({

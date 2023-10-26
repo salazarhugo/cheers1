@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  Router, Resolve,
-  RouterStateSnapshot,
-  ActivatedRouteSnapshot
-} from '@angular/router';
+import { Router, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import {firstValueFrom, Observable, of} from 'rxjs';
 import {PartyService} from "../../parties/data/party.service";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
@@ -14,7 +10,7 @@ import {UserService} from "../../shared/data/services/user.service";
 @Injectable({
   providedIn: 'root'
 })
-export class PartyResolver implements Resolve<Party> {
+export class PartyResolver  {
   constructor(
       public userService: UserService,
       public partyService: PartyService,

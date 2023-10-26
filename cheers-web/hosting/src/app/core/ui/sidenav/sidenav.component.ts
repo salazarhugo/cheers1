@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {firstValueFrom} from "rxjs";
 

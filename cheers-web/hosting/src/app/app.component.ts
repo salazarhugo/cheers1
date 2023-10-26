@@ -5,9 +5,9 @@ import {ThemeService} from "./core/data/theme.service";
 import {Observable} from "rxjs";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import {environment} from "../environments/environment";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {NotificationService} from "./core/data/notification.service";
 import {OverlayContainer} from "@angular/cdk/overlay";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-root',
