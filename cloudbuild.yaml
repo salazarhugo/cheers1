@@ -6,9 +6,8 @@ steps:
       - -c
       - |
         git fetch --depth=2 origin main
-        echo hello
         git  log
-        git --no-pager diff --name-only HEAD^ HEAD | grep "services/" | cut -d/ -f2 | sort | uniq > /workspace/diff.txt
+        git diff --name-only origin/main HEAD | grep "services/" | cut -d/ -f2 | sort | uniq > /workspace/diff.txt
 
   # Run cloud builds of every microservice that changed
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -18,13 +17,13 @@ steps:
       - |
         while read line
         do 
-        config="services/${line}/cloudbuild.yaml"
-        echo $config
-        if [[ ! -f "${config}" ]]; then
-         echo "no such file"
-         continue
-        fi
-        gcloud builds submit $line --config=${config}
+          config="services/${line}/cloudbuild.yaml"
+          echo $config
+          if [[ ! -f "${config}" ]]; then
+           echo "no such file"
+           continue
+          fi
+          gcloud builds submit services/${line} --config=${config}
         done < /workspace/diff.txt
 
 options:

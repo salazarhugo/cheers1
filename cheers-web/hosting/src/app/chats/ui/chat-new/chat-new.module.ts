@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ChatNewRoutingModule } from './chat-new-routing.module';
 import { ChatNewComponent } from './chat-new.component';
-import {MatButtonModule} from "@angular/material/button";
+import {MatLegacyButtonModule as MatButtonModule} from "@angular/material/legacy-button";
 import {MatIconModule} from "@angular/material/icon";
 import {FlexModule} from "@angular/flex-layout";
 

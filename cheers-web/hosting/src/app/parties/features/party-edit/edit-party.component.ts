@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, UntypedFormBuilder, Validators} from "@angular/forms";
 import {UserService} from "../../../shared/data/services/user.service";
 import {PartyService} from "../../data/party.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
@@ -11,6 +10,7 @@ import {Party} from "../../../shared/data/models/party.model";
 import {Observable, of} from "rxjs";
 import {User} from "../../../shared/data/models/user.model";
 import {Privacy} from "../../../shared/data/enum/privacy.enum";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-user-edit-party-detail',

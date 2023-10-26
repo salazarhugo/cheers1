@@ -2,12 +2,12 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {OrderService} from "../../../shared/data/services/order.service";
 import {Order} from "../../../../gen/ts/cheers/order/v1/order_service";
 import {MatSort} from "@angular/material/sort";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {Clipboard} from '@angular/cdk/clipboard';
 import {PaymentService} from "../../../payments/data/payment.service";
-import {MatDialog} from "@angular/material/dialog";
 import {RefundPaymentDialogComponent} from "../../ui/refund-payment-dialog/refund-payment-dialog.component";
+import {MatTableDataSource} from "@angular/material/table";
+import {MatDialog} from "@angular/material/dialog";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-business-orders',

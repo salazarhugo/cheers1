@@ -4,13 +4,10 @@ import { CommonModule } from '@angular/common';
 import { ManagePartyDetailsRoutingModule } from './manage-party-details-routing.module';
 import { ManagePartyDetailsComponent } from './manage-party-details.component';
 import {FlexModule} from "@angular/flex-layout";
-import {MatButtonModule} from "@angular/material/button";
-import {MatFormFieldModule} from "@angular/material/form-field";
 import {ReactiveFormsModule} from "@angular/forms";
-import {MatInputModule} from "@angular/material/input";
 import {NgxDropzoneModule} from "ngx-dropzone";
-import {MatDividerModule} from "@angular/material/divider";
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MaterialModule} from "../../../material/material.module";
 
 
 @NgModule({
@@ -21,13 +18,10 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
         CommonModule,
         ManagePartyDetailsRoutingModule,
         FlexModule,
-        MatButtonModule,
         MatFormFieldModule,
         ReactiveFormsModule,
-        MatInputModule,
         NgxDropzoneModule,
-        MatDividerModule,
-        MatProgressSpinnerModule
+        MaterialModule
     ]
 })
 export class ManagePartyDetailsModule { }

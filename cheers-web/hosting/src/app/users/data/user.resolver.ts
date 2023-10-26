@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, Resolve, Router} from "@angular/router";
+import { ActivatedRouteSnapshot, Router } from "@angular/router";
 import {UserService} from '../../shared/data/services/user.service';
 import {first} from "rxjs/operators";
 import {User} from "../../shared/data/models/user.model";
@@ -10,7 +10,7 @@ import {EMPTY, firstValueFrom, throwError} from "rxjs";
 @Injectable({
   providedIn: 'root'
 })
-export class UserResolver implements Resolve<User | null> {
+export class UserResolver  {
 
   constructor(
       public userService: UserService,

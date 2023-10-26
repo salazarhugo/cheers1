@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-    Router, Resolve,
-    RouterStateSnapshot,
-    ActivatedRouteSnapshot
-} from '@angular/router';
+import { Router, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import {firstValueFrom, Observable, of} from 'rxjs';
 import {User} from "../../shared/data/models/user.model";
 import {UserService} from "../../shared/data/services/user.service";
@@ -13,7 +9,7 @@ import {ApiService} from "../../shared/data/services/api.service";
 @Injectable({
     providedIn: 'root'
 })
-export class ProfileResolver implements Resolve<User> {
+export class ProfileResolver  {
 
     constructor(
         public userService: UserService,

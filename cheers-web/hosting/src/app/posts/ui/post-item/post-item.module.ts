@@ -6,13 +6,13 @@ import {PostItemComponent} from "./post-item.component";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatIconModule} from "@angular/material/icon";
 import {FormsModule} from "@angular/forms";
-import {MatCardModule} from "@angular/material/card";
+import {MatLegacyCardModule as MatCardModule} from "@angular/material/legacy-card";
 import {FlexModule} from "@angular/flex-layout";
-import {MatButtonModule} from "@angular/material/button";
-import {MatMenuModule} from "@angular/material/menu";
+import {MatLegacyButtonModule as MatButtonModule} from "@angular/material/legacy-button";
+import {MatLegacyMenuModule as MatMenuModule} from "@angular/material/legacy-menu";
 import {PostDeleteDialogModule} from "../post-delete-dialog/post-delete-dialog.module";
 import {RelativeTimeModule} from "../../../shared/data/pipes/relative-time/relative-time.module";
-import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatLegacyTooltipModule as MatTooltipModule} from "@angular/material/legacy-tooltip";
 
 
 @NgModule({

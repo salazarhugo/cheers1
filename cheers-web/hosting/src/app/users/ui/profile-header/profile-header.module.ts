@@ -4,7 +4,7 @@ import {CommonModule} from '@angular/common';
 import {ProfileHeaderRoutingModule} from './profile-header-routing.module';
 import {ProfileHeaderComponent} from "./profile-header.component";
 import {FlexLayoutModule, FlexModule} from "@angular/flex-layout";
-import {MatTooltipModule} from "@angular/material/tooltip";
+import {MatLegacyTooltipModule as MatTooltipModule} from "@angular/material/legacy-tooltip";
 
 
 @NgModule({

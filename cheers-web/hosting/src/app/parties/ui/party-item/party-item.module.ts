@@ -4,11 +4,13 @@ import {PartyItemComponent} from "./party-item.component";
 import {MaterialModule} from "../../../material/material.module";
 import {RouterModule} from "@angular/router";
 import {PartyDateModule} from "../../../shared/data/pipes/party-date/party-date.module";
+import {CoreModule} from "../../../core/core.module";
 
 @NgModule({
     declarations: [PartyItemComponent],
     imports: [
         CommonModule,
+        CoreModule,
         MaterialModule,
         RouterModule,
         PartyDateModule,

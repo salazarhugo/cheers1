@@ -9,9 +9,9 @@ import {PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {AuthService} from "../../../shared/data/services/auth.service";
 import {ChatService} from "../../../chats/data/chat.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {Party} from "../../../shared/data/models/party.model";
 import {PartyService} from "../../../parties/data/party.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-user-profile',

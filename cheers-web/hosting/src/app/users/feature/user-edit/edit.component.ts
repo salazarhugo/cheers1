@@ -3,9 +3,9 @@ import {finalize, firstValueFrom, Observable, of} from "rxjs";
 import {User} from "../../../shared/data/models/user.model";
 import {UserService} from "../../../shared/data/services/user.service";
 import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 
 @Component({

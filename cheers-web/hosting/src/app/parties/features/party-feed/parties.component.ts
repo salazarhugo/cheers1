@@ -5,7 +5,6 @@ import {PartyService} from "../../data/party.service";
 import {Party} from "../../../shared/data/models/party.model";
 import {User} from "../../../shared/data/models/user.model";
 import {KeyValue} from "@angular/common";
-import {ShimmerTypes} from "@sreyaj/ng-shimmer";
 
 @Component({
     selector: 'app-parties',
@@ -14,7 +13,6 @@ import {ShimmerTypes} from "@sreyaj/ng-shimmer";
 })
 export class PartiesComponent implements OnInit {
 
-    type = ShimmerTypes.CIRCLE
     $user: Observable<User | null> = of(null)
     partyList: Party[] = []
     parties: Map<string, Party[]>
