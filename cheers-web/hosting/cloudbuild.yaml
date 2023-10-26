@@ -11,10 +11,3 @@ steps:
   # Deploy
   - name: 'gcr.io/$PROJECT_ID/firebase'
     args: ['deploy', '--only hosting:cheers']
-
-availableSecrets:
-  secretManager:
-    - versionName: projects/$PROJECT_ID/secrets/NEO4J_URI/versions/latest
-      env: 'NEO4J_URI'
-    - versionName: projects/$PROJECT_ID/secrets/NEO4J_PASSWORD/versions/latest
-      env: 'NEO4J_PASSWORD'
