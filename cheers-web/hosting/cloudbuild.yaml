@@ -2,12 +2,16 @@ steps:
   # Install
   - name: 'gcr.io/cloud-builders/npm'
     args: ['install']
+    dir: cheers-web/hosting
   # Test
   - name: 'gcr.io/cloud-builders/npm'
     args: ['run', 'test:unit']
+    dir: cheers-web/hosting
   # Build
   - name: 'gcr.io/cloud-builders/npm'
     args: ['run', 'build']
+    dir: cheers-web/hosting
   # Deploy
   - name: 'gcr.io/$PROJECT_ID/firebase'
     args: ['deploy', '--only hosting:cheers']
+    dir: cheers-web/hosting
