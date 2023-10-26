@@ -13,5 +13,5 @@ steps:
     dir: cheers-web/hosting
   # Deploy
   - name: 'gcr.io/$PROJECT_ID/firebase'
-    args: ['deploy', 'hosting:cheers']
+    args: ['deploy', '--project=$PROJECT_ID', '--only=hosting:cheers']
     dir: cheers-web/hosting
