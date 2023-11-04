@@ -11,6 +11,7 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatFormFieldModule} from "@angular/material/form-field";
+import {CheersButtonComponent} from "../../../shared/ui/cheers-button/cheers-button.component";
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import {MatFormFieldModule} from "@angular/material/form-field";
         FlexModule,
         MatFormFieldModule,
         UserItemModule,
-        SharedModule
+        SharedModule,
+        CheersButtonComponent,
     ]
 })
 export class PartyTransferModule { }

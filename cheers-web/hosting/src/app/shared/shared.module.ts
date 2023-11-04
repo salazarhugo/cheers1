@@ -42,6 +42,7 @@ const components = [
         CoreRoutingModule,
         RouterModule,
         CheersSpinnerModule,
+        CheersButtonComponent,
     ],
     exports: [
         ...components,
