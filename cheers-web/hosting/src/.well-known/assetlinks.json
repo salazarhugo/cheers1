@@ -1,0 +1,15 @@
+[
+  {
+    "relation" : [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target" : {
+      "namespace" : "android_app",
+      "package_name" : "com.salazar.cheers",
+      "sha256_cert_fingerprints" : [
+        "06:47:23:F1:EB:76:D5:6D:A3:8B:B1:FE:B6:E8:21:06:2D:79:58:2D:57:93:93:4C:35:5F:6B:CC:67:DD:E2:82"
+      ]
+    }
+  }
+]

@@ -1,5 +1,5 @@
 <button color="primary" [disabled]="this.isLoading || this.disabled" mat-flat-button>
-    <div fxLayoutAlign="center center" fxLayoutGap="16px">
+    <div class="cheers-button-content">
         <mat-spinner *ngIf="isLoading" [diameter]="16" [strokeWidth]="1"></mat-spinner>
         <span>{{text}}</span>
     </div>

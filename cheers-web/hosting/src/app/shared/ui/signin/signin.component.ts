@@ -34,8 +34,10 @@ export class SigninComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    signInWithGoogle() {
-        this.authService.signInWithGoogle()
+    async signInWithGoogle() {
+        this.isLoading = true
+        await this.authService.signInWithGoogle()
+        this.isLoading = false
     }
 
     onSignIn() {
