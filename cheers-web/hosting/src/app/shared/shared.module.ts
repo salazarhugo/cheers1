@@ -15,7 +15,7 @@ import {LottieModule} from "ngx-lottie";
 import {CoreRoutingModule} from "../core/core-routing.module";
 import {DropzoneDirective} from './data/dropzone.directive';
 import {CheersSpinnerModule} from "./ui/cheers-spinner/cheers-spinner.module";
-import { CheersButtonComponent } from './ui/cheers-button/cheers-button.component';
+import {CheersButtonComponent } from './ui/cheers-button/cheers-button.component';
 
 
 const components = [
@@ -26,13 +26,12 @@ const components = [
     SignInComponent,
     TicketsComponent,
     TicketingComponent,
-    DropzoneDirective
+    DropzoneDirective,
 ]
 
 @NgModule({
     declarations: [
         ...components,
-        CheersButtonComponent,
     ],
     imports: [
         CommonModule,
@@ -46,7 +45,6 @@ const components = [
     ],
     exports: [
         ...components,
-        CheersButtonComponent
     ]
 })
 export class SharedModule {

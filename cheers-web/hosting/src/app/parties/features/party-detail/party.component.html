@@ -28,10 +28,9 @@
                 </button>
 
                 <ng-template [ngIf]="party.isNotInterested">
-                    <button mat-flat-button (click)="onInterestedClick()">
+                    <cheers-button text="Interested" (click)="onInterestedClick()">
                         <mat-icon>star_border</mat-icon>
-                        <span class="button-span">Interested</span>
-                    </button>
+                    </cheers-button>
 
                     <!--                        [ngClass]="party.isNotInterested ? 'blue': ''">-->
                     <button (click)="onGoingClick()" mat-flat-button>
@@ -76,22 +75,22 @@
                 <div>
                     <h2>Details</h2>
                     <div class="party-details" fxLayout="column" fxLayoutGap="8px">
-                        <div fxLayoutAlign="none center">
+                        <div class="party-detail-item">
                             <mat-icon class="material-icons-outlined">people</mat-icon>
-                            <span class="button-span mat-body-1">{{party.goingCount}} people going</span>
+                            <span class="button-span">{{party.goingCount}} people going</span>
                             <!--                            <span class="button-span">{{party-detail.interestedCount}} people interested</span>-->
                         </div>
-                        <div fxLayoutAlign="none center">
+                        <div class="party-detail-item">
                             <mat-icon class="material-icons-outlined">flag_outline</mat-icon>
-                            <span class="button-span mat-body-1">Party by {{party.hostName}}</span>
+                            <span class="button-span">Party by {{party.hostName}}</span>
                         </div>
-                        <div fxLayoutAlign="none center">
+                        <div class="party-detail-item">
                             <mat-icon class="material-icons-outlined">location_on_outline</mat-icon>
-                            <span class="button-span mat-body-1">{{party.locationName}}</span>
+                            <span class="button-span">{{party.locationName}}</span>
                         </div>
-                        <div fxLayoutAlign="none center">
+                        <div class="party-detail-item">
                             <mat-icon>public_outline</mat-icon>
-                            <span class="button-span mat-body-1">{{party.privacy}}</span>
+                            <span class="button-span">{{party.privacy}}</span>
                         </div>
                     </div>
                 </div>

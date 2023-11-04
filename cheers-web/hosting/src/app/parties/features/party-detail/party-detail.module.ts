@@ -4,8 +4,9 @@ import {CommonModule} from '@angular/common';
 import {PartyDetailRoutingModule} from './party-detail-routing.module';
 import {PartyComponent} from "./party.component";
 import {MaterialModule} from "../../../material/material.module";
-import {AdminButtonModule} from "../../../shared/ui/admin-button/admin-button.module";
-import {MatLegacyRadioModule as MatRadioModule} from "@angular/material/legacy-radio";
+import {MatRadioModule} from "@angular/material/radio";
+import {AdminButtonComponent} from "../../../shared/ui/admin-button/admin-button.component";
+import {CheersButtonComponent} from "../../../shared/ui/cheers-button/cheers-button.component";
 
 
 @NgModule({
@@ -14,8 +15,9 @@ import {MatLegacyRadioModule as MatRadioModule} from "@angular/material/legacy-r
         CommonModule,
         PartyDetailRoutingModule,
         MaterialModule,
-        AdminButtonModule,
-        MatRadioModule
+        MatRadioModule,
+        AdminButtonComponent,
+        CheersButtonComponent,
     ],
     exports: [
         PartyComponent,

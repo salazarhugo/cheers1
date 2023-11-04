@@ -9,8 +9,6 @@ import {environment} from "../environments/environment.prod";
 import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import {RouterModule} from "@angular/router";
 import {AppRoutingModule} from "./app-routing.module";
-import {GrpcCoreModule} from "@ngx-grpc/core";
-import {GrpcWebClientModule} from "@ngx-grpc/grpc-web-client";
 import {OverlayModule} from "@angular/cdk/overlay";
 import {LottieModule} from "ngx-lottie";
 import {getApp, initializeApp, provideFirebaseApp} from "@angular/fire/app";
@@ -28,6 +26,7 @@ import { RefundPaymentDialogComponent } from './business/ui/refund-payment-dialo
 import {MapModule} from "./map/map.module";
 import {PostCreateDialogModule} from "./posts/ui/post-create-dialog/post-create-dialog.module";
 import {TopbarModule} from "./home/ui/topbar/topbar.module";
+import {CommonModule} from "@angular/common";
 
 
 export function playerFactory(): any {
@@ -43,6 +42,7 @@ if (!environment.production)
         RefundPaymentDialogComponent,
     ],
     imports: [
+        CommonModule,
         BrowserModule,
         BrowserAnimationsModule,
         AppRoutingModule,
