@@ -18,7 +18,7 @@ func UserSub(w http.ResponseWriter, r *http.Request) {
 
 	log.Println(event)
 
-	repo := repository.NewAuthRepository()
+	repo := repository.NewRepository()
 
 	switch event := event.Event.(type) {
 	case *user.UserEvent_Create:

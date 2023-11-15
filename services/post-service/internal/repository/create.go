@@ -2,55 +2,53 @@ package repository
 
 import (
 	uuid "github.com/google/uuid"
-	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
-	utils "github.com/salazarhugo/cheers1/libs/utils"
-	"github.com/salazarhugo/cheers1/libs/utils/mapper"
+	postpb "github.com/salazarhugo/cheers1/gen/go/cheers/type/post"
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"log"
-	"time"
 )
 
 func (p *postRepository) CreatePost(
 	userID string,
-	request *pb.CreatePostRequest,
+	post *Post,
 ) (string, error) {
-	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
-	defer session.Close()
+	db := p.spanner
 
-	cypher, err := utils.GetCypher("internal/queries/CreatePost.cql")
-	if err != nil {
-		return "", err
-	}
+	post.ID = uuid.NewString()
+	post.UserID = userID
 
-	post := request.GetPost()
-	post.Id = uuid.NewString()
-	post.CreatorId = userID
-	post.CreateTime = time.Now().Unix()
-
-	m, err := mapper.ProtoToMap(post)
-	if err != nil {
-		return "", err
-	}
-
-	params := map[string]interface{}{
-		"userID": userID,
-		"post":   m,
-	}
-
-	_, err = session.Run(*cypher, params)
-	if err != nil {
-		log.Println(err)
-		return "", err
+	result := db.Create(&post)
+	if result.Error != nil {
+		return "", result.Error
 	}
 
 	go func() {
 		err := pubsub.PublishProtoWithBinaryEncoding("post-topic", &pb.PostEvent{
 			Event: &pb.PostEvent_Create{
 				Create: &pb.CreatePost{
-					Post:                      post,
+					Post: &postpb.Post{
+						Id:                    post.ID,
+						CreatorId:             userID,
+						Caption:               post.Caption,
+						Address:               "",
+						Privacy:               0,
+						Photos:                nil,
+						LocationName:          "",
+						Drink:                 "",
+						Drunkenness:           0,
+						Type:                  0,
+						CreateTime:            0,
+						CanComment:            false,
+						CanShare:              false,
+						Ratio:                 0,
+						Latitude:              0,
+						Longitude:             0,
+						LastCommentText:       "",
+						LastCommentUsername:   "",
+						LastCommentCreateTime: 0,
+					},
 					User:                      nil,
-					SendNotificationToFriends: request.GetSendNotificationToFriends(),
+					SendNotificationToFriends: true,
 				},
 			},
 		})
@@ -59,5 +57,5 @@ func (p *postRepository) CreatePost(
 		}
 	}()
 
-	return post.Id, nil
+	return post.ID, nil
 }

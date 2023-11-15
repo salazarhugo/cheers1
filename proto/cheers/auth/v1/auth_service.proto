@@ -16,6 +16,13 @@ service AuthService {
     };
   }
 
+  rpc Register(RegisterRequest) returns (RegisterResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/register"
+      body: "*"
+    };
+  }
+
   rpc CreateModerator(CreateModeratorRequest) returns (CreateModeratorResponse) {
     option (google.api.http) = {
       post: "/v1/auths/moderator"
@@ -48,6 +55,16 @@ service AuthService {
       delete: "/v1/auths/verify"
     };
   }
+}
+
+message RegisterRequest {
+  string email = 1;
+  string username = 2;
+  string public_key = 3;
+}
+
+message RegisterResponse {
+  cheers.type.User user = 1;
 }
 
 message LoginRequest {
