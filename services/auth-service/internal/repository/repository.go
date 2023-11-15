@@ -1,6 +1,10 @@
 package repository
 
-import "github.com/salazarhugo/cheers1/services/auth-service/internal/constants"
+import (
+	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/services/auth-service/internal/constants"
+	"gorm.io/gorm"
+)
 
 type AuthRepository interface {
 	CreateAdmin(userID string) error
@@ -8,11 +12,15 @@ type AuthRepository interface {
 	CreateBusinessAccount(userID string) error
 	VerifyUser(userID string) error
 	CreateClaim(userID string, claim constants.Claim) error
+	CreateCredential(userID string, publicKey string) (string, error)
 }
 
 type authRepository struct {
+	spanner *gorm.DB
 }
 
-func NewAuthRepository() AuthRepository {
-	return &authRepository{}
+func NewRepository() AuthRepository {
+	return &authRepository{
+		spanner: utils.GetSpanner(),
+	}
 }

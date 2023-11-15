@@ -8,15 +8,18 @@ import (
 	postpb "github.com/salazarhugo/cheers1/gen/go/cheers/type/post"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"gorm.io/gorm"
 	"os"
 )
 
 type PostRepository interface {
-	CreatePost(userID string, request *pb.CreatePostRequest) (string, error)
+	CreatePost(userID string, post *Post) (string, error)
 	GetPost(postID string) (*postpb.Post, error)
+	GetPostById(postID string) (*Post, error)
 	GetPostItem(userID string, postID string) (*pb.PostResponse, error)
 	UpdatePostLastComment(user *user.UserItem, comment *comment.Comment) error
 	DeletePost(userID string, postID string) error
+	DeletePostById(postID string) error
 
 	FeedPost(userID string, request *pb.FeedPostRequest) (*pb.FeedPostResponse, error)
 	ListPost(userID string, request *pb.ListPostRequest) (*pb.ListPostResponse, error)
@@ -29,8 +32,9 @@ type PostRepository interface {
 }
 
 type postRepository struct {
-	driver neo4j.Driver
-	redis  *redis.Client
+	driver  neo4j.Driver
+	redis   *redis.Client
+	spanner *gorm.DB
 }
 
 func NewPostRepository() PostRepository {
@@ -42,7 +46,8 @@ func NewPostRepository() PostRepository {
 	})
 
 	return &postRepository{
-		driver: driver,
-		redis:  rdb,
+		driver:  driver,
+		redis:   rdb,
+		spanner: utils.GetSpanner(),
 	}
 }

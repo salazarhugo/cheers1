@@ -26,7 +26,7 @@ func (s *Server) CreateUser(
 		return nil, err
 	}
 
-	_, err = s.userRepository.GetUserNode(userID)
+	_, err = s.userRepository.GetUserById(userID)
 	if err == nil {
 		return nil, status.Error(codes.AlreadyExists, "user already exist")
 	}

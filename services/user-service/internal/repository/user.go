@@ -5,6 +5,7 @@ import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"gorm.io/gorm"
 )
 
 type UserRepository interface {
@@ -16,10 +17,11 @@ type UserRepository interface {
 		email string,
 	) (string, error)
 
-	GetUserNode(userId string) (*user.User, error)
+	GetUserById(userID string) (User, error)
+	GetUserByUsername(username string) (User, error)
 	GetUser(userID string, otherUserID string) (*pb.GetUserResponse, error)
 	UpdateUser(userID string, user *user.User) error
-	DeleteUser(userID string) error
+	DeleteUserById(userID string) error
 
 	UpdateBusinessAccount(userID string, isBusinessAccount bool) error
 	UpdateAdmin(userID string, isAdmin bool) error
@@ -68,9 +70,13 @@ type UserRepository interface {
 }
 
 type userRepository struct {
-	driver neo4j.Driver
+	spanner *gorm.DB
+	driver  neo4j.Driver
 }
 
 func NewUserRepository() UserRepository {
-	return &userRepository{driver: utils.GetDriver()}
+	return &userRepository{
+		spanner: utils.GetSpanner(),
+		driver:  utils.GetDriver(),
+	}
 }

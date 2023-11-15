@@ -4,6 +4,7 @@ import (
 	"context"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/services/post-service/internal/repository"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -25,7 +26,11 @@ func (s *Server) CreatePost(
 		return nil, status.Error(codes.InvalidArgument, "empty caption and photos")
 	}
 
-	postID, err := s.postRepository.CreatePost(userID, request)
+	postReq := &repository.Post{
+		Caption: partyReq.Caption,
+	}
+
+	postID, err := s.postRepository.CreatePost(userID, postReq)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to create post")
 	}

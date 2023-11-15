@@ -19,6 +19,6 @@ func NewServer() *Server {
 		pb.UnimplementedAuthServiceServer{},
 		grpc_health_v1.UnimplementedHealthServer{},
 		sync.Mutex{},
-		repository.NewAuthRepository(),
+		repository.NewRepository(),
 	}
 }

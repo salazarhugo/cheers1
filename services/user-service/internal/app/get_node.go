@@ -12,13 +12,13 @@ func (s *Server) GetUserNode(
 ) (*pb.GetUserNodeResponse, error) {
 	userId := request.GetUserId()
 
-	user, err := s.userRepository.GetUserNode(userId)
+	user, err := s.userRepository.GetUserById(userId)
 	if err != nil {
 		log.Error(err)
 		return nil, err
 	}
 
 	return &pb.GetUserNodeResponse{
-		User: user,
+		User: user.ToUserPb(),
 	}, nil
 }
