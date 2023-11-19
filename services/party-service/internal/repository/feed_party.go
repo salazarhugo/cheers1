@@ -1,18 +1,16 @@
 package repository
 
 import (
-	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
-	"github.com/salazarhugo/cheers1/libs/utils"
-	"github.com/salazarhugo/cheers1/libs/utils/mapper"
+	"github.com/salazarhugo/cheers1/services/party-service/internal/model"
+	"time"
 )
 
 func (p *partyRepository) FeedParty(
 	userID string,
 	request *pb.FeedPartyRequest,
 ) (*pb.FeedPartyResponse, error) {
-	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
-	defer session.Close()
+	db := p.spanner
 
 	page := request.GetPage()
 	if page == 0 {
@@ -24,32 +22,27 @@ func (p *partyRepository) FeedParty(
 	}
 	skip := pageSize * (page - 1)
 
-	cypher, err := utils.GetCypher("internal/queries/FeedParty.cql")
-	if err != nil {
-		return nil, err
-	}
+	var parties []model.Party
 
-	params := map[string]interface{}{
-		"userID":   userID,
-		"skip":     int(skip),
-		"pageSize": int(pageSize),
-	}
-
-	result, err := session.Run(*cypher, params)
-	if err != nil {
-		return nil, err
+	result := db.Limit(int(pageSize)).Offset(int(skip)).Where("end_date > ?", time.Now()).Order("end_date asc").Find(&parties)
+	if result.Error != nil {
+		return nil, result.Error
 	}
 
 	items := make([]*pb.PartyItem, 0)
-
-	for result.Next() {
-		party := &pb.PartyItem{}
-		data := result.Record().Values[0]
-		err = mapper.MapToProto(party, data)
-		if err != nil {
-			return nil, err
+	for _, party := range parties {
+		item := &pb.PartyItem{
+			Party:             party.ToPartyPb(),
+			User:              nil,
+			GoingCount:        0,
+			InterestedCount:   0,
+			InvitedCount:      0,
+			IsCreator:         false,
+			ViewerWatchStatus: 0,
+			MutualGoing:       nil,
+			MutualInterested:  nil,
 		}
-		items = append(items, party)
+		items = append(items, item)
 	}
 
 	return &pb.FeedPartyResponse{

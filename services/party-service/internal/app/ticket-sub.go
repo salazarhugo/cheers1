@@ -2,7 +2,6 @@ package app
 
 import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/ticket/v1"
-	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"github.com/salazarhugo/cheers1/services/party-service/internal/repository"
 	"log"
@@ -17,7 +16,7 @@ func TicketSub(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Println(event)
 
-	repo := repository.NewPartyRepository(utils.GetDriver())
+	repo := repository.NewRepository()
 
 	switch e := event.Event.(type) {
 	case *ticket.TicketEvent_Create:

@@ -2,7 +2,6 @@ package app
 
 import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
-	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/services/party-service/internal/repository"
 	"sync"
 )
@@ -17,6 +16,6 @@ func NewServer() *Server {
 	return &Server{
 		party.UnimplementedPartyServiceServer{},
 		sync.Mutex{},
-		repository.NewPartyRepository(utils.GetDriver()),
+		repository.NewRepository(),
 	}
 }

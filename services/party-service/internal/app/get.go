@@ -16,13 +16,13 @@ func (s *Server) GetParty(
 		return nil, err
 	}
 
-	party, err := s.partyRepository.GetParty(request.GetPartyId())
+	party, err := s.partyRepository.GetPartyById(request.GetPartyId())
 	if err != nil {
 		return nil, err
 	}
 
 	return &pb.GetPartyResponse{
-		Party: party,
+		Party: party.ToPartyPb(),
 	}, nil
 }
 

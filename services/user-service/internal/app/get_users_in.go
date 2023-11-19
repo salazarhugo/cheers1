@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"github.com/labstack/gommon/log"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -18,5 +19,10 @@ func (s *Server) GetUsersIn(
 		return nil, status.Error(codes.Internal, "failed to get users in")
 	}
 
-	return &pb.GetUsersInResponse{Users: users}, nil
+	items := make([]*user.User, 0)
+	for _, u := range users {
+		items = append(items, u.ToUserPb())
+	}
+
+	return &pb.GetUsersInResponse{Users: items}, nil
 }

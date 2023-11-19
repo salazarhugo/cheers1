@@ -29,16 +29,16 @@ func (s *Server) DeleteParty(
 	user, err := client.GetUser(ctx, userID)
 	isAdmin := user.CustomClaims["admin"] != nil
 
-	party, err := s.partyRepository.GetParty(request.PartyId)
+	party, err := s.partyRepository.GetPartyById(request.PartyId)
 	if err != nil {
 		return nil, status.Error(codes.NotFound, "party not found")
 	}
 
-	if party.HostId != userID && !isAdmin {
+	if party.UserID != userID && !isAdmin {
 		return nil, status.Error(codes.PermissionDenied, "insufficient permissions: must be creator of the party or admin")
 	}
 
-	err = s.partyRepository.DeleteParty(request.PartyId)
+	err = s.partyRepository.DeletePartyById(request.PartyId)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to delete party")
 	}

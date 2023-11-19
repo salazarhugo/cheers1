@@ -17,12 +17,12 @@ func (s *Server) DuplicateParty(
 		return nil, status.Error(codes.Internal, "failed retrieving userID")
 	}
 
-	party, err := s.partyRepository.GetParty(request.PartyId)
+	party, err := s.partyRepository.GetPartyById(request.PartyId)
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, "can't get party")
 	}
 
-	party.HostId = userID
+	party.UserID = userID
 	party.Name = party.Name + " - Copy"
 
 	_, err = s.partyRepository.CreateParty(userID, party)

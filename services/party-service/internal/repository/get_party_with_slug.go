@@ -1,42 +1,19 @@
 package repository
 
 import (
-	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
-	party "github.com/salazarhugo/cheers1/gen/go/cheers/type/party"
-	"github.com/salazarhugo/cheers1/libs/utils"
-	"github.com/salazarhugo/cheers1/libs/utils/mapper"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
+	"github.com/salazarhugo/cheers1/services/party-service/internal/model"
 )
 
-func (p *partyRepository) GetPartyWithSlug(slug string) (*party.Party, error) {
-	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
-	defer session.Close()
+func (p *partyRepository) GetPartyBySlug(
+	slug string,
+) (*model.Party, error) {
+	db := p.spanner
+	var party model.Party
 
-	cypher, err := utils.GetCypher("internal/queries/GetPartyWithSlug.cql")
-	if err != nil {
-		return nil, err
+	result := db.Where("slug = ?", slug).First(&party)
+	if result.Error != nil {
+		return nil, result.Error
 	}
 
-	params := map[string]interface{}{
-		"slug": slug,
-	}
-
-	result, err := session.Run(*cypher, params)
-
-	if err != nil {
-		return nil, err
-	}
-
-	if result.Next() {
-		party := &party.Party{}
-		data := result.Record().Values[0]
-		err := mapper.MapToProto(party, data)
-		if err != nil {
-			return nil, err
-		}
-		return party, nil
-	} else {
-		return nil, status.Error(codes.NotFound, "party not found")
-	}
+	return &party, nil
 }

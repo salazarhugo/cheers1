@@ -34,14 +34,14 @@ func (s *Server) TransferParty(
 	}
 
 	// Check if party exists
-	party, err := s.partyRepository.GetParty(request.PartyId)
+	party, err := s.partyRepository.GetPartyById(request.PartyId)
 	if err != nil {
 		return nil, err
 	}
 
 	err = s.partyRepository.TransferParty(
 		request.UserId,
-		party.Id,
+		party.ID,
 	)
 
 	if err != nil {

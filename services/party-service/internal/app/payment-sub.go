@@ -24,7 +24,7 @@ func PaymentSub(w http.ResponseWriter, r *http.Request) {
 	userID, err := GetUserId(order.CustomerId)
 	partyID, err := GetPartyId(event.GetPaymentIntentId(), order.CustomerId)
 
-	repo := repository.NewPartyRepository(utils.GetDriver())
+	repo := repository.NewRepository()
 	err = repo.UpdateWatchStatus(userID, partyID, party.WatchStatus_GOING)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

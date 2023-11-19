@@ -1,40 +1,18 @@
 package repository
 
 import (
-	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
-	party "github.com/salazarhugo/cheers1/gen/go/cheers/type/party"
-	"github.com/salazarhugo/cheers1/libs/utils"
-	"github.com/salazarhugo/cheers1/libs/utils/mapper"
-	"log"
+	"github.com/salazarhugo/cheers1/services/party-service/internal/model"
 )
 
 func (p *partyRepository) UpdateParty(
-	party *party.Party,
+	party *model.Party,
 ) (string, error) {
-	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
-	defer session.Close()
+	db := p.spanner
 
-	log.Printf("updating party: %s", party.Id)
-
-	cypher, err := utils.GetCypher("internal/queries/UpdateParty.cql")
-	if err != nil {
-		return "", err
+	result := db.Updates(&party)
+	if result.Error != nil {
+		return "", result.Error
 	}
 
-	m, err := mapper.ProtoToMap(party)
-	if err != nil {
-		return "", err
-	}
-
-	params := map[string]interface{}{
-		"partyID": party.Id,
-		"party":   m,
-	}
-
-	_, err = session.Run(*cypher, params)
-	if err != nil {
-		return "", err
-	}
-
-	return party.Id, nil
+	return party.ID, nil
 }

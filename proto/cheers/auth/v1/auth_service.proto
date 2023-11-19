@@ -16,9 +16,9 @@ service AuthService {
     };
   }
 
-  rpc Register(RegisterRequest) returns (RegisterResponse) {
+  rpc FinishRegistration(FinishRegistrationRequest) returns (FinishRegistrationResponse) {
     option (google.api.http) = {
-      post: "/v1/auth/register"
+      post: "/v1/auth/register/finish"
       body: "*"
     };
   }
@@ -57,13 +57,25 @@ service AuthService {
   }
 }
 
-message RegisterRequest {
+message FinishRegistrationRequest {
   string email = 1;
   string username = 2;
-  string public_key = 3;
+  CreatePasskeyResponseData passkey = 3;
 }
 
-message RegisterResponse {
+message CreatePasskeyResponseData {
+  string id = 1;
+  string raw_id = 2;
+  string type = 3;
+  Response response = 4;
+}
+
+message Response {
+  string attestation_object = 1;
+  string client_data_json = 2;
+}
+
+message FinishRegistrationResponse {
   cheers.type.User user = 1;
 }
 

@@ -1,0 +1,27 @@
+package domain
+
+func (userService *UserService) DeleteUser(
+	userID string,
+) error {
+	_, err := userService.userRepository.GetUserById(userID)
+	if err != nil {
+		return err
+	}
+
+	err = userService.userRepository.DeleteUserById(userID)
+	if err != nil {
+		return err
+	}
+
+	err = deleteUserStorage(userID)
+	if err != nil {
+		return err
+	}
+
+	err = deleteUserDocument(userID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

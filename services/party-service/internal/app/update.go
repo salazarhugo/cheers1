@@ -3,8 +3,8 @@ package app
 import (
 	"context"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
-	partypb "github.com/salazarhugo/cheers1/gen/go/cheers/type/party"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/services/party-service/internal/model"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"log"
@@ -19,13 +19,7 @@ func (s *Server) UpdateParty(
 		return nil, err
 	}
 
-	var party *partypb.Party
-
-	if request.Party.Name != "" {
-		party, err = s.partyRepository.GetPartyWithName(request.Party.GetName())
-	} else {
-		party, err = s.partyRepository.GetParty(request.Party.Id)
-	}
+	party, err := s.partyRepository.GetPartyById(request.Party.Id)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -37,25 +31,26 @@ func (s *Server) UpdateParty(
 		return nil, err
 	}
 
-	request.Party.Id = party.Id
-	_, err = s.partyRepository.UpdateParty(request.Party)
+	request.Party.Id = party.ID
+	updatedPartyRequest := model.ToPartyDomain(request.Party)
+	partyID, err := s.partyRepository.UpdateParty(updatedPartyRequest)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to update party")
 	}
 
-	updatedParty, err := s.partyRepository.GetParty(request.Party.Id)
+	updatedParty, err := s.partyRepository.GetPartyById(partyID)
 	if err != nil {
 		return nil, err
 	}
 
 	return &pb.UpdatePartyResponse{
-		Party: updatedParty,
+		Party: updatedParty.ToPartyPb(),
 	}, nil
 }
 
 func AuthorizeUpdatePartyRequest(
 	ctx context.Context,
-	party *partypb.Party,
+	party *model.Party,
 ) error {
 	userID, err := utils.GetUserId(ctx)
 	if err != nil {
@@ -85,7 +80,7 @@ func AuthorizeUpdatePartyRequest(
 	}
 
 	// Check if user is the party host
-	if party.HostId != userID {
+	if party.UserID != userID {
 		return status.Error(codes.PermissionDenied, "insufficient permissions")
 	}
 

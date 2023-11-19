@@ -5,16 +5,19 @@ import (
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
 	party "github.com/salazarhugo/cheers1/gen/go/cheers/type/party"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
+	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/services/party-service/internal/model"
+	"gorm.io/gorm"
 )
 
 type PartyRepository interface {
-	CreateParty(userID string, party *party.Party) (*party.Party, error)
-	InsertParty(party *party.Party) (string, error)
-	GetParty(id string) (*party.Party, error)
-	GetPartyWithSlug(slug string) (*party.Party, error)
+	CreateParty(userID string, party *model.Party) (string, error)
+	GetPartyById(id string) (*model.Party, error)
+	GetPartyBySlug(slug string) (*model.Party, error)
 	GetPartyWithName(name string) (*party.Party, error)
-	UpdateParty(party *party.Party) (string, error)
-	DeleteParty(id string) error
+	UpdateParty(party *model.Party) (string, error)
+	UpsertPartyBySlug(party *model.Party) (string, error)
+	DeletePartyById(id string) error
 
 	TransferParty(userID string, partyID string) error
 	GetPartyItem(userID string, partyID string) (*pb.PartyItem, error)
@@ -27,11 +30,13 @@ type PartyRepository interface {
 }
 
 type partyRepository struct {
-	driver neo4j.Driver
+	driver  neo4j.Driver
+	spanner *gorm.DB
 }
 
-func NewPartyRepository(driver neo4j.Driver) PartyRepository {
+func NewRepository() PartyRepository {
 	return &partyRepository{
-		driver: driver,
+		driver:  utils.GetDriver(),
+		spanner: utils.GetSpanner(),
 	}
 }

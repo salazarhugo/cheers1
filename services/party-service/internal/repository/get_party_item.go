@@ -1,46 +1,34 @@
 package repository
 
 import (
-	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
-	"github.com/salazarhugo/cheers1/libs/utils"
-	"github.com/salazarhugo/cheers1/libs/utils/mapper"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
+	"github.com/salazarhugo/cheers1/services/party-service/internal/model"
 )
 
 func (p *partyRepository) GetPartyItem(
 	userID string,
 	partyID string,
 ) (*pb.PartyItem, error) {
-	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
-	defer session.Close()
+	db := p.spanner
 
-	cypher, err := utils.GetCypher("internal/queries/GetPartyItem.cql")
-	if err != nil {
-		return nil, err
+	var party model.Party
+
+	result := db.Where("id = ?", partyID).First(&party)
+	if result.Error != nil {
+		return nil, result.Error
 	}
 
-	params := map[string]interface{}{
-		"userID":  userID,
-		"partyID": partyID,
+	item := &pb.PartyItem{
+		Party:             party.ToPartyPb(),
+		User:              nil,
+		GoingCount:        0,
+		InterestedCount:   0,
+		InvitedCount:      0,
+		IsCreator:         false,
+		ViewerWatchStatus: 0,
+		MutualGoing:       nil,
+		MutualInterested:  nil,
 	}
 
-	result, err := session.Run(*cypher, params)
-
-	if err != nil {
-		return nil, err
-	}
-
-	if result.Next() {
-		item := &pb.PartyItem{}
-		data := result.Record().Values[0]
-		err := mapper.MapToProto(item, data)
-		if err != nil {
-			return nil, err
-		}
-		return item, nil
-	} else {
-		return nil, status.Error(codes.NotFound, "party not found")
-	}
+	return item, nil
 }

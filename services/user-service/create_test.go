@@ -13,7 +13,7 @@ func TestCreateUser(t *testing.T) {
 	userName := "User Service"
 	userID, err := repo.CreateUser(
 		uuid.NewString(),
-		"test3",
+		"test",
 		userName,
 		"",
 		"user-service@cheers.social",
