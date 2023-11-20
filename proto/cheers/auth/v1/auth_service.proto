@@ -72,7 +72,7 @@ message CreatePasskeyResponseData {
 
 message Response {
   string attestation_object = 1;
-  string client_data_json = 2;
+  string client_data_JSON = 2;
 }
 
 message FinishRegistrationResponse {

@@ -8,4 +8,5 @@ clean:
 	rm -rf pkg
 
 update:
-	go get github.com/salazarhugo/cheers1/gen/go@main
+	go get github.com/salazarhugo/cheers1/gen/go@main;
+	go mod download;

@@ -6,13 +6,14 @@ require (
 	firebase.google.com/go/v4 v4.12.1
 	github.com/go-webauthn/webauthn v0.8.6
 	github.com/google/uuid v1.3.1
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20231115205943-932c1364ac02
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20231119222311-740862f1c490
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20231115205943-932c1364ac02
 	github.com/sirupsen/logrus v1.9.0
 	golang.org/x/net v0.17.0
 	google.golang.org/grpc v1.59.0
+	google.golang.org/protobuf v1.31.0
 	gorm.io/gorm v1.25.5
 )
 
@@ -73,9 +74,8 @@ require (
 	google.golang.org/genproto v0.0.0-20231002182017-d307bd883b97 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20231002182017-d307bd883b97 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20231012201019-e917dd12ba7a // indirect
-	google.golang.org/protobuf v1.31.0 // indirect
 )
 
-//replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
+replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
 
 //replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils
