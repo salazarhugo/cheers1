@@ -43,23 +43,23 @@ func (s *Server) FinishRegistration(
 		return nil, err
 	}
 
-	user := NewUser(
-		request.Username,
-		request.Username,
-	)
-	log.Println(req)
+	user, err := s.authRepository.GetUserByUsername(request.Username)
+	if err != nil {
+		return nil, err
+	}
 
-	// generate PublicKeyCredentialCreationOptions, session data
-	_, sessionData, err := webAuthn.BeginRegistration(
-		user,
-	)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
-	log.Println(sessionData)
 
-	credential, err := webAuthn.FinishRegistration(user, *sessionData, req)
+	sessionData, err := s.authRepository.GetSession(request.Username)
+	if err != nil {
+		log.Fatal("failed to get session: ", err)
+		return nil, err
+	}
+
+	credential, err := webAuthn.FinishRegistration(user.ToAuthnUser(), *sessionData, req)
 	if err != nil {
 		log.Println(err)
 		return nil, err

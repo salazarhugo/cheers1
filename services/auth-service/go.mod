@@ -4,9 +4,10 @@ go 1.19
 
 require (
 	firebase.google.com/go/v4 v4.12.1
+	github.com/go-redis/redis/v9 v9.0.0-rc.1
 	github.com/go-webauthn/webauthn v0.8.6
 	github.com/google/uuid v1.3.1
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20231119222311-740862f1c490
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20231120130231-20146006bdd4
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20231115205943-932c1364ac02
@@ -33,6 +34,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/cncf/udpa/go v0.0.0-20220112060539-c52dc94e7fbe // indirect
 	github.com/cncf/xds/go v0.0.0-20230607035331-e9ce68804cb4 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/envoyproxy/go-control-plane v0.11.1 // indirect
 	github.com/envoyproxy/protoc-gen-validate v1.0.2 // indirect
 	github.com/fxamacker/cbor/v2 v2.4.0 // indirect

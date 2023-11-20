@@ -16,6 +16,12 @@ service AuthService {
     };
   }
 
+  rpc BeginRegistration(BeginRegistrationRequest) returns (BeginRegistrationResponse) {
+    option (google.api.http) = {
+      get: "/v1/auth/register/begin/{username}"
+    };
+  }
+
   rpc FinishRegistration(FinishRegistrationRequest) returns (FinishRegistrationResponse) {
     option (google.api.http) = {
       post: "/v1/auth/register/finish"
@@ -55,6 +61,15 @@ service AuthService {
       delete: "/v1/auths/verify"
     };
   }
+}
+
+message BeginRegistrationRequest {
+  string username = 1;
+}
+
+message BeginRegistrationResponse {
+  string user_id = 1;
+  string challenge = 2;
 }
 
 message FinishRegistrationRequest {

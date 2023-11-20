@@ -4,35 +4,34 @@ import (
 	"context"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/auth/v1"
 	"github.com/salazarhugo/cheers1/services/auth-service/internal/app"
-	"github.com/salazarhugo/cheers1/services/auth-service/internal/repository"
 	"testing"
 )
 
 func TestRegistration(t *testing.T) {
-	//Create a mock repository
-	repo := repository.NewRepository()
 
-	server := app.NewServer()
 	request := &auth.FinishRegistrationRequest{
 		Email:    "hugobrock74@gmail.com",
 		Username: "lars",
 		Passkey: &auth.CreatePasskeyResponseData{
-			Id:    "6bmjCKxTBP2xazq0Tn873g",
-			RawId: "NmJtakNLeFRCUDJ4YXpxMFRuODczZw==",
+			Id:    "GpTQg7zMb4w0iPSqt62NuQ",
+			RawId: "R3BUUWc3ek1iNHcwaVBTcXQ2Mk51UQ",
 			Type:  "public-key",
 			Response: &auth.Response{
-				AttestationObject: "bzJObWJYUmtibTl1WldkaGRIUlRkRzEwb0doaGRYUm9SR0YwWVZpVUQ1OUppNTFObURLT1J6c0hlVFpkMUJDTEFFY0hzcHJ1aTFBaWRad0lHdHhkQUFBQUFPcWJqV1pOQVIwaFBPUzJ0SXkxZGRRQUVPbTVvd2lzVXdUOXNXczZ0RTVfTzk2bEFRSURKaUFCSVZnZzRUSE95OWxqZnhCT2JpNXI2azl2QXpKSUpBdmNta0gycHR3eWlvSV9ZdWtpV0NEajZoOW5Dd1l5dkx0R1RiM2pmMEJBU3pGSXR0VDdjYUVJa2VTQkRtbTZZQQ==bzJObWJYUmtibTl1WldkaGRIUlRkRzEwb0doaGRYUm9SR0YwWVZpVUQ1OUppNTFObURLT1J6c0hlVFpkMUJDTEFFY0hzcHJ1aTFBaWRad0lHdHhkQUFBQUFPcWJqV1pOQVIwaFBPUzJ0SXkxZGRRQUVPbTVvd2lzVXdUOXNXczZ0RTVfTzk2bEFRSURKaUFCSVZnZzRUSE95OWxqZnhCT2JpNXI2azl2QXpKSUpBdmNta0gycHR3eWlvSV9ZdWtpV0NEajZoOW5Dd1l5dkx0R1RiM2pmMEJBU3pGSXR0VDdjYUVJa2VTQkRtbTZZQQ==",
-				ClientDataJson:    "",
+				AttestationObject: "o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YViUD59Ji51NmDKORzsHeTZd1BCLAEcHsprui1AidZwIGtxdAAAAAOqbjWZNAR0hPOS2tIy1ddQAEBqU0IO8zG-MNIj0qretjbmlAQIDJiABIVggRPfskV5gFmfzPgSqVwkQoxcfb_OsTGiPRYHDWR2il8wiWCByRYED0i3XrN44mtAspmK51Eoth-v3DulNwA69VHsfZA",
+				ClientData_JSON:   "eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoia1hCM0N1cTFOMEw1bUZjYkVkWXVSeGs2Vlp4X3VhTEpVS3JQVmZ1Wm81WSIsIm9yaWdpbiI6ImFuZHJvaWQ6YXBrLWtleS1oYXNoOkJrY2o4ZXQyMVcyamk3SC10dWdoQmkxNVdDMVhrNU5NTlY5cnpHZmQ0b0kiLCJhbmRyb2lkUGFja2FnZU5hbWUiOiJjb20uc2FsYXphci5jaGVlcnMifQ",
 			},
 		},
 	}
-	server.FinishRegistration(context.Background(), request)
-	_, err := repo.CreateCredential(
-		"user1",
-		"publickey23r52582",
-	)
+
+	server := app.NewServer()
+	_, err := server.FinishRegistration(context.Background(), request)
 	if err != nil {
-		t.Error("failed to create credential: ", err)
+		t.Error(err)
+		return
+	}
+
+	if err != nil {
+		t.Error(err)
 		return
 	}
 }

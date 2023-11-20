@@ -1,4 +1,4 @@
-gcloud api-gateway api-configs create android-api-config-v50 \
+gcloud api-gateway api-configs create android-api-config-v51 \
     --api=android \
     --project=cheers-a275e \
     --grpc-files=../proto/api_descriptor.pb,api_config_http.yaml,api_config.yaml

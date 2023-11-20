@@ -1,7 +1,8 @@
-package repository
+package model
 
 import (
 	userpb "github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
+	"github.com/salazarhugo/cheers1/services/auth-service/internal/app"
 	"time"
 )
 
@@ -15,6 +16,7 @@ type User struct {
 	Name      string
 	Picture   string
 	Verified  bool
+	AuthnId   uint64
 }
 
 func (u User) ToUserPb() *userpb.User {
@@ -37,4 +39,8 @@ func (u User) ToUserPb() *userpb.User {
 		IsModerator:        false,
 		Banner:             "",
 	}
+}
+
+func (u User) ToAuthnUser() *app.AuthnUser {
+	return app.NewUser(u.AuthnId, u.Username, u.Username)
 }
