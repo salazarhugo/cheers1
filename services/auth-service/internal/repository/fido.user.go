@@ -1,7 +1,6 @@
-package app
+package repository
 
 import (
-	"crypto/rand"
 	"encoding/binary"
 	"github.com/go-webauthn/webauthn/webauthn"
 )
@@ -54,10 +53,4 @@ func NewUser(
 	user.displayName = displayName
 
 	return user
-}
-
-func randomUint64() uint64 {
-	buf := make([]byte, 8)
-	rand.Read(buf)
-	return binary.LittleEndian.Uint64(buf)
 }

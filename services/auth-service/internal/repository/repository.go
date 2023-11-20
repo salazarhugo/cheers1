@@ -8,14 +8,13 @@ import (
 	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/services/auth-service/internal/constants"
-	"github.com/salazarhugo/cheers1/services/auth-service/internal/model"
 	"gorm.io/gorm"
 	"os"
 	"time"
 )
 
 type AuthRepository interface {
-	GetUserByUsername(username string) (*model.User, error)
+	GetUserByUsername(username string) (*User, error)
 	GetSession(username string) (*webauthn.SessionData, error)
 	PutSession(username string, session *webauthn.SessionData) error
 	CreateAdmin(userID string) error

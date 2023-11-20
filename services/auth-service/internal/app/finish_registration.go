@@ -12,6 +12,7 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 	"log"
 	"net/http"
+	"time"
 )
 
 func (s *Server) FinishRegistration(
@@ -53,13 +54,20 @@ func (s *Server) FinishRegistration(
 		return nil, err
 	}
 
-	sessionData, err := s.authRepository.GetSession(request.Username)
+	sessionData := webauthn.SessionData{
+		Challenge:            request.Challenge,
+		UserID:               []byte(request.UserId),
+		AllowedCredentialIDs: nil,
+		Expires:              time.Now().AddDate(0, 0, 1),
+		UserVerification:     "",
+		Extensions:           nil,
+	}
 	if err != nil {
 		log.Fatal("failed to get session: ", err)
 		return nil, err
 	}
 
-	credential, err := webAuthn.FinishRegistration(user.ToAuthnUser(), *sessionData, req)
+	credential, err := webAuthn.FinishRegistration(user.ToAuthnUser(), sessionData, req)
 	if err != nil {
 		log.Println(err)
 		return nil, err

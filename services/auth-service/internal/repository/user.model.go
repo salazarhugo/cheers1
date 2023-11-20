@@ -1,8 +1,7 @@
-package model
+package repository
 
 import (
 	userpb "github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
-	"github.com/salazarhugo/cheers1/services/auth-service/internal/app"
 	"time"
 )
 
@@ -41,6 +40,6 @@ func (u User) ToUserPb() *userpb.User {
 	}
 }
 
-func (u User) ToAuthnUser() *app.AuthnUser {
-	return app.NewUser(u.AuthnId, u.Username, u.Username)
+func (u User) ToAuthnUser() *AuthnUser {
+	return NewUser(u.AuthnId, u.Username, u.Username)
 }

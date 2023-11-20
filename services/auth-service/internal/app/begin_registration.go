@@ -2,10 +2,13 @@ package app
 
 import (
 	"context"
+	"crypto/rand"
+	"encoding/binary"
 	_ "firebase.google.com/go/v4/auth"
 	"fmt"
 	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/auth/v1"
+	"github.com/salazarhugo/cheers1/services/auth-service/internal/repository"
 	"log"
 )
 
@@ -27,15 +30,15 @@ func (s *Server) BeginRegistration(
 
 	user, err := s.authRepository.GetUserByUsername(request.GetUsername())
 
-	var authnUser *AuthnUser
+	var authnUser *repository.AuthnUser
 	if user != nil {
-		authnUser = NewUser(
+		authnUser = repository.NewUser(
 			user.AuthnId,
 			username,
 			username,
 		)
 	} else {
-		authnUser = NewUser(
+		authnUser = repository.NewUser(
 			randomUint64(),
 			username,
 			username,
@@ -50,13 +53,14 @@ func (s *Server) BeginRegistration(
 		return nil, err
 	}
 
-	err = s.authRepository.PutSession(username, sessionData)
-	if err != nil {
-		return nil, err
-	}
-
 	return &auth.BeginRegistrationResponse{
 		UserId:    string(sessionData.UserID),
 		Challenge: sessionData.Challenge,
 	}, nil
+}
+
+func randomUint64() uint64 {
+	buf := make([]byte, 8)
+	rand.Read(buf)
+	return binary.LittleEndian.Uint64(buf)
 }

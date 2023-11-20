@@ -76,6 +76,8 @@ message FinishRegistrationRequest {
   string email = 1;
   string username = 2;
   CreatePasskeyResponseData passkey = 3;
+  string user_id = 4;
+  string challenge = 5;
 }
 
 message CreatePasskeyResponseData {
