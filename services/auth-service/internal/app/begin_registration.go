@@ -28,7 +28,7 @@ func (s *Server) BeginRegistration(
 		fmt.Println(err)
 	}
 
-	user, err := s.authRepository.GetUserByUsername(request.GetUsername())
+	user, _ := s.authRepository.GetUserByUsername(request.GetUsername())
 
 	var authnUser *repository.AuthnUser
 	if user != nil {
@@ -52,6 +52,10 @@ func (s *Server) BeginRegistration(
 		log.Println(err)
 		return nil, err
 	}
+
+	num := binary.LittleEndian.Uint64(sessionData.UserID)
+	log.Println(uint64(sessionData.UserID))
+	log.Println(sessionData.Challenge)
 
 	return &auth.BeginRegistrationResponse{
 		UserId:    string(sessionData.UserID),

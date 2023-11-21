@@ -68,7 +68,7 @@ message BeginRegistrationRequest {
 }
 
 message BeginRegistrationResponse {
-  string user_id = 1;
+  uint64 user_id = 1;
   string challenge = 2;
 }
 
@@ -76,7 +76,7 @@ message FinishRegistrationRequest {
   string email = 1;
   string username = 2;
   CreatePasskeyResponseData passkey = 3;
-  string user_id = 4;
+  uint64 user_id = 4;
   string challenge = 5;
 }
 
