@@ -7,7 +7,7 @@ require (
 	github.com/go-redis/redis/v9 v9.0.0-rc.1
 	github.com/go-webauthn/webauthn v0.8.6
 	github.com/google/uuid v1.3.1
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20231120221858-8f0bd8f019ef
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20231121152402-b0827c7b8506
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20231115205943-932c1364ac02
@@ -78,6 +78,6 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20231012201019-e917dd12ba7a // indirect
 )
 
-//replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
+replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
 
 //replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils

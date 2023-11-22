@@ -23,6 +23,8 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthServiceClient interface {
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+	BeginLogin(ctx context.Context, in *BeginLoginRequest, opts ...grpc.CallOption) (*BeginLoginResponse, error)
+	FinishLogin(ctx context.Context, in *FinishLoginRequest, opts ...grpc.CallOption) (*FinishLoginResponse, error)
 	BeginRegistration(ctx context.Context, in *BeginRegistrationRequest, opts ...grpc.CallOption) (*BeginRegistrationResponse, error)
 	FinishRegistration(ctx context.Context, in *FinishRegistrationRequest, opts ...grpc.CallOption) (*FinishRegistrationResponse, error)
 	CreateModerator(ctx context.Context, in *CreateModeratorRequest, opts ...grpc.CallOption) (*CreateModeratorResponse, error)
@@ -43,6 +45,24 @@ func NewAuthServiceClient(cc grpc.ClientConnInterface) AuthServiceClient {
 func (c *authServiceClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
 	out := new(LoginResponse)
 	err := c.cc.Invoke(ctx, "/cheers.auth.v1.AuthService/Login", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) BeginLogin(ctx context.Context, in *BeginLoginRequest, opts ...grpc.CallOption) (*BeginLoginResponse, error) {
+	out := new(BeginLoginResponse)
+	err := c.cc.Invoke(ctx, "/cheers.auth.v1.AuthService/BeginLogin", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authServiceClient) FinishLogin(ctx context.Context, in *FinishLoginRequest, opts ...grpc.CallOption) (*FinishLoginResponse, error) {
+	out := new(FinishLoginResponse)
+	err := c.cc.Invoke(ctx, "/cheers.auth.v1.AuthService/FinishLogin", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -117,6 +137,8 @@ func (c *authServiceClient) DeleteVerifyUser(ctx context.Context, in *VerifyUser
 // for forward compatibility
 type AuthServiceServer interface {
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
+	BeginLogin(context.Context, *BeginLoginRequest) (*BeginLoginResponse, error)
+	FinishLogin(context.Context, *FinishLoginRequest) (*FinishLoginResponse, error)
 	BeginRegistration(context.Context, *BeginRegistrationRequest) (*BeginRegistrationResponse, error)
 	FinishRegistration(context.Context, *FinishRegistrationRequest) (*FinishRegistrationResponse, error)
 	CreateModerator(context.Context, *CreateModeratorRequest) (*CreateModeratorResponse, error)
@@ -133,6 +155,12 @@ type UnimplementedAuthServiceServer struct {
 
 func (UnimplementedAuthServiceServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
+}
+func (UnimplementedAuthServiceServer) BeginLogin(context.Context, *BeginLoginRequest) (*BeginLoginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BeginLogin not implemented")
+}
+func (UnimplementedAuthServiceServer) FinishLogin(context.Context, *FinishLoginRequest) (*FinishLoginResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FinishLogin not implemented")
 }
 func (UnimplementedAuthServiceServer) BeginRegistration(context.Context, *BeginRegistrationRequest) (*BeginRegistrationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BeginRegistration not implemented")
@@ -182,6 +210,42 @@ func _AuthService_Login_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(AuthServiceServer).Login(ctx, req.(*LoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_BeginLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BeginLoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).BeginLogin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.auth.v1.AuthService/BeginLogin",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).BeginLogin(ctx, req.(*BeginLoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _AuthService_FinishLogin_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FinishLoginRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServiceServer).FinishLogin(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.auth.v1.AuthService/FinishLogin",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServiceServer).FinishLogin(ctx, req.(*FinishLoginRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -322,6 +386,14 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Login",
 			Handler:    _AuthService_Login_Handler,
+		},
+		{
+			MethodName: "BeginLogin",
+			Handler:    _AuthService_BeginLogin_Handler,
+		},
+		{
+			MethodName: "FinishLogin",
+			Handler:    _AuthService_FinishLogin_Handler,
 		},
 		{
 			MethodName: "BeginRegistration",

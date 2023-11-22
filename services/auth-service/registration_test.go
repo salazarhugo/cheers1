@@ -13,14 +13,16 @@ func TestRegistration(t *testing.T) {
 		Email:    "hugobrock74@gmail.com",
 		Username: "lars",
 		Passkey: &auth.CreatePasskeyResponseData{
-			Id:    "GpTQg7zMb4w0iPSqt62NuQ",
-			RawId: "R3BUUWc3ek1iNHcwaVBTcXQ2Mk51UQ",
+			Id:    "_KVP1NWX4GEMhOakUGwbdg",
+			RawId: "X0tWUDFOV1g0R0VNaE9ha1VHd2JkZw",
 			Type:  "public-key",
 			Response: &auth.Response{
-				AttestationObject: "o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YViUD59Ji51NmDKORzsHeTZd1BCLAEcHsprui1AidZwIGtxdAAAAAOqbjWZNAR0hPOS2tIy1ddQAEBqU0IO8zG-MNIj0qretjbmlAQIDJiABIVggRPfskV5gFmfzPgSqVwkQoxcfb_OsTGiPRYHDWR2il8wiWCByRYED0i3XrN44mtAspmK51Eoth-v3DulNwA69VHsfZA",
-				ClientData_JSON:   "eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoia1hCM0N1cTFOMEw1bUZjYkVkWXVSeGs2Vlp4X3VhTEpVS3JQVmZ1Wm81WSIsIm9yaWdpbiI6ImFuZHJvaWQ6YXBrLWtleS1oYXNoOkJrY2o4ZXQyMVcyamk3SC10dWdoQmkxNVdDMVhrNU5NTlY5cnpHZmQ0b0kiLCJhbmRyb2lkUGFja2FnZU5hbWUiOiJjb20uc2FsYXphci5jaGVlcnMifQ",
+				AttestationObject: "o2NmbXRkbm9uZWdhdHRTdG10oGhhdXRoRGF0YViUD59Ji51NmDKORzsHeTZd1BCLAEcHsprui1AidZwIGtxdAAAAAOqbjWZNAR0hPOS2tIy1ddQAEPylT9TVl-BhDITmpFBsG3alAQIDJiABIVggL0iMlHpeG9yywiuU65N1UFBhgAvHAIQoYw33mgBqDNEiWCDXwzUsffuCN9Z9wxgYvRNHrTXLtDenlW4OZZGxlvuYeA",
+				ClientData_JSON:   "eyJ0eXBlIjoid2ViYXV0aG4uY3JlYXRlIiwiY2hhbGxlbmdlIjoiSHIzZDdRSkphdDJzVHd4NjN1NlhpMHZZdUlKOW9DYkNjdVc0VDZmamV6YyIsIm9yaWdpbiI6ImFuZHJvaWQ6YXBrLWtleS1oYXNoOkJrY2o4ZXQyMVcyamk3SC10dWdoQmkxNVdDMVhrNU5NTlY5cnpHZmQ0b0kiLCJhbmRyb2lkUGFja2FnZU5hbWUiOiJjb20uc2FsYXphci5jaGVlcnMifQ",
 			},
 		},
+		UserId:    13729502662429043192,
+		Challenge: "Hr3d7QJJat2sTwx63u6Xi0vYuIJ9oCbCcuW4T6fjezc",
 	}
 
 	server := app.NewServer()

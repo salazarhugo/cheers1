@@ -16,10 +16,10 @@ import (
 	"time"
 )
 
-func (s *Server) FinishRegistration(
+func (s *Server) FinishLogin(
 	ctx context.Context,
-	request *auth.FinishRegistrationRequest,
-) (*auth.FinishRegistrationResponse, error) {
+	request *auth.FinishLoginRequest,
+) (*auth.FinishLoginResponse, error) {
 	log.Println(request)
 
 	allowedOrigins := []string{
@@ -70,7 +70,7 @@ func (s *Server) FinishRegistration(
 		return nil, err
 	}
 
-	credential, err := webAuthn.FinishRegistration(authnUser, sessionData, req)
+	credential, err := webAuthn.FinishLogin(authnUser, sessionData, req)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -84,7 +84,7 @@ func (s *Server) FinishRegistration(
 		return nil, err
 	}
 
-	return &auth.FinishRegistrationResponse{
+	return &auth.FinishLoginResponse{
 		User: user.ToUserPb(),
 	}, nil
 }

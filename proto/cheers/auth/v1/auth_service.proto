@@ -16,6 +16,20 @@ service AuthService {
     };
   }
 
+  rpc BeginLogin(BeginLoginRequest) returns (BeginLoginResponse) {
+    option (google.api.http) = {
+      get: "/v1/auth/login/begin/{username}"
+    };
+  }
+
+  rpc FinishLogin(FinishLoginRequest) returns (FinishLoginResponse) {
+    option (google.api.http) = {
+      post: "/v1/auth/login/finish"
+      body: "*"
+    };
+  }
+
+
   rpc BeginRegistration(BeginRegistrationRequest) returns (BeginRegistrationResponse) {
     option (google.api.http) = {
       get: "/v1/auth/register/begin/{username}"
@@ -63,6 +77,28 @@ service AuthService {
   }
 }
 
+message BeginLoginRequest {
+  string username = 1;
+}
+
+message BeginLoginResponse {
+  uint64 user_id = 1;
+  string challenge = 2;
+  string relying_party_id = 3;
+  string user_verification = 4;
+}
+
+message FinishLoginRequest {
+  string username = 1;
+  CreatePasskeyResponseData passkey = 2;
+  uint64 user_id = 3;
+  string challenge = 4;
+}
+
+message FinishLoginResponse {
+  cheers.type.User user = 1;
+}
+
 message BeginRegistrationRequest {
   string username = 1;
 }
@@ -80,6 +116,10 @@ message FinishRegistrationRequest {
   string challenge = 5;
 }
 
+message FinishRegistrationResponse {
+  cheers.type.User user = 1;
+}
+
 message CreatePasskeyResponseData {
   string id = 1;
   string raw_id = 2;
@@ -90,10 +130,6 @@ message CreatePasskeyResponseData {
 message Response {
   string attestation_object = 1;
   string client_data_JSON = 2;
-}
-
-message FinishRegistrationResponse {
-  cheers.type.User user = 1;
 }
 
 message LoginRequest {

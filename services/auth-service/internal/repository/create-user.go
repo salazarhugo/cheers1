@@ -2,7 +2,6 @@ package repository
 
 func (a *authRepository) CreateUser(
 	user *User,
-	credential *Credential,
 ) error {
 	db := a.spanner
 	tx := db.Begin()
@@ -12,12 +11,6 @@ func (a *authRepository) CreateUser(
 
 	// Insert user
 	if err := tx.Create(&user).Error; err != nil {
-		tx.Rollback()
-		return err
-	}
-
-	// Insert credential
-	if err := tx.Create(&credential).Error; err != nil {
 		tx.Rollback()
 		return err
 	}

@@ -15,7 +15,7 @@ type User struct {
 	Name      string
 	Picture   string
 	Verified  bool
-	AuthnId   uint64
+	AuthnId   int64
 }
 
 func (u User) ToUserPb() *userpb.User {
@@ -41,5 +41,5 @@ func (u User) ToUserPb() *userpb.User {
 }
 
 func (u User) ToAuthnUser() *AuthnUser {
-	return NewUser(u.AuthnId, u.Username, u.Username)
+	return NewUser(uint64(u.AuthnId), u.Username, u.Username)
 }

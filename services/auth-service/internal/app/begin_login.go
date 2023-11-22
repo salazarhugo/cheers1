@@ -7,21 +7,14 @@ import (
 	"fmt"
 	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/auth/v1"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"log"
 )
 
-func (s *Server) BeginRegistration(
+func (s *Server) BeginLogin(
 	ctx context.Context,
-	request *auth.BeginRegistrationRequest,
-) (*auth.BeginRegistrationResponse, error) {
+	request *auth.BeginLoginRequest,
+) (*auth.BeginLoginResponse, error) {
 	username := request.GetUsername()
-
-	// Validate Username
-	if len(username) < 1 {
-		return nil, status.Error(codes.InvalidArgument, "invalid username")
-	}
 
 	allowedOrigins := []string{
 		"https://cheers.social",
@@ -39,16 +32,16 @@ func (s *Server) BeginRegistration(
 		fmt.Println(err)
 	}
 
-	user, err := s.authRepository.GetOrCreateUser(username)
+	// Get the user
+	user, err := s.authRepository.GetUserByUsername(username)
 	if err != nil {
-		return nil, status.Error(codes.InvalidArgument, "failed to get or create user")
+		return nil, err
 	}
 
 	authnUser := user.ToAuthnUser()
 
-	_, sessionData, err := webAuthn.BeginRegistration(
-		authnUser,
-	)
+	// Generate PublicKeyCredentialRequestOptions
+	options, sessionData, err := webAuthn.BeginLogin(authnUser)
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -56,8 +49,10 @@ func (s *Server) BeginRegistration(
 
 	num := binary.LittleEndian.Uint64(sessionData.UserID)
 
-	return &auth.BeginRegistrationResponse{
-		UserId:    num,
-		Challenge: sessionData.Challenge,
+	return &auth.BeginLoginResponse{
+		UserId:           num,
+		Challenge:        sessionData.Challenge,
+		RelyingPartyId:   options.Response.RelyingPartyID,
+		UserVerification: string(options.Response.UserVerification),
 	}, nil
 }
