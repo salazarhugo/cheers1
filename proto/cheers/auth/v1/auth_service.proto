@@ -90,9 +90,8 @@ message BeginLoginResponse {
 
 message FinishLoginRequest {
   string username = 1;
-  CreatePasskeyResponseData passkey = 2;
-  uint64 user_id = 3;
-  string challenge = 4;
+  GetPasskeyResponseData passkey = 2;
+  string challenge = 3;
 }
 
 message FinishLoginResponse {
@@ -118,6 +117,20 @@ message FinishRegistrationRequest {
 
 message FinishRegistrationResponse {
   cheers.type.User user = 1;
+}
+
+message GetPasskeyResponseData {
+  string id = 1;
+  string raw_id = 2;
+  string type = 3;
+  GetPasskeyResponse response = 4;
+}
+
+message GetPasskeyResponse {
+  string authenticator_data = 1;
+  string client_data_JSON = 2;
+  string signature = 3;
+  string user_handle = 4;
 }
 
 message CreatePasskeyResponseData {

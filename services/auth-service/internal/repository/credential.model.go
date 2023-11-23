@@ -1,28 +1,39 @@
 package repository
 
 import (
-	"encoding/binary"
 	"github.com/go-webauthn/webauthn/webauthn"
 	"time"
 )
 
 // Credential model
 type Credential struct {
-	ID        int64 `gorm:"primarykey"`
-	UserId    int64
-	PublicKey []byte
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID              []byte `gorm:"primarykey"`
+	UserId          int64
+	PublicKey       []byte
+	AttestationType string
+	CreatedAt       time.Time
+	UpdatedAt       time.Time
 }
 
 func CredentialToDomain(
 	userID int64,
 	credential *webauthn.Credential,
 ) *Credential {
-	id := binary.LittleEndian.Uint64(credential.ID)
 	return &Credential{
-		ID:        int64(id),
-		UserId:    userID,
-		PublicKey: credential.PublicKey,
+		ID:              credential.ID,
+		UserId:          userID,
+		PublicKey:       credential.PublicKey,
+		AttestationType: credential.AttestationType,
+	}
+}
+
+func (c *Credential) ToWebAuthnCredential() *webauthn.Credential {
+	return &webauthn.Credential{
+		ID:              c.ID,
+		PublicKey:       c.PublicKey,
+		AttestationType: c.AttestationType,
+		Transport:       nil,
+		Flags:           webauthn.CredentialFlags{},
+		Authenticator:   webauthn.Authenticator{},
 	}
 }

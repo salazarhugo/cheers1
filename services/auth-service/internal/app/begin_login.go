@@ -33,12 +33,10 @@ func (s *Server) BeginLogin(
 	}
 
 	// Get the user
-	user, err := s.authRepository.GetUserByUsername(username)
+	authnUser, err := s.authRepository.GetAuthnUser(username)
 	if err != nil {
 		return nil, err
 	}
-
-	authnUser := user.ToAuthnUser()
 
 	// Generate PublicKeyCredentialRequestOptions
 	options, sessionData, err := webAuthn.BeginLogin(authnUser)

@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	_ "firebase.google.com/go/v4/auth"
 	"fmt"
+	"github.com/go-webauthn/webauthn/protocol"
 	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/auth/v1"
 	"google.golang.org/grpc/codes"
@@ -39,15 +40,19 @@ func (s *Server) BeginRegistration(
 		fmt.Println(err)
 	}
 
-	user, err := s.authRepository.GetOrCreateUser(username)
+	// Get the user
+	authnUser, err := s.authRepository.GetOrCreateUser(username)
 	if err != nil {
-		return nil, status.Error(codes.InvalidArgument, "failed to get or create user")
+		return nil, err
 	}
 
-	authnUser := user.ToAuthnUser()
+	registerOptions := func(credCreationOpts *protocol.PublicKeyCredentialCreationOptions) {
+		credCreationOpts.CredentialExcludeList = authnUser.CredentialExcludeList()
+	}
 
 	_, sessionData, err := webAuthn.BeginRegistration(
 		authnUser,
+		registerOptions,
 	)
 	if err != nil {
 		log.Println(err)

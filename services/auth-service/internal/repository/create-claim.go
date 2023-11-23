@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-func (a authRepository) CreateClaim(
+func (a *authRepository) CreateClaim(
 	userID string,
 	claim constants.Claim,
 ) error {

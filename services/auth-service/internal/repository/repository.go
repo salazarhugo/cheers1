@@ -10,8 +10,10 @@ import (
 
 type AuthRepository interface {
 	GetUserByUsername(username string) (*User, error)
+	GetUserCredentials(username string) ([]*Credential, error)
+	GetAuthnUser(username string) (*AuthnUser, error)
 	CreateUser(user *User) error
-	GetOrCreateUser(username string) (*User, error)
+	GetOrCreateUser(username string) (*AuthnUser, error)
 	CreateAdmin(userID string) error
 	CreateModerator(userID string) error
 	CreateBusinessAccount(userID string) error
@@ -23,6 +25,27 @@ type AuthRepository interface {
 type authRepository struct {
 	spanner *gorm.DB
 	redis   *redis.Client
+}
+
+func (a *authRepository) GetAuthnUser(username string) (*AuthnUser, error) {
+	// Get the user
+	user, err := a.GetUserByUsername(username)
+	if err != nil {
+		return nil, err
+	}
+
+	// Get user credentials
+	credentials, err := a.GetUserCredentials(username)
+	if err != nil {
+		return nil, err
+	}
+
+	authnUser := user.ToAuthnUser()
+	for _, credential := range credentials {
+		authnUser.AddCredential(*credential.ToWebAuthnCredential())
+	}
+
+	return authnUser, nil
 }
 
 func NewRepository() AuthRepository {

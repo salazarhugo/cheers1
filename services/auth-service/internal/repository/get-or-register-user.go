@@ -8,8 +8,8 @@ import (
 
 func (a *authRepository) GetOrCreateUser(
 	username string,
-) (*User, error) {
-	user, err := a.GetUserByUsername(username)
+) (*AuthnUser, error) {
+	user, err := a.GetAuthnUser(username)
 	if user != nil {
 		return user, err
 	}
@@ -27,8 +27,8 @@ func (a *authRepository) GetOrCreateUser(
 		return nil, err
 	}
 
-	// Get user from database
-	user, err = a.GetUserByUsername(username)
+	// Get authnUser from database
+	user, err = a.GetAuthnUser(username)
 	if err != nil {
 		return nil, err
 	}

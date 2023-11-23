@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/auth/v1"
-	"github.com/salazarhugo/cheers1/services/auth-service/internal/repository"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -50,12 +49,10 @@ func (s *Server) FinishLogin(
 		return nil, err
 	}
 
-	user, err := s.authRepository.GetUserByUsername(request.Username)
+	authnUser, err := s.authRepository.GetAuthnUser(request.Username)
 	if err != nil {
 		return nil, err
 	}
-
-	authnUser := user.ToAuthnUser()
 
 	sessionData := webauthn.SessionData{
 		Challenge:            request.Challenge,
@@ -76,15 +73,9 @@ func (s *Server) FinishLogin(
 		return nil, err
 	}
 
-	authnUser.AddCredential(*credential)
 	log.Println(credential.PublicKey)
 
-	err = s.authRepository.CreateCredential(repository.CredentialToDomain(user.AuthnId, credential))
-	if err != nil {
-		return nil, err
-	}
-
 	return &auth.FinishLoginResponse{
-		User: user.ToUserPb(),
+		User: nil,
 	}, nil
 }

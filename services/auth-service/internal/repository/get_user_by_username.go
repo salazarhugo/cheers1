@@ -1,6 +1,6 @@
 package repository
 
-func (a authRepository) GetUserByUsername(
+func (a *authRepository) GetUserByUsername(
 	username string,
 ) (*User, error) {
 	db := a.spanner

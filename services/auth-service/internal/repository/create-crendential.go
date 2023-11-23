@@ -1,6 +1,6 @@
 package repository
 
-func (a authRepository) CreateCredential(
+func (a *authRepository) CreateCredential(
 	credential *Credential,
 ) error {
 	db := a.spanner
