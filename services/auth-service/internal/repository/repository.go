@@ -13,6 +13,8 @@ type AuthRepository interface {
 	GetUserCredentials(username string) ([]*Credential, error)
 	GetAuthnUser(username string) (*AuthnUser, error)
 	CreateUser(user *User) error
+	CreateFirebaseUser(userID string) (*interface{}, error)
+	CreateFirebaseCustomToken(userID string) (string, error)
 	GetOrCreateUser(username string) (*AuthnUser, error)
 	CreateAdmin(userID string) error
 	CreateModerator(userID string) error

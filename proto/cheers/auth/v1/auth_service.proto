@@ -96,6 +96,7 @@ message FinishLoginRequest {
 
 message FinishLoginResponse {
   cheers.type.User user = 1;
+  string token = 2;
 }
 
 message BeginRegistrationRequest {

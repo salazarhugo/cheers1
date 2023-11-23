@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	_ "firebase.google.com/go/v4/auth"
-	"fmt"
 	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/auth/v1"
 	"github.com/salazarhugo/cheers1/services/auth-service/internal/repository"
@@ -20,22 +19,9 @@ func (s *Server) FinishRegistration(
 	ctx context.Context,
 	request *auth.FinishRegistrationRequest,
 ) (*auth.FinishRegistrationResponse, error) {
-	log.Println(request)
-
-	allowedOrigins := []string{
-		"https://cheers.social",
-		"android:apk-key-hash:Bkcj8et21W2ji7H-tughBi15WC1Xk5NMNV9rzGfd4oI",
-	}
-
-	wconfig := &webauthn.Config{
-		RPDisplayName: "Cheers",        // Display Name for your site
-		RPID:          "cheers.social", // Generally the FQDN for your site
-		RPOrigins:     allowedOrigins,  // The origin URLs allowed for WebAuthn requests
-	}
-
-	webAuthn, err := webauthn.New(wconfig)
+	webAuthn, err := NewWebAuthn()
 	if err != nil {
-		fmt.Println(err)
+		return nil, status.Error(codes.Internal, "failed to initialize webAuthn")
 	}
 
 	// Marshal the protobuf message into a byte slice
