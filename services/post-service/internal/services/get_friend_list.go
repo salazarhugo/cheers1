@@ -2,36 +2,22 @@ package services
 
 import (
 	"context"
-	"crypto/tls"
-	"crypto/x509"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/friendship/v1"
-	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
-	"log"
+	"github.com/salazarhugo/cheers1/libs/utils"
 )
 
-func GetFriendList(userId string) (*user.User, error) {
+func GetFriendList(userId string) ([]string, error) {
 	ctx := context.Background()
-	systemRoots, err := x509.SystemCertPool()
-	if err != nil {
-		log.Println(err)
-		return nil, err
-	}
-	transportCredentials := credentials.NewTLS(&tls.Config{
-		RootCAs: systemRoots,
-	})
 
-	conn, err := grpc.DialContext(ctx, "friendship-service-r3a2dr4u4a-nw.a.run.app:443",
-		grpc.WithTransportCredentials(transportCredentials),
-	)
+	conn := utils.CreateServiceConnection(ctx, "friendship-service-r3a2dr4u4a-nw.a.run.app:443")
 	defer conn.Close()
 
 	client := friendship.NewFriendshipServiceClient(conn)
 
-	response, err := client.ListFriend(ctx, &friendship.ListFriendRequest{UserId: userId})
+	response, err := client.ListFriendIds(ctx, &friendship.ListFriendIdsRequest{UserId: userId})
 	if err != nil {
 		return nil, err
 	}
-	return response.Items, nil
+
+	return response.GetIds(), nil
 }

@@ -62,14 +62,14 @@ func (s *Server) FinishLogin(
 		return nil, err
 	}
 
-	// Create secure JSON web token (JWT)
-	token, err := s.authRepository.CreateFirebaseCustomToken(request.Username)
+	// Get the user
+	user, err := s.authRepository.GetUserByUsername(request.Username)
 	if err != nil {
 		return nil, err
 	}
 
-	// Get the user
-	user, err := s.authRepository.GetUserByUsername(request.Username)
+	// Create secure JSON web token (JWT)
+	token, err := s.authRepository.CreateFirebaseCustomToken(user.ID)
 	if err != nil {
 		return nil, err
 	}
