@@ -32,6 +32,9 @@ type FriendshipServiceClient interface {
 	// Get friend list of a specific user
 	ListFriend(ctx context.Context, in *ListFriendRequest, opts ...grpc.CallOption) (*ListFriendResponse, error)
 	//
+	// Get friend list of a specific user
+	ListFriendIds(ctx context.Context, in *ListFriendIdsRequest, opts ...grpc.CallOption) (*ListFriendIdsResponse, error)
+	//
 	// Get friend requests list of a specific user
 	ListFriendRequests(ctx context.Context, in *ListFriendRequestsRequest, opts ...grpc.CallOption) (*ListFriendRequestsResponse, error)
 	//
@@ -71,6 +74,15 @@ func (c *friendshipServiceClient) AcceptFriendRequest(ctx context.Context, in *A
 func (c *friendshipServiceClient) ListFriend(ctx context.Context, in *ListFriendRequest, opts ...grpc.CallOption) (*ListFriendResponse, error) {
 	out := new(ListFriendResponse)
 	err := c.cc.Invoke(ctx, "/cheers.friendship.v1.FriendshipService/ListFriend", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *friendshipServiceClient) ListFriendIds(ctx context.Context, in *ListFriendIdsRequest, opts ...grpc.CallOption) (*ListFriendIdsResponse, error) {
+	out := new(ListFriendIdsResponse)
+	err := c.cc.Invoke(ctx, "/cheers.friendship.v1.FriendshipService/ListFriendIds", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -118,6 +130,9 @@ type FriendshipServiceServer interface {
 	// Get friend list of a specific user
 	ListFriend(context.Context, *ListFriendRequest) (*ListFriendResponse, error)
 	//
+	// Get friend list of a specific user
+	ListFriendIds(context.Context, *ListFriendIdsRequest) (*ListFriendIdsResponse, error)
+	//
 	// Get friend requests list of a specific user
 	ListFriendRequests(context.Context, *ListFriendRequestsRequest) (*ListFriendRequestsResponse, error)
 	//
@@ -141,6 +156,9 @@ func (UnimplementedFriendshipServiceServer) AcceptFriendRequest(context.Context,
 }
 func (UnimplementedFriendshipServiceServer) ListFriend(context.Context, *ListFriendRequest) (*ListFriendResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListFriend not implemented")
+}
+func (UnimplementedFriendshipServiceServer) ListFriendIds(context.Context, *ListFriendIdsRequest) (*ListFriendIdsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListFriendIds not implemented")
 }
 func (UnimplementedFriendshipServiceServer) ListFriendRequests(context.Context, *ListFriendRequestsRequest) (*ListFriendRequestsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListFriendRequests not implemented")
@@ -218,6 +236,24 @@ func _FriendshipService_ListFriend_Handler(srv interface{}, ctx context.Context,
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FriendshipService_ListFriendIds_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListFriendIdsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FriendshipServiceServer).ListFriendIds(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.friendship.v1.FriendshipService/ListFriendIds",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FriendshipServiceServer).ListFriendIds(ctx, req.(*ListFriendIdsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _FriendshipService_ListFriendRequests_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListFriendRequestsRequest)
 	if err := dec(in); err != nil {
@@ -290,6 +326,10 @@ var FriendshipService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListFriend",
 			Handler:    _FriendshipService_ListFriend_Handler,
+		},
+		{
+			MethodName: "ListFriendIds",
+			Handler:    _FriendshipService_ListFriendIds_Handler,
 		},
 		{
 			MethodName: "ListFriendRequests",
