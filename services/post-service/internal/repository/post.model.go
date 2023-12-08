@@ -10,10 +10,12 @@ import (
 type Post struct {
 	ID        string `gorm:"primarykey"`
 	UserID    string
+	DrinkID   string
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	Caption   string
 	City      string
+	Location  string
 }
 
 // PostWithUserInfo Post item model
@@ -24,10 +26,39 @@ type PostWithUserInfo struct {
 	UpdatedAt time.Time
 	Caption   string
 	City      string
+	Location  string
 	Username  string
 	Name      string
 	Verified  bool
 	Picture   string
+	DrinkID   int64
+	DrinkName string
+	DrinkIcon string
+}
+
+func ToPost(post *postpb.Post) *Post {
+	return &Post{
+		ID:        post.Id,
+		UserID:    post.CreatorId,
+		CreatedAt: time.Unix(post.CreateTime, 0),
+		UpdatedAt: time.Time{},
+		Caption:   post.Caption,
+		City:      "",
+		Location:  post.LocationName,
+		DrinkID:   post.Drink,
+	}
+}
+
+func (p Post) ToPostPb() *postpb.Post {
+	return &postpb.Post{
+		Id:           p.ID,
+		CreatorId:    p.UserID,
+		Caption:      p.Caption,
+		Photos:       []string{},
+		LocationName: p.Location,
+		CreateTime:   p.CreatedAt.Unix(),
+		Drink:        p.DrinkID,
+	}
 }
 
 func (p PostWithUserInfo) ToPostPb() *postpb.Post {
@@ -38,11 +69,11 @@ func (p PostWithUserInfo) ToPostPb() *postpb.Post {
 		Address:               "",
 		Privacy:               0,
 		Photos:                []string{p.Picture},
-		LocationName:          p.City,
-		Drink:                 "",
+		LocationName:          p.Location,
+		Drink:                 p.DrinkName,
 		Drunkenness:           0,
 		Type:                  0,
-		CreateTime:            0,
+		CreateTime:            p.CreatedAt.Unix(),
 		CanComment:            false,
 		CanShare:              false,
 		Ratio:                 0,

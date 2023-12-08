@@ -7,10 +7,10 @@ require (
 	github.com/golang/protobuf v1.5.3
 	github.com/google/uuid v1.3.1
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20231208113340-4c800662d961
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20231208123637-da3fea4efc05
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20230814193002-ccda85dd57dc
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20231208123637-da3fea4efc05
 	github.com/sirupsen/logrus v1.9.0
 	golang.org/x/net v0.17.0
 	google.golang.org/grpc v1.59.0

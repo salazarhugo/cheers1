@@ -5,7 +5,7 @@ import (
 )
 
 func (p *postRepository) FeedPost(
-	friendIDs []string,
+	userIDs []string,
 	page int,
 	pageSize int,
 ) (*pb.FeedPostResponse, error) {
@@ -21,7 +21,7 @@ func (p *postRepository) FeedPost(
 	var posts []PostWithUserInfo
 
 	db := p.spanner
-	result := db.Table("posts").Select("posts.*, username, name, verified, picture").Joins("JOIN users ON posts.user_id = users.id").Where("user_id IN ?", friendIDs).Limit(int(pageSize)).Offset(int(skip)).Order("created_at asc").Find(&posts)
+	result := db.Table("posts").Select("posts.*, username, name, verified, picture").Joins("JOIN users ON posts.user_id = users.id").Joins("LEFT OUTER JOIN drinks ON posts.drink_id = drinks.id").Where("user_id IN ?", userIDs).Limit(int(pageSize)).Offset(int(skip)).Order("created_at asc").Find(&posts)
 	if result.Error != nil {
 		return nil, result.Error
 	}

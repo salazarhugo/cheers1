@@ -22,7 +22,7 @@ type PostRepository interface {
 	DeletePostById(postID string) error
 
 	FeedPost(
-		friendIDs []string,
+		userIDs []string,
 		page int,
 		pageSize int,
 	) (*pb.FeedPostResponse, error)

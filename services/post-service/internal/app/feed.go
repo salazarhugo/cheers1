@@ -27,7 +27,7 @@ func (s *Server) FeedPost(
 	log.Println(friendIds)
 
 	posts, err := s.postRepository.FeedPost(
-		friendIds,
+		append(friendIds, userId),
 		int(request.Page),
 		int(request.PageSize),
 	)
