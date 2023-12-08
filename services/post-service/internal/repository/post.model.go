@@ -63,14 +63,18 @@ func (p Post) ToPostPb() *postpb.Post {
 
 func (p PostWithUserInfo) ToPostPb() *postpb.Post {
 	return &postpb.Post{
-		Id:                    p.ID,
-		CreatorId:             p.UserID,
-		Caption:               p.Caption,
-		Address:               "",
-		Privacy:               0,
-		Photos:                []string{p.Picture},
-		LocationName:          p.Location,
-		Drink:                 p.DrinkName,
+		Id:           p.ID,
+		CreatorId:    p.UserID,
+		Caption:      p.Caption,
+		Address:      "",
+		Privacy:      0,
+		Photos:       []string{p.Picture},
+		LocationName: p.Location,
+		Drink: &postpb.Drink{
+			Id:   p.DrinkID,
+			Name: p.DrinkName,
+			Icon: p.DrinkIcon,
+		},
 		Drunkenness:           0,
 		Type:                  0,
 		CreateTime:            p.CreatedAt.Unix(),
