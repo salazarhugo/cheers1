@@ -18,6 +18,7 @@ func (s *Server) FinishLogin(
 	ctx context.Context,
 	request *auth.FinishLoginRequest,
 ) (*auth.FinishLoginResponse, error) {
+	log.Println(request)
 	// Initialize webAuthn
 	webAuthn, err := NewWebAuthn()
 	if err != nil {
@@ -67,8 +68,14 @@ func (s *Server) FinishLogin(
 		return nil, err
 	}
 
+	// Get the user
+	user, err := s.authRepository.GetUserByUsername(request.Username)
+	if err != nil {
+		return nil, err
+	}
+
 	return &auth.FinishLoginResponse{
-		User:  nil,
+		User:  user.ToUserPb(),
 		Token: token,
 	}, nil
 }

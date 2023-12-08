@@ -2,11 +2,10 @@ package repository
 
 import (
 	"context"
-	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	"log"
 )
 
-func (r repository) ListFriend(userId string) ([]*user.UserItem, error) {
+func (r repository) ListFriend(userId string) ([]string, error) {
 	ctx := context.Background()
 	userIds, err := r.redis.SMembers(ctx, getKeyFriends(userId)).Result()
 	if err != nil {
@@ -14,7 +13,5 @@ func (r repository) ListFriend(userId string) ([]*user.UserItem, error) {
 		return nil, err
 	}
 
-	users, err := GetUsers(userIds)
-
-	return users, nil
+	return userIds, err
 }

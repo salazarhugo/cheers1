@@ -29,7 +29,6 @@ service AuthService {
     };
   }
 
-
   rpc BeginRegistration(BeginRegistrationRequest) returns (BeginRegistrationResponse) {
     option (google.api.http) = {
       get: "/v1/auth/register/begin/{username}"

@@ -1,5 +1,6 @@
 REGION=europe-west2
 GATEWAY_URL=https://android-gateway-clzdlli7.nw.gateway.dev
+SPANNER_DSN="projects/cheers-a275e/instances/free-cheers/databases/party"
 
 gcloud run deploy user-service \
     --source .  \
@@ -7,4 +8,5 @@ gcloud run deploy user-service \
     --use-http2 \
     --set-env-vars GATEWAY_URL=$GATEWAY_URL \
     --set-secrets="NEO4J_URI=NEO4J_URI:latest" \
-    --set-secrets="NEO4J_PASSWORD=NEO4J_PASSWORD:latest"
+    --set-secrets="NEO4J_PASSWORD=NEO4J_PASSWORD:latest" \
+    --set-env-vars SPANNER_DSN=$SPANNER_DSN

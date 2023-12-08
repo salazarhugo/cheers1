@@ -11,7 +11,7 @@ func (p *userRepository) GetUsersIn(
 
 	var users []*model.User
 
-	result := db.Find(&users, userIDs)
+	result := db.Where("username IN ?", userIDs).Or("id IN ?", userIDs).Find(&users)
 	if result.Error != nil {
 		return nil, result.Error
 	}

@@ -10,13 +10,13 @@ import (
 )
 
 func (s *Server) FeedPost(ctx context.Context, request *pb.FeedPostRequest) (*pb.FeedPostResponse, error) {
-	userID, err := utils.GetUserId(ctx)
+	_, err := utils.GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")
 	}
 
 	log.Print(request)
-	posts, err := s.postRepository.FeedPost(userID, request)
+	posts, err := s.postRepository.FeedPost([]string{""}, request)
 	if err != nil {
 		return nil, err
 	}

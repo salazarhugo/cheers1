@@ -4,16 +4,16 @@ func (p *userRepository) UpdateModerator(
 	userID string,
 	isModerator bool,
 ) error {
-	user, err := p.GetUser(userID, userID)
+	_, err := p.GetUser(userID, userID)
 	if err != nil {
 		return err
 	}
 
-	user.User.IsModerator = isModerator
-	err = p.UpdateUser(userID, user.User)
-	if err != nil {
-		return err
-	}
+	//user.User.IsModerator = isModerator
+	//err = p.UpdateUser(userID, user.User)
+	//if err != nil {
+	//	return err
+	//}
 
 	return nil
 }

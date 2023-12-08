@@ -18,6 +18,18 @@ func (s *Server) CreateFriendRequest(
 		return nil, status.Error(codes.Internal, "failed to retrieve userID")
 	}
 
+	isFriend, err := s.friendshipRepository.CheckFriend(
+		userID,
+		request.UserId,
+	)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	if isFriend {
+		return nil, status.Error(codes.FailedPrecondition, "already friends")
+	}
+
 	err = s.friendshipRepository.CreateFriendRequest(
 		userID,
 		request.UserId,

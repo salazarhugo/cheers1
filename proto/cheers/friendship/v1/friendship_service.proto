@@ -40,6 +40,15 @@ service FriendshipService {
   }
 
   /*
+    Get friend list of a specific user
+   */
+  rpc ListFriendIds(ListFriendIdsRequest) returns (ListFriendIdsResponse) {
+    option (google.api.http) = {
+      get: "/v1/friendships/ids"
+    };
+  }
+
+  /*
     Get friend requests list of a specific user
    */
   rpc ListFriendRequests(ListFriendRequestsRequest) returns (ListFriendRequestsResponse) {
@@ -81,6 +90,10 @@ message DeleteFriendRequestRequest {
 message DeleteFriendRequestResponse {
 }
 
+message ListFriendIdsResponse {
+  repeated string ids = 1;
+}
+
 message ListFriendResponse {
   repeated cheers.type.UserItem items = 1;
 }
@@ -91,6 +104,10 @@ message DeleteFriendRequest2 {
 }
 
 message DeleteFriendResponse {
+}
+
+message ListFriendIdsRequest {
+  string user_id = 1;
 }
 
 message ListFriendRequest {

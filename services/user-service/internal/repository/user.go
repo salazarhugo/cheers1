@@ -21,7 +21,7 @@ type UserRepository interface {
 	GetUserById(userID string) (model.User, error)
 	GetUserByUsername(username string) (model.User, error)
 	GetUser(userID string, otherUserID string) (*pb.GetUserResponse, error)
-	UpdateUser(userID string, user *user.User) error
+	UpdateUser(user *model.User) (string, error)
 	DeleteUserById(userID string) error
 
 	UpdateBusinessAccount(userID string, isBusinessAccount bool) error
@@ -31,39 +31,12 @@ type UserRepository interface {
 	UnVerifyUser(userID string) error
 	GetUsersIn(userIDs []string) ([]*model.User, error)
 	GetUserItemsIn(userID string, userIDs []string) ([]*user.UserItem, error)
-	FollowUser(userID string, otherUser string) error
-	UnfollowUser(userID string, otherUserID string) error
 
-	BlockUser(userID string, otherUserID string) error
-	UnblockUser(userID string, otherUserID string) error
-
-	SearchUser(userID string, query string) ([]*user.UserItem, error)
-	ListFollowers(userID string, request *pb.ListFollowersRequest) ([]*user.UserItem, error)
-	ListFollowing(userID string, request *pb.ListFollowingRequest) ([]*user.UserItem, error)
+	SearchUser(query string) ([]*model.User, error)
 
 	ListSuggestions(
 		userID string,
 	) ([]*user.UserItem, error)
-
-	CreateFriend(
-		from string,
-		to string,
-	) error
-
-	CreateFriendRequest(
-		from string,
-		to string,
-	) error
-
-	DeleteFriendRequest(
-		from string,
-		to string,
-	) error
-
-	DeleteFriend(
-		from string,
-		to string,
-	) error
 
 	CheckUsername(
 		username string,

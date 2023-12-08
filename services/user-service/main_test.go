@@ -9,7 +9,7 @@ func TestMain(m *testing.M) {
 	// Set up your environment variables for testing
 	dsn := "projects/cheers-a275e/instances/free-cheers/databases/party"
 	os.Setenv("NEO4J_URI", "neo4j+s://86c8796d.databases.neo4j.io")
-	os.Setenv("NEO4J_PASSWORD", "fwf")
+	os.Setenv("NEO4J_PASSWORD", "z1nNlYESkGiq-MelKNPP3HBYeh23jWZLA6faaVA1RpM")
 	os.Setenv("SPANNER_DSN", dsn)
 
 	// Run the tests

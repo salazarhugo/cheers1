@@ -21,7 +21,12 @@ type PostRepository interface {
 	DeletePost(userID string, postID string) error
 	DeletePostById(postID string) error
 
-	FeedPost(userID string, request *pb.FeedPostRequest) (*pb.FeedPostResponse, error)
+	FeedPost(
+		friendIDs []string,
+		page int,
+		pageSize int,
+	) (*pb.FeedPostResponse, error)
+
 	ListPost(userID string, request *pb.ListPostRequest) (*pb.ListPostResponse, error)
 	ListMapPost(userID string, request *pb.ListMapPostRequest) (*pb.ListMapPostResponse, error)
 	LikePost(userID string, postID string) (*pb.LikePostResponse, error)

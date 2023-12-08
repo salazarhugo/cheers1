@@ -4,11 +4,11 @@ go 1.19
 
 require (
 	cloud.google.com/go/storage v1.33.0
-	github.com/golang/protobuf v1.5.3
+	github.com/google/uuid v1.3.1
 	github.com/labstack/gommon v0.4.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230921195226-8ae04f0f8ffe
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20230813153844-331eff049bf0
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20231123150149-c737c1ea3ec7
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20231123150149-c737c1ea3ec7
 	golang.org/x/net v0.17.0
 	google.golang.org/api v0.148.0
 	google.golang.org/grpc v1.59.0
@@ -36,9 +36,9 @@ require (
 	github.com/envoyproxy/protoc-gen-validate v1.0.2 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
+	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/pprof v0.0.0-20221103000818-d260c55eee4c // indirect
 	github.com/google/s2a-go v0.1.7 // indirect
-	github.com/google/uuid v1.3.1 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.1 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.0 // indirect
 	github.com/googleapis/go-gorm-spanner v0.0.0-20231110090820-e5c0b8387302 // indirect
@@ -67,4 +67,4 @@ require (
 )
 
 //replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
-replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils
+//replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils

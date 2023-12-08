@@ -17,9 +17,13 @@ func (s *Server) BeginRegistration(
 ) (*auth.BeginRegistrationResponse, error) {
 	username := request.GetUsername()
 
-	// Validate Username
-	if len(username) < 1 {
-		return nil, status.Error(codes.InvalidArgument, "invalid username")
+	// Validate username
+	isTaken, err := s.authRepository.CheckUsername(username)
+	if err != nil {
+		return nil, err
+	}
+	if isTaken == true {
+		return nil, status.Error(codes.AlreadyExists, "username already exists")
 	}
 
 	webAuthn, err := NewWebAuthn()
@@ -27,7 +31,7 @@ func (s *Server) BeginRegistration(
 		return nil, status.Error(codes.Internal, "failed to initialize webAuthn")
 	}
 
-	// Get the user
+	// Create the user
 	authnUser, err := s.authRepository.GetOrCreateUser(username)
 	if err != nil {
 		return nil, err

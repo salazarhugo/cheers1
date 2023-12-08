@@ -1,68 +1,51 @@
 package repository
 
 import (
-	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
-	utils "github.com/salazarhugo/cheers1/libs/utils"
-	"github.com/salazarhugo/cheers1/libs/utils/mapper"
-	"log"
 )
 
 func (p *postRepository) FeedPost(
-	userID string,
-	request *pb.FeedPostRequest,
+	friendIDs []string,
+	page int,
+	pageSize int,
 ) (*pb.FeedPostResponse, error) {
-	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
-	defer session.Close()
-
-	pageSize := request.GetPageSize()
-	page := request.GetPage()
-
-	skip := page * pageSize
-
-	cypher, err := utils.GetCypher("internal/queries/FeedPost.cql")
-	if err != nil {
-		return nil, err
+	if page == 0 {
+		page = 1
+	}
+	if pageSize == 0 {
+		pageSize = 18
 	}
 
-	params := map[string]interface{}{
-		"userID":   userID,
-		"skip":     int(skip),
-		"pageSize": int(pageSize),
+	skip := pageSize * (page - 1)
+
+	var posts []PostWithUserInfo
+
+	db := p.spanner
+	result := db.Table("posts").Select("posts.*, username, name, verified, picture").Joins("JOIN users ON posts.user_id = users.id").Where("user_id IN ?", friendIDs).Limit(int(pageSize)).Offset(int(skip)).Order("created_at asc").Find(&posts)
+	if result.Error != nil {
+		return nil, result.Error
 	}
 
-	result, err := session.Run(*cypher, params)
-	if err != nil {
-		return nil, err
-	}
-
-	// Empty Feed
-	posts := make([]*pb.PostResponse, 0)
-
-	for result.Next() {
-		m := result.Record().Values[0]
-		post := &pb.PostResponse{}
-		err := mapper.MapToProto(post, m)
-		if err != nil {
-			return nil, err
+	items := make([]*pb.PostResponse, 0)
+	for _, post := range posts {
+		item := &pb.PostResponse{
+			Post:         post.ToPostPb(),
+			User:         post.ToUserPb(),
+			LikeCount:    0,
+			CommentCount: 0,
+			HasLiked:     false,
+			IsCreator:    false,
 		}
-
-		commentCount, err := p.GetCommentCount(post.Post.Id)
-		if err != nil {
-			log.Println(err)
-		}
-		post.CommentCount = int64(commentCount)
-
-		posts = append(posts, post)
+		items = append(items, item)
 	}
 
 	nextPageToken := "postToken123"
 	if len(posts) > 0 {
-		nextPageToken = posts[len(posts)-1].Post.Id
+		nextPageToken = posts[len(posts)-1].ID
 	}
 
 	return &pb.FeedPostResponse{
-		Posts:         posts,
+		Posts:         items,
 		NextPageToken: nextPageToken,
 	}, nil
 }

@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"firebase.google.com/go/v4/auth"
 	"github.com/go-redis/redis/v9"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/services/auth-service/internal/constants"
@@ -10,10 +11,11 @@ import (
 
 type AuthRepository interface {
 	GetUserByUsername(username string) (*User, error)
+	CheckUsername(username string) (bool, error)
 	GetUserCredentials(username string) ([]*Credential, error)
 	GetAuthnUser(username string) (*AuthnUser, error)
 	CreateUser(user *User) error
-	CreateFirebaseUser(userID string) (*interface{}, error)
+	CreateFirebaseUser() (*auth.UserRecord, error)
 	CreateFirebaseCustomToken(userID string) (string, error)
 	GetOrCreateUser(username string) (*AuthnUser, error)
 	CreateAdmin(userID string) error
@@ -27,6 +29,17 @@ type AuthRepository interface {
 type authRepository struct {
 	spanner *gorm.DB
 	redis   *redis.Client
+}
+
+func (a *authRepository) CheckUsername(username string) (bool, error) {
+	db := a.spanner
+	var exists bool
+	result := db.Raw("SELECT EXISTS (SELECT 1 FROM users WHERE username = ?)", username).Scan(&exists)
+	if result.Error != nil {
+		return exists, result.Error
+	}
+
+	return exists, nil
 }
 
 func (a *authRepository) GetAuthnUser(username string) (*AuthnUser, error) {

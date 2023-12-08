@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/labstack/gommon/log"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
+	"github.com/salazarhugo/cheers1/services/user-service/internal/model"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -12,12 +13,12 @@ func (s *Server) SearchUser(
 	ctx context.Context,
 	request *pb.SearchUserRequest,
 ) (*pb.SearchUserResponse, error) {
-	userID, err := GetUserId(ctx)
+	_, err := GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")
 	}
 
-	users, err := s.userRepository.SearchUser(userID, request.GetQuery())
+	users, err := s.userRepository.SearchUser(request.GetQuery())
 
 	if err != nil {
 		log.Error(err)
@@ -25,6 +26,6 @@ func (s *Server) SearchUser(
 	}
 
 	return &pb.SearchUserResponse{
-		Users: users,
+		Users: model.ToUserItemsPb(users),
 	}, nil
 }

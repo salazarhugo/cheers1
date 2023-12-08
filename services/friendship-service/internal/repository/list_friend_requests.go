@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
+	"github.com/salazarhugo/cheers1/services/friendship-service/internal/service"
 	"log"
 )
 
@@ -16,7 +17,7 @@ func (r repository) ListFriendRequests(
 		return nil, err
 	}
 
-	users, err := GetUsers(userIds)
+	users, err := service.GetUsers(userIds)
 
 	return users, nil
 }

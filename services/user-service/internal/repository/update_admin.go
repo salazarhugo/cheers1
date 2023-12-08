@@ -4,13 +4,13 @@ func (p *userRepository) UpdateAdmin(
 	userID string,
 	isAdmin bool,
 ) error {
-	user, err := p.GetUser(userID, userID)
+	user, err := p.GetUserById(userID)
 	if err != nil {
 		return err
 	}
 
-	user.User.IsAdmin = isAdmin
-	err = p.UpdateUser(userID, user.User)
+	user.IsAdmin = isAdmin
+	_, err = p.UpdateUser(&user)
 	if err != nil {
 		return err
 	}

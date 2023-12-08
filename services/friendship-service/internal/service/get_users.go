@@ -1,4 +1,4 @@
-package repository
+package service
 
 import (
 	"context"
@@ -52,14 +52,4 @@ func GetUsers(userIds []string) ([]*pb.UserItem, error) {
 		})
 	}
 	return items, nil
-}
-
-func GetUser(userId string) (*pb.UserItem, error) {
-	response, err := GetUsers([]string{userId})
-	if err != nil || len(response) < 1 {
-		log.Println(err)
-		return nil, err
-	}
-
-	return response[0], nil
 }

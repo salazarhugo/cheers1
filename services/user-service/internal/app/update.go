@@ -19,35 +19,33 @@ func (s *Server) UpdateUser(
 		return nil, status.Error(codes.Internal, "failed retrieving userID")
 	}
 
-	response, err := s.userRepository.GetUser(userID, userID)
+	user, err := s.userRepository.GetUserById(userID)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "user does not exist")
 	}
 
-	user := response.GetUser()
 	user.Name = request.Name
 	user.Picture = request.Picture
 	user.Bio = request.Bio
 	user.Website = request.Website
-	user.Birthday = request.Birthday
 	user.PhoneNumber = request.PhoneNumber
 	user.Banner = request.Banner
 
-	err = s.userRepository.UpdateUser(userID, user)
+	_, err = s.userRepository.UpdateUser(&user)
 	if err != nil {
 		log.Error(err)
 		return nil, status.Error(codes.Internal, "failed to update user")
 	}
 
-	result, err := s.userRepository.GetUser(userID, userID)
+	user2, err := s.userRepository.GetUserById(userID)
 
 	err = pubsub.PublishProtoWithBinaryEncoding("user-topic", &pb.UserEvent{
 		Event: &pb.UserEvent_Update{
 			Update: &pb.UpdateUser{
-				User: result.User,
+				User: user2.ToUserPb(),
 			},
 		},
 	})
 
-	return result.User, err
+	return user2.ToUserPb(), err
 }

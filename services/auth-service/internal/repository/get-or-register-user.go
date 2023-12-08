@@ -9,11 +9,11 @@ import (
 func (a *authRepository) GetOrCreateUser(
 	username string,
 ) (*AuthnUser, error) {
-	user, err := a.GetAuthnUser(username)
-	if user != nil {
-		return user, err
-	}
-
+	//user, err := a.GetAuthnUser(username)
+	//if user != nil {
+	//	return user, err
+	//}
+	//
 	newUser := &User{
 		ID:       uuid.NewString(),
 		Username: username,
@@ -22,13 +22,13 @@ func (a *authRepository) GetOrCreateUser(
 	}
 
 	// Insert user into database
-	err = a.CreateUser(newUser)
+	err := a.CreateUser(newUser)
 	if err != nil {
 		return nil, err
 	}
 
 	// Get authnUser from database
-	user, err = a.GetAuthnUser(username)
+	user, err := a.GetAuthnUser(username)
 	if err != nil {
 		return nil, err
 	}

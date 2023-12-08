@@ -33,7 +33,6 @@ func main() {
 	httpMux := http.NewServeMux()
 	log.Info(httpMux)
 	httpMux.HandleFunc("/claim-sub", events.ClaimSub)
-	httpMux.HandleFunc("/friendship-sub", events.FriendShipSub)
 	httpMux.HandleFunc("/auth-sub", events.AuthSub)
 
 	grpcS := grpc.NewServer(
