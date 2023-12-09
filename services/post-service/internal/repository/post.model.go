@@ -3,6 +3,7 @@ package repository
 import (
 	postpb "github.com/salazarhugo/cheers1/gen/go/cheers/type/post"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
+	"strconv"
 	"time"
 )
 
@@ -10,7 +11,7 @@ import (
 type Post struct {
 	ID        string `gorm:"primarykey"`
 	UserID    string
-	DrinkID   string
+	DrinkID   int64
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	Caption   string
@@ -45,7 +46,7 @@ func ToPost(post *postpb.Post) *Post {
 		Caption:   post.Caption,
 		City:      "",
 		Location:  post.LocationName,
-		DrinkID:   post.Drink,
+		DrinkID:   1,
 	}
 }
 
@@ -57,7 +58,7 @@ func (p Post) ToPostPb() *postpb.Post {
 		Photos:       []string{},
 		LocationName: p.Location,
 		CreateTime:   p.CreatedAt.Unix(),
-		Drink:        p.DrinkID,
+		Drink:        &postpb.Drink{},
 	}
 }
 
@@ -71,7 +72,7 @@ func (p PostWithUserInfo) ToPostPb() *postpb.Post {
 		Photos:       []string{p.Picture},
 		LocationName: p.Location,
 		Drink: &postpb.Drink{
-			Id:   p.DrinkID,
+			Id:   strconv.FormatInt(p.DrinkID, 10),
 			Name: p.DrinkName,
 			Icon: p.DrinkIcon,
 		},
