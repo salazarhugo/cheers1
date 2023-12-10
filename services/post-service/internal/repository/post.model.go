@@ -3,7 +3,6 @@ package repository
 import (
 	postpb "github.com/salazarhugo/cheers1/gen/go/cheers/type/post"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
-	"strconv"
 	"time"
 )
 
@@ -46,7 +45,7 @@ func ToPost(post *postpb.Post) *Post {
 		Caption:   post.Caption,
 		City:      "",
 		Location:  post.LocationName,
-		DrinkID:   1,
+		DrinkID:   post.Drink.Id,
 	}
 }
 
@@ -72,7 +71,7 @@ func (p PostWithUserInfo) ToPostPb() *postpb.Post {
 		Photos:       []string{p.Picture},
 		LocationName: p.Location,
 		Drink: &postpb.Drink{
-			Id:   strconv.FormatInt(p.DrinkID, 10),
+			Id:   p.DrinkID,
 			Name: p.DrinkName,
 			Icon: p.DrinkIcon,
 		},

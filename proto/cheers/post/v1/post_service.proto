@@ -94,8 +94,15 @@ message ListMapPostResponse {
 }
 
 message CreatePostRequest {
-  cheers.type.Post post = 1;
-  bool send_notification_to_friends = 2;
+  string caption = 1;
+  string location_name = 2;
+  string drink_id = 3;
+  int64 drunkenness = 4;
+  bool can_comment = 5;
+  bool can_share = 6;
+  double latitude = 7;
+  double longitude = 8;
+  bool send_notification_to_friends = 9;
 }
 
 message GetPostRequest {
