@@ -12,7 +12,7 @@ func (s *Server) CreateDrink(
 	ctx context.Context,
 	request *drink.CreateDrinkRequest,
 ) (*drink.CreateDrinkResponse, error) {
-	userID, err := utils.GetUserId(ctx)
+	_, err := utils.GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to retrieve userID")
 	}
@@ -22,10 +22,8 @@ func (s *Server) CreateDrink(
 	}
 
 	drinkID, err := s.repository.CreateDrink(
-		userID,
 		request.Name,
 		request.Icon,
-		request.Category,
 	)
 	if err != nil {
 		s.logger.Error(err)

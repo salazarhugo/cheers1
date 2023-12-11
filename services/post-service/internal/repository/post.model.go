@@ -16,6 +16,7 @@ type Post struct {
 	Caption   string
 	City      string
 	Location  string
+	Photos    []string
 }
 
 // PostWithUserInfo Post item model
@@ -27,6 +28,7 @@ type PostWithUserInfo struct {
 	Caption   string
 	City      string
 	Location  string
+	Photos    []string
 	Username  string
 	Name      string
 	Verified  bool
@@ -54,7 +56,7 @@ func (p Post) ToPostPb() *postpb.Post {
 		Id:           p.ID,
 		CreatorId:    p.UserID,
 		Caption:      p.Caption,
-		Photos:       []string{},
+		Photos:       p.Photos,
 		LocationName: p.Location,
 		CreateTime:   p.CreatedAt.Unix(),
 		Drink:        &postpb.Drink{},
@@ -68,7 +70,7 @@ func (p PostWithUserInfo) ToPostPb() *postpb.Post {
 		Caption:      p.Caption,
 		Address:      "",
 		Privacy:      0,
-		Photos:       []string{p.Picture},
+		Photos:       p.Photos,
 		LocationName: p.Location,
 		Drink: &postpb.Drink{
 			Id:   p.DrinkID,

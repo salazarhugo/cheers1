@@ -18,7 +18,7 @@ func (s *Server) GetDrink(
 	}
 
 	res, err := s.repository.GetDrink(
-		request.GetDrinkId(),
+		1,
 	)
 
 	if err != nil {

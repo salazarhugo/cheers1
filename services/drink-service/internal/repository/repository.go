@@ -10,14 +10,12 @@ import (
 
 type Repository interface {
 	CreateDrink(
-		creatorID string,
 		name string,
 		icon string,
-		category string,
-	) (string, error)
+	) (int64, error)
 
 	GetDrink(
-		drinkID string,
+		drinkID int64,
 	) (*drink.Drink, error)
 
 	UpdateDrink(

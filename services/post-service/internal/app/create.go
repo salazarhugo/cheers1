@@ -20,9 +20,11 @@ func (s *Server) CreatePost(
 
 	newPost := &repository.Post{
 		UserID:   userID,
-		DrinkID:  request.DrinkId,
 		Caption:  request.Caption,
 		Location: request.LocationName,
+	}
+	if request.DrinkId > 0 {
+		newPost.DrinkID = request.GetDrinkId()
 	}
 
 	postID, err := s.postRepository.CreatePost(userID, newPost)

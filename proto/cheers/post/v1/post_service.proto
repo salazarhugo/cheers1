@@ -103,6 +103,7 @@ message CreatePostRequest {
   double latitude = 7;
   double longitude = 8;
   bool send_notification_to_friends = 9;
+  repeated string photos = 10;
 }
 
 message GetPostRequest {

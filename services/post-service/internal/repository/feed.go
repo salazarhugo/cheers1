@@ -21,7 +21,7 @@ func (p *postRepository) FeedPost(
 	var posts []PostWithUserInfo
 
 	db := p.spanner
-	result := db.Table("posts").Select("posts.*, username, name, verified, picture").Joins("JOIN users ON posts.user_id = users.id").Joins("LEFT OUTER JOIN drinks ON posts.drink_id = drinks.id").Where("user_id IN ?", userIDs).Limit(int(pageSize)).Offset(int(skip)).Order("created_at asc").Find(&posts)
+	result := db.Table("posts").Select("posts.*, username, users.name, verified, picture, drinks.id as drink_id, drinks.name as drink_name, drinks.icon as drink_icon").Joins("JOIN users ON posts.user_id = users.id").Joins("LEFT OUTER JOIN drinks ON posts.drink_id = drinks.id").Where("user_id IN ?", userIDs).Limit(int(pageSize)).Offset(int(skip)).Order("created_at asc").Find(&posts)
 	if result.Error != nil {
 		return nil, result.Error
 	}
