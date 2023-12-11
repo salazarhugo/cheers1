@@ -5,12 +5,14 @@ go 1.19
 require (
 	cloud.google.com/go/firestore v1.6.1
 	github.com/go-redis/redis/v9 v9.0.0-rc.1
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20230322151652-b1e627f408fc
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20231211122938-835e648ea8ed
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20230322151652-b1e627f408fc
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20231208123637-da3fea4efc05
 	github.com/sirupsen/logrus v1.9.0
+	google.golang.org/api v0.102.0
 	google.golang.org/grpc v1.50.1
+	gorm.io/gorm v1.25.5
 )
 
 require (
@@ -31,6 +33,8 @@ require (
 	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
 	github.com/googleapis/gax-go/v2 v2.7.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.12.0 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/labstack/echo/v4 v4.9.1 // indirect
 	github.com/labstack/gommon v0.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.11 // indirect
@@ -45,7 +49,6 @@ require (
 	golang.org/x/sys v0.1.0 // indirect
 	golang.org/x/text v0.4.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
-	google.golang.org/api v0.102.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/appengine/v2 v2.0.2 // indirect
 	google.golang.org/genproto v0.0.0-20221027153422-115e99e71e1c // indirect

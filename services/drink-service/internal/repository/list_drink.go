@@ -1,29 +1,24 @@
 package repository
 
 import (
-	"cloud.google.com/go/firestore"
-	"context"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/drink/v1"
-	"github.com/salazarhugo/cheers1/libs/utils/mapper"
-	"google.golang.org/api/iterator"
+	"github.com/salazarhugo/cheers1/services/drink-service/internal/domain"
 )
 
 func (r repository) ListDrink() ([]*drink.Drink, error) {
-	ctx := context.Background()
-	documents := r.firestore.Collection("drinks").OrderBy("name", firestore.Asc).Documents(ctx)
+	db := r.spanner
 
-	drinks := make([]*drink.Drink, 0)
+	var drinks []*domain.Drink
 
-	for {
-		doc, err := documents.Next()
-		if err == iterator.Done {
-			break
-		}
-		item := &drink.Drink{}
-		m := doc.Data()
-		err = mapper.MapToProto(item, m)
-		drinks = append(drinks, item)
+	result := db.Table("drinks").Order("name asc").Find(&drinks)
+	if result.Error != nil {
+		return nil, result.Error
 	}
 
-	return drinks, nil
+	items := make([]*drink.Drink, 0)
+	for _, drink := range drinks {
+		items = append(items, drink.ToDrinkPb())
+	}
+
+	return items, nil
 }

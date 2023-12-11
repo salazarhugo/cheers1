@@ -14,6 +14,7 @@ func TestCreatePost(t *testing.T) {
 		"user1",
 		&repository.Post{
 			Caption: caption,
+			DrinkID: 1,
 		},
 	)
 

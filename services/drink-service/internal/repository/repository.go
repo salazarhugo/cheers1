@@ -1,11 +1,10 @@
 package repository
 
 import (
-	"cloud.google.com/go/firestore"
-	"context"
 	"github.com/go-redis/redis/v9"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/drink/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"gorm.io/gorm"
 	"os"
 )
 
@@ -29,8 +28,8 @@ type Repository interface {
 }
 
 type repository struct {
-	redis     *redis.Client
-	firestore *firestore.Client
+	redis   *redis.Client
+	spanner *gorm.DB
 }
 
 func (r repository) UpdateDrink(userId string) error {
@@ -44,13 +43,9 @@ func NewRepository() Repository {
 		Password: os.Getenv("DB_PASSWORD"),
 		DB:       0,
 	})
-	fire, err := utils.InitializeAppDefault().Firestore(context.Background())
-	if err != nil {
-		return nil
-	}
 
 	return &repository{
-		redis:     rdb,
-		firestore: fire,
+		redis:   rdb,
+		spanner: utils.GetSpanner(),
 	}
 }
