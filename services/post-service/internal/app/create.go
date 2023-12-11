@@ -18,15 +18,14 @@ func (s *Server) CreatePost(
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")
 	}
 
-	partyReq := request.GetPost()
-	if partyReq == nil {
-		return nil, status.Error(codes.InvalidArgument, "post parameter can't be nil")
-	}
-	if partyReq.Caption == "" && len(partyReq.Photos) <= 0 {
-		return nil, status.Error(codes.InvalidArgument, "empty caption and photos")
+	newPost := &repository.Post{
+		UserID:   userID,
+		DrinkID:  request.DrinkId,
+		Caption:  request.Caption,
+		Location: request.LocationName,
 	}
 
-	postID, err := s.postRepository.CreatePost(userID, repository.ToPost(partyReq))
+	postID, err := s.postRepository.CreatePost(userID, newPost)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to create post")
 	}
