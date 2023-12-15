@@ -5,7 +5,6 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/comment/v1"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
-	postpb "github.com/salazarhugo/cheers1/gen/go/cheers/type/post"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"gorm.io/gorm"
@@ -14,11 +13,9 @@ import (
 
 type PostRepository interface {
 	CreatePost(userID string, post *Post) (string, error)
-	GetPost(postID string) (*postpb.Post, error)
 	GetPostById(postID string) (*Post, error)
 	GetPostItem(userID string, postID string) (*pb.PostResponse, error)
 	UpdatePostLastComment(user *user.UserItem, comment *comment.Comment) error
-	DeletePost(userID string, postID string) error
 	DeletePostById(postID string) error
 
 	FeedPost(
@@ -28,6 +25,13 @@ type PostRepository interface {
 	) (*pb.FeedPostResponse, error)
 
 	ListPost(userID string, request *pb.ListPostRequest) (*pb.ListPostResponse, error)
+
+	ListPostLikes(
+		postID string,
+		page int,
+		pageSize int,
+	) ([]*user.UserItem, error)
+
 	ListMapPost(userID string, request *pb.ListMapPostRequest) (*pb.ListMapPostResponse, error)
 	LikePost(userID string, postID string) (*pb.LikePostResponse, error)
 	UnlikePost(userID string, postID string) (*pb.UnlikePostResponse, error)

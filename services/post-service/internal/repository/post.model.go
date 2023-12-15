@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"cloud.google.com/go/spanner"
 	postpb "github.com/salazarhugo/cheers1/gen/go/cheers/type/post"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	"time"
@@ -10,32 +11,34 @@ import (
 type Post struct {
 	ID        string `gorm:"primarykey"`
 	UserID    string
-	DrinkID   int64
+	DrinkID   spanner.NullInt64
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	Caption   string
 	City      string
 	Location  string
-	Photos    []string
+	Photos    ArrayString `gorm:"type:VARCHAR(255)"`
 }
 
 // PostWithUserInfo Post item model
 type PostWithUserInfo struct {
-	ID        string `gorm:"primarykey"`
-	UserID    string
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	Caption   string
-	City      string
-	Location  string
-	Photos    []string
-	Username  string
-	Name      string
-	Verified  bool
-	Picture   string
-	DrinkID   int64
-	DrinkName string
-	DrinkIcon string
+	ID             string `gorm:"primarykey"`
+	UserID         string
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
+	Caption        string
+	City           string
+	Location       string
+	Photos         ArrayString `gorm:"type:VARCHAR(255)"`
+	Username       string
+	Name           string
+	Verified       bool
+	Picture        string
+	DrinkID        int64
+	DrinkName      string
+	DrinkIcon      string
+	Likes          int64
+	HasViewerLiked bool
 }
 
 func ToPost(post *postpb.Post) *Post {
@@ -47,7 +50,8 @@ func ToPost(post *postpb.Post) *Post {
 		Caption:   post.Caption,
 		City:      "",
 		Location:  post.LocationName,
-		DrinkID:   post.Drink.Id,
+		DrinkID:   spanner.NullInt64{Int64: post.Drink.Id},
+		Photos:    post.Photos,
 	}
 }
 
@@ -59,8 +63,26 @@ func (p Post) ToPostPb() *postpb.Post {
 		Photos:       p.Photos,
 		LocationName: p.Location,
 		CreateTime:   p.CreatedAt.Unix(),
-		Drink:        &postpb.Drink{},
+		Drink: &postpb.Drink{
+			Id: p.DrinkID.Int64,
+		},
 	}
+}
+
+func ToSpannerStringArray(s []string) []spanner.NullString {
+	res := make([]spanner.NullString, 0)
+	for _, str := range s {
+		res = append(res, spanner.NullString{StringVal: str, Valid: true})
+	}
+	return res
+}
+
+func ToStringArray(s []spanner.NullString) []string {
+	res := make([]string, 0)
+	for _, str := range s {
+		res = append(res, str.StringVal)
+	}
+	return res
 }
 
 func (p PostWithUserInfo) ToPostPb() *postpb.Post {

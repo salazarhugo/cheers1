@@ -25,16 +25,16 @@ func (s *Server) DeletePost(
 		return nil, status.Error(codes.InvalidArgument, "id parameter can't be empty")
 	}
 
-	post, err := s.postRepository.GetPost(postID)
+	post, err := s.postRepository.GetPostById(postID)
 	if err != nil {
 		return nil, status.Error(codes.NotFound, "post not found")
 	}
 
-	if post.CreatorId != userID {
+	if post.UserID != userID {
 		return nil, status.Error(codes.NotFound, fmt.Sprintf("user %s is not authorized to delete this post", userID))
 	}
 
-	err = s.postRepository.DeletePost(userID, postID)
+	err = s.postRepository.DeletePostById(postID)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to delete post")
 	}

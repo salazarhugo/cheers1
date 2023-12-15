@@ -9,6 +9,7 @@ func (p *postRepository) FeedPost(
 	page int,
 	pageSize int,
 ) (*pb.FeedPostResponse, error) {
+	viewerID := userIDs[len(userIDs)-1]
 	if page == 0 {
 		page = 1
 	}
@@ -21,7 +22,8 @@ func (p *postRepository) FeedPost(
 	var posts []PostWithUserInfo
 
 	db := p.spanner
-	result := db.Table("posts").Select("posts.*, username, users.name, verified, picture, drinks.id as drink_id, drinks.name as drink_name, drinks.icon as drink_icon").Joins("JOIN users ON posts.user_id = users.id").Joins("LEFT OUTER JOIN drinks ON posts.drink_id = drinks.id").Where("user_id IN ?", userIDs).Limit(int(pageSize)).Offset(int(skip)).Order("created_at asc").Find(&posts)
+	result := db.Raw("SELECT posts.*, username, users.name, verified, picture, drinks.name, (select count(*) from post_likes where post_likes.post_id = posts.id) as likes, (SELECT EXISTS (SELECT 1 FROM post_likes WHERE user_id = ? AND post_id = posts.id)) as has_viewer_liked, FROM  posts JOIN users ON  posts.user_id = users.id LEFT OUTER JOIN drinks ON posts.drink_id = drinks.id WHERE posts.user_id IN ? LIMIT ? OFFSET ?", viewerID, userIDs, pageSize, skip).Scan(&posts)
+
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -31,10 +33,10 @@ func (p *postRepository) FeedPost(
 		item := &pb.PostResponse{
 			Post:         post.ToPostPb(),
 			User:         post.ToUserPb(),
-			LikeCount:    0,
+			LikeCount:    post.Likes,
 			CommentCount: 0,
-			HasLiked:     false,
-			IsCreator:    false,
+			HasLiked:     post.HasViewerLiked,
+			IsCreator:    viewerID == post.UserID,
 		}
 		items = append(items, item)
 	}

@@ -1,6 +1,7 @@
 package app
 
 import (
+	"cloud.google.com/go/spanner"
 	"context"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
@@ -13,26 +14,28 @@ func (s *Server) CreatePost(
 	ctx context.Context,
 	request *pb.CreatePostRequest,
 ) (*pb.PostResponse, error) {
-	userID, err := utils.GetUserId(ctx)
+	viewerID, err := utils.GetUserId(ctx)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "Failed retrieving userID")
+		return nil, status.Error(codes.Internal, "Failed retrieving viewerID")
 	}
 
 	newPost := &repository.Post{
-		UserID:   userID,
+		UserID:   viewerID,
 		Caption:  request.Caption,
 		Location: request.LocationName,
+		Photos:   request.Photos,
+		DrinkID:  spanner.NullInt64{Valid: false},
 	}
 	if request.DrinkId > 0 {
-		newPost.DrinkID = request.GetDrinkId()
+		newPost.DrinkID = spanner.NullInt64{Int64: request.GetDrinkId(), Valid: true}
 	}
 
-	postID, err := s.postRepository.CreatePost(userID, newPost)
+	postID, err := s.postRepository.CreatePost(viewerID, newPost)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to create post")
 	}
 
-	post, err := s.postRepository.GetPostItem(userID, postID)
+	post, err := s.postRepository.GetPostItem(viewerID, postID)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to get post")
 	}

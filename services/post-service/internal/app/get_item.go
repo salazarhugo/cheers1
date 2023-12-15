@@ -12,14 +12,14 @@ func (s *Server) GetPostItem(
 	ctx context.Context,
 	request *pb.GetPostItemRequest,
 ) (*pb.PostResponse, error) {
-	userID, err := utils.GetUserId(ctx)
+	viewerID, err := utils.GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "Failed retrieving userID")
 	}
 
 	postID := request.GetPostId()
 
-	post, err := s.postRepository.GetPostItem(userID, postID)
+	post, err := s.postRepository.GetPostItem(viewerID, postID)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to get post")
 	}

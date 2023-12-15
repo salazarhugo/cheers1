@@ -11,12 +11,12 @@ func (s *Server) GetPost(
 ) (*pb.GetPostResponse, error) {
 	postID := request.GetPostId()
 
-	post, err := s.postRepository.GetPost(postID)
+	post, err := s.postRepository.GetPostById(postID)
 	if err != nil {
 		return nil, err
 	}
 
 	return &pb.GetPostResponse{
-		Post: post,
+		Post: post.ToPostPb(),
 	}, nil
 }

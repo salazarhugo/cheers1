@@ -33,6 +33,7 @@ type PostServiceClient interface {
 	//
 	// List posts of a specific user
 	ListPost(ctx context.Context, in *ListPostRequest, opts ...grpc.CallOption) (*ListPostResponse, error)
+	ListPostLikes(ctx context.Context, in *ListPostLikesRequest, opts ...grpc.CallOption) (*ListPostLikesResponse, error)
 	//
 	// Friends post feed
 	FeedPost(ctx context.Context, in *FeedPostRequest, opts ...grpc.CallOption) (*FeedPostResponse, error)
@@ -107,6 +108,15 @@ func (c *postServiceClient) ListPost(ctx context.Context, in *ListPostRequest, o
 	return out, nil
 }
 
+func (c *postServiceClient) ListPostLikes(ctx context.Context, in *ListPostLikesRequest, opts ...grpc.CallOption) (*ListPostLikesResponse, error) {
+	out := new(ListPostLikesResponse)
+	err := c.cc.Invoke(ctx, "/cheers.post.v1.PostService/ListPostLikes", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *postServiceClient) FeedPost(ctx context.Context, in *FeedPostRequest, opts ...grpc.CallOption) (*FeedPostResponse, error) {
 	out := new(FeedPostResponse)
 	err := c.cc.Invoke(ctx, "/cheers.post.v1.PostService/FeedPost", in, out, opts...)
@@ -175,6 +185,7 @@ type PostServiceServer interface {
 	//
 	// List posts of a specific user
 	ListPost(context.Context, *ListPostRequest) (*ListPostResponse, error)
+	ListPostLikes(context.Context, *ListPostLikesRequest) (*ListPostLikesResponse, error)
 	//
 	// Friends post feed
 	FeedPost(context.Context, *FeedPostRequest) (*FeedPostResponse, error)
@@ -209,6 +220,9 @@ func (UnimplementedPostServiceServer) DeletePost(context.Context, *DeletePostReq
 }
 func (UnimplementedPostServiceServer) ListPost(context.Context, *ListPostRequest) (*ListPostResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListPost not implemented")
+}
+func (UnimplementedPostServiceServer) ListPostLikes(context.Context, *ListPostLikesRequest) (*ListPostLikesResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListPostLikes not implemented")
 }
 func (UnimplementedPostServiceServer) FeedPost(context.Context, *FeedPostRequest) (*FeedPostResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FeedPost not implemented")
@@ -345,6 +359,24 @@ func _PostService_ListPost_Handler(srv interface{}, ctx context.Context, dec fun
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(PostServiceServer).ListPost(ctx, req.(*ListPostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _PostService_ListPostLikes_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPostLikesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PostServiceServer).ListPostLikes(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.post.v1.PostService/ListPostLikes",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PostServiceServer).ListPostLikes(ctx, req.(*ListPostLikesRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -487,6 +519,10 @@ var PostService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListPost",
 			Handler:    _PostService_ListPost_Handler,
+		},
+		{
+			MethodName: "ListPostLikes",
+			Handler:    _PostService_ListPostLikes_Handler,
 		},
 		{
 			MethodName: "FeedPost",

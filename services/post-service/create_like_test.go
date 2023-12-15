@@ -6,38 +6,44 @@ import (
 	"testing"
 )
 
-func TestCreatePost(t *testing.T) {
+func TestCreateLike(t *testing.T) {
 	//Create a mock repository
 	repo := repository.NewPostRepository()
+	userID := "user1"
 
 	caption := "Only dead fish go with the flow"
-	userID, err := repo.CreatePost(
-		"user1",
+	postID, err := repo.CreatePost(
+		userID,
 		&repository.Post{
 			Caption: caption,
-			DrinkID: spanner.NullInt64{Int64: 1, Valid: true},
+			DrinkID: spanner.NullInt64{Int64: -1, Valid: false},
 			Photos:  []string{"wfwf", "wef"},
 		},
 	)
-
 	if err != nil {
-		t.Error("failed to create user: ", err)
+		t.Error(err)
 		return
 	}
 
-	post, err := repo.GetPostById(userID)
+	_, err = repo.LikePost(
+		userID,
+		postID,
+	)
 	if err != nil {
-		t.Error("failed to get user: ", err)
-		return
-	}
-	if post.Caption != caption {
-		t.Error("wrong post caption: ", err)
-		return
+		t.Error(err)
 	}
 
-	err = repo.DeletePostById(userID)
+	_, err = repo.UnlikePost(
+		userID,
+		postID,
+	)
 	if err != nil {
-		t.Error("failed to delete user: ", err)
+		t.Error(err)
+	}
+
+	err = repo.DeletePostById(postID)
+	if err != nil {
+		t.Error(err)
 		return
 	}
 }
