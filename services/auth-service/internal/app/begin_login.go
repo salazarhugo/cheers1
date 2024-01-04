@@ -52,5 +52,7 @@ func (s *Server) BeginLogin(
 		Challenge:        sessionData.Challenge,
 		RelyingPartyId:   options.Response.RelyingPartyID,
 		UserVerification: string(options.Response.UserVerification),
+		AllowCredentials: authnUser.WebAuthnCredentials(),
+		Timeout:          60 * 1000, // in milliseconds
 	}, nil
 }

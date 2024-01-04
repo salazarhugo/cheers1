@@ -74,10 +74,11 @@ type BeginLoginResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	UserId           uint64 `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Challenge        string `protobuf:"bytes,2,opt,name=challenge,proto3" json:"challenge,omitempty"`
-	RelyingPartyId   string `protobuf:"bytes,3,opt,name=relying_party_id,json=relyingPartyId,proto3" json:"relying_party_id,omitempty"`
-	UserVerification string `protobuf:"bytes,4,opt,name=user_verification,json=userVerification,proto3" json:"user_verification,omitempty"`
+	UserId           uint64        `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Challenge        string        `protobuf:"bytes,2,opt,name=challenge,proto3" json:"challenge,omitempty"`
+	RelyingPartyId   string        `protobuf:"bytes,3,opt,name=relying_party_id,json=relyingPartyId,proto3" json:"relying_party_id,omitempty"`
+	UserVerification string        `protobuf:"bytes,4,opt,name=user_verification,json=userVerification,proto3" json:"user_verification,omitempty"`
+	AllowCredentials []*Credential `protobuf:"bytes,5,rep,name=allow_credentials,json=allowCredentials,proto3" json:"allow_credentials,omitempty"`
 }
 
 func (x *BeginLoginResponse) Reset() {
@@ -140,6 +141,84 @@ func (x *BeginLoginResponse) GetUserVerification() string {
 	return ""
 }
 
+func (x *BeginLoginResponse) GetAllowCredentials() []*Credential {
+	if x != nil {
+		return x.AllowCredentials
+	}
+	return nil
+}
+
+type Credential struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Id              string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	PublicKey       string   `protobuf:"bytes,2,opt,name=public_key,json=publicKey,proto3" json:"public_key,omitempty"`
+	AttestationType string   `protobuf:"bytes,3,opt,name=attestation_type,json=attestationType,proto3" json:"attestation_type,omitempty"`
+	Transport       []string `protobuf:"bytes,4,rep,name=transport,proto3" json:"transport,omitempty"`
+}
+
+func (x *Credential) Reset() {
+	*x = Credential{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Credential) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Credential) ProtoMessage() {}
+
+func (x *Credential) ProtoReflect() protoreflect.Message {
+	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Credential.ProtoReflect.Descriptor instead.
+func (*Credential) Descriptor() ([]byte, []int) {
+	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *Credential) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Credential) GetPublicKey() string {
+	if x != nil {
+		return x.PublicKey
+	}
+	return ""
+}
+
+func (x *Credential) GetAttestationType() string {
+	if x != nil {
+		return x.AttestationType
+	}
+	return ""
+}
+
+func (x *Credential) GetTransport() []string {
+	if x != nil {
+		return x.Transport
+	}
+	return nil
+}
+
 type FinishLoginRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -153,7 +232,7 @@ type FinishLoginRequest struct {
 func (x *FinishLoginRequest) Reset() {
 	*x = FinishLoginRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[2]
+		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -166,7 +245,7 @@ func (x *FinishLoginRequest) String() string {
 func (*FinishLoginRequest) ProtoMessage() {}
 
 func (x *FinishLoginRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[2]
+	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -179,7 +258,7 @@ func (x *FinishLoginRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FinishLoginRequest.ProtoReflect.Descriptor instead.
 func (*FinishLoginRequest) Descriptor() ([]byte, []int) {
-	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{2}
+	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *FinishLoginRequest) GetUsername() string {
@@ -215,7 +294,7 @@ type FinishLoginResponse struct {
 func (x *FinishLoginResponse) Reset() {
 	*x = FinishLoginResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[3]
+		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -228,7 +307,7 @@ func (x *FinishLoginResponse) String() string {
 func (*FinishLoginResponse) ProtoMessage() {}
 
 func (x *FinishLoginResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[3]
+	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -241,7 +320,7 @@ func (x *FinishLoginResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FinishLoginResponse.ProtoReflect.Descriptor instead.
 func (*FinishLoginResponse) Descriptor() ([]byte, []int) {
-	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{3}
+	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *FinishLoginResponse) GetUser() *user.User {
@@ -269,7 +348,7 @@ type BeginRegistrationRequest struct {
 func (x *BeginRegistrationRequest) Reset() {
 	*x = BeginRegistrationRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[4]
+		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -282,7 +361,7 @@ func (x *BeginRegistrationRequest) String() string {
 func (*BeginRegistrationRequest) ProtoMessage() {}
 
 func (x *BeginRegistrationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[4]
+	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -295,7 +374,7 @@ func (x *BeginRegistrationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BeginRegistrationRequest.ProtoReflect.Descriptor instead.
 func (*BeginRegistrationRequest) Descriptor() ([]byte, []int) {
-	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{4}
+	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *BeginRegistrationRequest) GetUsername() string {
@@ -317,7 +396,7 @@ type BeginRegistrationResponse struct {
 func (x *BeginRegistrationResponse) Reset() {
 	*x = BeginRegistrationResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[5]
+		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -330,7 +409,7 @@ func (x *BeginRegistrationResponse) String() string {
 func (*BeginRegistrationResponse) ProtoMessage() {}
 
 func (x *BeginRegistrationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[5]
+	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -343,7 +422,7 @@ func (x *BeginRegistrationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BeginRegistrationResponse.ProtoReflect.Descriptor instead.
 func (*BeginRegistrationResponse) Descriptor() ([]byte, []int) {
-	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{5}
+	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *BeginRegistrationResponse) GetUserId() uint64 {
@@ -375,7 +454,7 @@ type FinishRegistrationRequest struct {
 func (x *FinishRegistrationRequest) Reset() {
 	*x = FinishRegistrationRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[6]
+		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -388,7 +467,7 @@ func (x *FinishRegistrationRequest) String() string {
 func (*FinishRegistrationRequest) ProtoMessage() {}
 
 func (x *FinishRegistrationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[6]
+	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -401,7 +480,7 @@ func (x *FinishRegistrationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FinishRegistrationRequest.ProtoReflect.Descriptor instead.
 func (*FinishRegistrationRequest) Descriptor() ([]byte, []int) {
-	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{6}
+	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *FinishRegistrationRequest) GetEmail() string {
@@ -450,7 +529,7 @@ type FinishRegistrationResponse struct {
 func (x *FinishRegistrationResponse) Reset() {
 	*x = FinishRegistrationResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[7]
+		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -463,7 +542,7 @@ func (x *FinishRegistrationResponse) String() string {
 func (*FinishRegistrationResponse) ProtoMessage() {}
 
 func (x *FinishRegistrationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[7]
+	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -476,7 +555,7 @@ func (x *FinishRegistrationResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FinishRegistrationResponse.ProtoReflect.Descriptor instead.
 func (*FinishRegistrationResponse) Descriptor() ([]byte, []int) {
-	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{7}
+	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *FinishRegistrationResponse) GetUser() *user.User {
@@ -500,7 +579,7 @@ type GetPasskeyResponseData struct {
 func (x *GetPasskeyResponseData) Reset() {
 	*x = GetPasskeyResponseData{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[8]
+		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -513,7 +592,7 @@ func (x *GetPasskeyResponseData) String() string {
 func (*GetPasskeyResponseData) ProtoMessage() {}
 
 func (x *GetPasskeyResponseData) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[8]
+	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -526,7 +605,7 @@ func (x *GetPasskeyResponseData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPasskeyResponseData.ProtoReflect.Descriptor instead.
 func (*GetPasskeyResponseData) Descriptor() ([]byte, []int) {
-	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{8}
+	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *GetPasskeyResponseData) GetId() string {
@@ -571,7 +650,7 @@ type GetPasskeyResponse struct {
 func (x *GetPasskeyResponse) Reset() {
 	*x = GetPasskeyResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[9]
+		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -584,7 +663,7 @@ func (x *GetPasskeyResponse) String() string {
 func (*GetPasskeyResponse) ProtoMessage() {}
 
 func (x *GetPasskeyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[9]
+	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -597,7 +676,7 @@ func (x *GetPasskeyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPasskeyResponse.ProtoReflect.Descriptor instead.
 func (*GetPasskeyResponse) Descriptor() ([]byte, []int) {
-	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{9}
+	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *GetPasskeyResponse) GetAuthenticatorData() string {
@@ -642,7 +721,7 @@ type CreatePasskeyResponseData struct {
 func (x *CreatePasskeyResponseData) Reset() {
 	*x = CreatePasskeyResponseData{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[10]
+		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -655,7 +734,7 @@ func (x *CreatePasskeyResponseData) String() string {
 func (*CreatePasskeyResponseData) ProtoMessage() {}
 
 func (x *CreatePasskeyResponseData) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[10]
+	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -668,7 +747,7 @@ func (x *CreatePasskeyResponseData) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreatePasskeyResponseData.ProtoReflect.Descriptor instead.
 func (*CreatePasskeyResponseData) Descriptor() ([]byte, []int) {
-	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{10}
+	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *CreatePasskeyResponseData) GetId() string {
@@ -711,7 +790,7 @@ type Response struct {
 func (x *Response) Reset() {
 	*x = Response{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[11]
+		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -724,7 +803,7 @@ func (x *Response) String() string {
 func (*Response) ProtoMessage() {}
 
 func (x *Response) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[11]
+	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -737,7 +816,7 @@ func (x *Response) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Response.ProtoReflect.Descriptor instead.
 func (*Response) Descriptor() ([]byte, []int) {
-	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{11}
+	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *Response) GetAttestationObject() string {
@@ -765,7 +844,7 @@ type LoginRequest struct {
 func (x *LoginRequest) Reset() {
 	*x = LoginRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[12]
+		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -778,7 +857,7 @@ func (x *LoginRequest) String() string {
 func (*LoginRequest) ProtoMessage() {}
 
 func (x *LoginRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[12]
+	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -791,7 +870,7 @@ func (x *LoginRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginRequest.ProtoReflect.Descriptor instead.
 func (*LoginRequest) Descriptor() ([]byte, []int) {
-	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{12}
+	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *LoginRequest) GetIdToken() string {
@@ -812,7 +891,7 @@ type LoginResponse struct {
 func (x *LoginResponse) Reset() {
 	*x = LoginResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[13]
+		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -825,7 +904,7 @@ func (x *LoginResponse) String() string {
 func (*LoginResponse) ProtoMessage() {}
 
 func (x *LoginResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[13]
+	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -838,7 +917,7 @@ func (x *LoginResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginResponse.ProtoReflect.Descriptor instead.
 func (*LoginResponse) Descriptor() ([]byte, []int) {
-	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{13}
+	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *LoginResponse) GetUser() *user.User {
@@ -859,7 +938,7 @@ type VerifyUserRequest struct {
 func (x *VerifyUserRequest) Reset() {
 	*x = VerifyUserRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[14]
+		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -872,7 +951,7 @@ func (x *VerifyUserRequest) String() string {
 func (*VerifyUserRequest) ProtoMessage() {}
 
 func (x *VerifyUserRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[14]
+	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -885,7 +964,7 @@ func (x *VerifyUserRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VerifyUserRequest.ProtoReflect.Descriptor instead.
 func (*VerifyUserRequest) Descriptor() ([]byte, []int) {
-	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{14}
+	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *VerifyUserRequest) GetUserId() string {
@@ -904,7 +983,7 @@ type VerifyUserResponse struct {
 func (x *VerifyUserResponse) Reset() {
 	*x = VerifyUserResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[15]
+		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -917,7 +996,7 @@ func (x *VerifyUserResponse) String() string {
 func (*VerifyUserResponse) ProtoMessage() {}
 
 func (x *VerifyUserResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[15]
+	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -930,7 +1009,7 @@ func (x *VerifyUserResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VerifyUserResponse.ProtoReflect.Descriptor instead.
 func (*VerifyUserResponse) Descriptor() ([]byte, []int) {
-	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{15}
+	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{16}
 }
 
 type DeleteModeratorRequest struct {
@@ -944,7 +1023,7 @@ type DeleteModeratorRequest struct {
 func (x *DeleteModeratorRequest) Reset() {
 	*x = DeleteModeratorRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[16]
+		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -957,7 +1036,7 @@ func (x *DeleteModeratorRequest) String() string {
 func (*DeleteModeratorRequest) ProtoMessage() {}
 
 func (x *DeleteModeratorRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[16]
+	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -970,7 +1049,7 @@ func (x *DeleteModeratorRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteModeratorRequest.ProtoReflect.Descriptor instead.
 func (*DeleteModeratorRequest) Descriptor() ([]byte, []int) {
-	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{16}
+	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *DeleteModeratorRequest) GetUserId() string {
@@ -989,7 +1068,7 @@ type DeleteModeratorResponse struct {
 func (x *DeleteModeratorResponse) Reset() {
 	*x = DeleteModeratorResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[17]
+		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1002,7 +1081,7 @@ func (x *DeleteModeratorResponse) String() string {
 func (*DeleteModeratorResponse) ProtoMessage() {}
 
 func (x *DeleteModeratorResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[17]
+	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1015,7 +1094,7 @@ func (x *DeleteModeratorResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteModeratorResponse.ProtoReflect.Descriptor instead.
 func (*DeleteModeratorResponse) Descriptor() ([]byte, []int) {
-	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{17}
+	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{18}
 }
 
 type CreateModeratorRequest struct {
@@ -1029,7 +1108,7 @@ type CreateModeratorRequest struct {
 func (x *CreateModeratorRequest) Reset() {
 	*x = CreateModeratorRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[18]
+		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1042,7 +1121,7 @@ func (x *CreateModeratorRequest) String() string {
 func (*CreateModeratorRequest) ProtoMessage() {}
 
 func (x *CreateModeratorRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[18]
+	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1055,7 +1134,7 @@ func (x *CreateModeratorRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateModeratorRequest.ProtoReflect.Descriptor instead.
 func (*CreateModeratorRequest) Descriptor() ([]byte, []int) {
-	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{18}
+	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *CreateModeratorRequest) GetUserId() string {
@@ -1074,7 +1153,7 @@ type CreateModeratorResponse struct {
 func (x *CreateModeratorResponse) Reset() {
 	*x = CreateModeratorResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[19]
+		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1087,7 +1166,7 @@ func (x *CreateModeratorResponse) String() string {
 func (*CreateModeratorResponse) ProtoMessage() {}
 
 func (x *CreateModeratorResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[19]
+	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1100,7 +1179,7 @@ func (x *CreateModeratorResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateModeratorResponse.ProtoReflect.Descriptor instead.
 func (*CreateModeratorResponse) Descriptor() ([]byte, []int) {
-	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{19}
+	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{20}
 }
 
 type CreateBusinessAccountRequest struct {
@@ -1114,7 +1193,7 @@ type CreateBusinessAccountRequest struct {
 func (x *CreateBusinessAccountRequest) Reset() {
 	*x = CreateBusinessAccountRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[20]
+		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1127,7 +1206,7 @@ func (x *CreateBusinessAccountRequest) String() string {
 func (*CreateBusinessAccountRequest) ProtoMessage() {}
 
 func (x *CreateBusinessAccountRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[20]
+	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1140,7 +1219,7 @@ func (x *CreateBusinessAccountRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateBusinessAccountRequest.ProtoReflect.Descriptor instead.
 func (*CreateBusinessAccountRequest) Descriptor() ([]byte, []int) {
-	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{20}
+	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *CreateBusinessAccountRequest) GetUserId() string {
@@ -1159,7 +1238,7 @@ type CreateBusinessAccountResponse struct {
 func (x *CreateBusinessAccountResponse) Reset() {
 	*x = CreateBusinessAccountResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[21]
+		mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1172,7 +1251,7 @@ func (x *CreateBusinessAccountResponse) String() string {
 func (*CreateBusinessAccountResponse) ProtoMessage() {}
 
 func (x *CreateBusinessAccountResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[21]
+	mi := &file_cheers_auth_v1_auth_service_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1185,7 +1264,7 @@ func (x *CreateBusinessAccountResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateBusinessAccountResponse.ProtoReflect.Descriptor instead.
 func (*CreateBusinessAccountResponse) Descriptor() ([]byte, []int) {
-	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{21}
+	return file_cheers_auth_v1_auth_service_proto_rawDescGZIP(), []int{22}
 }
 
 var File_cheers_auth_v1_auth_service_proto protoreflect.FileDescriptor
@@ -1201,7 +1280,7 @@ var file_cheers_auth_v1_auth_service_proto_rawDesc = []byte{
 	0x0a, 0x11, 0x42, 0x65, 0x67, 0x69, 0x6e, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x52, 0x65, 0x71, 0x75,
 	0x65, 0x73, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x75, 0x73, 0x65, 0x72, 0x6e, 0x61, 0x6d, 0x65, 0x18,
 	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x75, 0x73, 0x65, 0x72, 0x6e, 0x61, 0x6d, 0x65, 0x22,
-	0xa2, 0x01, 0x0a, 0x12, 0x42, 0x65, 0x67, 0x69, 0x6e, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x52, 0x65,
+	0xeb, 0x01, 0x0a, 0x12, 0x42, 0x65, 0x67, 0x69, 0x6e, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x52, 0x65,
 	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x17, 0x0a, 0x07, 0x75, 0x73, 0x65, 0x72, 0x5f, 0x69,
 	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x04, 0x52, 0x06, 0x75, 0x73, 0x65, 0x72, 0x49, 0x64, 0x12,
 	0x1c, 0x0a, 0x09, 0x63, 0x68, 0x61, 0x6c, 0x6c, 0x65, 0x6e, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01,
@@ -1211,7 +1290,20 @@ var file_cheers_auth_v1_auth_service_proto_rawDesc = []byte{
 	0x50, 0x61, 0x72, 0x74, 0x79, 0x49, 0x64, 0x12, 0x2b, 0x0a, 0x11, 0x75, 0x73, 0x65, 0x72, 0x5f,
 	0x76, 0x65, 0x72, 0x69, 0x66, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x04, 0x20, 0x01,
 	0x28, 0x09, 0x52, 0x10, 0x75, 0x73, 0x65, 0x72, 0x56, 0x65, 0x72, 0x69, 0x66, 0x69, 0x63, 0x61,
-	0x74, 0x69, 0x6f, 0x6e, 0x22, 0x90, 0x01, 0x0a, 0x12, 0x46, 0x69, 0x6e, 0x69, 0x73, 0x68, 0x4c,
+	0x74, 0x69, 0x6f, 0x6e, 0x12, 0x47, 0x0a, 0x11, 0x61, 0x6c, 0x6c, 0x6f, 0x77, 0x5f, 0x63, 0x72,
+	0x65, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x61, 0x6c, 0x73, 0x18, 0x05, 0x20, 0x03, 0x28, 0x0b, 0x32,
+	0x1a, 0x2e, 0x63, 0x68, 0x65, 0x65, 0x72, 0x73, 0x2e, 0x61, 0x75, 0x74, 0x68, 0x2e, 0x76, 0x31,
+	0x2e, 0x43, 0x72, 0x65, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x61, 0x6c, 0x52, 0x10, 0x61, 0x6c, 0x6c,
+	0x6f, 0x77, 0x43, 0x72, 0x65, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x61, 0x6c, 0x73, 0x22, 0x84, 0x01,
+	0x0a, 0x0a, 0x43, 0x72, 0x65, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x61, 0x6c, 0x12, 0x0e, 0x0a, 0x02,
+	0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x1d, 0x0a, 0x0a,
+	0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x5f, 0x6b, 0x65, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x09, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x12, 0x29, 0x0a, 0x10, 0x61,
+	0x74, 0x74, 0x65, 0x73, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x18,
+	0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0f, 0x61, 0x74, 0x74, 0x65, 0x73, 0x74, 0x61, 0x74, 0x69,
+	0x6f, 0x6e, 0x54, 0x79, 0x70, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x70,
+	0x6f, 0x72, 0x74, 0x18, 0x04, 0x20, 0x03, 0x28, 0x09, 0x52, 0x09, 0x74, 0x72, 0x61, 0x6e, 0x73,
+	0x70, 0x6f, 0x72, 0x74, 0x22, 0x90, 0x01, 0x0a, 0x12, 0x46, 0x69, 0x6e, 0x69, 0x73, 0x68, 0x4c,
 	0x6f, 0x67, 0x69, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x75,
 	0x73, 0x65, 0x72, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x75,
 	0x73, 0x65, 0x72, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x40, 0x0a, 0x07, 0x70, 0x61, 0x73, 0x73, 0x6b,
@@ -1413,65 +1505,67 @@ func file_cheers_auth_v1_auth_service_proto_rawDescGZIP() []byte {
 	return file_cheers_auth_v1_auth_service_proto_rawDescData
 }
 
-var file_cheers_auth_v1_auth_service_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
+var file_cheers_auth_v1_auth_service_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
 var file_cheers_auth_v1_auth_service_proto_goTypes = []interface{}{
 	(*BeginLoginRequest)(nil),             // 0: cheers.auth.v1.BeginLoginRequest
 	(*BeginLoginResponse)(nil),            // 1: cheers.auth.v1.BeginLoginResponse
-	(*FinishLoginRequest)(nil),            // 2: cheers.auth.v1.FinishLoginRequest
-	(*FinishLoginResponse)(nil),           // 3: cheers.auth.v1.FinishLoginResponse
-	(*BeginRegistrationRequest)(nil),      // 4: cheers.auth.v1.BeginRegistrationRequest
-	(*BeginRegistrationResponse)(nil),     // 5: cheers.auth.v1.BeginRegistrationResponse
-	(*FinishRegistrationRequest)(nil),     // 6: cheers.auth.v1.FinishRegistrationRequest
-	(*FinishRegistrationResponse)(nil),    // 7: cheers.auth.v1.FinishRegistrationResponse
-	(*GetPasskeyResponseData)(nil),        // 8: cheers.auth.v1.GetPasskeyResponseData
-	(*GetPasskeyResponse)(nil),            // 9: cheers.auth.v1.GetPasskeyResponse
-	(*CreatePasskeyResponseData)(nil),     // 10: cheers.auth.v1.CreatePasskeyResponseData
-	(*Response)(nil),                      // 11: cheers.auth.v1.Response
-	(*LoginRequest)(nil),                  // 12: cheers.auth.v1.LoginRequest
-	(*LoginResponse)(nil),                 // 13: cheers.auth.v1.LoginResponse
-	(*VerifyUserRequest)(nil),             // 14: cheers.auth.v1.VerifyUserRequest
-	(*VerifyUserResponse)(nil),            // 15: cheers.auth.v1.VerifyUserResponse
-	(*DeleteModeratorRequest)(nil),        // 16: cheers.auth.v1.DeleteModeratorRequest
-	(*DeleteModeratorResponse)(nil),       // 17: cheers.auth.v1.DeleteModeratorResponse
-	(*CreateModeratorRequest)(nil),        // 18: cheers.auth.v1.CreateModeratorRequest
-	(*CreateModeratorResponse)(nil),       // 19: cheers.auth.v1.CreateModeratorResponse
-	(*CreateBusinessAccountRequest)(nil),  // 20: cheers.auth.v1.CreateBusinessAccountRequest
-	(*CreateBusinessAccountResponse)(nil), // 21: cheers.auth.v1.CreateBusinessAccountResponse
-	(*user.User)(nil),                     // 22: cheers.type.User
+	(*Credential)(nil),                    // 2: cheers.auth.v1.Credential
+	(*FinishLoginRequest)(nil),            // 3: cheers.auth.v1.FinishLoginRequest
+	(*FinishLoginResponse)(nil),           // 4: cheers.auth.v1.FinishLoginResponse
+	(*BeginRegistrationRequest)(nil),      // 5: cheers.auth.v1.BeginRegistrationRequest
+	(*BeginRegistrationResponse)(nil),     // 6: cheers.auth.v1.BeginRegistrationResponse
+	(*FinishRegistrationRequest)(nil),     // 7: cheers.auth.v1.FinishRegistrationRequest
+	(*FinishRegistrationResponse)(nil),    // 8: cheers.auth.v1.FinishRegistrationResponse
+	(*GetPasskeyResponseData)(nil),        // 9: cheers.auth.v1.GetPasskeyResponseData
+	(*GetPasskeyResponse)(nil),            // 10: cheers.auth.v1.GetPasskeyResponse
+	(*CreatePasskeyResponseData)(nil),     // 11: cheers.auth.v1.CreatePasskeyResponseData
+	(*Response)(nil),                      // 12: cheers.auth.v1.Response
+	(*LoginRequest)(nil),                  // 13: cheers.auth.v1.LoginRequest
+	(*LoginResponse)(nil),                 // 14: cheers.auth.v1.LoginResponse
+	(*VerifyUserRequest)(nil),             // 15: cheers.auth.v1.VerifyUserRequest
+	(*VerifyUserResponse)(nil),            // 16: cheers.auth.v1.VerifyUserResponse
+	(*DeleteModeratorRequest)(nil),        // 17: cheers.auth.v1.DeleteModeratorRequest
+	(*DeleteModeratorResponse)(nil),       // 18: cheers.auth.v1.DeleteModeratorResponse
+	(*CreateModeratorRequest)(nil),        // 19: cheers.auth.v1.CreateModeratorRequest
+	(*CreateModeratorResponse)(nil),       // 20: cheers.auth.v1.CreateModeratorResponse
+	(*CreateBusinessAccountRequest)(nil),  // 21: cheers.auth.v1.CreateBusinessAccountRequest
+	(*CreateBusinessAccountResponse)(nil), // 22: cheers.auth.v1.CreateBusinessAccountResponse
+	(*user.User)(nil),                     // 23: cheers.type.User
 }
 var file_cheers_auth_v1_auth_service_proto_depIdxs = []int32{
-	8,  // 0: cheers.auth.v1.FinishLoginRequest.passkey:type_name -> cheers.auth.v1.GetPasskeyResponseData
-	22, // 1: cheers.auth.v1.FinishLoginResponse.user:type_name -> cheers.type.User
-	10, // 2: cheers.auth.v1.FinishRegistrationRequest.passkey:type_name -> cheers.auth.v1.CreatePasskeyResponseData
-	22, // 3: cheers.auth.v1.FinishRegistrationResponse.user:type_name -> cheers.type.User
-	9,  // 4: cheers.auth.v1.GetPasskeyResponseData.response:type_name -> cheers.auth.v1.GetPasskeyResponse
-	11, // 5: cheers.auth.v1.CreatePasskeyResponseData.response:type_name -> cheers.auth.v1.Response
-	22, // 6: cheers.auth.v1.LoginResponse.user:type_name -> cheers.type.User
-	12, // 7: cheers.auth.v1.AuthService.Login:input_type -> cheers.auth.v1.LoginRequest
-	0,  // 8: cheers.auth.v1.AuthService.BeginLogin:input_type -> cheers.auth.v1.BeginLoginRequest
-	2,  // 9: cheers.auth.v1.AuthService.FinishLogin:input_type -> cheers.auth.v1.FinishLoginRequest
-	4,  // 10: cheers.auth.v1.AuthService.BeginRegistration:input_type -> cheers.auth.v1.BeginRegistrationRequest
-	6,  // 11: cheers.auth.v1.AuthService.FinishRegistration:input_type -> cheers.auth.v1.FinishRegistrationRequest
-	18, // 12: cheers.auth.v1.AuthService.CreateModerator:input_type -> cheers.auth.v1.CreateModeratorRequest
-	16, // 13: cheers.auth.v1.AuthService.DeleteModerator:input_type -> cheers.auth.v1.DeleteModeratorRequest
-	20, // 14: cheers.auth.v1.AuthService.CreateBusinessAccount:input_type -> cheers.auth.v1.CreateBusinessAccountRequest
-	14, // 15: cheers.auth.v1.AuthService.VerifyUser:input_type -> cheers.auth.v1.VerifyUserRequest
-	14, // 16: cheers.auth.v1.AuthService.DeleteVerifyUser:input_type -> cheers.auth.v1.VerifyUserRequest
-	13, // 17: cheers.auth.v1.AuthService.Login:output_type -> cheers.auth.v1.LoginResponse
-	1,  // 18: cheers.auth.v1.AuthService.BeginLogin:output_type -> cheers.auth.v1.BeginLoginResponse
-	3,  // 19: cheers.auth.v1.AuthService.FinishLogin:output_type -> cheers.auth.v1.FinishLoginResponse
-	5,  // 20: cheers.auth.v1.AuthService.BeginRegistration:output_type -> cheers.auth.v1.BeginRegistrationResponse
-	7,  // 21: cheers.auth.v1.AuthService.FinishRegistration:output_type -> cheers.auth.v1.FinishRegistrationResponse
-	19, // 22: cheers.auth.v1.AuthService.CreateModerator:output_type -> cheers.auth.v1.CreateModeratorResponse
-	17, // 23: cheers.auth.v1.AuthService.DeleteModerator:output_type -> cheers.auth.v1.DeleteModeratorResponse
-	21, // 24: cheers.auth.v1.AuthService.CreateBusinessAccount:output_type -> cheers.auth.v1.CreateBusinessAccountResponse
-	15, // 25: cheers.auth.v1.AuthService.VerifyUser:output_type -> cheers.auth.v1.VerifyUserResponse
-	15, // 26: cheers.auth.v1.AuthService.DeleteVerifyUser:output_type -> cheers.auth.v1.VerifyUserResponse
-	17, // [17:27] is the sub-list for method output_type
-	7,  // [7:17] is the sub-list for method input_type
-	7,  // [7:7] is the sub-list for extension type_name
-	7,  // [7:7] is the sub-list for extension extendee
-	0,  // [0:7] is the sub-list for field type_name
+	2,  // 0: cheers.auth.v1.BeginLoginResponse.allow_credentials:type_name -> cheers.auth.v1.Credential
+	9,  // 1: cheers.auth.v1.FinishLoginRequest.passkey:type_name -> cheers.auth.v1.GetPasskeyResponseData
+	23, // 2: cheers.auth.v1.FinishLoginResponse.user:type_name -> cheers.type.User
+	11, // 3: cheers.auth.v1.FinishRegistrationRequest.passkey:type_name -> cheers.auth.v1.CreatePasskeyResponseData
+	23, // 4: cheers.auth.v1.FinishRegistrationResponse.user:type_name -> cheers.type.User
+	10, // 5: cheers.auth.v1.GetPasskeyResponseData.response:type_name -> cheers.auth.v1.GetPasskeyResponse
+	12, // 6: cheers.auth.v1.CreatePasskeyResponseData.response:type_name -> cheers.auth.v1.Response
+	23, // 7: cheers.auth.v1.LoginResponse.user:type_name -> cheers.type.User
+	13, // 8: cheers.auth.v1.AuthService.Login:input_type -> cheers.auth.v1.LoginRequest
+	0,  // 9: cheers.auth.v1.AuthService.BeginLogin:input_type -> cheers.auth.v1.BeginLoginRequest
+	3,  // 10: cheers.auth.v1.AuthService.FinishLogin:input_type -> cheers.auth.v1.FinishLoginRequest
+	5,  // 11: cheers.auth.v1.AuthService.BeginRegistration:input_type -> cheers.auth.v1.BeginRegistrationRequest
+	7,  // 12: cheers.auth.v1.AuthService.FinishRegistration:input_type -> cheers.auth.v1.FinishRegistrationRequest
+	19, // 13: cheers.auth.v1.AuthService.CreateModerator:input_type -> cheers.auth.v1.CreateModeratorRequest
+	17, // 14: cheers.auth.v1.AuthService.DeleteModerator:input_type -> cheers.auth.v1.DeleteModeratorRequest
+	21, // 15: cheers.auth.v1.AuthService.CreateBusinessAccount:input_type -> cheers.auth.v1.CreateBusinessAccountRequest
+	15, // 16: cheers.auth.v1.AuthService.VerifyUser:input_type -> cheers.auth.v1.VerifyUserRequest
+	15, // 17: cheers.auth.v1.AuthService.DeleteVerifyUser:input_type -> cheers.auth.v1.VerifyUserRequest
+	14, // 18: cheers.auth.v1.AuthService.Login:output_type -> cheers.auth.v1.LoginResponse
+	1,  // 19: cheers.auth.v1.AuthService.BeginLogin:output_type -> cheers.auth.v1.BeginLoginResponse
+	4,  // 20: cheers.auth.v1.AuthService.FinishLogin:output_type -> cheers.auth.v1.FinishLoginResponse
+	6,  // 21: cheers.auth.v1.AuthService.BeginRegistration:output_type -> cheers.auth.v1.BeginRegistrationResponse
+	8,  // 22: cheers.auth.v1.AuthService.FinishRegistration:output_type -> cheers.auth.v1.FinishRegistrationResponse
+	20, // 23: cheers.auth.v1.AuthService.CreateModerator:output_type -> cheers.auth.v1.CreateModeratorResponse
+	18, // 24: cheers.auth.v1.AuthService.DeleteModerator:output_type -> cheers.auth.v1.DeleteModeratorResponse
+	22, // 25: cheers.auth.v1.AuthService.CreateBusinessAccount:output_type -> cheers.auth.v1.CreateBusinessAccountResponse
+	16, // 26: cheers.auth.v1.AuthService.VerifyUser:output_type -> cheers.auth.v1.VerifyUserResponse
+	16, // 27: cheers.auth.v1.AuthService.DeleteVerifyUser:output_type -> cheers.auth.v1.VerifyUserResponse
+	18, // [18:28] is the sub-list for method output_type
+	8,  // [8:18] is the sub-list for method input_type
+	8,  // [8:8] is the sub-list for extension type_name
+	8,  // [8:8] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_cheers_auth_v1_auth_service_proto_init() }
@@ -1505,7 +1599,7 @@ func file_cheers_auth_v1_auth_service_proto_init() {
 			}
 		}
 		file_cheers_auth_v1_auth_service_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FinishLoginRequest); i {
+			switch v := v.(*Credential); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1517,7 +1611,7 @@ func file_cheers_auth_v1_auth_service_proto_init() {
 			}
 		}
 		file_cheers_auth_v1_auth_service_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FinishLoginResponse); i {
+			switch v := v.(*FinishLoginRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1529,7 +1623,7 @@ func file_cheers_auth_v1_auth_service_proto_init() {
 			}
 		}
 		file_cheers_auth_v1_auth_service_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BeginRegistrationRequest); i {
+			switch v := v.(*FinishLoginResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1541,7 +1635,7 @@ func file_cheers_auth_v1_auth_service_proto_init() {
 			}
 		}
 		file_cheers_auth_v1_auth_service_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BeginRegistrationResponse); i {
+			switch v := v.(*BeginRegistrationRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1553,7 +1647,7 @@ func file_cheers_auth_v1_auth_service_proto_init() {
 			}
 		}
 		file_cheers_auth_v1_auth_service_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FinishRegistrationRequest); i {
+			switch v := v.(*BeginRegistrationResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1565,7 +1659,7 @@ func file_cheers_auth_v1_auth_service_proto_init() {
 			}
 		}
 		file_cheers_auth_v1_auth_service_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FinishRegistrationResponse); i {
+			switch v := v.(*FinishRegistrationRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1577,7 +1671,7 @@ func file_cheers_auth_v1_auth_service_proto_init() {
 			}
 		}
 		file_cheers_auth_v1_auth_service_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetPasskeyResponseData); i {
+			switch v := v.(*FinishRegistrationResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1589,7 +1683,7 @@ func file_cheers_auth_v1_auth_service_proto_init() {
 			}
 		}
 		file_cheers_auth_v1_auth_service_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetPasskeyResponse); i {
+			switch v := v.(*GetPasskeyResponseData); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1601,7 +1695,7 @@ func file_cheers_auth_v1_auth_service_proto_init() {
 			}
 		}
 		file_cheers_auth_v1_auth_service_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreatePasskeyResponseData); i {
+			switch v := v.(*GetPasskeyResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1613,7 +1707,7 @@ func file_cheers_auth_v1_auth_service_proto_init() {
 			}
 		}
 		file_cheers_auth_v1_auth_service_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Response); i {
+			switch v := v.(*CreatePasskeyResponseData); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1625,7 +1719,7 @@ func file_cheers_auth_v1_auth_service_proto_init() {
 			}
 		}
 		file_cheers_auth_v1_auth_service_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*LoginRequest); i {
+			switch v := v.(*Response); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1637,7 +1731,7 @@ func file_cheers_auth_v1_auth_service_proto_init() {
 			}
 		}
 		file_cheers_auth_v1_auth_service_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*LoginResponse); i {
+			switch v := v.(*LoginRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1649,7 +1743,7 @@ func file_cheers_auth_v1_auth_service_proto_init() {
 			}
 		}
 		file_cheers_auth_v1_auth_service_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*VerifyUserRequest); i {
+			switch v := v.(*LoginResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1661,7 +1755,7 @@ func file_cheers_auth_v1_auth_service_proto_init() {
 			}
 		}
 		file_cheers_auth_v1_auth_service_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*VerifyUserResponse); i {
+			switch v := v.(*VerifyUserRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1673,7 +1767,7 @@ func file_cheers_auth_v1_auth_service_proto_init() {
 			}
 		}
 		file_cheers_auth_v1_auth_service_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteModeratorRequest); i {
+			switch v := v.(*VerifyUserResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1685,7 +1779,7 @@ func file_cheers_auth_v1_auth_service_proto_init() {
 			}
 		}
 		file_cheers_auth_v1_auth_service_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteModeratorResponse); i {
+			switch v := v.(*DeleteModeratorRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1697,7 +1791,7 @@ func file_cheers_auth_v1_auth_service_proto_init() {
 			}
 		}
 		file_cheers_auth_v1_auth_service_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateModeratorRequest); i {
+			switch v := v.(*DeleteModeratorResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1709,7 +1803,7 @@ func file_cheers_auth_v1_auth_service_proto_init() {
 			}
 		}
 		file_cheers_auth_v1_auth_service_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateModeratorResponse); i {
+			switch v := v.(*CreateModeratorRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1721,7 +1815,7 @@ func file_cheers_auth_v1_auth_service_proto_init() {
 			}
 		}
 		file_cheers_auth_v1_auth_service_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateBusinessAccountRequest); i {
+			switch v := v.(*CreateModeratorResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1733,6 +1827,18 @@ func file_cheers_auth_v1_auth_service_proto_init() {
 			}
 		}
 		file_cheers_auth_v1_auth_service_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CreateBusinessAccountRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_cheers_auth_v1_auth_service_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*CreateBusinessAccountResponse); i {
 			case 0:
 				return &v.state
@@ -1751,7 +1857,7 @@ func file_cheers_auth_v1_auth_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_cheers_auth_v1_auth_service_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   22,
+			NumMessages:   23,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

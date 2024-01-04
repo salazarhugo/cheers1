@@ -85,6 +85,15 @@ message BeginLoginResponse {
   string challenge = 2;
   string relying_party_id = 3;
   string user_verification = 4;
+  repeated Credential allow_credentials = 5;
+  int64 timeout = 6;
+}
+
+message Credential {
+  string id = 1;
+  string public_key = 2;
+  string attestation_type = 3;
+  repeated string transport = 4;
 }
 
 message FinishLoginRequest {
