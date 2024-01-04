@@ -10,10 +10,10 @@ func TestFeedPost(t *testing.T) {
 	//Create a mock repository
 	repo := repository.NewPostRepository()
 
-	friendIDs := []string{"cheers", "user1"}
+	friendIDs := []string{"cheers", "user1", "a082acf0-d046-4467-852e-9eeee17df56f"}
 	response, err := repo.FeedPost(
 		friendIDs,
-		5,
+		1,
 		10,
 	)
 
@@ -23,7 +23,6 @@ func TestFeedPost(t *testing.T) {
 	}
 
 	for _, postResponse := range response.GetPosts() {
-		log.Println(postResponse.HasLiked)
-		log.Println(postResponse.LikeCount)
+		log.Println(postResponse)
 	}
 }

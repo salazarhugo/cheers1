@@ -2,6 +2,7 @@ package repository
 
 import (
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
+	"github.com/salazarhugo/cheers1/libs/utils"
 )
 
 func (p *postRepository) FeedPost(
@@ -10,19 +11,21 @@ func (p *postRepository) FeedPost(
 	pageSize int,
 ) (*pb.FeedPostResponse, error) {
 	viewerID := userIDs[len(userIDs)-1]
-	if page == 0 {
-		page = 1
-	}
-	if pageSize == 0 {
-		pageSize = 18
-	}
-
-	skip := pageSize * (page - 1)
+	limit, offset := utils.GetLimitAndOffsetPagination(page, pageSize)
 
 	var posts []PostWithUserInfo
 
 	db := p.spanner
-	result := db.Raw("SELECT posts.*, username, users.name, verified, picture, drinks.name, (select count(*) from post_likes where post_likes.post_id = posts.id) as likes, (SELECT EXISTS (SELECT 1 FROM post_likes WHERE user_id = ? AND post_id = posts.id)) as has_viewer_liked, FROM  posts JOIN users ON  posts.user_id = users.id LEFT OUTER JOIN drinks ON posts.drink_id = drinks.id WHERE posts.user_id IN ? LIMIT ? OFFSET ?", viewerID, userIDs, pageSize, skip).Scan(&posts)
+	result := db.
+		Table("posts").
+		Select("posts.*, drinks.id as drink_id, drinks.name as drink_name, drinks.icon as drink_icon, users.username, users.name, users.verified, users.picture, (select count(*) from post_likes where post_likes.post_id = posts.id) as likes, (SELECT EXISTS (SELECT 1 FROM post_likes WHERE user_id = ? AND post_id = posts.id)) as has_viewer_liked", viewerID).
+		Joins("JOIN users ON  posts.user_id = users.id").
+		Joins("LEFT OUTER JOIN drinks ON posts.drink_id = drinks.id").
+		Where("posts.user_id IN ?", userIDs).
+		Order("posts.created_at DESC").
+		Limit(limit).
+		Offset(offset).
+		Scan(&posts)
 
 	if result.Error != nil {
 		return nil, result.Error

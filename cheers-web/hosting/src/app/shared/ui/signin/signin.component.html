@@ -4,18 +4,8 @@
 
     <form [formGroup]="userForm" fxLayout="column">
         <div class="form-group has-success">
-            <label class="control-label">Email</label>
-            <input type="email" class="form-control" formControlName="email">
-        </div>
-
-        <div *ngIf="withPassword" class="form-group has-success">
-            <label class="control-label">Password</label>
-            <input type="password" class="form-control" formControlName="password">
-        </div>
-
-        <div *ngIf="this.signInLinkSent" fxLayout="column" fxLayoutAlign="none center">
-            <div class="check"></div>
-            <p>A sign in link has been sent to your email account</p>
+            <label class="control-label">Username</label>
+            <input type="text" class="form-control" formControlName="username">
         </div>
 
         <div *ngIf="errorMessage">
@@ -28,8 +18,6 @@
                 <span> Sign In </span>
             </div>
         </button>
-
-        <button (click)="withPassword = !withPassword" color="primary" mat-button>Sign in with password</button>
 
         <button fxLayout="row" type="button" class="btn-auth btn-google" (click)="signInWithGoogle()" [disabled]="isLoading">
             <div class="btn-google__logo-container">

@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/activity/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/mapper"
 )
 
 func (a activityRepository) CreateActivity(
@@ -20,7 +21,7 @@ func (a activityRepository) CreateActivity(
 	doc := client.Collection("users").Doc(userID).Collection("activity").NewDoc()
 	activity.Id = doc.ID
 
-	m, err := utils.ProtoToMap(activity)
+	m, err := mapper.ProtoToMap(activity)
 	_, err = doc.Set(ctx, m)
 	if err != nil {
 		return err

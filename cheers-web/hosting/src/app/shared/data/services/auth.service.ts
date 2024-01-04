@@ -4,12 +4,18 @@ import {GoogleAuthProvider} from 'firebase/auth';
 import {UserService} from "./user.service";
 import {ApiService} from "./api.service";
 import {Router} from "@angular/router";
+import {PublicKeyCredentialOptions} from "../models/webauthn.models";
+import {Observable, of, switchMap} from "rxjs";
+
+export interface StatusResponse {
+    status: string;
+    message?: string;
+}
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-
     constructor(
         private api: ApiService,
         private afAuth: AngularFireAuth,
@@ -28,6 +34,27 @@ export class AuthService {
                 localStorage.setItem('user', 'null');
             }
         });
+    }
+
+    loginUser(username: string): Observable<StatusResponse> {
+        return this.api.beginLogin(username).pipe(
+            switchMap(async response => {
+                const getCredential = {
+                    publicKey: {
+                        timeout: response.timeout,
+                        // allowCredentials: response.excludeCredentials,
+                        challenge: new TextEncoder().encode(response.challenge).buffer,
+                    },
+                };
+                return navigator.credentials.get(getCredential);
+            }),
+            switchMap(() => {
+                // this.api.finishLogin(result)
+                return of({
+                    status: "done",
+                })
+            })
+        );
     }
 
     createUserWithEmailAndPassword(email: string, password: string) {

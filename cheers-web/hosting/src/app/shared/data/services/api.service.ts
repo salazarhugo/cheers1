@@ -20,6 +20,12 @@ import {ListTicketResponse} from "../../../../gen/ts/cheers/ticket/v1/ticket";
 import {FeedStoryResponse} from "../../../../gen/ts/cheers/story/v1/story_service";
 import {UserItem} from "../../../../gen/ts/cheers/type/user/user";
 import {SearchUserResponse} from "../response/search-user.response";
+import {
+    BeginLoginResponse,
+    FinishLoginRequest,
+    FinishLoginResponse,
+    PublicKeyCredentialOptions
+} from "../models/webauthn.models";
 
 @Injectable({
     providedIn: 'root'
@@ -31,6 +37,14 @@ export class ApiService {
     constructor(
         private http: HttpClient,
     ) {
+    }
+
+    beginLogin(username: string): Observable<BeginLoginResponse> {
+        return this.http.get<BeginLoginResponse>(`${environment.GATEWAY_URL}/v1/auth/login/begin/${username}`)
+    }
+
+    finishLogin(request: FinishLoginRequest): Observable<FinishLoginResponse> {
+        return this.http.post<FinishLoginResponse>(`${environment.GATEWAY_URL}/v1/auth/login/finish`, request)
     }
 
     listUserOrders(userId: string): Observable<Order[]> {

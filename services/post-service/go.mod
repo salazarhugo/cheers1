@@ -3,14 +3,15 @@ module github.com/salazarhugo/cheers1/services/post-service
 go 1.19
 
 require (
+	cloud.google.com/go/spanner v1.51.1-0.20231030142734-7abc3595e9cc
 	github.com/go-redis/redis/v9 v9.0.0-rc.1
 	github.com/golang/protobuf v1.5.3
 	github.com/google/uuid v1.3.1
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20231211225417-7d3e1787ab4f
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20231215235530-acd66c2e6ec2
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20231208123637-da3fea4efc05
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20231215235530-acd66c2e6ec2
 	github.com/sirupsen/logrus v1.9.0
 	golang.org/x/net v0.17.0
 	google.golang.org/grpc v1.59.0
@@ -27,7 +28,6 @@ require (
 	cloud.google.com/go/longrunning v0.5.3 // indirect
 	cloud.google.com/go/profiler v0.3.1 // indirect
 	cloud.google.com/go/pubsub v1.33.0 // indirect
-	cloud.google.com/go/spanner v1.51.1-0.20231030142734-7abc3595e9cc // indirect
 	cloud.google.com/go/storage v1.33.0 // indirect
 	firebase.google.com/go/v4 v4.12.1 // indirect
 	github.com/MicahParks/keyfunc v1.9.0 // indirect

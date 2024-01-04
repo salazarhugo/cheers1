@@ -5,6 +5,7 @@ import {AuthService} from "../../data/services/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import { FirebaseError } from '@angular/fire/app/firebase';
+import {firstValueFrom} from "rxjs";
 
 @Component({
     selector: 'app-signin',
@@ -14,11 +15,9 @@ import { FirebaseError } from '@angular/fire/app/firebase';
 export class SigninComponent implements OnInit {
 
     userForm = new UntypedFormGroup({
-        email: new UntypedFormControl(''),
-        password: new UntypedFormControl(''),
+        username: new UntypedFormControl(''),
     });
 
-    withPassword: boolean = false
     signInLinkSent: boolean = false
     isLoading: boolean = false
     errorMessage: string = ""
@@ -40,28 +39,12 @@ export class SigninComponent implements OnInit {
         this.isLoading = false
     }
 
-    onSignIn() {
+    async onSignIn() {
         this.isLoading = true
         this.errorMessage = ""
         const userForm = this.userForm.value
 
-        if (this.withPassword) {
-            this.authService.signInWithEmailAndPassword(
-                userForm["email"],
-                userForm["password"],
-            ).then(res => {
-                console.log(res)
-                this.isLoading = false
-            }).catch((err: FirebaseError) => {
-                console.log(err)
-                this.errorMessage = err.message
-                this.isLoading = false
-            })
-        } else {
-            this.authService.sendSignInLinkToEmail(userForm["email"]).then(() => {
-                this.signInLinkSent = true
-                this.isLoading = false
-            })
-        }
+        const result = await firstValueFrom(this.authService.loginUser(userForm["username"]))
+        this.isLoading = false
     }
 }

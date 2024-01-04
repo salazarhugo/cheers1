@@ -68,7 +68,7 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 			user.Username,
 			user.Picture,
 			post.LocationName,
-			post.Drink,
+			post.Drink.Name,
 			post.Caption,
 			len(post.Photos) > 0,
 		)
