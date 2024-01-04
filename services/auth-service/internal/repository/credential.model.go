@@ -2,6 +2,7 @@ package repository
 
 import (
 	"github.com/go-webauthn/webauthn/webauthn"
+	pb "github.com/salazarhugo/cheers1/gen/go/cheers/auth/v1"
 	"time"
 )
 
@@ -35,5 +36,26 @@ func (c *Credential) ToWebAuthnCredential() *webauthn.Credential {
 		Transport:       nil,
 		Flags:           webauthn.CredentialFlags{},
 		Authenticator:   webauthn.Authenticator{},
+	}
+}
+
+func ToCredentialsPb(credentials []webauthn.Credential) []*pb.Credential {
+	res := make([]*pb.Credential, 0)
+	for _, credential := range credentials {
+		res = append(res, ToCredentialPb(&credential))
+	}
+	return res
+}
+
+func ToCredentialPb(c *webauthn.Credential) *pb.Credential {
+	transports := make([]string, 0)
+	for _, transport := range c.Transport {
+		transports = append(transports, string(transport))
+	}
+	return &pb.Credential{
+		Id:              c.ID,
+		PublicKey:       c.PublicKey,
+		AttestationType: c.AttestationType,
+		Transport:       transports,
 	}
 }

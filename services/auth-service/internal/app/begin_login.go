@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/go-webauthn/webauthn/webauthn"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/auth/v1"
+	"github.com/salazarhugo/cheers1/services/auth-service/internal/repository"
 	"log"
 )
 
@@ -52,7 +53,7 @@ func (s *Server) BeginLogin(
 		Challenge:        sessionData.Challenge,
 		RelyingPartyId:   options.Response.RelyingPartyID,
 		UserVerification: string(options.Response.UserVerification),
-		AllowCredentials: authnUser.WebAuthnCredentials(),
+		AllowCredentials: repository.ToCredentialsPb(authnUser.WebAuthnCredentials()),
 		Timeout:          60 * 1000, // in milliseconds
 	}, nil
 }
