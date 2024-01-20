@@ -4,8 +4,8 @@ import {GoogleAuthProvider} from 'firebase/auth';
 import {UserService} from "./user.service";
 import {ApiService} from "./api.service";
 import {Router} from "@angular/router";
-import {PublicKeyCredentialOptions} from "../models/webauthn.models";
-import {Observable, of, switchMap} from "rxjs";
+import {Credential, PublicKeyCredentialOptions} from "../models/webauthn.models";
+import {map, Observable, of, switchMap} from "rxjs";
 
 export interface StatusResponse {
     status: string;
@@ -36,23 +36,44 @@ export class AuthService {
         });
     }
 
+    toAllowCredentials(credentials: Credential[]): PublicKeyCredentialDescriptor[] {
+        return credentials.map(credential => {
+            // credential.id = atob(credential.id)
+            // credential.publicKey = atob(credential.publicKey)
+            return {
+                id: Uint8Array.from(credential.publicKey, c => c.charCodeAt(0)).buffer,
+                type: "public-key",//credential.attestationType as PublicKeyCredentialType,
+                transports: ["internal"],//credential.transport as AuthenticatorTransport[],
+            }
+        })
+    }
+
     loginUser(username: string): Observable<StatusResponse> {
         return this.api.beginLogin(username).pipe(
             switchMap(async response => {
+                if (response == null)
+                    return
+                console.log(response)
                 const getCredential = {
                     publicKey: {
+                        user: {
+                            id: response.userId,
+                        },
                         timeout: response.timeout,
-                        // allowCredentials: response.excludeCredentials,
+                        allowCredentials: this.toAllowCredentials(response.allowCredentials),
                         challenge: new TextEncoder().encode(response.challenge).buffer,
+                        rpId: response.replyingPartyId,
+                        userVerification: response.userVerification as UserVerificationRequirement,
                     },
                 };
                 return navigator.credentials.get(getCredential);
             }),
-            switchMap(() => {
+            map(() => {
                 // this.api.finishLogin(result)
-                return of({
-                    status: "done",
-                })
+                const status: StatusResponse = {
+                    status: "success",
+                }
+                return status
             })
         );
     }

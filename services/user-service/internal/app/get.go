@@ -19,7 +19,7 @@ func (s *Server) GetUser(
 
 	otherUserID := request.GetUserId()
 
-	response, err := s.userRepository.GetUser(userID, otherUserID)
+	response, err := s.userRepository.GetUserWithViewer(userID, otherUserID)
 	if err != nil {
 		log.Error(err)
 		return nil, err

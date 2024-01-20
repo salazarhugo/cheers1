@@ -27,6 +27,7 @@ type PostRepository interface {
 	ListPost(userID string, request *pb.ListPostRequest) (*pb.ListPostResponse, error)
 
 	ListPostLikes(
+		viewerID string,
 		postID string,
 		page int,
 		pageSize int,

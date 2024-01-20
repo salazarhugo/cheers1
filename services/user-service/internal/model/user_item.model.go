@@ -5,25 +5,27 @@ import (
 	"time"
 )
 
-// User model
-type User struct {
-	ID          string `gorm:"primarykey"`
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
-	Username    string
-	Email       string
-	Name        string
-	Picture     string
-	Verified    bool
-	AuthnId     *int64
-	Bio         string
-	Website     string
-	Banner      string
-	PhoneNumber string
-	IsAdmin     bool
+// UserWithViewer model
+type UserWithViewer struct {
+	ID                 string `gorm:"primarykey"`
+	CreatedAt          time.Time
+	UpdatedAt          time.Time
+	Username           string
+	Name               string
+	Picture            string
+	Verified           bool
+	Banner             string
+	Friend             bool
+	Requested          bool
+	Website            string
+	Bio                string
+	Email              string
+	HasRequestedViewer bool
+	PostCount          int32
+	FriendCount        int32
 }
 
-func (u User) ToUserPb() *userpb.User {
+func (u UserWithViewer) ToUserPb() *userpb.User {
 	return &userpb.User{
 		Id:                 u.ID,
 		Name:               u.Name,
@@ -35,33 +37,33 @@ func (u User) ToUserPb() *userpb.User {
 		Website:            u.Website,
 		Birthday:           "",
 		Gender:             0,
-		PhoneNumber:        u.PhoneNumber,
-		CreateTime:         u.CreatedAt.Unix(),
+		PhoneNumber:        "",
+		CreateTime:         0,
 		RegistrationTokens: nil,
 		IsBusinessAccount:  false,
-		IsAdmin:            u.IsAdmin,
+		IsAdmin:            false,
 		IsModerator:        false,
 		Banner:             u.Banner,
 	}
 }
 
-func (u User) ToUserItemPb() *userpb.UserItem {
+func (u UserWithViewer) ToUserItemPb() *userpb.UserItem {
 	return &userpb.UserItem{
 		Id:                 u.ID,
 		Name:               u.Name,
 		Username:           u.Username,
 		Verified:           u.Verified,
 		Picture:            u.Picture,
+		Banner:             u.Banner,
 		HasFollowed:        false,
 		StoryState:         0,
-		Friend:             false,
-		Requested:          false,
-		HasRequestedViewer: false,
-		Banner:             u.Banner,
+		Friend:             u.Friend,
+		Requested:          u.Requested,
+		HasRequestedViewer: u.HasRequestedViewer,
 	}
 }
 
-func ToUserItemsPb(users []*User) []*userpb.UserItem {
+func ToUserItemsPb2(users []*UserWithViewer) []*userpb.UserItem {
 	items := make([]*userpb.UserItem, 0)
 	for _, u := range users {
 		items = append(items, u.ToUserItemPb())

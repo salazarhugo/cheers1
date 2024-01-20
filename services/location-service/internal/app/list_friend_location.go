@@ -19,6 +19,7 @@ func (s *Server) ListFriendLocation(
 	}
 
 	items, err := s.repository.ListFriendLocation(
+		ctx,
 		userID,
 	)
 

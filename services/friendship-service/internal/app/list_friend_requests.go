@@ -11,7 +11,11 @@ func (s *Server) ListFriendRequests(
 	request *friendship.ListFriendRequestsRequest,
 ) (*friendship.ListFriendRequestsResponse, error) {
 
-	items, err := s.friendshipRepository.ListFriendRequests(request.UserId)
+	items, err := s.friendshipRepository.ListFriendRequests(
+		1,
+		100,
+		request.UserId,
+	)
 	if err != nil {
 		log.Println(err)
 		return nil, err

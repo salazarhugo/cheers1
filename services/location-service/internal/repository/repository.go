@@ -25,6 +25,7 @@ type Repository interface {
 	) (bool, error)
 
 	ListFriendLocation(
+		ctx context.Context,
 		userId string,
 	) ([]*location.Location, error)
 }

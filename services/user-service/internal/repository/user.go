@@ -18,21 +18,59 @@ type UserRepository interface {
 		email string,
 	) (string, error)
 
-	GetUserById(userID string) (model.User, error)
-	GetUserByUsername(username string) (model.User, error)
-	GetUser(userID string, otherUserID string) (*pb.GetUserResponse, error)
-	UpdateUser(user *model.User) (string, error)
-	DeleteUserById(userID string) error
+	GetUserById(
+		userID string,
+	) (model.User, error)
 
-	UpdateBusinessAccount(userID string, isBusinessAccount bool) error
-	UpdateAdmin(userID string, isAdmin bool) error
-	UpdateModerator(userID string, isModerator bool) error
-	VerifyUser(userID string) error
-	UnVerifyUser(userID string) error
-	GetUsersIn(userIDs []string) ([]*model.User, error)
-	GetUserItemsIn(userID string, userIDs []string) ([]*user.UserItem, error)
+	GetUserByUsername(
+		username string,
+	) (model.User, error)
 
-	SearchUser(query string) ([]*model.User, error)
+	GetUserWithViewer(
+		viewerID string,
+		otherUserID string,
+	) (*pb.GetUserResponse, error)
+
+	UpdateUser(
+		user *model.User,
+	) (string, error)
+
+	DeleteUserById(
+		userID string,
+	) error
+
+	UpdateBusinessAccount(
+		userID string,
+		isBusinessAccount bool,
+	) error
+
+	UpdateAdmin(
+		userID string,
+		isAdmin bool,
+	) error
+
+	UpdateModerator(
+		userID string,
+		isModerator bool,
+	) error
+
+	VerifyUser(
+		userID string,
+		verified bool,
+	) error
+
+	GetUsersIn(
+		userIDs []string,
+	) ([]*model.User, error)
+
+	GetUserItemsIn(
+		userID string,
+		userIDs []string,
+	) ([]*user.UserItem, error)
+
+	SearchUser(
+		query string,
+	) ([]*model.User, error)
 
 	ListSuggestions(
 		userID string,

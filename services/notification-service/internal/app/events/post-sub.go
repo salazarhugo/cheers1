@@ -50,13 +50,13 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		friends, err := repository.ListFriend(creatorId)
+		friendIDs, err := repo.ListFriendIds(creatorId)
 		if err != nil {
 			log.Error(err)
 			return
 		}
 
-		usersWithTokens, err := repo.GetUsersTokens(friends)
+		usersWithTokens, err := repo.GetUsersTokens(friendIDs)
 		if err != nil {
 			log.Error(err)
 			return

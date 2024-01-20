@@ -1,23 +1,32 @@
 package repository
 
 import (
-	"context"
-	"github.com/go-redis/redis/v9"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/friendship/v1"
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
-	"log"
+	"gorm.io/gorm"
 )
 
 func (r repository) DeleteFriend(userId string, friendId string) error {
-	ctx := context.Background()
-	err := r.redis.Watch(ctx, func(tx *redis.Tx) error {
-		err := tx.SRem(ctx, getKeyFriends(userId), friendId).Err()
-		err = tx.SRem(ctx, getKeyFriends(friendId), userId).Err()
-		return err
-	}, "")
+	db := r.spanner
 
+	err := db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Delete(&Friendship{
+			UserId1: userId,
+			UserId2: friendId,
+		}).Error; err != nil {
+			return err
+		}
+
+		if err := tx.Delete(&Friendship{
+			UserId1: friendId,
+			UserId2: userId,
+		}).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
 	if err != nil {
-		log.Println(err)
 		return err
 	}
 

@@ -1,28 +1,21 @@
 package repository
 
-import (
-	"context"
-)
+func (r repository) CheckFriend(
+	user1 string,
+	user2 string,
+) (bool, error) {
+	db := r.spanner
 
-func (r repository) CheckFriend(user1 string, user2 string) (bool, error) {
-	ctx := context.Background()
-	isUser1FriendWithUser2, err := r.redis.SIsMember(ctx, getKeyFriends(user1), user2).Result()
+	var exists bool
+
+	err := db.
+		Table("friendships").
+		Select("EXISTS (SELECT 1 FROM friendships WHERE user_id1 = ? AND user_id2 = ?)", user1, user2).
+		Scan(&exists).
+		Error
 	if err != nil {
 		return false, err
 	}
 
-	if isUser1FriendWithUser2 == false {
-		return false, nil
-	}
-
-	isUser2FriendWithUser1, err := r.redis.SIsMember(ctx, getKeyFriends(user2), user1).Result()
-	if err != nil {
-		return false, err
-	}
-
-	if isUser2FriendWithUser1 == false {
-		return false, nil
-	}
-
-	return true, err
+	return exists, err
 }

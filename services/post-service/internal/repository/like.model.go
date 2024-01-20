@@ -14,12 +14,15 @@ type Like struct {
 
 // LikeWithUser model
 type LikeWithUser struct {
-	UserID    string `gorm:"primarykey"`
-	PostID    string `gorm:"primarykey"`
-	Username  string
-	Name      string
-	Verified  bool
-	Picture   string
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	UserID             string `gorm:"primarykey"`
+	PostID             string `gorm:"primarykey"`
+	Username           string
+	Name               string
+	Verified           bool
+	Picture            string
+	Friend             bool
+	Requested          bool
+	HasRequestedViewer bool
+	CreatedAt          time.Time
+	UpdatedAt          time.Time
 }

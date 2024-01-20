@@ -1,23 +1,34 @@
 package repository
 
 import (
-	"context"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
-	"github.com/salazarhugo/cheers1/services/friendship-service/internal/service"
-	"log"
+	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/services/friendship-service/internal/model"
 )
 
 func (r repository) ListFriendRequests(
+	page int,
+	pageSize int,
 	userId string,
 ) ([]*user.UserItem, error) {
-	ctx := context.Background()
-	userIds, err := r.redis.SMembers(ctx, getKeyFriendRequests(userId)).Result()
+	db := r.spanner
+
+	limit, offset := utils.GetLimitAndOffsetPagination(page, pageSize)
+
+	users := make([]*model.User, 0)
+
+	err := db.
+		Table("friend_requests").
+		Select("users.*").
+		Joins("JOIN users ON friend_requests.user_id1 = users.id").
+		Where("user_id2 = ?", userId).
+		Limit(limit).
+		Offset(offset).
+		Scan(&users).
+		Error
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
-	users, err := service.GetUsers(userIds)
-
-	return users, nil
+	return model.ToUserItemsPb(users), nil
 }

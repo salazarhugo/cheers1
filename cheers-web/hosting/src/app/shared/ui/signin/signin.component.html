@@ -15,7 +15,8 @@
         <button (click)="onSignIn()" *ngIf="!this.signInLinkSent" color="primary" [disabled]="this.isLoading" mat-flat-button>
             <div  fxLayoutAlign="center center" fxLayoutGap="16px">
                 <mat-spinner *ngIf="isLoading" [diameter]="16" [strokeWidth]="1"></mat-spinner>
-                <span> Sign In </span>
+                <mat-icon>fingerprint</mat-icon>
+                <span> Sign in with passkey</span>
             </div>
         </button>
 

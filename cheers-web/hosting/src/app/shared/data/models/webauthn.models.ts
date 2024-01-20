@@ -1,14 +1,19 @@
 export type AttestationType = 'direct' | 'indirect' | 'none';
 
 export interface BeginLoginResponse {
+    userId: string;
     challenge: string;
     replyingPartyId: string,
-    userId: string;
-    timeout?: number;
-    excludeCredentials?: string[];
-    authenticatorSelection?: AuthenticatorSelection;
-    extensions?: any;
-    status?: string;
+    userVerification: string;
+    allowCredentials: Credential[]
+    timeout: number;
+}
+
+export interface Credential {
+    id: string;
+    publicKey: string;
+    attestationType: string;
+    transport: string[];
 }
 
 export interface FinishLoginRequest {

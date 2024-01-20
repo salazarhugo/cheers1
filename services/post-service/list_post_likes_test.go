@@ -10,7 +10,8 @@ import (
 func TestListPostLikes(t *testing.T) {
 	//Create a mock repository
 	repo := repository.NewPostRepository()
-	postID := "9669eebb-4ac3-4df8-916a-61a1d6a3ce62"
+	viewerID := "Hrpo40ykFThEkIoFHercdmqGO0y2"
+	postID := "7fc3abcb-9dec-4829-b92c-1c9cbfae4332"
 
 	var err error
 
@@ -21,6 +22,7 @@ func TestListPostLikes(t *testing.T) {
 
 	go func() {
 		users, err := repo.ListPostLikes(
+			viewerID,
 			postID,
 			1,
 			10,

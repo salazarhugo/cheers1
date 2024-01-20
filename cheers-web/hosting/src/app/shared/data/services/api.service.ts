@@ -39,8 +39,9 @@ export class ApiService {
     ) {
     }
 
-    beginLogin(username: string): Observable<BeginLoginResponse> {
+    beginLogin(username: string): Observable<BeginLoginResponse | null> {
         return this.http.get<BeginLoginResponse>(`${environment.GATEWAY_URL}/v1/auth/login/begin/${username}`)
+            .pipe(catchError(this.handleError))
     }
 
     finishLogin(request: FinishLoginRequest): Observable<FinishLoginResponse> {

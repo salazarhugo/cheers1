@@ -1,7 +1,6 @@
 package user_service
 
 import (
-	"github.com/google/uuid"
 	"github.com/salazarhugo/cheers1/services/user-service/internal/repository"
 	"testing"
 )
@@ -12,11 +11,11 @@ func TestCreateUser(t *testing.T) {
 
 	userName := "User Service"
 	userID, err := repo.CreateUser(
-		uuid.NewString(),
-		"test",
+		"user3",
+		"test3",
 		userName,
 		"",
-		"user-service@cheers.social",
+		"test2@cheers.social",
 	)
 
 	if err != nil {

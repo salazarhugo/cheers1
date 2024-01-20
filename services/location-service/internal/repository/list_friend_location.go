@@ -9,11 +9,10 @@ import (
 )
 
 func (r repository) ListFriendLocation(
+	ctx context.Context,
 	userId string,
 ) ([]*location.Location, error) {
-	ctx := context.Background()
-
-	friends, err := service.ListFriends(userId)
+	friends, err := service.ListFriends(ctx, userId)
 	if err != nil {
 		return nil, err
 	}

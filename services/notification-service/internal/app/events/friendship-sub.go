@@ -5,6 +5,7 @@ import (
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"github.com/salazarhugo/cheers1/services/notification-service/internal/notifications"
 	"github.com/salazarhugo/cheers1/services/notification-service/internal/repository"
+	"github.com/salazarhugo/cheers1/services/notification-service/internal/service"
 	"log"
 	"net/http"
 )
@@ -24,7 +25,7 @@ func FriendShipSub(w http.ResponseWriter, r *http.Request) {
 	switch event := event.Event.(type) {
 	case *friendship.FriendshipEvent_CreatedFriendRequest:
 		created := event.CreatedFriendRequest
-		user, err := repository.GetUser(created.From)
+		user, err := service.GetUser(created.From)
 		if err != nil {
 			return
 		}
@@ -38,7 +39,7 @@ func FriendShipSub(w http.ResponseWriter, r *http.Request) {
 	case *friendship.FriendshipEvent_DeletedFriendRequest:
 	case *friendship.FriendshipEvent_CreatedFriend:
 		created := event.CreatedFriend
-		user, err := repository.GetUser(created.From)
+		user, err := service.GetUser(created.From)
 		if err != nil {
 			return
 		}

@@ -24,7 +24,7 @@ func ClaimSub(w http.ResponseWriter, r *http.Request) {
 	case *claim.ClaimEvent_Created:
 		claimName := event.Created.Claim
 		if claimName == "verified" {
-			err = repo.VerifyUser(event.Created.UserId)
+			err = repo.VerifyUser(event.Created.UserId, true)
 		}
 		if claimName == "business" {
 			err = repo.UpdateBusinessAccount(event.Created.UserId, true)
@@ -38,7 +38,7 @@ func ClaimSub(w http.ResponseWriter, r *http.Request) {
 	case *claim.ClaimEvent_Deleted:
 		claimName := event.Deleted.Claim
 		if claimName == "verified" {
-			err = repo.UnVerifyUser(event.Deleted.UserId)
+			err = repo.VerifyUser(event.Deleted.UserId, false)
 		}
 		if claimName == "business" {
 			err = repo.UpdateBusinessAccount(event.Deleted.UserId, false)

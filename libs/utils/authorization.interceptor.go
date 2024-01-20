@@ -12,6 +12,7 @@ import (
 )
 
 func CloudRunInterceptor(
+	// The incoming request received from the gateway or another service.
 	ctx context.Context,
 	method string,
 	req interface{},
@@ -22,7 +23,7 @@ func CloudRunInterceptor(
 ) error {
 	// Logic before invoking the invoker
 	start := time.Now()
-	md, ok := metadata.FromOutgoingContext(ctx)
+	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
 		md = metadata.New(map[string]string{})
 	}

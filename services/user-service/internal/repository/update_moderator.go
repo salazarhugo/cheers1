@@ -4,7 +4,7 @@ func (p *userRepository) UpdateModerator(
 	userID string,
 	isModerator bool,
 ) error {
-	_, err := p.GetUser(userID, userID)
+	_, err := p.GetUserWithViewer(userID, userID)
 	if err != nil {
 		return err
 	}

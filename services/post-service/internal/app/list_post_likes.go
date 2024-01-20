@@ -12,7 +12,7 @@ import (
 func (s *Server) ListPostLikes(
 	ctx context.Context, request *pb.ListPostLikesRequest,
 ) (*pb.ListPostLikesResponse, error) {
-	_, err := utils.GetUserId(ctx)
+	viewerID, err := utils.GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "Failed retrieving viewerID")
 	}
@@ -25,6 +25,7 @@ func (s *Server) ListPostLikes(
 	// Run ListPostLikes concurrently
 	go func() {
 		users, err := s.postRepository.ListPostLikes(
+			viewerID,
 			request.GetPostId(),
 			int(request.GetPage()),
 			int(request.GetPageSize()),

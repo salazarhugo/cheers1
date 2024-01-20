@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import { FirebaseError } from '@angular/fire/app/firebase';
 import {firstValueFrom} from "rxjs";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
     selector: 'app-signin',
@@ -27,10 +28,25 @@ export class SigninComponent implements OnInit {
         private authService: AuthService,
         private router: Router,
         private afAuth: AngularFireAuth,
+        private _snackBar: MatSnackBar,
     ) {
     }
 
     ngOnInit(): void {
+        if (window.PublicKeyCredential) {
+            PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable()
+                .then(uvpaEnabled => {
+                    if (uvpaEnabled) {
+                        console.log("uvpa enabled")
+                    } else {
+                        console.log("uvpa not enabled")
+                    }
+                });
+        }
+    }
+
+    openSnackBar(message: string) {
+        this._snackBar.open(message);
     }
 
     async signInWithGoogle() {
@@ -43,8 +59,15 @@ export class SigninComponent implements OnInit {
         this.isLoading = true
         this.errorMessage = ""
         const userForm = this.userForm.value
+        const username = userForm["username"]
 
-        const result = await firstValueFrom(this.authService.loginUser(userForm["username"]))
-        this.isLoading = false
+        this.authService.loginUser(username).subscribe({
+            next: () => {},
+            error: (err) => {
+                this.openSnackBar(err)
+                this.isLoading = false
+            }
+        })
     }
 }
+

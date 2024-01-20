@@ -1,38 +1,31 @@
 package repository
 
 import (
-	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
-	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
+	"github.com/salazarhugo/cheers1/services/user-service/internal/model"
 )
 
 func (p *userRepository) VerifyUser(
 	userID string,
+	verified bool,
 ) error {
-	session := p.driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
-	defer session.Close()
+	db := p.spanner
 
-	cypher, err := utils.GetCypher("internal/queries/VerifyUser.cql")
+	err := db.Model(&model.User{}).Where("id = ?", userID).Update("verified", verified).Error
 	if err != nil {
 		return err
 	}
 
-	params := map[string]interface{}{
-		"userID": userID,
-	}
-
-	_, err = session.Run(*cypher, params)
+	result, err := p.GetUserById(userID)
 	if err != nil {
 		return err
 	}
-
-	result, err := p.GetUser(userID, userID)
 
 	err = pubsub.PublishProtoWithBinaryEncoding("user-topic", &pb.UserEvent{
 		Event: &pb.UserEvent_Update{
 			Update: &pb.UpdateUser{
-				User: result.User,
+				User: result.ToUserPb(),
 			},
 		},
 	})

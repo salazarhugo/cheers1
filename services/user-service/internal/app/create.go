@@ -21,7 +21,7 @@ func (s *Server) CreateUser(
 
 	app := utils.InitializeAppDefault()
 	auth, err := app.Auth(ctx)
-	user, err := auth.GetUserByEmail(ctx, request.Email)
+	user, err := auth.GetUser(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +44,7 @@ func (s *Server) CreateUser(
 		return nil, status.Error(codes.Internal, "failed to create user")
 	}
 
-	response, err := s.userRepository.GetUser(userID, userID)
+	response, err := s.userRepository.GetUserWithViewer(userID, userID)
 	if err != nil {
 		log.Error(err)
 		return nil, status.Error(codes.Internal, "failed to get user")

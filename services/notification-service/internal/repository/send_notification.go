@@ -20,7 +20,7 @@ func (r repository) SendNotification(
 	}
 
 	for userId, tokens := range usersWithToken {
-		response, err := fcmClient.SendMulticast(ctx, &messaging.MulticastMessage{
+		response, err := fcmClient.SendEachForMulticast(ctx, &messaging.MulticastMessage{
 			Data:   data,
 			Tokens: tokens,
 		})
