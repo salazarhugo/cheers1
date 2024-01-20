@@ -7,7 +7,7 @@ require (
 	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240104182336-2c6bae7d39eb
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240104182336-2c6bae7d39eb
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240120193009-9cdbbf27b127
 	github.com/sirupsen/logrus v1.9.0
 	google.golang.org/grpc v1.59.0
 )
@@ -34,7 +34,6 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
-	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/pprof v0.0.0-20221103000818-d260c55eee4c // indirect
 	github.com/google/s2a-go v0.1.7 // indirect
 	github.com/google/uuid v1.3.1 // indirect
