@@ -12,7 +12,7 @@ import (
 )
 
 func CloudRunInterceptor(
-// The incoming request received from the gateway or another service.
+	// The incoming request received from the gateway or another service.
 	ctx context.Context,
 	method string,
 	req interface{},
@@ -23,9 +23,12 @@ func CloudRunInterceptor(
 ) error {
 	// Logic before invoking the invoker
 	start := time.Now()
-	md, ok := metadata.FromIncomingContext(ctx)
-	if !ok {
-		md = metadata.New(map[string]string{})
+	md := metadata.New(map[string]string{})
+
+	mdIncoming, ok := metadata.FromIncomingContext(ctx)
+	if ok {
+		log.Println(mdIncoming)
+		md.Set("x-apigateway-api-userinfo", mdIncoming["x-apigateway-api-userinfo"]...)
 	}
 
 	audience, err := getAudience(cc.Target())
@@ -39,12 +42,8 @@ func CloudRunInterceptor(
 	}
 
 	log.Println(audience, accessToken)
-
-	// Create a new metadata object that includes the existing metadata
-	md = metadata.Join(md, metadata.Pairs(
-		"Authorization", fmt.Sprintf("Bearer %s", accessToken),
-		"X-Serverless-Authorization", fmt.Sprintf("Bearer %s", accessToken),
-	))
+	md.Set("Authorization", fmt.Sprintf("Bearer %s", accessToken))
+	md.Set("X-Serverless-Authorization", fmt.Sprintf("Bearer %s", accessToken))
 
 	ctx = metadata.NewOutgoingContext(ctx, md)
 
