@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from "@angular/router";
 import {UserService} from '../../shared/data/services/user.service';
 import {first} from "rxjs/operators";
-import {User} from "../../shared/data/models/user.model";
+import {UserModel} from "../../shared/data/models/user.model";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {ApiService} from "../../shared/data/services/api.service";
 import {EMPTY, firstValueFrom, throwError} from "rxjs";
@@ -20,7 +20,7 @@ export class UserResolver  {
   ) {
   }
 
-  resolve(route: ActivatedRouteSnapshot): Promise<User | null> {
+  resolve(route: ActivatedRouteSnapshot): Promise<UserModel | null> {
     return new Promise(async (resolve, reject) => {
 
         const authUser = await firstValueFrom(this.afAuth.authState)

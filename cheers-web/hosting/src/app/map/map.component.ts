@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import {PostService} from "../posts/data/post.service";
-import {Post} from "../shared/data/models/post.model";
 import {PostResponse} from "../../gen/ts/cheers/post/v1/post_service";
 
 @Component({

@@ -20,7 +20,7 @@ import {PaymentsModule} from "./payments/payments.module";
 import {StoriesModule} from "./stories/stories.module";
 import {CoreModule} from "./core/core.module";
 import {PartyShellModule} from "./parties/features/party-shell/party-shell.module";
-import {MAT_LEGACY_SNACK_BAR_DEFAULT_OPTIONS as MAT_SNACK_BAR_DEFAULT_OPTIONS} from "@angular/material/legacy-snack-bar";
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from "@angular/material/snack-bar";
 import {ManagePartyModule} from "./manage-parties/feature/manage-party/manage-party.module";
 import { RefundPaymentDialogComponent } from './business/ui/refund-payment-dialog/refund-payment-dialog.component';
 import {MapModule} from "./map/map.module";

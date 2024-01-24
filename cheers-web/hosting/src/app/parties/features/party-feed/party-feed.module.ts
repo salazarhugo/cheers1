@@ -4,7 +4,7 @@ import {CommonModule} from '@angular/common';
 import {PartyFeedRoutingModule} from './party-feed-routing.module';
 import {PartiesComponent} from "./parties.component";
 import {PartyItemModule} from "../../ui/party-item/party-item.module";
-import {MatLegacyChipsModule as MatChipsModule} from "@angular/material/legacy-chips";
+import {MatChipsModule} from "@angular/material/chips";
 import {MaterialModule} from "../../../material/material.module";
 
 

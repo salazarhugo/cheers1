@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 
 import {ManagePartyDashboardRoutingModule} from './manage-party-dashboard-routing.module';
 import {ManagePartyDashboardComponent} from './manage-party-dashboard.component';
-import {MatLegacyCardModule as MatCardModule} from "@angular/material/legacy-card";
+import {MatCardModule} from "@angular/material/card";
 import {FlexModule} from "@angular/flex-layout";
 import {RelativeTimeModule} from "../../../shared/data/pipes/relative-time/relative-time.module";
 import {OrderItemModule} from "../../ui/order-item/order-item.module";

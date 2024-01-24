@@ -4,16 +4,17 @@ import {PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
 import {PostDeleteDialogComponent} from "../post-delete-dialog/post-delete-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {PostModel} from "../../../shared/data/models/post.model";
 
 @Component({
-    selector: 'app-post-item[postResponse]',
+    selector: 'app-post-item[post]',
     templateUrl: './post-item.component.html',
     styleUrls: ['./post-item.component.sass']
 })
 export class PostItemComponent implements OnInit {
 
-    @Input() postResponse: PostResponse
-    @Output() onDelete = new EventEmitter<PostResponse>()
+    @Input() post: PostModel
+    @Output() onDelete = new EventEmitter<PostModel>()
 
     comment: string = ""
 
@@ -28,14 +29,14 @@ export class PostItemComponent implements OnInit {
     }
 
     onToggleLike() {
-        if (this.postResponse.hasLiked) {
-            this.postService.unlikePost(this.postResponse.post?.id!)
-            this.postResponse.hasLiked = false
-            this.postResponse.likeCount--
+        if (this.post.hasLiked) {
+            this.postService.unlikePost(this.post.id!)
+            this.post.hasLiked = false
+            this.post.likeCount--
         } else {
-            this.postService.likePost(this.postResponse.post?.id!)
-            this.postResponse.hasLiked = true
-            this.postResponse.likeCount++
+            this.postService.likePost(this.post.id!)
+            this.post.hasLiked = true
+            this.post.likeCount++
         }
     }
 
@@ -53,11 +54,11 @@ export class PostItemComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe(result => {
-            if (this.postResponse.post == undefined) return
+            if (this.post == undefined) return
 
             if (result == true)
-                this.postService.deletePost(this.postResponse.post.id).subscribe(res => {
-                    this.onDelete.emit(this.postResponse)
+                this.postService.deletePost(this.post.id).subscribe(res => {
+                    this.onDelete.emit(this.post)
                     this.openSnackBar("Your post was deleted", "Hide")
                 })
         });

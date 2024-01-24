@@ -6,7 +6,7 @@
         <h2>Your Tickets</h2>
     </section>
     <div *ngIf="tickets" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="16px">
-        <mat-card *ngFor="let ticket of tickets" class="ticket" fxLayoutAlign="space-between center">
+        <mat-card appearance="outlined" *ngFor="let ticket of tickets" class="ticket" fxLayoutAlign="space-between center">
             <div>
                 <h1>{{ticket.partyName}}</h1>
                 <h4>{{ticket.name}}</h4>

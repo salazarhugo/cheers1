@@ -3,13 +3,13 @@ import {CommonModule} from '@angular/common';
 
 import {PartyInviteRoutingModule} from './party-invite-routing.module';
 import {PartyInviteComponent} from './party-invite.component';
-import {MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule as MatDialogModule, MatLegacyDialogRef as MatDialogRef} from "@angular/material/legacy-dialog";
-import {MatLegacyButtonModule as MatButtonModule} from "@angular/material/legacy-button";
-import {MatLegacyChipsModule as MatChipsModule} from '@angular/material/legacy-chips';
+import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
+import {MatButtonModule} from "@angular/material/button";
+import {MatChipsModule} from '@angular/material/chips';
 import {UserItemModule} from "../../../users/ui/user-item/user-item.module";
-import {MatLegacyRadioModule as MatRadioModule} from "@angular/material/legacy-radio";
-import {MatLegacyCheckboxModule as MatCheckboxModule} from "@angular/material/legacy-checkbox";
-import {MatLegacyProgressSpinnerModule as MatProgressSpinnerModule} from "@angular/material/legacy-progress-spinner";
+import {MatRadioModule} from "@angular/material/radio";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {FlexModule} from "@angular/flex-layout";
 
 @NgModule({

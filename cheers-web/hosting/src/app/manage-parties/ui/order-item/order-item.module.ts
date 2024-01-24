@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { OrderItemRoutingModule } from './order-item-routing.module';
 import { OrderItemComponent } from './order-item.component';
 import {RelativeTimeModule} from "../../../shared/data/pipes/relative-time/relative-time.module";
-import {MatLegacyCardModule as MatCardModule} from "@angular/material/legacy-card";
+import {MatCardModule} from "@angular/material/card";
 import {FlexModule} from "@angular/flex-layout";
 
 

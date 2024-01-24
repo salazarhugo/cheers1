@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {User} from "../../../shared/data/models/user.model";
+import {UserModel} from "../../../shared/data/models/user.model";
 
 @Component({
     selector: 'app-user-item',
@@ -8,9 +8,9 @@ import {User} from "../../../shared/data/models/user.model";
 })
 export class UserItemComponent implements OnInit {
 
-    @Input() user: User
+    @Input() user: UserModel
     @Input() isSelected: boolean = false;
-    @Output() onClick = new EventEmitter<User>()
+    @Output() onClick = new EventEmitter<UserModel>()
 
     constructor() {
     }

@@ -1,9 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {User} from "../../../shared/data/models/user.model";
+import {UserModel} from "../../../shared/data/models/user.model";
 import {UserItem} from "../../../../gen/ts/cheers/type/user/user";
 import {UserService} from "../../../shared/data/services/user.service";
 import {firstValueFrom} from "rxjs";
-import {MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef} from "@angular/material/legacy-dialog";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
     selector: 'app-party-invite',
@@ -13,8 +13,8 @@ import {MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDial
 export class PartyInviteComponent implements OnInit {
 
     isLoading = false
-    selectedUsers: Set<User> = new Set()
-    users: User[]
+    selectedUsers: Set<UserModel> = new Set()
+    users: UserModel[]
 
     constructor(
         public dialogRef: MatDialogRef<PartyInviteComponent>,
@@ -29,7 +29,7 @@ export class PartyInviteComponent implements OnInit {
         this.users = users
     }
 
-    onSelectUser($event: User) {
+    onSelectUser($event: UserModel) {
         if (this.selectedUsers.has($event))
             this.selectedUsers.delete($event)
         else

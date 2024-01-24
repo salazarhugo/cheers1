@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {finalize, firstValueFrom, Observable, of} from "rxjs";
-import {User} from "../../../shared/data/models/user.model";
+import {UserModel} from "../../../shared/data/models/user.model";
 import {UserService} from "../../../shared/data/services/user.service";
 import {UntypedFormControl, UntypedFormGroup} from "@angular/forms";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
@@ -15,7 +15,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class EditComponent implements OnInit {
 
-    $user: Observable<User | null> = of(null)
+    $user: Observable<UserModel | null> = of(null)
     isLoading = false
     profileForm = new UntypedFormGroup({
         picture: new UntypedFormControl(''),

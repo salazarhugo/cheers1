@@ -4,16 +4,16 @@ import { CommonModule } from '@angular/common';
 import { BusinessOrdersRoutingModule } from './business-orders-routing.module';
 import { BusinessOrdersComponent } from './business-orders.component';
 import {OrderItemModule} from "../../../manage-parties/ui/order-item/order-item.module";
-import {MatLegacyTableModule as MatTableModule} from "@angular/material/legacy-table";
+import {MatTableModule} from "@angular/material/table";
 import {MatSortModule} from "@angular/material/sort";
-import {MatLegacyChipsModule as MatChipsModule} from "@angular/material/legacy-chips";
-import {MatLegacyButtonModule as MatButtonModule} from "@angular/material/legacy-button";
+import {MatChipsModule} from "@angular/material/chips";
+import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
-import {MatLegacyMenuModule as MatMenuModule} from "@angular/material/legacy-menu";
+import {MatMenuModule} from "@angular/material/menu";
 import {RelativeTimeModule} from "../../../shared/data/pipes/relative-time/relative-time.module";
-import {MatLegacyFormFieldModule as MatFormFieldModule} from "@angular/material/legacy-form-field";
+import {MatFormFieldModule} from "@angular/material/form-field";
 import {FormsModule} from "@angular/forms";
-import {MatLegacyInputModule as MatInputModule} from "@angular/material/legacy-input";
+import {MatInputModule} from "@angular/material/input";
 import {SearchbarModule} from "../../../shared/ui/searchbar/searchbar.module";
 
 

@@ -9,7 +9,7 @@ import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {PartyInviteComponent} from "../../ui/party-invite/party-invite.component";
 import {PartyTransferComponent} from "../party-transfer/party-transfer.component";
 import {PartyDuplicateComponent} from "../party-duplicate/party-duplicate.component";
-import {User} from "../../../shared/data/models/user.model";
+import {UserModel} from "../../../shared/data/models/user.model";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatDialog} from "@angular/material/dialog";
 
@@ -22,7 +22,7 @@ import {MatDialog} from "@angular/material/dialog";
 export class PartyComponent implements OnInit {
 
     party: Party | undefined
-    viewer: User | null
+    viewer: UserModel | null
     watchStatusNames: WatchStatus[] =
         Object.keys(WatchStatus)
             .filter((v) => isNaN(Number(v)))

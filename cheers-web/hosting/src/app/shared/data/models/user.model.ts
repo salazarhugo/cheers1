@@ -1,9 +1,7 @@
-import {PartyItem, WatchStatus} from "../../../../gen/ts/cheers/party/v1/party_service";
-import {Party} from "./party.model";
 import {UserItem} from "../../../../gen/ts/cheers/type/user/user";
 
 
-export class User {
+export class UserModel {
     id: string = ""
     name: string = "Demo";
     email: string = "";
@@ -33,7 +31,7 @@ export enum StoryState {
 }
 
 export class UserResponse {
-    user: User
+    user: UserModel
     postCount: number
     followersCount: number
     followingCount: number
@@ -41,7 +39,7 @@ export class UserResponse {
     storyState: string
 }
 
-export function toUser(res: UserResponse): User | null {
+export function toUser(res: UserResponse): UserModel | null {
     const user = res.user
     if (user == null)
         return null
@@ -54,8 +52,8 @@ export function toUser(res: UserResponse): User | null {
     return user
 }
 
-export function toUserFromUserItem(value: UserItem): User {
-    const user = new User()
+export function toUserFromUserItem(value: UserItem): UserModel {
+    const user = new UserModel()
     Object.assign(user, value)
     return user
 }

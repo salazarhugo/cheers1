@@ -1,8 +1,8 @@
 <h1 mat-dialog-title>Invite</h1>
 <div mat-dialog-content>
-    <mat-chip *ngFor="let user of selectedUsers">
+    <mat-chip-option *ngFor="let user of selectedUsers">
         {{user.username}}
-    </mat-chip>
+    </mat-chip-option>
 
     <ng-container *ngFor="let user of users">
         <app-user-item [user]="user" (onClick)="onSelectUser($event)">

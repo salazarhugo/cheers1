@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { BusinessPayoutsRoutingModule } from './business-payouts-routing.module';
 import { BusinessPayoutsComponent } from './business-payouts.component';
-import {MatLegacyCardModule as MatCardModule} from "@angular/material/legacy-card";
+import {MatCardModule} from "@angular/material/card";
 import {FlexModule} from "@angular/flex-layout";
 
 

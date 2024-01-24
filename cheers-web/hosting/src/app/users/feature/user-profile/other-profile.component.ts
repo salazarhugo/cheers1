@@ -1,17 +1,16 @@
 import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../../shared/data/services/user.service";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
-import {firstValueFrom, map, Observable, of} from "rxjs";
-import {User} from "../../../shared/data/models/user.model";
+import {firstValueFrom, Observable, of} from "rxjs";
+import {UserModel} from "../../../shared/data/models/user.model";
 import {PostService} from "../../../posts/data/post.service";
-import {Post} from "../../../shared/data/models/post.model";
-import {PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {AuthService} from "../../../shared/data/services/auth.service";
 import {ChatService} from "../../../chats/data/chat.service";
 import {Party} from "../../../shared/data/models/party.model";
 import {PartyService} from "../../../parties/data/party.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {PostModel} from "../../../shared/data/models/post.model";
 
 @Component({
     selector: 'app-user-profile',
@@ -20,8 +19,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class OtherProfileComponent implements OnInit {
 
-    $user: Observable<User | null> = of(null)
-    $posts: Observable<PostResponse[] | null> = of(null)
+    $user: Observable<UserModel | null> = of(null)
+    $posts: Observable<PostModel[] | null> = of(null)
     $parties: Observable<Party[] | null> = of(null)
     username: string | null = null
     isAdmin: boolean = false

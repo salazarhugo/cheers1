@@ -1,5 +1,5 @@
 import {PartyItem, WatchStatus as WatchStatusPb} from "../../../../gen/ts/cheers/party/v1/party_service";
-import {User} from "./user.model";
+import {UserModel} from "./user.model";
 
 export enum WatchStatus {
     GOING = "Going",
@@ -20,7 +20,7 @@ export class Party {
     privacy: string = ""
     type: string = ""
     mutualCount: number = 0
-    mutualGoing: User[]
+    mutualGoing: UserModel[]
     price: number = 0
     bannerUrl: string = ""
     id: string = ""

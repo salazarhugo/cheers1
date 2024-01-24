@@ -14,7 +14,7 @@
         <mat-tab label="Posts">
             <div *ngIf="$posts | async as posts">
                 <ng-container *ngFor="let post of posts">
-                    <app-post-item [postResponse]="post"></app-post-item>
+                    <app-post-item [post]="post"></app-post-item>
                 </ng-container>
             </div>
         </mat-tab>

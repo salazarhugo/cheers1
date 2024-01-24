@@ -48,7 +48,7 @@
                 <h3> Follow people to start seeing the photos and videos they share</h3>
             </div>
             <ng-container *ngFor="let post of posts">
-                <app-post-item [postResponse]="post" (onDelete)="onDelete($event)"></app-post-item>
+                <app-post-item [post]="post" (onDelete)="onDelete($event)"></app-post-item>
             </ng-container>
         </div>
     </div>

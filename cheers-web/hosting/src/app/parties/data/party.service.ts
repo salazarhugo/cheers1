@@ -15,7 +15,7 @@ import {environment} from "../../../environments/environment";
 import {Party, toParty, toWatchStatusPb, WatchStatus} from "../../shared/data/models/party.model";
 import {ListPartyOrdersResponse, Order as OrderGen} from "../../../gen/ts/cheers/order/v1/order_service";
 import {UserItem} from "../../../gen/ts/cheers/type/user/user";
-import {toUser, toUserFromUserItem, User} from "../../shared/data/models/user.model";
+import {toUser, toUserFromUserItem, UserModel} from "../../shared/data/models/user.model";
 
 @Injectable({
     providedIn: 'root'
@@ -50,7 +50,7 @@ export class PartyService {
         }))
     }
 
-    listGoing(partyId: string): Promise<User[]> {
+    listGoing(partyId: string): Promise<UserModel[]> {
         return firstValueFrom(this.http.get<ListGoingResponse>(`${environment.GATEWAY_URL}/v1/parties/${partyId}/going`)
             .pipe(map(r => r.users.map(userItem => toUserFromUserItem(userItem)))))
     }

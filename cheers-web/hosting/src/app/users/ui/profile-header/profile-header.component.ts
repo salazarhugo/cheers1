@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {User} from "../../../shared/data/models/user.model";
+import {UserModel} from "../../../shared/data/models/user.model";
 
 @Component({
   selector: 'app-profile-header',
@@ -8,7 +8,7 @@ import {User} from "../../../shared/data/models/user.model";
 })
 export class ProfileHeaderComponent implements OnInit {
 
-  @Input() user: User
+  @Input() user: UserModel
 
   constructor() {
   }

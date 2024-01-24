@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {map, Observable, ReplaySubject} from "rxjs";
 import {ApiService} from "./api.service";
-import {toUser, toUserFromUserItem, User} from "../models/user.model";
+import {toUser, toUserFromUserItem, UserModel} from "../models/user.model";
 import {PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
 import {HttpClient} from "@angular/common/http";
 import {Chat, toChat} from "../models/chat.model";
@@ -19,8 +19,8 @@ import {UserItem} from "../../../../gen/ts/cheers/type/user/user";
 })
 export class UserService {
 
-    private userSubject = new ReplaySubject<User>(1);
-    user$: Observable<User> = this.userSubject.asObservable();
+    private userSubject = new ReplaySubject<UserModel>(1);
+    user$: Observable<UserModel> = this.userSubject.asObservable();
 
     constructor(
         private http: HttpClient,
@@ -28,12 +28,12 @@ export class UserService {
     ) {
     }
 
-    listFollowers(userId: string): Observable<User[]> {
+    listFollowers(userId: string): Observable<UserModel[]> {
         return this.http.get<ListFollowersResponse>(`${environment.GATEWAY_URL}/v1/users/${userId}/followers`)
             .pipe(map(res => res.users.map(user => toUserFromUserItem(user))))
     }
 
-    listFollowing(userId: string): Observable<User[]> {
+    listFollowing(userId: string): Observable<UserModel[]> {
         return this.http.get<ListFollowingResponse>(`${environment.GATEWAY_URL}/v1/users/${userId}/following`)
             .pipe(map(res => res.users.map(user => toUserFromUserItem(user))))
     }
@@ -42,7 +42,7 @@ export class UserService {
         return this.api.getUserTickets()
     }
 
-    updateUser(user: User) {
+    updateUser(user: UserModel) {
         return this.api.updateUser(user)
     }
 
@@ -63,7 +63,7 @@ export class UserService {
         // this.getUser(userId).subscribe(user => this.userSubject.next(user))
     }
 
-    setUser(user: User) {
+    setUser(user: UserModel) {
         this.userSubject.next(user)
     }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Observable, of} from "rxjs";
 import {Party} from "../../../shared/data/models/party.model";
-import {User} from "../../../shared/data/models/user.model";
+import {UserModel} from "../../../shared/data/models/user.model";
 import {UserService} from "../../../shared/data/services/user.service";
 import {PartyService} from "../../../parties/data/party.service";
 import {KeyValue} from "@angular/common";
@@ -13,7 +13,7 @@ import {KeyValue} from "@angular/common";
 })
 export class BusinessPartiesComponent implements OnInit {
 
-  $user: Observable<User | null> = of(null)
+  $user: Observable<UserModel | null> = of(null)
   $myParties: Observable<Party[] | null> = of(null)
 
   constructor(

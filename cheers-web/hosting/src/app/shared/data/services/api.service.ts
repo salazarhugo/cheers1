@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {catchError, map, Observable, of, throwError} from "rxjs";
-import {StoryState, toUser, User, UserResponse} from "../models/user.model";
-import {Post} from "../models/post.model";
+import {StoryState, toUser, UserModel, UserResponse} from "../models/user.model";
+import {PostModel} from "../models/post.model";
 import {Story, toStory} from "../models/story.model";
 import {Ticket, toTicket} from "../models/ticket.model";
 import {
@@ -62,8 +62,8 @@ export class ApiService {
         return this.http.get<boolean>(`${this.BASE_URL}/users/available/${username}`)
     }
 
-    register(userReq: any): Observable<User> {
-        return this.http.post<User>(`${environment.GATEWAY_URL}/users/create`, userReq)
+    register(userReq: any): Observable<UserModel> {
+        return this.http.post<UserModel>(`${environment.GATEWAY_URL}/users/create`, userReq)
     }
 
     likePost(postId: string) {
@@ -74,7 +74,7 @@ export class ApiService {
         return this.http.post(`${environment.GATEWAY_URL}/v1/posts/${postId}/unlike`, {})
     }
 
-    updateUser(user: User) {
+    updateUser(user: UserModel) {
         return this.http.patch(`${environment.GATEWAY_URL}/v1/users`, user)
     }
 
@@ -86,7 +86,7 @@ export class ApiService {
         return this.http.delete(`${environment.GATEWAY_URL}/v1/users/${username}/unfollow`)
     }
 
-    searchUser(query: string): Observable<User[]> {
+    searchUser(query: string): Observable<UserModel[]> {
         return this.http.get<SearchUserResponse>(`${environment.GATEWAY_URL}/v1/users/search/${query}`)
             .pipe(map(response => response.users))
     }
@@ -96,7 +96,7 @@ export class ApiService {
             .pipe(map(res => res.account))
 }
 
-    getUser(userIdOrUsername: string): Observable<User | null> {
+    getUser(userIdOrUsername: string): Observable<UserModel | null> {
         return this.http.get<UserResponse>(`${environment.GATEWAY_URL}/v1/users/${userIdOrUsername}`)
             .pipe(
                 map(res => toUser(res)),
@@ -132,7 +132,7 @@ export class ApiService {
         return this.http.delete(`${this.BASE_URL}/party/${id}`)
     }
 
-    createPost(post: Post): Observable<PostResponse> {
+    createPost(post: PostModel): Observable<PostResponse> {
         return this.http.post<PostResponse>(`${environment.GATEWAY_URL}/v1/posts`, {
             post: {
                 caption: post.caption
@@ -157,7 +157,7 @@ export class ApiService {
     }
 
     getPostFeed(): Observable<PostResponse[]> {
-        return this.http.get<FeedPostResponse>(`${environment.GATEWAY_URL}/v1/posts/feed?pageSize=10&page=0`)
+        return this.http.get<FeedPostResponse>(`${environment.GATEWAY_URL}/v1/posts/feed?pageSize=10&page=1`)
             .pipe(
                 map(r => r.posts.sort((a, b) => b.post?.createTime! - a.post?.createTime!)),
             )

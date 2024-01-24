@@ -1,13 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UserService} from "../../../shared/data/services/user.service";
 import {Observable, of, Subscription} from "rxjs";
-import {Post} from "../../../shared/data/models/post.model";
+import {PostModel} from "../../../shared/data/models/post.model";
 import {Story} from "../../../shared/data/models/story.model";
 import {StoryService} from "../../../stories/data/story.service";
-import {User} from "../../../shared/data/models/user.model";
+import {UserModel} from "../../../shared/data/models/user.model";
 import {UntypedFormControl, Validators} from "@angular/forms";
 import {PostService} from "../../../posts/data/post.service";
-import {PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
 import {PostCreateDialogComponent} from "../../../posts/ui/post-create-dialog/post-create-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 
@@ -21,8 +20,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     isPosting = false
     private subs: Subscription[] = [];
 
-    user: User | null = null
-    posts: PostResponse[] | null = null
+    user: UserModel | null = null
+    posts: PostModel[] | null = null
     story$: Observable<Story[] | null> = of(null)
 
     tweet = new UntypedFormControl('', Validators.compose([
@@ -59,7 +58,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     createPost() {
         this.isPosting = true
-        const post = new Post()
+        const post = new PostModel()
         post.caption = this.tweet.value
         this.postService.createPost(post).subscribe(post => {
             this.posts?.unshift(post)
@@ -68,7 +67,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         })
     }
 
-    onDelete(postResponse: PostResponse) {
+    onDelete(postResponse: PostModel) {
         if (this.posts == undefined) return
 
         const index = this.posts.indexOf(postResponse, 0)

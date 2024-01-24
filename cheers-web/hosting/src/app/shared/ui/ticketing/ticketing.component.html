@@ -6,7 +6,7 @@
 
         <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between" class="ticketing-body-container" fxLayoutGap="1.5rem">
             <div fxFlex="75">
-                <mat-card class="ticketing-header" fxLayoutAlign="center center" fxLayout="column">
+                <mat-card appearance="outlined" class="ticketing-header" fxLayoutAlign="center center" fxLayout="column">
                     <h1> {{party.name}} </h1>
 <!--                    <div fxLayout="row">-->
 <!--                        <mat-icon>event</mat-icon>-->
@@ -14,7 +14,7 @@
 <!--                    </div>-->
                 </mat-card>
 
-                <mat-card class="ticketing-body" fxLayout="column" fxLayoutGap="16px">
+                <mat-card appearance="outlined" class="ticketing-body" fxLayout="column" fxLayoutGap="16px">
 
                     <mat-stepper #stepper linear style="background: transparent">
                         <mat-step [editable]="true">
@@ -126,15 +126,15 @@
             </div>
 
             <div class="ticketing-body--right" fxFlex="25">
-                <mat-card>
+                <mat-card appearance="outlined">
                     <h2>Share Event</h2>
                 </mat-card>
 
-                <mat-card class="margin-top">
+                <mat-card appearance="outlined" class="margin-top">
                     <h2>{{party.locationName}}</h2>
                 </mat-card>
 
-                <mat-card class="margin-top">
+                <mat-card appearance="outlined" class="margin-top">
                     <h2>Plateforme de paiement 100% sécurisée</h2>
                     <p>
                         Toutes les informations bancaires pour traiter ce paiement sont totalement sécurisées. Grâce au

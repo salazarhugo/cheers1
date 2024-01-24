@@ -2,15 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../../../shared/data/services/auth.service";
 import {UserService} from "../../../shared/data/services/user.service";
 import {Observable, of} from "rxjs";
-import {User} from "../../../shared/data/models/user.model";
+import {UserModel} from "../../../shared/data/models/user.model";
 import {Party} from "../../../shared/data/models/party.model";
 import {PartyService} from "../../../parties/data/party.service";
-import {Post} from "../../../shared/data/models/post.model";
 import {Router} from "@angular/router";
 import {ActivityService} from "../../../activities/data/activity.service";
-import {PostResponse} from "../../../../gen/ts/cheers/post/v1/post_service";
 import {PostService} from "../../../posts/data/post.service";
-import {PartyItem} from "../../../../gen/ts/cheers/party/v1/party_service";
+import {PostModel} from "../../../shared/data/models/post.model";
 
 @Component({
     selector: 'app-profile',
@@ -19,9 +17,9 @@ import {PartyItem} from "../../../../gen/ts/cheers/party/v1/party_service";
 })
 export class ProfileComponent implements OnInit {
 
-    $user: Observable<User | null> = of(null)
+    $user: Observable<UserModel | null> = of(null)
     $parties: Observable<Party[] | null> = of(null)
-    $posts: Observable<PostResponse[] | null> = of(null)
+    $posts: Observable<PostModel[] | null> = of(null)
 
     constructor(
         private authService: AuthService,

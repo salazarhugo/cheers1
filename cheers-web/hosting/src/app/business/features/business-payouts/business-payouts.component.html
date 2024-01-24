@@ -1,15 +1,15 @@
 <main *ngIf="$account | async as account">
     <h2 style="padding-bottom: 16px">Payouts</h2>
     <section class="dashboard-cards" fxLayout="row" fxLayoutAlign="none center" fxLayoutGap="16px" fxFlexFill style="width: 100%">
-        <mat-card>
+        <mat-card appearance="outlined">
             <span class="mat-hint">Net Sales</span>
             <h2>{{account.balance / 100 | currency : 'EUR' }}</h2>
         </mat-card>
-        <mat-card>
+        <mat-card appearance="outlined">
             <span class="mat-hint">Ticket Sold</span>
             <h2>{{account.ticketSold}}</h2>
         </mat-card>
-        <mat-card>
+        <mat-card appearance="outlined">
             <span class="mat-hint">Page Views</span>
             <h2></h2>
         </mat-card>

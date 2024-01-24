@@ -8,7 +8,7 @@ import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {MapboxGeocodingService} from "../../../shared/data/services/mapbox-geocoding.service";
 import {Party} from "../../../shared/data/models/party.model";
 import {Observable, of} from "rxjs";
-import {User} from "../../../shared/data/models/user.model";
+import {UserModel} from "../../../shared/data/models/user.model";
 import {Privacy} from "../../../shared/data/enum/privacy.enum";
 import {MatSnackBar} from "@angular/material/snack-bar";
 
@@ -34,7 +34,7 @@ export class EditPartyComponent implements OnInit {
         locationName: new FormControl(''),
     });
     hasEndDate = false
-    $user: Observable<User | null> = of(null)
+    $user: Observable<UserModel | null> = of(null)
     isLoading: boolean = false
 
     constructor(

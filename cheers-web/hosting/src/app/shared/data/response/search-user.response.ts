@@ -1,6 +1,6 @@
-import {User} from "../models/user.model";
+import {UserModel} from "../models/user.model";
 
 
 export class SearchUserResponse {
-    users: User[]
+    users: UserModel[]
 }

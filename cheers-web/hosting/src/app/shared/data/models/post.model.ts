@@ -1,17 +1,20 @@
-export class Post {
+import {UserModel} from "./user.model";
+import {DrinkModel} from "./drink.model";
+
+
+export class PostModel {
+      user: UserModel;
+      likeCount: number;
+      commentCount: number;
+      hasLiked: boolean;
+      isCreator: boolean;
+
       id: string = ""
-      authorId: string = ""
       caption: string = ""
       username: string = ""
-      verified: boolean = false
-      profilePictureUrl: string = ""
-      created: number = 0
+      createTime: number = 0
       relativeTime: string = ""
-      likes: number = 0
-      liked: boolean = false
-      drink: string = ""
-      comments: number = 0
-      shares: number = 0
+      drink: DrinkModel;
       privacy: string = "FRIENDS"
       photos: string[] = []
       videoUrl: string = ""

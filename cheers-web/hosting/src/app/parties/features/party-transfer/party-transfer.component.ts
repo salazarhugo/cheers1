@@ -1,6 +1,6 @@
 import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {debounceTime, distinctUntilChanged, fromEvent, map, Observable, of} from "rxjs";
-import {User} from "../../../shared/data/models/user.model";
+import {UserModel} from "../../../shared/data/models/user.model";
 import {UserService} from "../../../shared/data/services/user.service";
 import {PartyService} from "../../data/party.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
@@ -13,8 +13,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 })
 export class PartyTransferComponent implements OnInit {
     isLoading: boolean = false
-    selectedUser: User | null;
-    $searchResults: Observable<User[] | null> = of(null)
+    selectedUser: UserModel | null;
+    $searchResults: Observable<UserModel[] | null> = of(null)
     @ViewChild('searchInput', {static: true}) searchInput!: ElementRef;
 
     constructor(
@@ -43,7 +43,7 @@ export class PartyTransferComponent implements OnInit {
         this.dialogRef.close();
     }
 
-    onUserClick(user: User) {
+    onUserClick(user: UserModel) {
         this.selectedUser = user;
     }
 

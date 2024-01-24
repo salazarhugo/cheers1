@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 
 import {PostCreateDialogRoutingModule} from './post-create-dialog-routing.module';
 import {PostCreateDialogComponent} from './post-create-dialog.component';
-import {MatLegacyButtonModule as MatButtonModule} from "@angular/material/legacy-button";
+import {MatButtonModule} from "@angular/material/button";
 import {NgxDropzoneModule} from "ngx-dropzone";
 
 

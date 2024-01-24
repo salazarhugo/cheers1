@@ -8,7 +8,7 @@ import {PartyService} from "../../data/party.service";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
 import {Router} from "@angular/router";
-import {User} from "../../../shared/data/models/user.model";
+import {UserModel} from "../../../shared/data/models/user.model";
 import {Privacy} from "../../../shared/data/enum/privacy.enum";
 import {Party} from "../../../shared/data/models/party.model";
 import {MatSnackBar} from "@angular/material/snack-bar";
@@ -31,7 +31,7 @@ export class PartyFormComponent implements OnInit {
     selectedLocation: Feature | undefined
     locationResults: Observable<Feature[]>;
     @ViewChild('searchInput', {static: true}) searchInput!: ElementRef;
-    $user: Observable<User | null> = of(null)
+    $user: Observable<UserModel | null> = of(null)
 
 
     constructor(

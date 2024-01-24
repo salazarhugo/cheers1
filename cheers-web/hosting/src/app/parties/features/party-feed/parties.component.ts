@@ -3,7 +3,7 @@ import {concat, firstValueFrom, map, merge, Observable, of, Subject} from "rxjs"
 import {UserService} from "../../../shared/data/services/user.service";
 import {PartyService} from "../../data/party.service";
 import {Party} from "../../../shared/data/models/party.model";
-import {User} from "../../../shared/data/models/user.model";
+import {UserModel} from "../../../shared/data/models/user.model";
 import {KeyValue} from "@angular/common";
 
 @Component({
@@ -13,7 +13,7 @@ import {KeyValue} from "@angular/common";
 })
 export class PartiesComponent implements OnInit {
 
-    $user: Observable<User | null> = of(null)
+    $user: Observable<UserModel | null> = of(null)
     partyList: Party[] = []
     parties: Map<string, Party[]>
     chips: string[] = ["All", "Mix", "Outside", "Indoor", "Gadgets", "Android", "Piano", "Cloud computing", "Nouveaute", "Echecs"];
