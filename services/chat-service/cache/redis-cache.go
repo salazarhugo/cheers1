@@ -162,11 +162,17 @@ func (cache *redisCache) AddToken(userId string, token string) {
 
 func (cache *redisCache) ListMessage(
 	roomId string,
-	pageSize int64,
+	offset int,
+	limit int,
 ) []*pb.Message {
 	client := cache.client
 
-	values, err := client.ZRevRange(context.Background(), getKeyRoomMessages(roomId), 0, pageSize).Result()
+	values, err := client.ZRevRange(
+		context.Background(),
+		getKeyRoomMessages(roomId),
+		int64(offset),
+		int64(offset+limit),
+	).Result()
 	if err != nil {
 		panic(err)
 	}
@@ -221,23 +227,24 @@ func (cache *redisCache) SetMessage(msg *pb.Message) error {
 	return err
 }
 
-func (cache *redisCache) ListRoomWithMessages(userId string) []*pb.RoomWithMessages {
+func (cache *redisCache) ListRooms(userId string) ([]*pb.Room, error) {
 	client := cache.client
 	values, err := client.SMembers(context.Background(), getKeyUserRooms(userId)).Result()
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
-	var rooms []*pb.RoomWithMessages
+	var rooms []*pb.Room
 	for _, roomId := range values {
-		room, _ := cache.GetRoomWithId(userId, roomId)
-		messages := cache.ListMessage(roomId, 10)
-		rooms = append(rooms, &pb.RoomWithMessages{
-			Room:     room,
-			Messages: messages,
-		})
+		room, err := cache.GetRoomWithId(userId, roomId)
+		if err != nil {
+			return nil, err
+		}
+
+		rooms = append(rooms, room)
 	}
-	return rooms
+
+	return rooms, nil
 }
 
 func (cache *redisCache) GetOtherUserId(

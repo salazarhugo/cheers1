@@ -18,11 +18,18 @@ func (s *Server) ListRoomMessages(
 		return nil, status.Error(codes.Internal, "failed to retrieve viewerID")
 	}
 
-	messages, err := s.chatRepository.ListRoomMessages(req.RoomId, viewerID)
+	messages, err := s.chatRepository.ListRoomMessages(
+		req.RoomId,
+		viewerID,
+		int(req.Page),
+		int(req.PageSize),
+	)
 	if err != nil {
 		log.Println(err)
 		return nil, err
 	}
 
-	return &chat.ListRoomMessagesResponse{Messages: messages}, nil
+	return &chat.ListRoomMessagesResponse{
+		Messages: messages,
+	}, nil
 }

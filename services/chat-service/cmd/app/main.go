@@ -103,9 +103,9 @@ func serveWs(w http.ResponseWriter, r *http.Request) {
 	//go SendMessage(connection)
 }
 
-func ListenMessages(conn *Connection, userID string) {
+func ListenMessages(conn *Connection, viewerID string) {
 	repo := repository.NewChatRepository()
-	rooms, _ := repo.GetInbox(userID)
+	rooms, _ := repo.GetInbox(viewerID)
 
 	for _, room := range rooms {
 		roomId := room.Room.Id

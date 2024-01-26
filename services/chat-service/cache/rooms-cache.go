@@ -10,7 +10,11 @@ import (
 
 type RoomCache interface {
 	SetMessage(msg *pb.Message) error
-	ListMessage(roomId string, pageSize int64) []*pb.Message
+	ListMessage(
+		roomId string,
+		offset int,
+		limit int,
+	) []*pb.Message
 	LikeMessage(roomId string, messageId string)
 	UnlikeMessage(roomId string, messageId string)
 	CreateGroup(name string, UUIDs []string) *pb.Room
@@ -19,7 +23,7 @@ type RoomCache interface {
 	IsMember(userId string, roomId string) bool
 	DeleteRoom(roomId string) error
 	GetRoomWithId(userId string, roomId string) (*pb.Room, error)
-	ListRoomWithMessages(userId string) []*pb.RoomWithMessages
+	ListRooms(userID string) ([]*pb.Room, error)
 	GetRoomMembers(roomId string) []string
 	GetUserItem(userId string) (*user.UserItem, error)
 	ListUser(userIds []string) ([]*user.UserItem, error)
