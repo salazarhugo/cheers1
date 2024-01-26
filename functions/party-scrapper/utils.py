@@ -4,6 +4,13 @@ from datetime import datetime, timedelta
 import requests
 
 
+def safe_list_get(l, idx, default):
+    try:
+        return l[idx]['src']
+    except IndexError:
+        return default
+
+
 def convert_to_epoch(input_str):
     date_pattern = r'(Mon|Tue|Wed|Thu|Fri|Sat|Sun) (\d+) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)'
     time_pattern = r'(\d+:\d+ [APap][Mm])'
@@ -15,7 +22,7 @@ def convert_to_epoch(input_str):
     day = int(date_match.group(2))
     month_name = date_match.group(3)
 
-    year = 2023
+    year = datetime.now().year
     two_hours_in_seconds = 2 * 60 * 60
 
     day_dict = {
@@ -42,17 +49,20 @@ def convert_to_epoch(input_str):
             end_time_obj = datetime.combine(date_obj + timedelta(days=1), end_time_obj)
         else:
             end_time_obj = datetime.combine(date_obj, end_time_obj)
-        start_epoch = (datetime.combine(date_obj, start_time_obj) - datetime(1970, 1, 1)).total_seconds() - two_hours_in_seconds
+        start_epoch = (datetime.combine(date_obj, start_time_obj) - datetime(1970, 1,
+                                                                             1)).total_seconds() - two_hours_in_seconds
         end_epoch = (end_time_obj - datetime(1970, 1, 1)).total_seconds() - two_hours_in_seconds
         return int(start_epoch), int(end_epoch)
     else:
-        start_epoch = (datetime.combine(date_obj, start_time_obj) - datetime(1970, 1, 1)).total_seconds() - two_hours_in_seconds
+        start_epoch = (datetime.combine(date_obj, start_time_obj) - datetime(1970, 1,
+                                                                             1)).total_seconds() - two_hours_in_seconds
         return int(start_epoch), None
 
 
 input_str1 = "Sat 2 Sep from 2:00 PM to 12:30 AM"
 input_str2 = "From Sun 20 Aug at 7:30 PM"
 input_str3 = "To Sun 20 Aug at 7:30 PM"
+
 
 # print(convert_to_epoch(input_str1))
 # print(convert_to_epoch(input_str2))

@@ -207,7 +207,7 @@ enum RoomType {
 
 message RoomWithMessages {
   Room room = 1;
-  repeated Message messages = 2;
+  repeated MessageItem messages = 2;
 }
 
 message Room {

@@ -6,7 +6,7 @@ import (
 
 func (c chatRepository) ListRoomMessages(
 	roomID string,
-	userID string,
+	viewerID string,
 ) ([]*chat.MessageItem, error) {
 	items := make([]*chat.MessageItem, 0)
 
@@ -15,7 +15,7 @@ func (c chatRepository) ListRoomMessages(
 		msg.Status = chat.Message_DELIVERED
 		items = append(items, &chat.MessageItem{
 			Message: msg,
-			Sender:  userID == msg.SenderId,
+			Sender:  viewerID == msg.SenderId,
 			Liked:   false,
 		})
 	}

@@ -13,12 +13,12 @@ func (s *Server) ListRoomMessages(
 	ctx context.Context,
 	req *chat.ListRoomMessagesRequest,
 ) (*chat.ListRoomMessagesResponse, error) {
-	userID, err := utils.GetUserId(ctx)
+	viewerID, err := utils.GetUserId(ctx)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to retrieve userID")
+		return nil, status.Error(codes.Internal, "failed to retrieve viewerID")
 	}
 
-	messages, err := s.chatRepository.ListRoomMessages(req.RoomId, userID)
+	messages, err := s.chatRepository.ListRoomMessages(req.RoomId, viewerID)
 	if err != nil {
 		log.Println(err)
 		return nil, err

@@ -2,29 +2,27 @@ package repository
 
 import (
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/party/v1"
+	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/services/party-service/internal/model"
 	"time"
 )
 
 func (p *partyRepository) FeedParty(
-	userID string,
+	viewerID string,
 	request *pb.FeedPartyRequest,
 ) (*pb.FeedPartyResponse, error) {
 	db := p.spanner
 
-	page := request.GetPage()
-	if page == 0 {
-		page = 1
-	}
-	pageSize := request.GetPageSize()
-	if pageSize == 0 {
-		pageSize = 18
-	}
-	skip := pageSize * (page - 1)
+	limit, offset := utils.GetLimitAndOffsetPagination(int(request.Page), int(request.PageSize))
 
 	var parties []model.Party
 
-	result := db.Limit(int(pageSize)).Offset(int(skip)).Where("end_date > ?", time.Now()).Order("end_date asc").Find(&parties)
+	result := db.
+		Limit(limit).
+		Offset(offset).
+		Where("end_date > ?", time.Now()).
+		Order("end_date asc").
+		Find(&parties)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -37,7 +35,7 @@ func (p *partyRepository) FeedParty(
 			GoingCount:        0,
 			InterestedCount:   0,
 			InvitedCount:      0,
-			IsCreator:         false,
+			IsCreator:         viewerID == party.UserID,
 			ViewerWatchStatus: 0,
 			MutualGoing:       nil,
 			MutualInterested:  nil,

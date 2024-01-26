@@ -5,10 +5,10 @@ go 1.19
 require (
 	github.com/google/uuid v1.3.1
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20231115205943-932c1364ac02
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240124152714-87166e5a8122
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221113151338-1ae307745902
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20231115205943-932c1364ac02
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240124152714-87166e5a8122
 	github.com/sirupsen/logrus v1.9.0
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/net v0.17.0
