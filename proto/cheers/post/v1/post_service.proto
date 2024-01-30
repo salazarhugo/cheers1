@@ -4,6 +4,7 @@ package cheers.post.v1;
 
 import "cheers/type/post/post.proto";
 import "cheers/type/user/user.proto";
+import "cheers/type/audio/audio.proto";
 import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
 
@@ -111,6 +112,7 @@ message CreatePostRequest {
   double longitude = 8;
   bool send_notification_to_friends = 9;
   repeated string photos = 10;
+  cheers.type.Audio audio = 11;
 }
 
 message GetPostRequest {

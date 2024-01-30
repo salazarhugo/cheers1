@@ -4,10 +4,11 @@ go 1.19
 
 require (
 	cloud.google.com/go/pubsub v1.33.0
+	firebase.google.com/go/v4 v4.12.1
 	github.com/go-redis/redis/v9 v9.0.0-rc.1
 	github.com/google/uuid v1.3.1
 	github.com/gorilla/websocket v1.5.0
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240124152714-87166e5a8122
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240126125709-66c3fcb52632
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221022084305-122f971a4fa0
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240124152714-87166e5a8122
@@ -27,7 +28,6 @@ require (
 	cloud.google.com/go/profiler v0.3.1 // indirect
 	cloud.google.com/go/spanner v1.51.1-0.20231030142734-7abc3595e9cc // indirect
 	cloud.google.com/go/storage v1.33.0 // indirect
-	firebase.google.com/go/v4 v4.12.1 // indirect
 	github.com/MicahParks/keyfunc v1.9.0 // indirect
 	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
@@ -39,7 +39,6 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
-	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/pprof v0.0.0-20221103000818-d260c55eee4c // indirect
 	github.com/google/s2a-go v0.1.7 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.1 // indirect
@@ -54,7 +53,6 @@ require (
 	github.com/mattn/go-colorable v0.1.11 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4 // indirect
-	github.com/sirupsen/logrus v1.9.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.1 // indirect
 	go.opencensus.io v0.24.0 // indirect

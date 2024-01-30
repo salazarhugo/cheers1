@@ -16,7 +16,7 @@ func (p *postRepository) CreatePost(
 	post.ID = uuid.NewString()
 	post.UserID = userID
 
-	result := db.Create(&post)
+	result := db.Table("posts").Create(&post)
 	if result.Error != nil {
 		return "", result.Error
 	}

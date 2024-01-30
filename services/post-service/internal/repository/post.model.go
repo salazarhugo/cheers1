@@ -2,6 +2,7 @@ package repository
 
 import (
 	"cloud.google.com/go/spanner"
+	"github.com/salazarhugo/cheers1/gen/go/cheers/type/audio"
 	postpb "github.com/salazarhugo/cheers1/gen/go/cheers/type/post"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	"time"
@@ -9,15 +10,17 @@ import (
 
 // Post model
 type Post struct {
-	ID        string `gorm:"primarykey"`
-	UserID    string
-	DrinkID   spanner.NullInt64
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	Caption   string
-	City      string
-	Location  string
-	Photos    ArrayString `gorm:"type:VARCHAR(255)"`
+	ID            string `gorm:"primarykey"`
+	UserID        string
+	DrinkID       spanner.NullInt64
+	CreatedAt     time.Time
+	UpdatedAt     time.Time
+	Caption       string
+	City          string
+	Location      string
+	Photos        ArrayString `gorm:"type:VARCHAR(255)"`
+	AudioUrl      string
+	AudioWaveform ArrayInt `gorm:"type:integer[]"`
 }
 
 // PostWithUserInfo Post item model
@@ -30,6 +33,8 @@ type PostWithUserInfo struct {
 	City           string
 	Location       string
 	Photos         ArrayString `gorm:"type:VARCHAR(255)"`
+	AudioUrl       string
+	AudioWaveform  ArrayInt `gorm:"type:integer[]"`
 	Username       string
 	Name           string
 	Verified       bool
@@ -66,6 +71,12 @@ func (p Post) ToPostPb() *postpb.Post {
 		Drink: &postpb.Drink{
 			Id: p.DrinkID.Int64,
 		},
+		Audio: &audio.Audio{
+			Id:       0,
+			Url:      p.AudioUrl,
+			Waveform: p.AudioWaveform,
+			Duration: 0,
+		},
 	}
 }
 
@@ -98,6 +109,12 @@ func (p PostWithUserInfo) ToPostPb() *postpb.Post {
 			Id:   p.DrinkID,
 			Name: p.DrinkName,
 			Icon: p.DrinkIcon,
+		},
+		Audio: &audio.Audio{
+			Id:       0,
+			Url:      p.AudioUrl,
+			Waveform: p.AudioWaveform,
+			Duration: 0,
 		},
 		Drunkenness:           0,
 		Type:                  0,

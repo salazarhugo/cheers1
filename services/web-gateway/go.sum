@@ -128,6 +128,8 @@ github.com/salazarhugo/cheers1/gen/go v0.0.0-20231215235530-acd66c2e6ec2 h1:qFtB
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20231215235530-acd66c2e6ec2/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20240104175814-f612599aeaf5 h1:wt8QiX7EbP4VO4bLkXU20p0g+ZRBXBon7GCTapTgWZc=
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20240104175814-f612599aeaf5/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
+github.com/salazarhugo/cheers1/gen/go v0.0.0-20240126125709-66c3fcb52632 h1:zHvCJuRP9lZ2Aj0k6WAQ7RJa5nkJ1ZyKwEXd2XWVDxw=
+github.com/salazarhugo/cheers1/gen/go v0.0.0-20240126125709-66c3fcb52632/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
 github.com/salazarhugo/cheers1/libs/utils v0.0.0-20231215235530-acd66c2e6ec2 h1:f10OEIEBK7bTV63HIF6Ur0f8/0p3lhtHJkOwub2Qjlc=
 github.com/salazarhugo/cheers1/libs/utils v0.0.0-20231215235530-acd66c2e6ec2/go.mod h1:JinVMufY1fkueTrgFcTCvRntf1ybxQeXH23t8xInEO4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=

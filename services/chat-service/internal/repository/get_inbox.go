@@ -4,7 +4,9 @@ import (
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
 )
 
-func (c chatRepository) GetInbox(viewerID string) ([]*pb.RoomWithMessages, error) {
+func (c chatRepository) GetInbox(
+	viewerID string,
+) ([]*pb.RoomWithMessages, error) {
 	rooms, err := c.cache.ListRooms(viewerID)
 	if err != nil {
 		return nil, err

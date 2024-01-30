@@ -20,11 +20,13 @@ func (s *Server) CreatePost(
 	}
 
 	newPost := &repository.Post{
-		UserID:   viewerID,
-		Caption:  request.Caption,
-		Location: request.LocationName,
-		Photos:   request.Photos,
-		DrinkID:  spanner.NullInt64{Valid: false},
+		UserID:        viewerID,
+		Caption:       request.Caption,
+		Location:      request.LocationName,
+		Photos:        request.Photos,
+		DrinkID:       spanner.NullInt64{Valid: false},
+		AudioUrl:      request.Audio.Url,
+		AudioWaveform: request.Audio.Waveform,
 	}
 	if request.DrinkId > 0 {
 		newPost.DrinkID = spanner.NullInt64{Int64: request.GetDrinkId(), Valid: true}

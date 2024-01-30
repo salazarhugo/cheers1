@@ -50,7 +50,7 @@ func (p *userRepository) GetUserWithViewer(
 		).
 		Where("users.id = ? OR users.username = ?", otherUserID, otherUserID).
 		Limit(1).
-		Scan(&userItem).
+		First(&userItem).
 		Error
 	if err != nil {
 		return nil, err

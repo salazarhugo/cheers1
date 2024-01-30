@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/felixge/httpsnoop v1.0.3
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.12.0
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240104175814-f612599aeaf5
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240126125709-66c3fcb52632
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20231215235530-acd66c2e6ec2
 	google.golang.org/api v0.148.0
 	google.golang.org/grpc v1.59.0
@@ -64,4 +64,4 @@ require (
 	gorm.io/gorm v1.25.5 // indirect
 )
 
-replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
+//replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go

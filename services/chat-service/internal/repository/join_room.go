@@ -11,7 +11,7 @@ func (c chatRepository) JoinRoom(
 	request *pb.JoinRoomRequest,
 	server pb.ChatService_JoinRoomServer,
 ) error {
-	messages := c.cache.ListMessage(request.GetRoomId(), 10)
+	messages := c.cache.ListMessage(request.GetRoomId(), 0, 10)
 	log.Println(messages)
 	for _, msg := range messages {
 		if err := server.Send(msg); err != nil {

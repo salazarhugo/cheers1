@@ -6,6 +6,7 @@ option go_package = "github.com/salazarhugo/cheers1/gen/go/cheers/type/post;post
 
 
 import "cheers/type/privacy/privacy.proto";
+import "cheers/type/audio/audio.proto";
 
 message Post {
   string id = 1;
@@ -29,6 +30,7 @@ message Post {
   string last_comment_text = 18;
   string last_comment_username = 19;
   int64 last_comment_create_time = 20;
+  Audio audio = 21;
 }
 
 message Drink {
