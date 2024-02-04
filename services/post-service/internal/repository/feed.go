@@ -10,15 +10,32 @@ func (p *postRepository) FeedPost(
 	page int,
 	pageSize int,
 ) (*pb.FeedPostResponse, error) {
+	db := p.spanner
 	viewerID := userIDs[len(userIDs)-1]
 	limit, offset := utils.GetLimitAndOffsetPagination(page, pageSize)
+	var posts []PostItem
 
-	var posts []PostWithUserInfo
+	mediaQuery := db.
+		Raw("SELECT TO_JSON(t) FROM post_media AS t WHERE posts.PostId = t.PostId")
 
-	db := p.spanner
+	likeCountQuery := db.
+		Table("post_likes").
+		Select("COUNT(*)").
+		Where("post_likes.post_id = posts.PostId")
+
+	hasViewerLikedQuery := db.
+		Table("post_likes").
+		Select("1").
+		Where("user_id = ? AND post_id = posts.PostId", viewerID)
+
 	result := db.
 		Table("posts").
-		Select("posts.*, drinks.id as drink_id, drinks.name as drink_name, drinks.icon as drink_icon, users.username, users.name, users.verified, users.picture, (select count(*) from post_likes where post_likes.post_id = posts.id) as likes, (SELECT EXISTS (SELECT 1 FROM post_likes WHERE user_id = ? AND post_id = posts.id)) as has_viewer_liked", viewerID).
+		Select(
+			"posts.*, ARRAY(?) AS medias, drinks.id as drink_id, drinks.name as drink_name, drinks.icon as drink_icon, users.username, users.name, users.verified, users.picture, (?) as like_count, (?) as has_viewer_liked",
+			mediaQuery,
+			likeCountQuery,
+			hasViewerLikedQuery,
+		).
 		Joins("JOIN users ON  posts.user_id = users.id").
 		Joins("LEFT OUTER JOIN drinks ON posts.drink_id = drinks.id").
 		Where("posts.user_id IN ?", userIDs).
@@ -36,7 +53,7 @@ func (p *postRepository) FeedPost(
 		item := &pb.PostResponse{
 			Post:         post.ToPostPb(),
 			User:         post.ToUserPb(),
-			LikeCount:    post.Likes,
+			LikeCount:    post.LikeCount,
 			CommentCount: 0,
 			HasLiked:     post.HasViewerLiked,
 			IsCreator:    viewerID == post.UserID,
@@ -46,7 +63,7 @@ func (p *postRepository) FeedPost(
 
 	nextPageToken := "postToken123"
 	if len(posts) > 0 {
-		nextPageToken = posts[len(posts)-1].ID
+		nextPageToken = posts[len(posts)-1].PostId
 	}
 
 	return &pb.FeedPostResponse{

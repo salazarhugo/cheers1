@@ -14,11 +14,10 @@ message Post {
   string caption = 3;
   string address = 4;
   Privacy privacy = 5;
-  repeated string photos = 6;
+  repeated PostMedia post_media = 6;
   string location_name = 8;
   Drink drink = 9;
   int64 drunkenness = 10;
-  PostType type = 11;
   int64 create_time = 12;
   bool can_comment = 13;
   bool can_share = 14;
@@ -33,6 +32,24 @@ message Post {
   Audio audio = 21;
 }
 
+message PostMedia {
+  string accessibility_caption = 1;
+  MediaType media_type = 2;
+  repeated ImageVersion image_versions = 3;
+}
+
+message ImageVersion {
+  string url = 1;
+  string ref = 2;
+  int64 width = 3;
+  int64 height = 4;
+}
+
+enum MediaType {
+  IMAGE = 0;
+  VIDEO = 1;
+}
+
 message Drink {
   int64 id = 1;
   string name = 2;
@@ -43,10 +60,4 @@ enum PostRatio {
   RATIO_16_9 = 0;
   RATIO_1_1 = 1;
   RATIO_4_5 = 2;
-}
-
-enum PostType {
-  TEXT = 0;
-  IMAGE = 1;
-  VIDEO = 2;
 }

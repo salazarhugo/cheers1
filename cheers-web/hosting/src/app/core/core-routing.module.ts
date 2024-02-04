@@ -28,7 +28,7 @@ const routes: Routes = [
     },
     {
         path: 'parties',
-        loadChildren: () => import('../parties/features/party-feed/party-feed.module').then(m => m.PartyFeedModule)
+        loadChildren: () => import('../parties/features/party-shell/party-shell.module').then(m => m.PartyShellModule)
     },
     {
         path: 'tickets',
@@ -54,10 +54,6 @@ const routes: Routes = [
         path: 'chats',
         component: ChatComponent,
         loadChildren: () => import('../chats/chats.module').then(m => m.ChatsModule)
-    },
-    {
-        path: 'parties',
-        loadChildren: () => import('../parties/features/party-shell/party-shell.module').then(m => m.PartyShellModule)
     },
     {
         path: 'business',

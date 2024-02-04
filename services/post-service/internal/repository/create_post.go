@@ -13,7 +13,7 @@ func (p *postRepository) CreatePost(
 ) (string, error) {
 	db := p.spanner
 
-	post.ID = uuid.NewString()
+	post.PostId = uuid.NewString()
 	post.UserID = userID
 
 	result := db.Table("posts").Create(&post)
@@ -36,5 +36,5 @@ func (p *postRepository) CreatePost(
 		}
 	}()
 
-	return post.ID, nil
+	return post.PostId, nil
 }

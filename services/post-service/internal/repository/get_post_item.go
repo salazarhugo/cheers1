@@ -9,9 +9,33 @@ func (p *postRepository) GetPostItem(
 	postID string,
 ) (*pb.PostResponse, error) {
 	db := p.spanner
+	var post PostItem
 
-	var post PostWithUserInfo
-	result := db.Raw("SELECT posts.*, username, users.name, verified, picture, drinks.name, (select count(*) from post_likes where post_likes.post_id = posts.id) as likes, (SELECT EXISTS (SELECT 1 FROM post_likes WHERE user_id = ? AND post_id = posts.id)) as has_viewer_liked, FROM  posts JOIN users ON  posts.user_id = users.id LEFT OUTER JOIN drinks ON posts.drink_id = drinks.id WHERE posts.id = ? LIMIT ?", viewerID, postID, 1).Scan(&post)
+	mediaQuery := db.
+		Raw("SELECT TO_JSON(t) FROM post_media AS t WHERE posts.PostId = t.PostId")
+
+	likeCountQuery := db.
+		Table("post_likes").
+		Select("COUNT(*)").
+		Where("post_likes.post_id = posts.PostId")
+
+	hasViewerLikedQuery := db.
+		Table("post_likes").
+		Select("1").
+		Where("user_id = ? AND post_id = posts.PostId", viewerID)
+
+	result := db.
+		Table("posts").
+		Select(
+			"posts.*, ARRAY(?) AS medias, username, users.name, verified, picture, drinks.id as drink_id, drinks.name as drink_name, drinks.icon as drink_icon, (?) AS like_count, EXISTS (?) AS has_viewer_liked",
+			mediaQuery,
+			likeCountQuery,
+			hasViewerLikedQuery,
+		).
+		Joins("JOIN users ON posts.user_id = users.id").
+		Joins("LEFT OUTER JOIN drinks ON posts.drink_id = drinks.id").
+		Where("posts.PostId = ?", postID).
+		First(&post)
 
 	if result.Error != nil {
 		return nil, result.Error
@@ -20,7 +44,7 @@ func (p *postRepository) GetPostItem(
 	item := &pb.PostResponse{
 		Post:         post.ToPostPb(),
 		User:         post.ToUserPb(),
-		LikeCount:    post.Likes,
+		LikeCount:    post.LikeCount,
 		CommentCount: 0,
 		HasLiked:     post.HasViewerLiked,
 		IsCreator:    viewerID == post.UserID,

@@ -14,20 +14,25 @@ func (s *Server) CreatePost(
 	ctx context.Context,
 	request *pb.CreatePostRequest,
 ) (*pb.PostResponse, error) {
+	audio := request.GetAudio()
 	viewerID, err := utils.GetUserId(ctx)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "Failed retrieving viewerID")
 	}
 
 	newPost := &repository.Post{
-		UserID:        viewerID,
-		Caption:       request.Caption,
-		Location:      request.LocationName,
-		Photos:        request.Photos,
-		DrinkID:       spanner.NullInt64{Valid: false},
-		AudioUrl:      request.Audio.Url,
-		AudioWaveform: request.Audio.Waveform,
+		UserID:   viewerID,
+		Caption:  request.Caption,
+		Location: request.LocationName,
+		Photos:   request.Photos,
+		DrinkID:  spanner.NullInt64{Valid: false},
 	}
+
+	if audio != nil {
+		newPost.AudioUrl = audio.GetUrl()
+		newPost.AudioWaveform = audio.GetWaveform()
+	}
+
 	if request.DrinkId > 0 {
 		newPost.DrinkID = spanner.NullInt64{Int64: request.GetDrinkId(), Valid: true}
 	}

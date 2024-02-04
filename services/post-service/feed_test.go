@@ -10,7 +10,7 @@ func TestFeedPost(t *testing.T) {
 	//Create a mock repository
 	repo := repository.NewPostRepository()
 
-	friendIDs := []string{"cheers", "user1", "a082acf0-d046-4467-852e-9eeee17df56f"}
+	friendIDs := []string{"Ii7mFI34JaYKYsOxYg90fYToa182", "a082acf0-d046-4467-852e-9eeee17df56f"}
 	response, err := repo.FeedPost(
 		friendIDs,
 		1,

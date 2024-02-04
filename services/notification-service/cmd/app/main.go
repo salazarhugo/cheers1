@@ -6,6 +6,7 @@ import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/notification/v1"
 	"github.com/salazarhugo/cheers1/libs/auth"
 	"github.com/salazarhugo/cheers1/libs/profiler"
+	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/services/notification-service/internal/app/events"
 	http3 "github.com/salazarhugo/cheers1/services/notification-service/internal/app/http"
 	"golang.org/x/net/http2"
@@ -16,7 +17,6 @@ import (
 	"net"
 	"net/http"
 	"os"
-	"strings"
 )
 
 func init() {
@@ -47,7 +47,7 @@ func main() {
 	grpc_health_v1.RegisterHealthServer(grpcS, server)
 	notification.RegisterNotificationServiceServer(grpcS, server)
 
-	mixedHandler := newHTTPandGRPCMux(httpMux, grpcS)
+	mixedHandler := utils.NewHttpAndGrpcMux(httpMux, grpcS)
 	http2Server := &http2.Server{}
 	http1Server := &http.Server{Handler: h2c.NewHandler(mixedHandler, http2Server)}
 
@@ -62,14 +62,4 @@ func main() {
 	} else if err != nil {
 		panic(err)
 	}
-}
-
-func newHTTPandGRPCMux(httpHand http.Handler, grpcHandler http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.ProtoMajor == 2 && strings.HasPrefix(r.Header.Get("content-type"), "application/grpc") {
-			grpcHandler.ServeHTTP(w, r)
-			return
-		}
-		httpHand.ServeHTTP(w, r)
-	})
 }

@@ -81,7 +81,7 @@ export class PartyService {
                 bannerUrl: party.bannerUrl,
                 locationName: party.locationName,
                 start_date: party.startDate,
-                end_date: party.startDate,
+                end_date: party.endDate,
                 latitude: party.latitude,
                 longitude: party.longitude,
             }

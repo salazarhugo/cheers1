@@ -7,7 +7,11 @@
             <div fxLayoutAlign="space-between center">
                 <h1 class="mat-h1" style="padding-bottom: 16px">Your parties</h1>
                 <div class="parties-header">
-                    <button *ngIf="$user | async as user" color="primary" mat-flat-button routerLink="/parties/create">Create New Party</button>
+                    <button *ngIf="$user | async as user"
+                            color="primary"
+                            mat-flat-button
+                            routerLink="/parties/create"
+                    >Create New Party</button>
                 </div>
             </div>
 

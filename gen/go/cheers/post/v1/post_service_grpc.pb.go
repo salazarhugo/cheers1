@@ -24,21 +24,21 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type PostServiceClient interface {
 	//
-	// Create a new post
+	//Create a new post
 	CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*PostResponse, error)
 	GetPost(ctx context.Context, in *GetPostRequest, opts ...grpc.CallOption) (*GetPostResponse, error)
 	GetPostItem(ctx context.Context, in *GetPostItemRequest, opts ...grpc.CallOption) (*PostResponse, error)
 	UpdatePost(ctx context.Context, in *UpdatePostRequest, opts ...grpc.CallOption) (*PostResponse, error)
 	DeletePost(ctx context.Context, in *DeletePostRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	//
-	// List posts of a specific user
+	//List posts of a specific user
 	ListPost(ctx context.Context, in *ListPostRequest, opts ...grpc.CallOption) (*ListPostResponse, error)
 	ListPostLikes(ctx context.Context, in *ListPostLikesRequest, opts ...grpc.CallOption) (*ListPostLikesResponse, error)
 	//
-	// Friends post feed
+	//Friends post feed
 	FeedPost(ctx context.Context, in *FeedPostRequest, opts ...grpc.CallOption) (*FeedPostResponse, error)
 	//
-	// Map post feed
+	//Map post feed
 	ListMapPost(ctx context.Context, in *ListMapPostRequest, opts ...grpc.CallOption) (*ListMapPostResponse, error)
 	LikePost(ctx context.Context, in *LikePostRequest, opts ...grpc.CallOption) (*LikePostResponse, error)
 	UnlikePost(ctx context.Context, in *UnlikePostRequest, opts ...grpc.CallOption) (*UnlikePostResponse, error)
@@ -176,21 +176,21 @@ func (c *postServiceClient) UnsavePost(ctx context.Context, in *UnsavePostReques
 // for forward compatibility
 type PostServiceServer interface {
 	//
-	// Create a new post
+	//Create a new post
 	CreatePost(context.Context, *CreatePostRequest) (*PostResponse, error)
 	GetPost(context.Context, *GetPostRequest) (*GetPostResponse, error)
 	GetPostItem(context.Context, *GetPostItemRequest) (*PostResponse, error)
 	UpdatePost(context.Context, *UpdatePostRequest) (*PostResponse, error)
 	DeletePost(context.Context, *DeletePostRequest) (*emptypb.Empty, error)
 	//
-	// List posts of a specific user
+	//List posts of a specific user
 	ListPost(context.Context, *ListPostRequest) (*ListPostResponse, error)
 	ListPostLikes(context.Context, *ListPostLikesRequest) (*ListPostLikesResponse, error)
 	//
-	// Friends post feed
+	//Friends post feed
 	FeedPost(context.Context, *FeedPostRequest) (*FeedPostResponse, error)
 	//
-	// Map post feed
+	//Map post feed
 	ListMapPost(context.Context, *ListMapPostRequest) (*ListMapPostResponse, error)
 	LikePost(context.Context, *LikePostRequest) (*LikePostResponse, error)
 	UnlikePost(context.Context, *UnlikePostRequest) (*UnlikePostResponse, error)

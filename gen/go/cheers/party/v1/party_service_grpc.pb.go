@@ -30,7 +30,7 @@ type PartyServiceClient interface {
 	GetPartyItem(ctx context.Context, in *GetPartyItemRequest, opts ...grpc.CallOption) (*GetPartyItemResponse, error)
 	FeedParty(ctx context.Context, in *FeedPartyRequest, opts ...grpc.CallOption) (*FeedPartyResponse, error)
 	//
-	// List parties of a specific user
+	//List parties of a specific user
 	ListParty(ctx context.Context, in *ListPartyRequest, opts ...grpc.CallOption) (*ListPartyResponse, error)
 	AnswerParty(ctx context.Context, in *AnswerPartyRequest, opts ...grpc.CallOption) (*AnswerPartyResponse, error)
 	ListGoing(ctx context.Context, in *ListGoingRequest, opts ...grpc.CallOption) (*ListGoingResponse, error)
@@ -166,7 +166,7 @@ type PartyServiceServer interface {
 	GetPartyItem(context.Context, *GetPartyItemRequest) (*GetPartyItemResponse, error)
 	FeedParty(context.Context, *FeedPartyRequest) (*FeedPartyResponse, error)
 	//
-	// List parties of a specific user
+	//List parties of a specific user
 	ListParty(context.Context, *ListPartyRequest) (*ListPartyResponse, error)
 	AnswerParty(context.Context, *AnswerPartyRequest) (*AnswerPartyResponse, error)
 	ListGoing(context.Context, *ListGoingRequest) (*ListGoingResponse, error)

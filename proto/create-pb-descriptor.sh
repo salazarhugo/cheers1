@@ -16,6 +16,7 @@ protoc \
   cheers/type/audio/audio.proto \
   cheers/party/v1/party_service.proto \
   cheers/post/v1/post_service.proto \
+  cheers/media/v1/media_service.proto \
   cheers/user/v1/user_service.proto \
   cheers/chat/v1/chat_service.proto \
   cheers/account/v1/account_service.proto \
