@@ -3,7 +3,7 @@ package user_service
 import (
 	"cloud.google.com/go/storage"
 	"context"
-	"github.com/salazarhugo/cheers1/services/image-service/internal/repository"
+	"github.com/salazarhugo/cheers1/services/media-service/internal/repository"
 	"log"
 	"testing"
 )

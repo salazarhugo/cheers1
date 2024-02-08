@@ -8,3 +8,5 @@ name: android.apigateway.cheers-a275e.cloud.goog
 
 # HTTP rules define translation from HTTP/REST/JSON to gRPC. With these rules
 # HTTP/REST/JSON clients will be able to call the User service.
+# - selector: endpoints.examples.bookstore.Bookstore.GetShelf
+#    get: /v1/shelves/{shelf}

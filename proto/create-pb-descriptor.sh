@@ -3,9 +3,12 @@ export PATH="$PATH:$(go env GOPATH)/bin"
 cp cheers ../genproto -r
 cp google ../genproto -r
 
+GOOGLEAPIS_DIR=google
+
 protoc \
   --include_imports \
   --include_source_info \
+  --proto_path=${GOOGLEAPIS_DIR} \
   --proto_path=. \
   --descriptor_set_out=api_descriptor.pb \
   --experimental_allow_proto3_optional \
@@ -14,9 +17,9 @@ protoc \
   cheers/type/user/user.proto \
   cheers/type/post/post.proto \
   cheers/type/audio/audio.proto \
+  cheers/media/v1/media_service.proto \
   cheers/party/v1/party_service.proto \
   cheers/post/v1/post_service.proto \
-  cheers/media/v1/media_service.proto \
   cheers/user/v1/user_service.proto \
   cheers/chat/v1/chat_service.proto \
   cheers/account/v1/account_service.proto \

@@ -21,6 +21,7 @@ apis:
   - name: cheers.location.v1.LocationService
   - name: cheers.drink.v1.DrinkService
   - name: cheers.note.v1.NoteService
+  - name: cheers.media.v1.MediaService
 usage:
   rules:
     # All methods can be called without an API Key.
@@ -99,3 +100,7 @@ backend:
     # Note Service methods
     - selector: cheers.note.v1.*
       address: grpcs://note-service-r3a2dr4u4a-nw.a.run.app
+
+    # Media Service methods
+    - selector: cheers.media.v1.*
+      address: grpcs://media-service-r3a2dr4u4a-nw.a.run.app

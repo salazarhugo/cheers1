@@ -12,19 +12,20 @@ func UploadToCloudStorage(
 	bucketName,
 	objectName string,
 	data []byte,
-) error {
+) (*storage.ObjectHandle, error) {
 	client, err := storage.NewClient(ctx)
 	if err != nil {
-		return fmt.Errorf("storage.NewClient: %v", err)
+		return nil, fmt.Errorf("storage.NewClient: %v", err)
 	}
 	defer client.Close()
 
-	wc := client.Bucket(bucketName).Object(objectName).NewWriter(ctx)
+	object := client.Bucket(bucketName).Object(objectName)
+	wc := object.NewWriter(ctx)
 	defer wc.Close()
 
 	if _, err := wc.Write(data); err != nil {
-		return fmt.Errorf("wc.Write: %v", err)
+		return nil, fmt.Errorf("wc.Write: %v", err)
 	}
 
-	return nil
+	return object, nil
 }

@@ -2,7 +2,9 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/media/v1"
+	"github.com/salazarhugo/cheers1/services/media-service/internal/models"
 	"github.com/salazarhugo/cheers1/services/media-service/internal/repository"
 	"strconv"
 )
@@ -13,13 +15,28 @@ func (s *Server) UploadMedia(
 ) (*media.UploadMediaResponse, error) {
 	fileBytes := request.GetChunk()
 	bucketName := "cheers-posts"
+	objectName := strconv.FormatInt(request.GetUploadId(), 10)
 
-	err := repository.UploadToCloudStorage(ctx, bucketName, strconv.FormatInt(request.GetUploadId(), 10), fileBytes)
+	object, err := repository.UploadToCloudStorage(ctx, bucketName, objectName, fileBytes)
+	if err != nil {
+		return nil, err
+	}
+
+	objectAttributes, err := object.Attrs(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	mediaID, err := s.mediaRepository.CreateMedia(&models.Media{
+		Url:  objectAttributes.MediaLink,
+		Ref:  fmt.Sprintf("gs://%s/%s", bucketName, objectName),
+		Type: objectAttributes.ContentType,
+	})
 	if err != nil {
 		return nil, err
 	}
 
 	return &media.UploadMediaResponse{
-		UploadId: request.GetUploadId(),
+		MediaId: mediaID,
 	}, nil
 }

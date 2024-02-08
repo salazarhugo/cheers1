@@ -111,7 +111,7 @@ message CreatePostRequest {
   double latitude = 7;
   double longitude = 8;
   bool send_notification_to_friends = 9;
-  repeated int64 upload_ids = 10;
+  repeated string media_ids = 10;
   cheers.type.Audio audio = 11;
 }
 

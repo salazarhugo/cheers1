@@ -6,9 +6,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/salazarhugo/cheers1/services/post-service/internal/models"
 )
 
-type PostMediaArray []PostMedia
+type PostMediaArray []models.PostMedia
 
 // Scan scan value into Jsonb, implements sql.Scanner interface
 func (j *PostMediaArray) Scan(value interface{}) error {
@@ -23,18 +24,18 @@ func (j *PostMediaArray) Scan(value interface{}) error {
 
 // Value return json value, implement driver.Valuer interface
 func (j PostMediaArray) Value() (driver.Value, error) {
-	v := make([]PostMedia, 0)
+	v := make([]models.PostMedia, 0)
 	for _, s := range j {
 		v = append(v, s)
 	}
 	return v, nil
 }
 
-func ToMedia(s []spanner.NullJSON) []PostMedia {
-	res := make([]PostMedia, 0)
+func ToMedia(s []spanner.NullJSON) []models.PostMedia {
+	res := make([]models.PostMedia, 0)
 	for _, j := range s {
 		bytes, _ := j.MarshalJSON()
-		var postMedia PostMedia
+		var postMedia models.PostMedia
 		json.Unmarshal(bytes, &postMedia)
 		res = append(res, postMedia)
 	}

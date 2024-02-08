@@ -14,8 +14,9 @@ func (s *Server) CreatePost(
 	ctx context.Context,
 	request *pb.CreatePostRequest,
 ) (*pb.PostResponse, error) {
-	audio := request.GetAudio()
 	viewerID, err := utils.GetUserId(ctx)
+
+	audio := request.GetAudio()
 	if err != nil {
 		return nil, status.Error(codes.Internal, "Failed retrieving viewerID")
 	}
@@ -24,7 +25,6 @@ func (s *Server) CreatePost(
 		UserID:   viewerID,
 		Caption:  request.Caption,
 		Location: request.LocationName,
-		Photos:   request.Photos,
 		DrinkID:  spanner.NullInt64{Valid: false},
 	}
 
@@ -40,6 +40,11 @@ func (s *Server) CreatePost(
 	postID, err := s.postRepository.CreatePost(viewerID, newPost)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to create post")
+	}
+
+	err = s.postRepository.CreatePostMedias(postID, request.GetMediaIds())
+	if err != nil {
+		return nil, status.Error(codes.Internal, "failed to associate medias with post")
 	}
 
 	post, err := s.postRepository.GetPostItem(viewerID, postID)

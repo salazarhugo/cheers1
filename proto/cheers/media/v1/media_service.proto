@@ -25,5 +25,5 @@ message UploadMediaRequest {
 }
 
 message UploadMediaResponse {
-  int64 upload_id = 1;
+  string media_id = 1;
 }

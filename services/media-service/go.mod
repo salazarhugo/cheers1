@@ -6,16 +6,14 @@ require (
 	cloud.google.com/go/storage v1.33.0
 	github.com/labstack/gommon v0.4.0
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240130211934-8b669cd761a7
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240204231314-9eb4cc0638ae
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20231215235530-acd66c2e6ec2
-	github.com/salazarhugo/cheers1/services/post-service v0.0.0-20240130211934-8b669cd761a7
 	github.com/sirupsen/logrus v1.9.0
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/net v0.17.0
 	google.golang.org/grpc v1.59.0
-	gorm.io/gorm v1.25.5
 )
 
 require (
@@ -35,10 +33,8 @@ require (
 	github.com/cncf/udpa/go v0.0.0-20220112060539-c52dc94e7fbe // indirect
 	github.com/cncf/xds/go v0.0.0-20230607035331-e9ce68804cb4 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/envoyproxy/go-control-plane v0.11.1 // indirect
 	github.com/envoyproxy/protoc-gen-validate v1.0.2 // indirect
-	github.com/go-redis/redis/v9 v9.0.0-rc.1 // indirect
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
@@ -76,6 +72,7 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20231012201019-e917dd12ba7a // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
+	gorm.io/gorm v1.25.5 // indirect
 )
 
 replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go

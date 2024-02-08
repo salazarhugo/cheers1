@@ -1,4 +1,4 @@
-package repository
+package models
 
 import (
 	postpb "github.com/salazarhugo/cheers1/gen/go/cheers/type/post"

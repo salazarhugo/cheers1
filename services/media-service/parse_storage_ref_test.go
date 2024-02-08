@@ -1,7 +1,7 @@
 package user_service
 
 import (
-	"github.com/salazarhugo/cheers1/services/image-service/internal/repository"
+	"github.com/salazarhugo/cheers1/services/media-service/internal/repository"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
