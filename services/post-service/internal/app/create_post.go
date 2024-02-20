@@ -5,6 +5,7 @@ import (
 	"context"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"github.com/salazarhugo/cheers1/services/post-service/internal/repository"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -22,10 +23,12 @@ func (s *Server) CreatePost(
 	}
 
 	newPost := &repository.Post{
-		UserID:   viewerID,
-		Caption:  request.Caption,
-		Location: request.LocationName,
-		DrinkID:  spanner.NullInt64{Valid: false},
+		UserID:    viewerID,
+		Caption:   request.Caption,
+		Location:  request.LocationName,
+		DrinkID:   spanner.NullInt64{Valid: false},
+		Latitude:  request.Latitude,
+		Longitude: request.Longitude,
 	}
 
 	if audio != nil {
@@ -50,6 +53,19 @@ func (s *Server) CreatePost(
 	post, err := s.postRepository.GetPostItem(viewerID, postID)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to get post")
+	}
+
+	err = pubsub.PublishProtoWithBinaryEncoding("post-topic", &pb.PostEvent{
+		Event: &pb.PostEvent_Create{
+			Create: &pb.CreatePost{
+				Post:                      post.GetPost(),
+				User:                      nil,
+				SendNotificationToFriends: true,
+			},
+		},
+	})
+	if err != nil {
+		return nil, status.Error(codes.Internal, "failed to publish event")
 	}
 
 	return post, nil

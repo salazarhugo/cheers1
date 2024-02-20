@@ -17,7 +17,7 @@ func (s *Server) UploadMedia(
 	bucketName := "cheers-posts"
 	objectName := strconv.FormatInt(request.GetUploadId(), 10)
 
-	object, err := repository.UploadToCloudStorage(ctx, bucketName, objectName, fileBytes)
+	object, err := repository.UploadImageToCloudStorage(ctx, bucketName, objectName, fileBytes)
 	if err != nil {
 		return nil, err
 	}

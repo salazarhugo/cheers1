@@ -16,6 +16,8 @@ type PostItem struct {
 	Caption        string
 	City           string
 	Location       string
+	Latitude       float64
+	Longitude      float64
 	Photos         ArrayString `gorm:"type:VARCHAR(255)"`
 	AudioUrl       string
 	AudioWaveform  ArrayInt `gorm:"type:integer[]"`
@@ -46,6 +48,8 @@ func (p PostItem) ToPostPb() *postpb.Post {
 		Privacy:      0,
 		PostMedia:    medias,
 		LocationName: p.Location,
+		Longitude:    p.Longitude,
+		Latitude:     p.Latitude,
 		Drink: &postpb.Drink{
 			Id:   p.DrinkID,
 			Name: p.DrinkName,
@@ -62,8 +66,6 @@ func (p PostItem) ToPostPb() *postpb.Post {
 		CanComment:            false,
 		CanShare:              false,
 		Ratio:                 0,
-		Latitude:              0,
-		Longitude:             0,
 		LastCommentText:       "",
 		LastCommentUsername:   "",
 		LastCommentCreateTime: 0,

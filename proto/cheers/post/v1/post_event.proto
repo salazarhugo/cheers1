@@ -29,5 +29,6 @@ message LikePost {
 }
 
 message DeletePost {
+  string post_id = 1;
   cheers.type.UserItem sender = 2;
 }

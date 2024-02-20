@@ -42,7 +42,11 @@ type PostRepository interface {
 		postID string,
 	) (int64, error)
 
-	ListMapPost(userID string, request *pb.ListMapPostRequest) (*pb.ListMapPostResponse, error)
+	ListMapPost(
+		viewerID string,
+		request *pb.ListMapPostRequest,
+	) (*pb.ListMapPostResponse, error)
+
 	LikePost(userID string, postID string) (*pb.LikePostResponse, error)
 	UnlikePost(userID string, postID string) (*pb.UnlikePostResponse, error)
 	IncrementCommentCount(postID string) error

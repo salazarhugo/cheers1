@@ -4,9 +4,10 @@ go 1.21
 
 require (
 	cloud.google.com/go/storage v1.33.0
+	github.com/disintegration/imaging v1.6.2
+	github.com/google/uuid v1.3.1
 	github.com/labstack/gommon v0.4.0
-	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240204231314-9eb4cc0638ae
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240208115123-d25e5b66787b
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20231215235530-acd66c2e6ec2
@@ -14,6 +15,7 @@ require (
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/net v0.17.0
 	google.golang.org/grpc v1.59.0
+	gorm.io/gorm v1.25.5
 )
 
 require (
@@ -40,7 +42,6 @@ require (
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/pprof v0.0.0-20221103000818-d260c55eee4c // indirect
 	github.com/google/s2a-go v0.1.7 // indirect
-	github.com/google/uuid v1.3.1 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.1 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.0 // indirect
 	github.com/googleapis/go-gorm-spanner v0.0.0-20231110090820-e5c0b8387302 // indirect
@@ -58,6 +59,7 @@ require (
 	github.com/valyala/fasttemplate v1.2.1 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/crypto v0.14.0 // indirect
+	golang.org/x/image v0.0.0-20191009234506-e7c1f5e7dbb8 // indirect
 	golang.org/x/oauth2 v0.13.0 // indirect
 	golang.org/x/sync v0.4.0 // indirect
 	golang.org/x/sys v0.13.0 // indirect
@@ -72,10 +74,9 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20231012201019-e917dd12ba7a // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	gorm.io/gorm v1.25.5 // indirect
 )
 
-replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
+//replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
 
 //replace github.com/salazarhugo/cheers1/libs/profiler => ../../libs/profiler
 

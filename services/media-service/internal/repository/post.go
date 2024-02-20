@@ -8,6 +8,9 @@ import (
 
 type MediaRepository interface {
 	CreateMedia(media *models.Media) (string, error)
+	UpdatePostMedia(postMedia *models.PostMedia) error
+	DeletePostMedia(postMediaID string) error
+	ListPostMedia(postID string) ([]*models.PostMedia, error)
 }
 
 type mediaRepository struct {

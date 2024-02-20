@@ -19,7 +19,13 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 
 	switch event := event.Event.(type) {
 	case *post.PostEvent_Create:
-		err := repository.HandlePostCreate(event.Create.GetPost().GetId())
+		err := repository.HandlePostCreate(event.Create.GetPost())
+		if err != nil {
+			log.Error(err)
+			return
+		}
+	case *post.PostEvent_Delete:
+		err := repository.HandlePostDelete(event.Delete.GetSender())
 		if err != nil {
 			log.Error(err)
 			return

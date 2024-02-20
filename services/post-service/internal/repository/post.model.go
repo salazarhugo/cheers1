@@ -17,6 +17,8 @@ type Post struct {
 	Caption       string
 	City          string
 	Location      string
+	Latitude      float64
+	Longitude     float64
 	Photos        ArrayString `gorm:"type:VARCHAR(255)"`
 	AudioUrl      string
 	AudioWaveform ArrayInt `gorm:"type:integer[]"`
@@ -30,6 +32,8 @@ func (p Post) ToPostPb() *postpb.Post {
 		Caption:      p.Caption,
 		PostMedia:    nil,
 		LocationName: p.Location,
+		Longitude:    p.Longitude,
+		Latitude:     p.Latitude,
 		CreateTime:   p.CreatedAt.Unix(),
 		Drink: &postpb.Drink{
 			Id: p.DrinkID.Int64,

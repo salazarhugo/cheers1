@@ -1,11 +1,31 @@
 package repository
 
 import (
-	"github.com/nfnt/resize"
+	"github.com/disintegration/imaging"
 	"image"
 )
 
-// ResizeImage resizes the image to the specified width and height.
-func ResizeImage(img image.Image, width, height uint) (image.Image, error) {
-	return resize.Resize(width, height, img, resize.Lanczos3), nil
+// SquareResizeImage resizes the image to the specified width and height.
+func SquareResizeImage(
+	img image.Image,
+) (image.Image, error) {
+	// Get the dimensions of the image
+	width := img.Bounds().Dx()
+	height := img.Bounds().Dy()
+
+	// Calculate the size for center cropping
+	var size int
+	if width > height {
+		size = height
+	} else {
+		size = width
+	}
+
+	// Center crop the image
+	croppedImg := imaging.CropCenter(img, size, size)
+
+	// Resize the cropped image to 1080x1080
+	resizedImg := imaging.Resize(croppedImg, 1080, 1080, imaging.Lanczos)
+
+	return resizedImg, nil
 }

@@ -24,6 +24,7 @@ func (p PostMedia) ToPostMediaPb() *postpb.PostMedia {
 		ImageVersions: []*postpb.ImageVersion{
 			&postpb.ImageVersion{
 				Url:    p.Url,
+				Ref:    p.Ref,
 				Width:  0,
 				Height: 0,
 			},
