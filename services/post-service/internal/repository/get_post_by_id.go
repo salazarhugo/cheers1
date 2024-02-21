@@ -6,7 +6,17 @@ func (p *postRepository) GetPostById(
 	db := p.spanner
 	var post Post
 
-	result := db.Table("posts").Where("PostId = ?", postID).First(&post)
+	mediaQuery := db.
+		Raw("SELECT TO_JSON(t) FROM post_media AS t WHERE posts.PostId = t.PostId")
+
+	result := db.
+		Table("posts").
+		Select(
+			"posts.*, ARRAY(?) AS medias",
+			mediaQuery,
+		).
+		Where("PostId = ?", postID).
+		First(&post)
 	if result.Error != nil {
 		return &Post{}, result.Error
 	}

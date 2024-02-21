@@ -19,18 +19,23 @@ type Post struct {
 	Location      string
 	Latitude      float64
 	Longitude     float64
-	Photos        ArrayString `gorm:"type:VARCHAR(255)"`
+	Medias        PostMediaArray `gorm:"type:integer[]"`
 	AudioUrl      string
 	AudioWaveform ArrayInt `gorm:"type:integer[]"`
 }
 
 // ToPostPb Domain -> Protobuf
 func (p Post) ToPostPb() *postpb.Post {
+	medias := make([]*postpb.PostMedia, 0)
+	for _, media := range p.Medias {
+		medias = append(medias, media.ToPostMediaPb())
+	}
+
 	return &postpb.Post{
 		Id:           p.PostId,
 		CreatorId:    p.UserID,
 		Caption:      p.Caption,
-		PostMedia:    nil,
+		PostMedia:    medias,
 		LocationName: p.Location,
 		Longitude:    p.Longitude,
 		Latitude:     p.Latitude,
