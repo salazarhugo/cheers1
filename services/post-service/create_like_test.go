@@ -41,7 +41,7 @@ func TestCreateLike(t *testing.T) {
 		t.Error(err)
 	}
 
-	err = repo.DeletePostById(postID)
+	err = repo.DeletePost(postID)
 	if err != nil {
 		t.Error(err)
 		return

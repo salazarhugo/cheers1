@@ -6,9 +6,11 @@ import (
 	"github.com/golang/protobuf/ptypes/empty"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	utils "github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"log"
 )
 
 func (s *Server) DeletePost(
@@ -34,10 +36,24 @@ func (s *Server) DeletePost(
 		return nil, status.Error(codes.NotFound, fmt.Sprintf("user %s is not authorized to delete this post", userID))
 	}
 
-	err = s.postRepository.DeletePostById(postID)
+	err = s.postRepository.DeletePost(postID)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to delete post")
 	}
+
+	go func() {
+		err := pubsub.PublishProtoWithBinaryEncoding("post-topic", &pb.PostEvent{
+			Event: &pb.PostEvent_Delete{
+				Delete: &pb.DeletePost{
+					Post:   post.ToPostPb(),
+					Sender: nil,
+				},
+			},
+		})
+		if err != nil {
+			log.Println(err)
+		}
+	}()
 
 	return &empty.Empty{}, nil
 }

@@ -12,25 +12,17 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 	event := &post.PostEvent{}
 	err := pubsub.UnmarshalPubSubMessage(r, event)
 	if err != nil {
+		log.Error(err)
 		return
 	}
 
-	log.Info(event)
-
 	switch event := event.Event.(type) {
 	case *post.PostEvent_Create:
-		err := repository.HandlePostCreate(event.Create.GetPost())
-		if err != nil {
-			log.Error(err)
-			return
-		}
+		err = repository.HandlePostCreate(event.Create.GetPost().GetId())
 	case *post.PostEvent_Delete:
-		err := repository.HandlePostDelete(event.Delete.GetSender())
-		if err != nil {
-			log.Error(err)
-			return
-		}
+		err = repository.HandlePostDelete(event.Delete.GetPostId())
 	default:
+		log.Info("unhandled event")
 	}
 
 	if err != nil {

@@ -24,7 +24,7 @@ message CreatePost {
 }
 
 message LikePost {
-  string post_id = 1;
+  cheers.type.Post post = 1;
   string user_id = 2;
 }
 

@@ -35,7 +35,7 @@ func TestCreatePost(t *testing.T) {
 		return
 	}
 
-	err = repo.DeletePostById(userID)
+	err = repo.DeletePost(userID)
 	if err != nil {
 		t.Error("failed to delete user: ", err)
 		return

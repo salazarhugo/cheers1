@@ -3,14 +3,13 @@ package repository
 import (
 	"context"
 	"fmt"
-	post "github.com/salazarhugo/cheers1/gen/go/cheers/type/post"
 )
 
-func HandlePostCreate(post *post.Post) error {
+func HandlePostCreate(postID string) error {
 	ctx := context.Background()
 	repo := NewPostRepository()
 
-	postMedias, err := repo.ListPostMedia(post.GetId())
+	postMedias, err := repo.ListPostMedia(postID)
 	if err != nil {
 		return err
 	}

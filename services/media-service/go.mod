@@ -7,7 +7,7 @@ require (
 	github.com/disintegration/imaging v1.6.2
 	github.com/google/uuid v1.3.1
 	github.com/labstack/gommon v0.4.0
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240208115123-d25e5b66787b
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240220222357-f27be15c51ba
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221010151320-33187e7a23f8
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20231215235530-acd66c2e6ec2

@@ -20,7 +20,7 @@ type PostRepository interface {
 	GetPostItem(userID string, postID string) (*pb.PostResponse, error)
 	GetMedias(mediaIDs []string) ([]*models.Media, error)
 	UpdatePostLastComment(user *user.UserItem, comment *comment.Comment) error
-	DeletePostById(postID string) error
+	DeletePost(postID string) error
 	DeleteMedia(tx *gorm.DB, mediaID string) *gorm.DB
 
 	FeedPost(
