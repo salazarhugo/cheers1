@@ -20,7 +20,7 @@ func PostSub(w http.ResponseWriter, r *http.Request) {
 	case *post.PostEvent_Create:
 		err = repository.HandlePostCreate(event.Create.GetPost().GetId())
 	case *post.PostEvent_Delete:
-		err = repository.HandlePostDelete(event.Delete.GetPostId())
+		err = repository.HandlePostDelete(event.Delete.GetPost())
 	default:
 		log.Info("unhandled event")
 	}

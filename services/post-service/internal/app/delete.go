@@ -17,9 +17,9 @@ func (s *Server) DeletePost(
 	ctx context.Context,
 	request *pb.DeletePostRequest,
 ) (*emptypb.Empty, error) {
-	userID, err := utils.GetUserId(ctx)
+	viewerID, err := utils.GetUserId(ctx)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed retrieving userID")
+		return nil, status.Error(codes.Internal, "failed retrieving viewerID")
 	}
 
 	postID := request.GetId()
@@ -27,13 +27,13 @@ func (s *Server) DeletePost(
 		return nil, status.Error(codes.InvalidArgument, "id parameter can't be empty")
 	}
 
-	post, err := s.postRepository.GetPostById(postID)
+	post, err := s.postRepository.GetPostItem(viewerID, postID)
 	if err != nil {
 		return nil, status.Error(codes.NotFound, "post not found")
 	}
 
-	if post.UserID != userID {
-		return nil, status.Error(codes.NotFound, fmt.Sprintf("user %s is not authorized to delete this post", userID))
+	if post.User.Id != viewerID {
+		return nil, status.Error(codes.NotFound, fmt.Sprintf("user %s is not authorized to delete this post", viewerID))
 	}
 
 	err = s.postRepository.DeletePost(postID)
@@ -45,8 +45,7 @@ func (s *Server) DeletePost(
 		err := pubsub.PublishProtoWithBinaryEncoding("post-topic", &pb.PostEvent{
 			Event: &pb.PostEvent_Delete{
 				Delete: &pb.DeletePost{
-					Post:   post.ToPostPb(),
-					Sender: nil,
+					Post: post.GetPost(),
 				},
 			},
 		})

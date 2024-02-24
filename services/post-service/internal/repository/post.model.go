@@ -11,7 +11,7 @@ import (
 type Post struct {
 	PostId        string `gorm:"primarykey;column:PostId"`
 	UserID        string
-	DrinkID       spanner.NullInt64
+	DrinkID       spanner.NullString
 	CreatedAt     time.Time
 	UpdatedAt     time.Time
 	Caption       string
@@ -19,29 +19,23 @@ type Post struct {
 	Location      string
 	Latitude      float64
 	Longitude     float64
-	Medias        PostMediaArray `gorm:"type:integer[]"`
 	AudioUrl      string
 	AudioWaveform ArrayInt `gorm:"type:integer[]"`
 }
 
 // ToPostPb Domain -> Protobuf
 func (p Post) ToPostPb() *postpb.Post {
-	medias := make([]*postpb.PostMedia, 0)
-	for _, media := range p.Medias {
-		medias = append(medias, media.ToPostMediaPb())
-	}
-
 	return &postpb.Post{
 		Id:           p.PostId,
 		CreatorId:    p.UserID,
 		Caption:      p.Caption,
-		PostMedia:    medias,
+		PostMedia:    nil,
 		LocationName: p.Location,
 		Longitude:    p.Longitude,
 		Latitude:     p.Latitude,
 		CreateTime:   p.CreatedAt.Unix(),
 		Drink: &postpb.Drink{
-			Id: p.DrinkID.Int64,
+			Id: p.DrinkID.StringVal,
 		},
 		Audio: &audio.Audio{
 			Id:       0,

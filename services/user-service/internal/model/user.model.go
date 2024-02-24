@@ -7,7 +7,7 @@ import (
 
 // User model
 type User struct {
-	ID          string `gorm:"primarykey"`
+	UserId      string `gorm:"primarykey;column:UserId"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	Username    string
@@ -25,7 +25,7 @@ type User struct {
 
 func (u User) ToUserPb() *userpb.User {
 	return &userpb.User{
-		Id:                 u.ID,
+		Id:                 u.UserId,
 		Name:               u.Name,
 		Email:              u.Email,
 		Verified:           u.Verified,
@@ -47,7 +47,7 @@ func (u User) ToUserPb() *userpb.User {
 
 func (u User) ToUserItemPb() *userpb.UserItem {
 	return &userpb.UserItem{
-		Id:                 u.ID,
+		Id:                 u.UserId,
 		Name:               u.Name,
 		Username:           u.Username,
 		Verified:           u.Verified,

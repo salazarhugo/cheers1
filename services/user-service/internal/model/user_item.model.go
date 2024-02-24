@@ -7,7 +7,7 @@ import (
 
 // UserWithViewer model
 type UserWithViewer struct {
-	ID                 string `gorm:"primarykey"`
+	UserId             string `gorm:"primarykey;column:UserId"`
 	CreatedAt          time.Time
 	UpdatedAt          time.Time
 	Username           string
@@ -27,7 +27,7 @@ type UserWithViewer struct {
 
 func (u UserWithViewer) ToUserPb() *userpb.User {
 	return &userpb.User{
-		Id:                 u.ID,
+		Id:                 u.UserId,
 		Name:               u.Name,
 		Email:              u.Email,
 		Verified:           u.Verified,
@@ -49,7 +49,7 @@ func (u UserWithViewer) ToUserPb() *userpb.User {
 
 func (u UserWithViewer) ToUserItemPb() *userpb.UserItem {
 	return &userpb.UserItem{
-		Id:                 u.ID,
+		Id:                 u.UserId,
 		Name:               u.Name,
 		Username:           u.Username,
 		Verified:           u.Verified,

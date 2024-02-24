@@ -7,7 +7,7 @@ import (
 
 // Drink model
 type Drink struct {
-	ID        int64 `gorm:"primarykey"`
+	DrinkId   string `gorm:"primarykey;column:DrinkId"`
 	Name      string
 	Icon      string
 	CreatedAt time.Time
@@ -16,7 +16,7 @@ type Drink struct {
 
 func (d Drink) ToDrinkPb() *drink.Drink {
 	return &drink.Drink{
-		Id:        d.ID,
+		Id:        d.DrinkId,
 		CreatorId: "",
 		Name:      d.Name,
 		Icon:      d.Icon,

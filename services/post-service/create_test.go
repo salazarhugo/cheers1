@@ -16,7 +16,6 @@ func TestCreatePost(t *testing.T) {
 		&repository.Post{
 			Caption: caption,
 			DrinkID: spanner.NullInt64{Int64: 1, Valid: true},
-			Photos:  []string{"wfwf", "wef"},
 		},
 	)
 

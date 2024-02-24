@@ -7,7 +7,7 @@ import (
 
 // Party model
 type Party struct {
-	ID           string `gorm:"primarykey"`
+	PartyId      string `gorm:"primarykey;column:PartyId"`
 	Slug         string
 	UserID       string
 	Name         string
@@ -25,7 +25,7 @@ type Party struct {
 
 func ToPartyDomain(p *party.Party) *Party {
 	return &Party{
-		ID:           p.Id,
+		PartyId:      p.Id,
 		Slug:         p.Slug,
 		UserID:       p.HostId,
 		Name:         p.Name,
@@ -42,7 +42,7 @@ func ToPartyDomain(p *party.Party) *Party {
 
 func (p Party) ToPartyPb() *party.Party {
 	return &party.Party{
-		Id:           p.ID,
+		Id:           p.PartyId,
 		Name:         p.Name,
 		Description:  p.Description,
 		Address:      "",
