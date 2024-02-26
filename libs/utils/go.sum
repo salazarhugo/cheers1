@@ -158,6 +158,8 @@ github.com/rogpeppe/go-internal v1.12.0 h1:exVL4IDcn6na9z1rAb56Vxr+CgyK3nn3O+epU
 github.com/rogpeppe/go-internal v1.12.0/go.mod h1:E+RYuTGaKKdloAfM02xzb0FW3Paa99yedzYV+kq4uf4=
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20240226133650-7cd3a4639666 h1:X3NEI9ETTUA9X4zQPVcjDm3KjXTUFky3+hOjafWORtQ=
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20240226133650-7cd3a4639666/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
+github.com/salazarhugo/cheers1/gen/go v0.0.0-20240226195724-1d13504a4536 h1:jpnYJQWhGCtR2t1YBCrBHkbZxP7sgG4zMd54SqUTjd8=
+github.com/salazarhugo/cheers1/gen/go v0.0.0-20240226195724-1d13504a4536/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
 github.com/shopspring/decimal v1.3.1 h1:2Usl1nmF/WZucqkFZhnfFYxxxu8LG21F6nPQBE5gKV8=
 github.com/shopspring/decimal v1.3.1/go.mod h1:DKyhrW/HYNuLGql+MJL6WCR6knT2jwCFRcu2hWCYk4o=
 github.com/sirupsen/logrus v1.9.3 h1:dueUQJ1C2q9oE3F7wvmSGAaVtTmUizReu6fjN8uqzbQ=

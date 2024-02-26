@@ -1,6 +1,7 @@
 package mapper
 
 import (
+	"github.com/salazarhugo/cheers1/gen/go/cheers/drink/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/note/v1"
 	"github.com/salazarhugo/cheers1/libs/utils/models"
 	"strings"
@@ -18,6 +19,11 @@ func (u UserStatusItem) ToNotePb() *note.Note {
 		Picture:  u.Picture,
 		Created:  u.CreatedAt.Unix(),
 		Type:     ParseNoteType(u.Type),
+		Drink: &drink.Drink{
+			Id:   u.DrinkId,
+			Name: u.Name,
+			Icon: u.DrinkIcon,
+		},
 	}
 }
 

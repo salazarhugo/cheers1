@@ -27,7 +27,7 @@ func (r *repository) FeedNote(
 
 	result := db.
 		Table("user_status").
-		Select("*").
+		Select("user_status.*, users.*, drinks.id as drink_id, drinks.name as drink_name, drinks.icon as drink_icon").
 		Joins("JOIN users ON user_status.UserId = users.UserId").
 		Joins("JOIN drinks ON user_status.DrinkId = drinks.DrinkId").
 		Where("user_status.UserId IN ?", friendIDs).
