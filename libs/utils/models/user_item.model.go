@@ -1,4 +1,4 @@
-package model
+package models
 
 import (
 	userpb "github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
