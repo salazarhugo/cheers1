@@ -5,8 +5,8 @@ import (
 	"context"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/models"
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
-	"github.com/salazarhugo/cheers1/services/post-service/internal/repository"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -22,11 +22,11 @@ func (s *Server) CreatePost(
 		return nil, status.Error(codes.Internal, "Failed retrieving viewerID")
 	}
 
-	newPost := &repository.Post{
+	newPost := &models.Post{
 		UserID:    viewerID,
 		Caption:   request.Caption,
 		Location:  request.LocationName,
-		DrinkID:   spanner.NullInt64{Valid: false},
+		DrinkID:   spanner.NullString{Valid: false},
 		Latitude:  request.Latitude,
 		Longitude: request.Longitude,
 	}
@@ -36,8 +36,8 @@ func (s *Server) CreatePost(
 		newPost.AudioWaveform = audio.GetWaveform()
 	}
 
-	if request.DrinkId > 0 {
-		newPost.DrinkID = spanner.NullInt64{Int64: request.GetDrinkId(), Valid: true}
+	if request.DrinkId != "" {
+		newPost.DrinkID = spanner.NullString{StringVal: request.GetDrinkId(), Valid: true}
 	}
 
 	postID, err := s.postRepository.CreatePost(viewerID, newPost)

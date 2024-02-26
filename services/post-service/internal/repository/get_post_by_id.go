@@ -1,10 +1,12 @@
 package repository
 
+import "github.com/salazarhugo/cheers1/libs/utils/models"
+
 func (p *postRepository) GetPostById(
 	postID string,
-) (*Post, error) {
+) (*models.Post, error) {
 	db := p.spanner
-	var post Post
+	var post models.Post
 
 	result := db.
 		Table("posts").
@@ -12,7 +14,7 @@ func (p *postRepository) GetPostById(
 		First(&post)
 
 	if result.Error != nil {
-		return &Post{}, result.Error
+		return &models.Post{}, result.Error
 	}
 
 	return &post, nil

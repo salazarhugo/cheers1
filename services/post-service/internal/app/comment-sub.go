@@ -17,7 +17,7 @@ func CommentSub(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Println(event)
-	repo := repository.NewPostRepository()
+	repo := repository.NewRepository()
 
 	switch event := event.Event.(type) {
 	case *comment.CommentEvent_Created:

@@ -19,6 +19,6 @@ func NewServer() *Server {
 		post.UnimplementedPostServiceServer{},
 		grpc_health_v1.UnimplementedHealthServer{},
 		sync.Mutex{},
-		repository.NewPostRepository(),
+		repository.NewRepository(),
 	}
 }

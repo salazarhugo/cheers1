@@ -6,6 +6,7 @@ import (
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/libs/auth"
 	"github.com/salazarhugo/cheers1/libs/profiler"
+	"github.com/salazarhugo/cheers1/libs/utils/logger"
 	"github.com/salazarhugo/cheers1/services/post-service/internal/app"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/net/http2"
@@ -16,23 +17,12 @@ import (
 	"net/http"
 	"os"
 	"strings"
-	"time"
 )
 
 var log *logrus.Logger
 
 func init() {
-	log = logrus.New()
-	log.Level = logrus.DebugLevel
-	log.Formatter = &logrus.JSONFormatter{
-		FieldMap: logrus.FieldMap{
-			logrus.FieldKeyTime:  "timestamp",
-			logrus.FieldKeyLevel: "severity",
-			logrus.FieldKeyMsg:   "message",
-		},
-		TimestampFormat: time.RFC3339Nano,
-	}
-	log.Out = os.Stdout
+	log = logger.InitLogrus()
 }
 
 func init() {
@@ -43,7 +33,7 @@ func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
-		log.Info("Defaulting to port %s", port)
+		log.Infof("Defaulting to port %s", port)
 	}
 
 	httpMux := http.NewServeMux()

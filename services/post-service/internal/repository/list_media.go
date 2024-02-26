@@ -1,6 +1,6 @@
 package repository
 
-import "github.com/salazarhugo/cheers1/services/post-service/internal/models"
+import "github.com/salazarhugo/cheers1/libs/utils/models"
 
 func (p *postRepository) GetMedias(mediaIDs []string) ([]*models.Media, error) {
 	var medias []*models.Media

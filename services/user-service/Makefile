@@ -1,4 +1,4 @@
-build:
+build: test
 	go build cmd/app/main.go
 
 run:
@@ -6,6 +6,9 @@ run:
 
 deploy:
 	./deploy.sh
+
+test:
+	go test -v -cover ./...
 
 clean:
 	rm -rf pkg

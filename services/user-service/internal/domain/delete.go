@@ -8,7 +8,7 @@ func (userService *UserService) DeleteUser(
 		return err
 	}
 
-	err = userService.userRepository.DeleteUserById(userID)
+	err = userService.userRepository.DeleteUser(userID)
 	if err != nil {
 		return err
 	}

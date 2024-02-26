@@ -2,11 +2,12 @@ package repository
 
 import (
 	uuid "github.com/google/uuid"
+	"github.com/salazarhugo/cheers1/libs/utils/models"
 )
 
 func (p *postRepository) CreatePost(
 	userID string,
-	post *Post,
+	post *models.Post,
 ) (string, error) {
 	db := p.spanner
 

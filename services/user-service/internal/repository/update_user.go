@@ -14,5 +14,5 @@ func (p *userRepository) UpdateUser(
 		return "", result.Error
 	}
 
-	return user.ID, nil
+	return user.UserId, nil
 }

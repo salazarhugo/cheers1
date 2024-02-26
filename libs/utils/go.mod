@@ -5,12 +5,15 @@ go 1.19
 require (
 	cloud.google.com/go/profiler v0.3.1
 	cloud.google.com/go/pubsub v1.33.0
+	cloud.google.com/go/spanner v1.51.1-0.20231030142734-7abc3595e9cc
 	firebase.google.com/go/v4 v4.12.1
+	github.com/google/uuid v1.3.1
 	github.com/googleapis/go-gorm-spanner v0.0.0-20231110090820-e5c0b8387302
 	github.com/googleapis/go-sql-spanner v1.1.2-0.20231030143945-51f013b57cce
 	github.com/labstack/echo/v4 v4.9.1
 	github.com/labstack/gommon v0.4.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240224161043-892e1adeacc3
 	github.com/sirupsen/logrus v1.9.0
 	golang.org/x/net v0.17.0
 	google.golang.org/api v0.148.0
@@ -26,7 +29,6 @@ require (
 	cloud.google.com/go/firestore v1.13.0 // indirect
 	cloud.google.com/go/iam v1.1.2 // indirect
 	cloud.google.com/go/longrunning v0.5.3 // indirect
-	cloud.google.com/go/spanner v1.51.1-0.20231030142734-7abc3595e9cc // indirect
 	cloud.google.com/go/storage v1.33.0 // indirect
 	github.com/MicahParks/keyfunc v1.9.0 // indirect
 	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
@@ -40,7 +42,6 @@ require (
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/pprof v0.0.0-20221103000818-d260c55eee4c // indirect
 	github.com/google/s2a-go v0.1.7 // indirect
-	github.com/google/uuid v1.3.1 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.1 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect

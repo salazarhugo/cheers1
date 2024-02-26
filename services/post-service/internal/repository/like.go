@@ -3,6 +3,7 @@ package repository
 import "C"
 import (
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
+	"github.com/salazarhugo/cheers1/libs/utils/models"
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
 	"log"
 )
@@ -13,12 +14,14 @@ func (p *postRepository) LikePost(
 ) (*pb.LikePostResponse, error) {
 	db := p.spanner
 
-	like := &Like{
+	like := &models.Like{
 		UserID: userID,
 		PostID: postID,
 	}
 
-	result := db.Table("post_likes").Create(&like)
+	result := db.
+		Table("post_likes").
+		Create(&like)
 	if result.Error != nil {
 		return nil, result.Error
 	}

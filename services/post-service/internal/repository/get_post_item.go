@@ -2,6 +2,7 @@ package repository
 
 import (
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
+	"github.com/salazarhugo/cheers1/libs/utils/mapper"
 )
 
 func (p *postRepository) GetPostItem(
@@ -9,7 +10,7 @@ func (p *postRepository) GetPostItem(
 	postID string,
 ) (*pb.PostResponse, error) {
 	db := p.spanner
-	var post PostItem
+	var post mapper.PostItem
 
 	mediaQuery := db.
 		Raw("SELECT TO_JSON(t) FROM post_media AS t WHERE posts.PostId = t.PostId")
@@ -27,13 +28,13 @@ func (p *postRepository) GetPostItem(
 	result := db.
 		Table("posts").
 		Select(
-			"posts.*, ARRAY(?) AS medias, username, users.name, verified, picture, drinks.id as drink_id, drinks.name as drink_name, drinks.icon as drink_icon, (?) AS like_count, EXISTS (?) AS has_viewer_liked",
+			"posts.*, ARRAY(?) AS medias, username, users.name, verified, picture, drinks.DrinkId as drink_id, drinks.name as drink_name, drinks.icon as drink_icon, (?) AS like_count, EXISTS (?) AS has_viewer_liked",
 			mediaQuery,
 			likeCountQuery,
 			hasViewerLikedQuery,
 		).
-		Joins("JOIN users ON posts.user_id = users.id").
-		Joins("LEFT OUTER JOIN drinks ON posts.drink_id = drinks.id").
+		Joins("JOIN users ON posts.user_id = users.UserId").
+		Joins("LEFT OUTER JOIN drinks ON posts.drink_id = drinks.DrinkId").
 		Where("posts.PostId = ?", postID).
 		First(&post)
 

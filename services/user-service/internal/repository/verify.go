@@ -12,7 +12,11 @@ func (p *userRepository) VerifyUser(
 ) error {
 	db := p.spanner
 
-	err := db.Model(&model.User{}).Where("id = ?", userID).Update("verified", verified).Error
+	err := db.
+		Table("users").
+		Where("UserId = ?", userID).
+		Updates(model.User{Verified: verified}).
+		Error
 	if err != nil {
 		return err
 	}

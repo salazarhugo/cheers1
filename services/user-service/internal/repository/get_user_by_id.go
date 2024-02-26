@@ -10,7 +10,10 @@ func (p *userRepository) GetUserById(
 	db := p.spanner
 	var user model.User
 
-	result := db.Where("id = ?", userID).Or("username = ?", userID).First(&user)
+	result := db.
+		Where("UserId = ?", userID).
+		Or("username = ?", userID).
+		First(&user)
 	if result.Error != nil {
 		return model.User{}, result.Error
 	}

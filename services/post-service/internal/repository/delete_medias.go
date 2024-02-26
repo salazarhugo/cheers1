@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/salazarhugo/cheers1/services/post-service/internal/models"
+	"github.com/salazarhugo/cheers1/libs/utils/models"
 	"gorm.io/gorm"
 )
 

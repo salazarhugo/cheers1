@@ -35,7 +35,7 @@ type UserRepository interface {
 		user *model.User,
 	) (string, error)
 
-	DeleteUserById(
+	DeleteUser(
 		userID string,
 	) error
 

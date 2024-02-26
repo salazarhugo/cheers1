@@ -7,21 +7,53 @@ import (
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/post/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	"github.com/salazarhugo/cheers1/libs/utils"
-	"github.com/salazarhugo/cheers1/services/post-service/internal/models"
+	"github.com/salazarhugo/cheers1/libs/utils/models"
 	"gorm.io/gorm"
 	"os"
 )
 
 type PostRepository interface {
-	CreatePost(userID string, post *Post) (string, error)
-	CreatePostMedias(postID string, mediaIDs []string) error
-	CreatePostMedia(tx *gorm.DB, postMedia *models.PostMedia) *gorm.DB
-	GetPostById(postID string) (*Post, error)
-	GetPostItem(userID string, postID string) (*pb.PostResponse, error)
-	GetMedias(mediaIDs []string) ([]*models.Media, error)
-	UpdatePostLastComment(user *user.UserItem, comment *comment.Comment) error
-	DeletePost(postID string) error
-	DeleteMedia(tx *gorm.DB, mediaID string) *gorm.DB
+	CreatePost(
+		userID string,
+		post *models.Post,
+	) (string, error)
+
+	CreatePostMedias(
+		postID string,
+		mediaIDs []string,
+	) error
+
+	CreatePostMedia(
+		tx *gorm.DB,
+		postMedia *models.PostMedia,
+	) *gorm.DB
+
+	GetPostById(
+		postID string,
+	) (*models.Post, error)
+
+	GetPostItem(
+		userID string,
+		postID string,
+	) (*pb.PostResponse, error)
+
+	GetMedias(
+		mediaIDs []string,
+	) ([]*models.Media, error)
+
+	UpdatePostLastComment(
+		user *user.UserItem,
+		comment *comment.Comment,
+	) error
+
+	DeletePost(
+		postID string,
+	) error
+
+	DeleteMedia(
+		tx *gorm.DB,
+		mediaID string,
+	) *gorm.DB
 
 	FeedPost(
 		userIDs []string,
@@ -29,7 +61,10 @@ type PostRepository interface {
 		pageSize int,
 	) (*pb.FeedPostResponse, error)
 
-	ListPost(userID string, request *pb.ListPostRequest) (*pb.ListPostResponse, error)
+	ListPost(
+		userID string,
+		request *pb.ListPostRequest,
+	) (*pb.ListPostResponse, error)
 
 	ListPostLikes(
 		viewerID string,
@@ -60,7 +95,7 @@ type postRepository struct {
 	spanner *gorm.DB
 }
 
-func NewPostRepository() PostRepository {
+func NewRepository() PostRepository {
 	driver := utils.GetDriver()
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     os.Getenv("DB_ENDPOINT"),
