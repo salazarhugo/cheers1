@@ -13,6 +13,8 @@ type UserStatusItem struct {
 	Text         string
 	Type         string
 	DrinkId      string
+	DrinkName    string
+	DrinkIcon    string
 	Name         string
 	Username     string
 	Picture      string

@@ -158,6 +158,8 @@ github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a h1:n
 github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a/go.mod h1:OoyrE7E7Em/DgZ/UbFrXaPuUiQZv/VcbJsTuofpA9JY=
 github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a h1:TBgSOeX4eqxpmUYNYVMGVHy5peXZ0A6mMwpXnvBOo/0=
 github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a/go.mod h1:r9VVw/Y+1GW5JrqrRZLxVctRHwXEqB6DZEWHCgnx//k=
+github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240226181803-3967a574bc8d h1:ioKmPGkI2QXOGTF+z5KKXNcJSy/tQ6jCIIr272xQGPw=
+github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240226181803-3967a574bc8d/go.mod h1:ByiJfhYVuCspyH0Lt76CRtHtSOXzX84s8s31aaIWhSg=
 github.com/shopspring/decimal v1.3.1 h1:2Usl1nmF/WZucqkFZhnfFYxxxu8LG21F6nPQBE5gKV8=
 github.com/shopspring/decimal v1.3.1/go.mod h1:DKyhrW/HYNuLGql+MJL6WCR6knT2jwCFRcu2hWCYk4o=
 github.com/sirupsen/logrus v1.9.3 h1:dueUQJ1C2q9oE3F7wvmSGAaVtTmUizReu6fjN8uqzbQ=

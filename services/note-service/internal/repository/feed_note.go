@@ -15,15 +15,9 @@ func (r *repository) FeedNote(
 	db := r.spanner
 	limit, offset := utils.GetLimitAndOffsetPagination(page, pageSize)
 
-	friends, err := service.ListFriends(userID)
+	friendIDs, err := service.ListFriends(userID)
 	if err != nil {
 		return nil, err
-	}
-
-	// list of friend IDs
-	friendIDs := make([]string, len(friends))
-	for i, friend := range friends {
-		friendIDs[i] = friend.Id
 	}
 
 	// Add current user
@@ -35,6 +29,7 @@ func (r *repository) FeedNote(
 		Table("user_status").
 		Select("*").
 		Joins("JOIN users ON user_status.UserId = users.UserId").
+		Joins("JOIN drinks ON user_status.DrinkId = drinks.DrinkId").
 		Where("user_status.UserId IN ?", friendIDs).
 		Limit(limit).
 		Offset(offset).

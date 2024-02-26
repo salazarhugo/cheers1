@@ -6,7 +6,7 @@ require (
 	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240226180117-01709b9031fb
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240226133650-7cd3a4639666
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240226181803-3967a574bc8d
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.8.4
 	google.golang.org/grpc v1.62.0
