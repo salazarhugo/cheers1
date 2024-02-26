@@ -3,8 +3,7 @@ module github.com/salazarhugo/cheers1/services/note-service
 go 1.21
 
 require (
-	cloud.google.com/go/firestore v1.14.0
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240226133650-7cd3a4639666
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240226180117-01709b9031fb
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240226133650-7cd3a4639666
@@ -18,6 +17,7 @@ require (
 	cloud.google.com/go v0.112.1 // indirect
 	cloud.google.com/go/compute v1.24.0 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
+	cloud.google.com/go/firestore v1.14.0 // indirect
 	cloud.google.com/go/iam v1.1.6 // indirect
 	cloud.google.com/go/longrunning v0.5.5 // indirect
 	cloud.google.com/go/profiler v0.4.0 // indirect
@@ -57,7 +57,6 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.7 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/rogpeppe/go-internal v1.12.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	go.opencensus.io v0.24.0 // indirect
@@ -86,4 +85,4 @@ require (
 
 //replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
 
-replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils
+//replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils

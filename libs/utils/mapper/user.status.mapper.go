@@ -3,6 +3,7 @@ package mapper
 import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/note/v1"
 	"github.com/salazarhugo/cheers1/libs/utils/models"
+	"strings"
 )
 
 type UserStatusItem models.UserStatusItem
@@ -16,5 +17,17 @@ func (u UserStatusItem) ToNotePb() *note.Note {
 		Username: u.Username,
 		Picture:  u.Picture,
 		Created:  u.CreatedAt.Unix(),
+		Type:     ParseNoteType(u.Type),
+	}
+}
+
+func ParseNoteType(s string) note.NoteType {
+	switch strings.ToUpper(s) {
+	case "DRINKING":
+		return note.NoteType_DRINKING
+	case "SEARCHING":
+		return note.NoteType_SEARCHING
+	default:
+		return note.NoteType_NOTHING
 	}
 }

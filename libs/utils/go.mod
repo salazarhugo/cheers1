@@ -13,7 +13,7 @@ require (
 	github.com/labstack/echo/v4 v4.11.4
 	github.com/labstack/gommon v0.4.2
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.7
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240226133650-7cd3a4639666
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240226180117-01709b9031fb
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/net v0.21.0
