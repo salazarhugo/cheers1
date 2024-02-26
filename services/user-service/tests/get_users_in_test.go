@@ -1,7 +1,7 @@
 package tests
 
 import (
-	"github.com/salazarhugo/cheers1/services/user-service/internal/model"
+	"github.com/salazarhugo/cheers1/libs/utils/models"
 	"github.com/salazarhugo/cheers1/services/user-service/internal/repository"
 	"github.com/stretchr/testify/require"
 	"testing"
@@ -14,7 +14,7 @@ func TestGetUsersIn(t *testing.T) {
 	user1 := CreateRandomUser(t)
 	user2 := CreateRandomUser(t)
 
-	users := []*model.User{user1, user2}
+	users := []*models.User{user1, user2}
 
 	query := []string{user1.Username, user2.Username}
 

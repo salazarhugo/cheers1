@@ -2,8 +2,8 @@ package repository
 
 import (
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
+	"github.com/salazarhugo/cheers1/libs/utils/models"
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
-	"github.com/salazarhugo/cheers1/services/user-service/internal/model"
 )
 
 func (p *userRepository) UpdateBusinessAccount(
@@ -12,7 +12,11 @@ func (p *userRepository) UpdateBusinessAccount(
 ) error {
 	db := p.spanner
 
-	err := db.Model(&model.User{}).Where("id = ?", userID).Update("is_business", isBusinessAccount).Error
+	err := db.
+		Model(&models.User{}).
+		Where("id = ?", userID).
+		Update("is_business", isBusinessAccount).
+		Error
 	if err != nil {
 		return err
 	}

@@ -2,7 +2,7 @@ package repository
 
 import (
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
-	"github.com/salazarhugo/cheers1/services/user-service/internal/model"
+	"github.com/salazarhugo/cheers1/libs/utils/models"
 )
 
 func (p *userRepository) GetUserWithViewer(
@@ -11,7 +11,7 @@ func (p *userRepository) GetUserWithViewer(
 ) (*pb.GetUserResponse, error) {
 	db := p.spanner
 
-	var userItem model.UserWithViewer
+	var userItem models.UserWithViewer
 
 	postCountQuery := db.
 		Table("posts").

@@ -7,8 +7,8 @@ require (
 	github.com/google/uuid v1.3.1
 	github.com/labstack/gommon v0.4.0
 	github.com/neo4j/neo4j-go-driver/v4 v4.4.4
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240224161043-892e1adeacc3
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20231123150149-c737c1ea3ec7
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240226123510-2d7873f34133
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240226133650-7cd3a4639666
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/net v0.17.0
 	google.golang.org/api v0.148.0
@@ -72,4 +72,4 @@ require (
 )
 
 //replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
-replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils
+//replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils

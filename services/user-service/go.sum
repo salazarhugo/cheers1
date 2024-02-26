@@ -138,8 +138,14 @@ github.com/salazarhugo/cheers1/gen/go v0.0.0-20240224155919-ff8388ff8049 h1:TjdB
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20240224155919-ff8388ff8049/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20240224161043-892e1adeacc3 h1:FTAKLnFx4t6QBVapDQNAUicS7YpnTJAyCN5TScbRGqk=
 github.com/salazarhugo/cheers1/gen/go v0.0.0-20240224161043-892e1adeacc3/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
+github.com/salazarhugo/cheers1/gen/go v0.0.0-20240226123510-2d7873f34133 h1:QmmY4ZOveE9DesFthr0mgo+L8Ry4jx1MsODKakxoZEY=
+github.com/salazarhugo/cheers1/gen/go v0.0.0-20240226123510-2d7873f34133/go.mod h1:cn5+hAyh2RYmIVdyn+gSnHSLzF/bIqNRqbOW9CY732A=
 github.com/salazarhugo/cheers1/libs/utils v0.0.0-20231123150149-c737c1ea3ec7 h1:5nXa1YBlIukDDGe8UgvIXh2nZylh3tP0ZTO8edBnK4E=
 github.com/salazarhugo/cheers1/libs/utils v0.0.0-20231123150149-c737c1ea3ec7/go.mod h1:JinVMufY1fkueTrgFcTCvRntf1ybxQeXH23t8xInEO4=
+github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240226123510-2d7873f34133 h1:UOYw5lscc06OS9F8CF0V2+gk4tT59X4YerCes8QpSwY=
+github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240226123510-2d7873f34133/go.mod h1:mE3rNUbVpe3+HVAcjDmF6ipExkuC2LuZd6Nim2mob24=
+github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240226133650-7cd3a4639666 h1:LiWSOYCH8JIIl96ikMUZbiKL58zrEj6UexQneJQDw/Y=
+github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240226133650-7cd3a4639666/go.mod h1:mE3rNUbVpe3+HVAcjDmF6ipExkuC2LuZd6Nim2mob24=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.4.0/go.mod h1:YvHI0jy2hoMjB+UWwv71VJQ9isScKT/TqJzVSSt89Yw=
 github.com/stretchr/objx v0.5.0/go.mod h1:Yh+to48EsGEfYuaHDzXPcE3xhTkx73EhmCGUpEOglKo=

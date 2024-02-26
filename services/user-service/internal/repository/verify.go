@@ -2,8 +2,8 @@ package repository
 
 import (
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
+	"github.com/salazarhugo/cheers1/libs/utils/models"
 	"github.com/salazarhugo/cheers1/libs/utils/pubsub"
-	"github.com/salazarhugo/cheers1/services/user-service/internal/model"
 )
 
 func (p *userRepository) VerifyUser(
@@ -15,7 +15,7 @@ func (p *userRepository) VerifyUser(
 	err := db.
 		Table("users").
 		Where("UserId = ?", userID).
-		Updates(model.User{Verified: verified}).
+		Updates(models.User{Verified: verified}).
 		Error
 	if err != nil {
 		return err

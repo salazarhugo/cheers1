@@ -42,10 +42,18 @@ message Note {
   string username = 4;
   string picture = 5;
   int64 created = 6;
+  NoteType type =  7;
+}
+
+enum NoteType {
+  NOTHING = 0;
+  DRINKING = 1;
+  SEARCHING = 2;
 }
 
 message CreateNoteRequest {
   string text = 1;
+  NoteType type = 2;
 }
 
 message CreateNoteResponse {

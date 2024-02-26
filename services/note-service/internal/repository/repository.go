@@ -1,10 +1,9 @@
 package repository
 
 import (
-	"cloud.google.com/go/firestore"
-	"context"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/note/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"gorm.io/gorm"
 )
 
 type Repository interface {
@@ -21,22 +20,19 @@ type Repository interface {
 		userID string,
 	) error
 
-	ListNote(
+	FeedNote(
 		userID string,
+		page int,
+		pageSize int,
 	) ([]*note.Note, error)
 }
 
 type repository struct {
-	firestore *firestore.Client
+	spanner *gorm.DB
 }
 
 func NewRepository() Repository {
-	fire, err := utils.InitializeAppDefault().Firestore(context.Background())
-	if err != nil {
-		return nil
-	}
-
 	return &repository{
-		firestore: fire,
+		spanner: utils.GetSpanner(),
 	}
 }

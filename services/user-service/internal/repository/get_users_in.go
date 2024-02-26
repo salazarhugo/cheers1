@@ -1,15 +1,15 @@
 package repository
 
 import (
-	"github.com/salazarhugo/cheers1/services/user-service/internal/model"
+	"github.com/salazarhugo/cheers1/libs/utils/models"
 )
 
 func (p *userRepository) GetUsersIn(
 	userIDs []string,
-) ([]*model.User, error) {
+) ([]*models.User, error) {
 	db := p.spanner
 
-	var users []*model.User
+	var users []*models.User
 
 	result := db.
 		Where("username IN ?", userIDs).

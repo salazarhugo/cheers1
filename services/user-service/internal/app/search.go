@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/labstack/gommon/log"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
-	"github.com/salazarhugo/cheers1/services/user-service/internal/model"
+	"github.com/salazarhugo/cheers1/libs/utils/models"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -26,6 +26,6 @@ func (s *Server) SearchUser(
 	}
 
 	return &pb.SearchUserResponse{
-		Users: model.ToUserItemsPb(users),
+		Users: models.ToUserItemsPb(users),
 	}, nil
 }

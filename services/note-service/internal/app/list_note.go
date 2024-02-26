@@ -6,24 +6,24 @@ import (
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"log"
 )
 
 func (s *Server) ListFriendNote(
 	ctx context.Context,
 	request *note.ListFriendNoteRequest,
 ) (*note.ListFriendNoteResponse, error) {
-	userID, err := utils.GetUserId(ctx)
+	viewerID, err := utils.GetUserId(ctx)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to retrieve userID")
+		return nil, status.Error(codes.Internal, "failed to retrieve viewerID")
 	}
 
-	items, err := s.repository.ListNote(
-		userID,
+	items, err := s.repository.FeedNote(
+		viewerID,
+		1,
+		10,
 	)
 
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 

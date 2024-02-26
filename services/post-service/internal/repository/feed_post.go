@@ -37,7 +37,7 @@ func (p *postRepository) FeedPost(
 			likeCountQuery,
 			hasViewerLikedQuery,
 		).
-		Joins("JOIN users ON  posts.user_id = users.UserId").
+		Joins("JOIN users ON posts.user_id = users.UserId").
 		Joins("LEFT OUTER JOIN drinks ON posts.drink_id = drinks.DrinkId").
 		Where("posts.user_id IN ?", userIDs).
 		Order("posts.created_at DESC").

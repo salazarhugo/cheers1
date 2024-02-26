@@ -3,7 +3,7 @@ package repository
 import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	"github.com/salazarhugo/cheers1/libs/utils"
-	"github.com/salazarhugo/cheers1/services/friendship-service/internal/model"
+	"github.com/salazarhugo/cheers1/libs/utils/models"
 )
 
 func (r repository) ListFriendRequests(
@@ -15,12 +15,12 @@ func (r repository) ListFriendRequests(
 
 	limit, offset := utils.GetLimitAndOffsetPagination(page, pageSize)
 
-	users := make([]*model.User, 0)
+	users := make([]*models.User, 0)
 
 	err := db.
 		Table("friend_requests").
 		Select("users.*").
-		Joins("JOIN users ON friend_requests.user_id1 = users.id").
+		Joins("JOIN users ON friend_requests.user_id1 = users.UserId").
 		Where("user_id2 = ?", userId).
 		Limit(limit).
 		Offset(offset).
@@ -30,5 +30,5 @@ func (r repository) ListFriendRequests(
 		return nil, err
 	}
 
-	return model.ToUserItemsPb(users), nil
+	return models.ToUserItemsPb(users), nil
 }

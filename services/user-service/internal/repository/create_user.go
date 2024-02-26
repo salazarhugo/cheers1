@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/salazarhugo/cheers1/services/user-service/internal/model"
+	"github.com/salazarhugo/cheers1/libs/utils/models"
 )
 
 func (p *userRepository) CreateUser(
@@ -13,7 +13,7 @@ func (p *userRepository) CreateUser(
 ) (string, error) {
 	db := p.spanner
 
-	user := &model.User{}
+	user := &models.User{}
 	user.UserId = userID
 	user.Username = username
 	user.Name = name

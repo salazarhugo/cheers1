@@ -1,4 +1,4 @@
-package friendship_service
+package tests
 
 import (
 	"os"

@@ -1,14 +1,14 @@
 package repository
 
 import (
-	"github.com/salazarhugo/cheers1/services/user-service/internal/model"
+	"github.com/salazarhugo/cheers1/libs/utils/models"
 )
 
 func (p *userRepository) DeleteUser(
 	userID string,
 ) error {
 	db := p.spanner
-	result := db.Delete(&model.User{UserId: userID})
+	result := db.Delete(&models.User{UserId: userID})
 
 	if result.Error != nil {
 		return result.Error

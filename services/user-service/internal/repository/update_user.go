@@ -1,11 +1,11 @@
 package repository
 
 import (
-	"github.com/salazarhugo/cheers1/services/user-service/internal/model"
+	"github.com/salazarhugo/cheers1/libs/utils/models"
 )
 
 func (p *userRepository) UpdateUser(
-	user *model.User,
+	user *models.User,
 ) (string, error) {
 	db := p.spanner
 

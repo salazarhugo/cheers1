@@ -5,7 +5,7 @@ import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/user/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
-	"github.com/salazarhugo/cheers1/services/user-service/internal/model"
+	"github.com/salazarhugo/cheers1/libs/utils/models"
 	"gorm.io/gorm"
 )
 
@@ -20,11 +20,11 @@ type UserRepository interface {
 
 	GetUserById(
 		userID string,
-	) (model.User, error)
+	) (models.User, error)
 
 	GetUserByUsername(
 		username string,
-	) (model.User, error)
+	) (*models.User, error)
 
 	GetUserWithViewer(
 		viewerID string,
@@ -32,7 +32,7 @@ type UserRepository interface {
 	) (*pb.GetUserResponse, error)
 
 	UpdateUser(
-		user *model.User,
+		user *models.User,
 	) (string, error)
 
 	DeleteUser(
@@ -61,7 +61,7 @@ type UserRepository interface {
 
 	GetUsersIn(
 		userIDs []string,
-	) ([]*model.User, error)
+	) ([]*models.User, error)
 
 	GetUserItemsIn(
 		userID string,
@@ -70,7 +70,7 @@ type UserRepository interface {
 
 	SearchUser(
 		query string,
-	) ([]*model.User, error)
+	) ([]*models.User, error)
 
 	ListSuggestions(
 		userID string,

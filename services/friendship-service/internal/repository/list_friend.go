@@ -3,7 +3,7 @@ package repository
 import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	"github.com/salazarhugo/cheers1/libs/utils"
-	"github.com/salazarhugo/cheers1/services/friendship-service/internal/model"
+	"github.com/salazarhugo/cheers1/libs/utils/models"
 )
 
 func (r repository) ListFriend(
@@ -16,12 +16,32 @@ func (r repository) ListFriend(
 
 	limit, offset := utils.GetLimitAndOffsetPagination(page, pageSize)
 
-	users := make([]*model.UserItem, 0)
+	users := make([]*models.UserWithViewer, 0)
+
+	isFriendQuery := db.
+		Table("friendships").
+		Select("1").
+		Where("user_id1 = users.UserId AND user_id2 = ?", viewerID)
+
+	hasRequestedQuery := db.
+		Table("friend_requests").
+		Select("1").
+		Where("user_id1 = ? AND user_id2 = users.UserId", viewerID)
+
+	hasRequestedViewerQuery := db.
+		Table("friend_requests").
+		Select("1").
+		Where("user_id1 = users.UserId AND user_id2 = ?", viewerID)
 
 	err := db.
 		Table("friendships").
-		Select("users.*, EXISTS (SELECT 1 FROM friendships WHERE user_id1 = id AND user_id2 = ?) as friend, EXISTS (SELECT 1 FROM friend_requests WHERE user_id1 = ? AND user_id2 = users.id) AS requested, EXISTS (SELECT 1 FROM friend_requests WHERE user_id1 = users.id AND user_id2 = ?) AS has_requested_viewer", viewerID, viewerID, viewerID).
-		Joins("JOIN users ON friendships.user_id1 = users.id").
+		Select(
+			"users.*, EXISTS (?) as friend, EXISTS (?) AS requested, EXISTS (?) AS has_requested_viewer",
+			isFriendQuery,
+			hasRequestedQuery,
+			hasRequestedViewerQuery,
+		).
+		Joins("JOIN users ON friendships.user_id1 = users.UserId").
 		Where("user_id2 = ?", userId).
 		Limit(limit).
 		Offset(offset).
@@ -31,5 +51,5 @@ func (r repository) ListFriend(
 		return nil, err
 	}
 
-	return model.ToUserItemsPb2(users), nil
+	return models.ToUserItemsPb2(users), nil
 }

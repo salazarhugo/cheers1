@@ -1,21 +1,21 @@
 package repository
 
 import (
-	"github.com/salazarhugo/cheers1/services/user-service/internal/model"
+	"github.com/salazarhugo/cheers1/libs/utils/models"
 )
 
 func (p *userRepository) GetUserById(
 	userID string,
-) (model.User, error) {
+) (models.User, error) {
 	db := p.spanner
-	var user model.User
+	var user models.User
 
 	result := db.
 		Where("UserId = ?", userID).
 		Or("username = ?", userID).
 		First(&user)
 	if result.Error != nil {
-		return model.User{}, result.Error
+		return models.User{}, result.Error
 	}
 
 	return user, nil
