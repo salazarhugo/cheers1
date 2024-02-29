@@ -51,7 +51,9 @@ func (r repository) ListFriendLocation(
 		}
 
 		// Get the last updated timestamp
-		str, err := r.redis.HGet(ctx, keyLastUpdated,
+		str, err := r.redis.HGet(
+			ctx,
+			keyLastUpdated,
 			friend.Id,
 		).Result()
 		if err != nil {

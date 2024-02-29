@@ -20,7 +20,7 @@ func (u UserStatusItem) ToNotePb() *note.Note {
 		Created:  u.CreatedAt.Unix(),
 		Type:     ParseNoteType(u.Type),
 		Drink: &drink.Drink{
-			Id:   u.DrinkId,
+			Id:   u.DrinkId.StringVal,
 			Name: u.Name,
 			Icon: u.DrinkIcon,
 		},

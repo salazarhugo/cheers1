@@ -6,10 +6,9 @@ require (
 	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240226195724-1d13504a4536
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240226181803-3967a574bc8d
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240226201707-8c4a9842786b
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.8.4
-	golang.org/x/mod v0.12.0
 	google.golang.org/grpc v1.62.0
 	gorm.io/gorm v1.25.7
 )
@@ -86,4 +85,4 @@ require (
 
 //replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
 
-//replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils
+replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils

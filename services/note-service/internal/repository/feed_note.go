@@ -4,7 +4,6 @@ import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/note/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/libs/utils/mapper"
-	"github.com/salazarhugo/cheers1/services/note-service/internal/service"
 )
 
 func (r *repository) FeedNote(
@@ -15,7 +14,7 @@ func (r *repository) FeedNote(
 	db := r.spanner
 	limit, offset := utils.GetLimitAndOffsetPagination(page, pageSize)
 
-	friendIDs, err := service.ListFriends(userID)
+	friendIDs, err := r.ListFriendIds(userID)
 	if err != nil {
 		return nil, err
 	}
@@ -27,10 +26,11 @@ func (r *repository) FeedNote(
 
 	result := db.
 		Table("user_status").
-		Select("user_status.*, users.*, drinks.id as drink_id, drinks.name as drink_name, drinks.icon as drink_icon").
+		Select("user_status.*, users.*, drinks.DrinkId as drink_id, drinks.name as drink_name, drinks.icon as drink_icon").
 		Joins("JOIN users ON user_status.UserId = users.UserId").
-		Joins("JOIN drinks ON user_status.DrinkId = drinks.DrinkId").
+		Joins("LEFT OUTER JOIN drinks ON user_status.drink_id = drinks.DrinkId").
 		Where("user_status.UserId IN ?", friendIDs).
+		Where("TIMESTAMP_ADD(user_status.updated_at, INTERVAL 1 DAY) > CURRENT_TIMESTAMP()").
 		Limit(limit).
 		Offset(offset).
 		Scan(&notes)

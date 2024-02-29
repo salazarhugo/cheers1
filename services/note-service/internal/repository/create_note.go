@@ -1,32 +1,23 @@
 package repository
 
 import (
-	note2 "github.com/salazarhugo/cheers1/gen/go/cheers/note/v1"
-	"github.com/salazarhugo/cheers1/libs/utils/mapper"
-	"github.com/salazarhugo/cheers1/services/note-service/internal/service"
-	"time"
+	"github.com/google/uuid"
+	"github.com/salazarhugo/cheers1/libs/utils/models"
 )
 
 func (r *repository) CreateNote(
-	creatorID string,
-	text string,
+	note *models.UserStatus,
 ) (string, error) {
-	user, err := service.GetUser(creatorID)
-	if err != nil {
-		return "", err
+	db := r.spanner
+
+	note.UserStatusId = uuid.NewString()
+
+	result := db.
+		Table("user_status").
+		Create(&note)
+	if result.Error != nil {
+		return "", result.Error
 	}
 
-	note := &note2.Note{
-		UserId:   creatorID,
-		Text:     text,
-		Name:     user.Name,
-		Username: user.Username,
-		Picture:  user.Picture,
-		Created:  time.Now().Unix(),
-	}
-
-	m, err := mapper.ProtoToMap(note)
-	m["deleteAt"] = time.Now().AddDate(0, 0, 1)
-
-	return "", nil
+	return note.UserStatusId, nil
 }

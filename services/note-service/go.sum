@@ -158,8 +158,8 @@ github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a h1:n
 github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a/go.mod h1:OoyrE7E7Em/DgZ/UbFrXaPuUiQZv/VcbJsTuofpA9JY=
 github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a h1:TBgSOeX4eqxpmUYNYVMGVHy5peXZ0A6mMwpXnvBOo/0=
 github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a/go.mod h1:r9VVw/Y+1GW5JrqrRZLxVctRHwXEqB6DZEWHCgnx//k=
-github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240226181803-3967a574bc8d h1:ioKmPGkI2QXOGTF+z5KKXNcJSy/tQ6jCIIr272xQGPw=
-github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240226181803-3967a574bc8d/go.mod h1:ByiJfhYVuCspyH0Lt76CRtHtSOXzX84s8s31aaIWhSg=
+github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240226201707-8c4a9842786b h1:iEiohCd/ehNLgXiVhxPr6uYucUeC7fnnktL1JzxmdeQ=
+github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240226201707-8c4a9842786b/go.mod h1:9XZcp7kayFruyGNwikxlR4kTuY7aT2CKhwnL1+R5drI=
 github.com/shopspring/decimal v1.3.1 h1:2Usl1nmF/WZucqkFZhnfFYxxxu8LG21F6nPQBE5gKV8=
 github.com/shopspring/decimal v1.3.1/go.mod h1:DKyhrW/HYNuLGql+MJL6WCR6knT2jwCFRcu2hWCYk4o=
 github.com/sirupsen/logrus v1.9.3 h1:dueUQJ1C2q9oE3F7wvmSGAaVtTmUizReu6fjN8uqzbQ=
@@ -208,8 +208,6 @@ golang.org/x/lint v0.0.0-20190227174305-5b3e6a55c961/go.mod h1:wehouNa3lNwaWXcvx
 golang.org/x/lint v0.0.0-20190313153728-d0100b6bd8b3/go.mod h1:6SW0HCj/g11FgYtHlgUYUwCkIfeOF89ocIRzGO/8vkc=
 golang.org/x/mod v0.3.0/go.mod h1:s0Qsj1ACt9ePp/hMypM3fl4fZqREWJwdYDEqhRiZZUA=
 golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4/go.mod h1:jJ57K6gSWd91VN4djpZkiMVwK6gcyfeH4XE8wZrZaV4=
-golang.org/x/mod v0.12.0 h1:rmsUpXtvNzj340zd98LZ4KntptpfRHwpFOHG188oHXc=
-golang.org/x/mod v0.12.0/go.mod h1:iBbtSCu2XBx23ZKBPSOrRkjjQPZFPuis4dIYUhu/chs=
 golang.org/x/net v0.0.0-20180724234803-3673e40ba225/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
 golang.org/x/net v0.0.0-20180826012351-8a410e7b638d/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=
 golang.org/x/net v0.0.0-20180906233101-161cd47e91fd/go.mod h1:mL1N/T3taQHkDXs73rZJwtUhF3w3ftmwwsq0BUmARs4=

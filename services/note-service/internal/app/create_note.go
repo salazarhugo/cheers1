@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/note/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/services/note-service/internal/domain"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -17,32 +18,26 @@ func (s *Server) CreateNote(
 		return nil, status.Error(codes.Internal, "failed to retrieve userID")
 	}
 
-	if request.GetText() == "" {
-		return nil, status.Error(codes.InvalidArgument, "empty field: text")
+	params := domain.CreateNoteUseCaseParams{
+		UserID:   userID,
+		NoteType: request.GetType(),
+		Text:     request.Text,
+		DrinkID:  nil,
 	}
 
-	if len(request.GetText()) > 60 {
-		return nil, status.Error(codes.InvalidArgument, "text must be less or equal to 60 characters")
-	}
-
-	noteID, err := s.repository.CreateNote(
-		userID,
-		request.GetText(),
-	)
-
+	noteID, err := s.domain.CreateNoteUseCase(params)
 	if err != nil {
 		s.logger.Error(err)
 		return nil, err
 	}
 
-	res, err := s.repository.GetNote(noteID)
-
+	_, err = s.repository.GetNote(noteID)
 	if err != nil {
 		s.logger.Error(err)
 		return nil, err
 	}
 
 	return &note.CreateNoteResponse{
-		Note: res,
+		Note: nil,
 	}, nil
 }

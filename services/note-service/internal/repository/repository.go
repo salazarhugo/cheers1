@@ -3,18 +3,18 @@ package repository
 import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/note/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/models"
 	"gorm.io/gorm"
 )
 
 type Repository interface {
 	CreateNote(
-		userID string,
-		text string,
+		status *models.UserStatus,
 	) (string, error)
 
 	GetNote(
 		userID string,
-	) (*note.Note, error)
+	) (*models.UserStatus, error)
 
 	DeleteNote(
 		userID string,
@@ -25,6 +25,10 @@ type Repository interface {
 		page int,
 		pageSize int,
 	) ([]*note.Note, error)
+
+	ListFriendIds(
+		userID string,
+	) ([]string, error)
 }
 
 type repository struct {

@@ -1,6 +1,7 @@
 package models
 
 import (
+	"cloud.google.com/go/spanner"
 	"time"
 )
 
@@ -12,7 +13,7 @@ type UserStatusItem struct {
 	UpdatedAt    time.Time
 	Text         string
 	Type         string
-	DrinkId      string
+	DrinkId      spanner.NullString
 	DrinkName    string
 	DrinkIcon    string
 	Name         string

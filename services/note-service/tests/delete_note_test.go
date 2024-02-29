@@ -6,11 +6,13 @@ import (
 	"testing"
 )
 
-func TestFeedNote(t *testing.T) {
-	//Create a mock repository
+func TestDeleteNote(t *testing.T) {
 	repo := repository.NewRepository()
 
 	note := CreateRandomNote(t)
+
+	err := repo.DeleteNote(note.UserId)
+	require.NoError(t, err)
 
 	notes, err := repo.FeedNote(
 		note.UserId,
@@ -18,5 +20,5 @@ func TestFeedNote(t *testing.T) {
 		10,
 	)
 	require.NoError(t, err)
-	require.Len(t, notes, 1)
+	require.Empty(t, notes)
 }

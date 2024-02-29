@@ -13,14 +13,14 @@ func (s *Server) ListFriendLocation(
 	ctx context.Context,
 	request *location.ListFriendLocationRequest,
 ) (*location.ListFriendLocationResponse, error) {
-	userID, err := utils.GetUserId(ctx)
+	viewerID, err := utils.GetUserId(ctx)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to retrieve userID")
+		return nil, status.Error(codes.Internal, "failed to retrieve viewerID")
 	}
 
 	items, err := s.repository.ListFriendLocation(
 		ctx,
-		userID,
+		viewerID,
 	)
 
 	if err != nil {
