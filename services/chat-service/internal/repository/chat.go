@@ -28,6 +28,8 @@ type ChatRepository interface {
 
 	DeleteRoom(userID string, roomID string) error
 
+	DeleteRooms(userID string) error
+
 	GetUserNode(userID string) (*models.User, error)
 
 	ListRoomMessages(

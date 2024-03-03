@@ -31,7 +31,7 @@ func CreateRandomUser(t *testing.T) *models.User {
 
 	// CLEANUP
 	t.Cleanup(func() {
-		err = DeleteUser(db, user.UserId)
+		err = DeleteUser(db, user.UserId, true)
 		require.NoError(t, err)
 	})
 
