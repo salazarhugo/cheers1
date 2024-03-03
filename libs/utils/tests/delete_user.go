@@ -20,9 +20,9 @@ func DeleteUser(
 
 	if publishEvent {
 		err := pubsub.PublishProtoWithBinaryEncoding("user-topic", &pb.UserEvent{
-			Event: &pb.UserEvent_Create{
-				Create: &pb.CreateUser{
-					User: response.User,
+			Event: &pb.UserEvent_Delete{
+				Delete: &pb.DeleteUser{
+					UserId: userID,
 				},
 			},
 		})
