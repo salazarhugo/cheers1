@@ -39,9 +39,11 @@ func (s *Server) SendMessage(
 func CheckPermissions() error {
 	//isMember := roomCache.IsMember(userId, msg.Room.Id)
 	isMember := true
+
 	if isMember == false {
 		log.Println("Can't access rooms you are not member of")
 		return status.Error(codes.PermissionDenied, "you are not member of this group chat")
 	}
+
 	return nil
 }

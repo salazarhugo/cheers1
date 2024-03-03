@@ -13,18 +13,28 @@ type CreateNoteUseCaseParams struct {
 	UserID   string
 	NoteType note.NoteType
 	Text     string
-	DrinkID  *string
+	DrinkID  string
 }
 
 func (r *domain) CreateNoteUseCase(
 	params CreateNoteUseCaseParams,
 ) (string, error) {
 
+	userStatus := &models.UserStatus{
+		UserId:       params.UserID,
+		UserStatusId: uuid.NewString(),
+		Text:         params.Text,
+		Type:         params.NoteType.String(),
+		DrinkId:      spanner.NullString{Valid: false},
+	}
+
 	switch params.NoteType {
 	case note.NoteType_DRINKING:
-		if params.DrinkID == nil {
+		if params.DrinkID == "" {
 			return "", status.Error(codes.InvalidArgument, "missing drink")
 		}
+		userStatus.DrinkId = spanner.NullString{StringVal: params.DrinkID, Valid: true}
+
 	case note.NoteType_SEARCHING:
 	case note.NoteType_NOTHING:
 		if params.Text == "" {
@@ -39,17 +49,5 @@ func (r *domain) CreateNoteUseCase(
 		return "", status.Error(codes.InvalidArgument, "unknown note type")
 	}
 
-	note := &models.UserStatus{
-		UserId:       params.UserID,
-		UserStatusId: uuid.NewString(),
-		Text:         params.Text,
-		Type:         params.NoteType.String(),
-		DrinkId:      spanner.NullString{Valid: false},
-	}
-
-	if params.DrinkID != nil {
-		note.DrinkId = spanner.NullString{StringVal: *params.DrinkID, Valid: true}
-	}
-
-	return r.repository.CreateNote(note)
+	return r.repository.CreateNote(userStatus)
 }

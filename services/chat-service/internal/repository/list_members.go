@@ -10,7 +10,7 @@ func (c chatRepository) ListMembers(
 	context context.Context,
 	request *pb.ListMembersRequest,
 ) ([]*user.UserItem, error) {
-	membersIDs := c.cache.GetRoomMembers(request.RoomId)
+	membersIDs, err := c.cache.GetRoomMembers(request.RoomId)
 
 	items, err := c.cache.ListUser(membersIDs)
 	if err != nil {

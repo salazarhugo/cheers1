@@ -21,23 +21,23 @@ func (s *Server) CreateNote(
 	params := domain.CreateNoteUseCaseParams{
 		UserID:   userID,
 		NoteType: request.GetType(),
-		Text:     request.Text,
-		DrinkID:  nil,
+		Text:     request.GetText(),
+		DrinkID:  request.GetDrinkId(),
 	}
 
-	noteID, err := s.domain.CreateNoteUseCase(params)
+	_, err = s.domain.CreateNoteUseCase(params)
 	if err != nil {
 		s.logger.Error(err)
 		return nil, err
 	}
 
-	_, err = s.repository.GetNote(noteID)
+	noteItem, err := s.repository.GetNoteItem(userID)
 	if err != nil {
 		s.logger.Error(err)
 		return nil, err
 	}
 
 	return &note.CreateNoteResponse{
-		Note: nil,
+		Note: noteItem.ToNotePb(),
 	}, nil
 }

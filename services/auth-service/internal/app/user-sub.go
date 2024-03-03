@@ -12,11 +12,8 @@ func UserSub(w http.ResponseWriter, r *http.Request) {
 	event := &user.UserEvent{}
 	err := pubsub.UnmarshalPubSubMessage(r, event)
 	if err != nil {
-		log.Fatal(err)
 		return
 	}
-
-	log.Println(event)
 
 	repo := repository.NewRepository()
 

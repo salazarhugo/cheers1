@@ -1,4 +1,4 @@
-package cache
+package redisdb
 
 import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"

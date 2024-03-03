@@ -3,6 +3,7 @@ package repository
 import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/note/v1"
 	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/mapper"
 	"github.com/salazarhugo/cheers1/libs/utils/models"
 	"gorm.io/gorm"
 )
@@ -12,9 +13,9 @@ type Repository interface {
 		status *models.UserStatus,
 	) (string, error)
 
-	GetNote(
+	GetNoteItem(
 		userID string,
-	) (*models.UserStatus, error)
+	) (*mapper.UserStatusItem, error)
 
 	DeleteNote(
 		userID string,

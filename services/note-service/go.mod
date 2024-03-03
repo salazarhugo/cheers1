@@ -3,10 +3,12 @@ module github.com/salazarhugo/cheers1/services/note-service
 go 1.21
 
 require (
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240226195724-1d13504a4536
+	cloud.google.com/go/spanner v1.57.0
+	github.com/google/uuid v1.6.0
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240229191052-da375a84c5d8
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221114163206-2897b5f5263a
-	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240226201707-8c4a9842786b
+	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240229191052-da375a84c5d8
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.8.4
 	google.golang.org/grpc v1.62.0
@@ -21,7 +23,6 @@ require (
 	cloud.google.com/go/iam v1.1.6 // indirect
 	cloud.google.com/go/longrunning v0.5.5 // indirect
 	cloud.google.com/go/profiler v0.4.0 // indirect
-	cloud.google.com/go/spanner v1.57.0 // indirect
 	cloud.google.com/go/storage v1.38.0 // indirect
 	firebase.google.com/go/v4 v4.13.0 // indirect
 	github.com/MicahParks/keyfunc v1.9.0 // indirect
@@ -40,7 +41,6 @@ require (
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/pprof v0.0.0-20240225044709-fd706174c886 // indirect
 	github.com/google/s2a-go v0.1.7 // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.2 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.2 // indirect
 	github.com/googleapis/go-gorm-spanner v1.1.0 // indirect
@@ -85,4 +85,4 @@ require (
 
 //replace github.com/salazarhugo/cheers1/gen/go => ../../gen/go
 
-replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils
+//replace github.com/salazarhugo/cheers1/libs/utils => ../../libs/utils

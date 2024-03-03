@@ -7,8 +7,8 @@ import (
 
 // UserStatusItem model
 type UserStatusItem struct {
-	UserId       string `gorm:"primarykey;column:UserId"`
-	UserStatusId string `gorm:"primarykey;column:UserStatusId"`
+	UserId       string `gorm:"primaryKey;column:UserId"`
+	UserStatusId string `gorm:"primaryKey;column:UserStatusId"`
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 	Text         string

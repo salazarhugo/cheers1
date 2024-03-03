@@ -6,7 +6,10 @@ import (
 	"github.com/go-redis/redis/v9"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
-	"github.com/salazarhugo/cheers1/services/chat-service/cache"
+	"github.com/salazarhugo/cheers1/libs/utils"
+	"github.com/salazarhugo/cheers1/libs/utils/models"
+	"github.com/salazarhugo/cheers1/services/chat-service/internal/redisdb"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -25,7 +28,7 @@ type ChatRepository interface {
 
 	DeleteRoom(userID string, roomID string) error
 
-	UpdateUser(user *user.User) error
+	GetUserNode(userID string) (*models.User, error)
 
 	ListRoomMessages(
 		roomID string,
@@ -49,8 +52,9 @@ type ChatRepository interface {
 }
 
 type chatRepository struct {
-	cache  cache.RoomCache
-	pubsub *pubsub.Client
+	cache   redisdb.RoomCache
+	pubsub  *pubsub.Client
+	spanner *gorm.DB
 }
 
 func NewChatRepository() ChatRepository {
@@ -59,7 +63,7 @@ func NewChatRepository() ChatRepository {
 		Password: "mBiW18GNIgPzQTbBMDEz71UVsAcNDOYF",
 		DB:       0,
 	})
-	cache := cache.NewCache(
+	cache := redisdb.NewCache(
 		time.Duration(time.Duration.Hours(1)),
 		client,
 	)
@@ -69,7 +73,8 @@ func NewChatRepository() ChatRepository {
 	}
 
 	return &chatRepository{
-		cache:  cache,
-		pubsub: pubsub,
+		cache:   cache,
+		pubsub:  pubsub,
+		spanner: utils.GetSpanner(),
 	}
 }

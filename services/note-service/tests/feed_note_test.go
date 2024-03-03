@@ -19,4 +19,5 @@ func TestFeedNote(t *testing.T) {
 	)
 	require.NoError(t, err)
 	require.Len(t, notes, 1)
+	t.Log(notes[0])
 }

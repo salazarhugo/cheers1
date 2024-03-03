@@ -1,4 +1,4 @@
-package cache
+package redisdb
 
 import (
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"

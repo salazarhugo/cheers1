@@ -4,6 +4,9 @@ run:
 deploy:
 	./deploy.sh
 
+test:
+	go test -v -cover ./tests
+
 clean:
 	rm -rf pkg
 
