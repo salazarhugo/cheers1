@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"github.com/go-redis/redis/v9"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
 	"github.com/salazarhugo/cheers1/services/chat-service/internal/repository"
 	"google.golang.org/api/chat/v1"
@@ -15,8 +16,10 @@ type Server struct {
 	channel        map[string][]chan *chat.Message
 }
 
-func NewServer() *Server {
-	chatRepository := repository.NewChatRepository()
+func NewServer(
+	redisClient *redis.Client,
+) *Server {
+	chatRepository := repository.NewChatRepository(redisClient)
 
 	return &Server{
 		UnimplementedChatServiceServer: pb.UnimplementedChatServiceServer{},

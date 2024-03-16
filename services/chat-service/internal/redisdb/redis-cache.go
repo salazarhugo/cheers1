@@ -9,6 +9,8 @@ import (
 const (
 	keyRoomUsers           = "roomUsers"
 	keyRoom                = "room"
+	keyLastRead            = "roomLastRead"
+	keyUnreadCount         = "roomUnreadCount"
 	keyRoomSeen            = "roomSeen"
 	keyRoomMessages        = "roomMessages"
 	keyRoomMembers         = "roomMembers"
@@ -109,6 +111,14 @@ func getKeyRoomMessages(roomUUID string) string {
 
 func getKeyRoom(roomUUID string) string {
 	return fmt.Sprintf("%s:%s", keyRoom, roomUUID)
+}
+
+func getKeyLastRead(roomUUID string, userID string) string {
+	return fmt.Sprintf("%s:%s:%s", keyLastRead, roomUUID, userID)
+}
+
+func getKeyUnreadCount(roomUUID string, userID string) string {
+	return fmt.Sprintf("%s:%s:%s", keyUnreadCount, roomUUID, userID)
 }
 
 func getDirectRoomId(userId1 string, userId2 string) string {

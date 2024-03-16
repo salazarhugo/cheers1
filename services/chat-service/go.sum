@@ -173,8 +173,8 @@ github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a h1:n
 github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a/go.mod h1:OoyrE7E7Em/DgZ/UbFrXaPuUiQZv/VcbJsTuofpA9JY=
 github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221022084305-122f971a4fa0 h1:6CfFlixNWTmxlmbiIk0myyBlS6OaYh1nmTWQljBsyUk=
 github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221022084305-122f971a4fa0/go.mod h1:r9VVw/Y+1GW5JrqrRZLxVctRHwXEqB6DZEWHCgnx//k=
-github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240303191306-e3c50d4d3dd0 h1:d9M6ihd/Ac1RKqEdZghunsbZBZdnPHLZ/Z83dVlxnhY=
-github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240303191306-e3c50d4d3dd0/go.mod h1:9XZcp7kayFruyGNwikxlR4kTuY7aT2CKhwnL1+R5drI=
+github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240303193140-16fe5ab97d20 h1:5JIL1MXJeBUoS+RhbnlXy2TN0EJQu0uhGcFkwSq7by0=
+github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240303193140-16fe5ab97d20/go.mod h1:qidtL5PSBaeGoYUCzuCqbMoN2LnzTAo82g/UdRueUrQ=
 github.com/shopspring/decimal v1.3.1 h1:2Usl1nmF/WZucqkFZhnfFYxxxu8LG21F6nPQBE5gKV8=
 github.com/shopspring/decimal v1.3.1/go.mod h1:DKyhrW/HYNuLGql+MJL6WCR6knT2jwCFRcu2hWCYk4o=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=

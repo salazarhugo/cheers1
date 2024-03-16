@@ -1,5 +1,5 @@
 run:
-	cd cmd/app; go run main.go
+	cd cmd/app; go run main.go listen_pubsub.go verifiy_jwt.go
 
 deploy:
 	./deploy.sh

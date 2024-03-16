@@ -3,15 +3,14 @@ package redisdb
 import (
 	"context"
 	json2 "encoding/json"
-	pb "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
-	"strings"
+	"github.com/salazarhugo/cheers1/services/chat-service/internal/models"
 )
 
-func (cache *redisCache) ListMessage(
+func (cache *redisCache) ListChatMessage(
 	roomId string,
 	offset int,
 	limit int,
-) []*pb.Message {
+) ([]*models.ChatMessage, error) {
 	client := cache.client
 
 	values, err := client.ZRevRange(
@@ -23,22 +22,17 @@ func (cache *redisCache) ListMessage(
 	if err != nil {
 		panic(err)
 	}
-	var messages []*pb.Message
+	var messages []*models.ChatMessage
 
-	for i := range values {
-		message := &pb.Message{}
-		dec := json2.NewDecoder(strings.NewReader(values[i]))
-		err := dec.Decode(message)
+	for _, msg := range values {
+		chatMsg := &models.ChatMessage{}
+		err := json2.Unmarshal([]byte(msg), chatMsg)
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
-		item, _ := cache.GetUserItem(message.GetSenderId())
-		message.SenderName = item.GetName()
-		message.SenderPicture = item.GetPicture()
-		message.SenderUsername = item.GetUsername()
-		message.Status = pb.Message_DELIVERED
-		messages = append(messages, message)
+		//chatMsg.IsSender =
+		messages = append(messages, chatMsg)
 	}
 
-	return messages
+	return messages, nil
 }

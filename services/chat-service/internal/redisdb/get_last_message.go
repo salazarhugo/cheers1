@@ -3,7 +3,6 @@ package redisdb
 import (
 	"context"
 	json2 "encoding/json"
-	"errors"
 	"github.com/go-redis/redis/v9"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
 	"strings"
@@ -24,7 +23,7 @@ func getLatestMessage(
 		}).Result()
 
 	if len(lastMessage) == 0 {
-		return nil, errors.New("no latest message")
+		return nil, nil
 	}
 
 	message := &pb.Message{}

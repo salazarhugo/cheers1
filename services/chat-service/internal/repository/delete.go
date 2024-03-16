@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"github.com/salazarhugo/cheers1/services/chat-service/internal/models"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -14,15 +15,12 @@ func (c chatRepository) DeleteRoom(
 		return err
 	}
 
-	var isAdmin bool = false
-	for _, admin := range room.Admins {
-		if admin == userID {
-			isAdmin = true
-			break
-		}
+	isAdmin, err := c.cache.IsAdmin(userID, roomID)
+	if err != nil {
+		return err
 	}
 
-	if isAdmin != true {
+	if room.Type == models.ChatType_GROUP && isAdmin != true {
 		return status.Error(codes.PermissionDenied, "you are not group admin")
 	}
 

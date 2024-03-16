@@ -31,9 +31,11 @@ func (s *Server) SendMessage(
 		request.GetReplyTo(),
 	)
 
-	msg.Status = chat.Message_SENT
+	//msg.Status = chat.Message_SENT
 
-	return &chat.SendMessageResponse{Message: msg}, nil
+	return &chat.SendMessageResponse{
+		Message: msg.ToChatMessagePb(),
+	}, nil
 }
 
 func CheckPermissions() error {

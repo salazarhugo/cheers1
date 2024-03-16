@@ -11,13 +11,13 @@ import (
 func TestSendMessage(t *testing.T) {
 	user1 := tests.CreateRandomUser(t)
 	user2 := tests.CreateRandomUser(t)
-	repo := repository.NewChatRepository()
+	repo := repository.NewChatRepository(nil)
 
 	room, err := repo.CreateRoom("yo", []string{user1.UserId, user2.UserId})
 	require.NoError(t, err)
 	t.Log(room)
 
-	message, err := repo.SendMessage(
+	_, err = repo.SendMessage(
 		uuid.NewString(),
 		user1.UserId,
 		room.Id,
@@ -25,8 +25,7 @@ func TestSendMessage(t *testing.T) {
 		"",
 	)
 	require.NoError(t, err)
-	t.Log(message)
 
-	err = repo.DeleteRoom(user1.UserId, room.Id)
+	err = repo.DeleteRooms(user1.UserId)
 	require.NoError(t, err)
 }

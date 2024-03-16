@@ -14,12 +14,30 @@ func (c chatRepository) ListRoomMessages(
 	limit, offset := utils.GetLimitAndOffsetPagination(page, pageSize)
 	items := make([]*chat.MessageItem, 0)
 
-	messages := c.cache.ListMessage(roomID, offset, limit)
+	messages, err := c.cache.ListChatMessage(
+		roomID,
+		offset,
+		limit,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	otherUserID, err := c.cache.GetOtherUserId(roomID, viewerID)
+	lastReadAt, err := c.cache.GetLastRead(roomID, otherUserID)
+
 	for _, msg := range messages {
-		msg.Status = chat.Message_DELIVERED
+		msgPb := msg.ToChatMessagePb()
+
+		if lastReadAt >= msg.CreatedAt {
+			msgPb.Status = chat.Message_READ
+		} else {
+			msgPb.Status = chat.Message_DELIVERED
+		}
+
 		items = append(items, &chat.MessageItem{
-			Message: msg,
-			Sender:  viewerID == msg.SenderId,
+			Message: msgPb,
+			Sender:  viewerID == msg.UserId,
 			Liked:   false,
 		})
 	}

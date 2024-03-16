@@ -8,8 +8,10 @@ import (
 	"github.com/salazarhugo/cheers1/gen/go/cheers/type/user"
 	"github.com/salazarhugo/cheers1/libs/utils"
 	"github.com/salazarhugo/cheers1/libs/utils/models"
+	chatmodels "github.com/salazarhugo/cheers1/services/chat-service/internal/models"
 	"github.com/salazarhugo/cheers1/services/chat-service/internal/redisdb"
 	"gorm.io/gorm"
+	"os"
 	"time"
 )
 
@@ -24,13 +26,26 @@ type ChatRepository interface {
 		server pb.ChatService_JoinRoomServer,
 	) error
 
-	GetInbox(userID string) ([]*pb.RoomWithMessages, error)
+	GetInbox(
+		userID string,
+	) ([]*pb.RoomWithMessages, error)
 
-	DeleteRoom(userID string, roomID string) error
+	DeleteRoom(
+		userID string,
+		roomID string,
+	) error
 
-	DeleteRooms(userID string) error
+	DeleteRooms(
+		userID string,
+	) error
 
-	GetUserNode(userID string) (*models.User, error)
+	GetUserNode(
+		userID string,
+	) (*models.User, error)
+
+	GetUsersNode(
+		userIDs []string,
+	) ([]*models.User, error)
 
 	ListRoomMessages(
 		roomID string,
@@ -50,7 +65,7 @@ type ChatRepository interface {
 		roomId string,
 		text string,
 		replyToMessageId string,
-	) (*pb.Message, error)
+	) (*chatmodels.ChatMessage, error)
 }
 
 type chatRepository struct {
@@ -59,17 +74,26 @@ type chatRepository struct {
 	spanner *gorm.DB
 }
 
-func NewChatRepository() ChatRepository {
-	client := redis.NewClient(&redis.Options{
-		Addr:     "redis-18624.c228.us-central1-1.gce.cloud.redislabs.com:18624",
-		Password: "mBiW18GNIgPzQTbBMDEz71UVsAcNDOYF",
-		DB:       0,
-	})
+func NewChatRepository(
+	redisClient *redis.Client,
+) ChatRepository {
+	if redisClient == nil {
+		redisClient = redis.NewClient(&redis.Options{
+			Addr:     os.Getenv("DB_ENDPOINT"),
+			Password: os.Getenv("DB_PASSWORD"),
+			DB:       0,
+		})
+	}
+
 	cache := redisdb.NewCache(
 		time.Duration(time.Duration.Hours(1)),
-		client,
+		redisClient,
 	)
-	pubsub, err := pubsub.NewClient(context.Background(), "cheers-a275e")
+
+	pubsub, err := pubsub.NewClient(
+		context.Background(),
+		"cheers-a275e",
+	)
 	if err != nil {
 		pubsub = nil
 	}

@@ -14,13 +14,24 @@ func (c chatRepository) GetInbox(
 
 	var inbox []*pb.RoomWithMessages
 	for _, room := range rooms {
-		messages, err := c.ListRoomMessages(room.Id, viewerID, 1, 10)
+		messages, err := c.ListRoomMessages(
+			room.Id,
+			viewerID,
+			1,
+			10,
+		)
 		if err != nil {
 			continue
 		}
 
+		userID, err := c.cache.GetOtherUserId(room.Id, viewerID)
+		user, err := c.GetUserNode(userID)
+		if err != nil {
+			return nil, err
+		}
+
 		inbox = append(inbox, &pb.RoomWithMessages{
-			Room:     room,
+			Room:     room.ToRoomPb(user),
 			Messages: messages,
 		})
 	}

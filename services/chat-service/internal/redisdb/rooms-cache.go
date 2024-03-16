@@ -10,21 +10,49 @@ import (
 )
 
 type RoomCache interface {
-	SetMessage(msg *pb.Message) error
-	ListMessage(
+	CreateMessage(
+		msg *models.ChatMessage,
+	) error
+
+	ListChatMessage(
 		roomId string,
 		offset int,
 		limit int,
-	) []*pb.Message
+	) ([]*models.ChatMessage, error)
+
+	GetLastRead(
+		roomID string,
+		userID string,
+	) (int64, error)
+
+	SetLastRead(
+		roomID string,
+		userID string,
+		timestamp int64,
+	) error
+
+	GetUnreadCount(
+		roomID string,
+		userID string,
+	) (int64, error)
+
+	SetUnreadCount(
+		roomID string,
+		userID string,
+		count int64,
+	) error
+
 	LikeMessage(roomId string, messageId string)
 	UnlikeMessage(roomId string, messageId string)
 	CreateGroup(name string, UUIDs []string) (*models.Chat, error)
 	GetOrCreateDirectRoom(userId string, otherUserId string) (*models.Chat, error)
 	LeaveRoom(userId string, roomId string)
 	IsMember(userId string, roomId string) (bool, error)
+	IsAdmin(userId string, roomId string) (bool, error)
 	DeleteRoom(roomId string) error
 	GetRoomWithId(userId string, roomId string) (*models.Chat, error)
-	ListRooms(userID string) ([]*pb.Room, error)
+	ListRooms(userID string) ([]*models.Chat, error)
+	ListChatIds(userID string) ([]string, error)
 	GetRoomMembers(roomId string) ([]string, error)
 	GetUserItem(userId string) (*user.UserItem, error)
 	ListUser(userIds []string) ([]*user.UserItem, error)

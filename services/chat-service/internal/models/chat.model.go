@@ -10,6 +10,7 @@ type Chat struct {
 	Type            ChatType `json:"type"`
 	Status          string   `json:"status"`
 	Admins          []string `json:"admins"`
+	UnreadCount     int64    `json:"unread_count"`
 }
 
 type ChatType int32

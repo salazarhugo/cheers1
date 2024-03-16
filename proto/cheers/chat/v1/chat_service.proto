@@ -227,6 +227,7 @@ message Room {
   int64 last_message_time = 15;
   bool last_message_seen = 17;
   bool archived = 16;
+  int64 unread_message_count = 18;
 }
 
 enum MessageType {

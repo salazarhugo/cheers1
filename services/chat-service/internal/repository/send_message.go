@@ -1,8 +1,10 @@
 package repository
 
 import (
+	"context"
+	"encoding/json"
 	"errors"
-	"github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
+	"github.com/salazarhugo/cheers1/services/chat-service/internal/models"
 	"log"
 	"strings"
 	"time"
@@ -14,15 +16,15 @@ func (c chatRepository) SendMessage(
 	roomID string,
 	text string,
 	replyToMessageId string,
-) (*chat.Message, error) {
-	//ctx := context.Background()
+) (*models.ChatMessage, error) {
+	ctx := context.Background()
 
-	msg := &chat.Message{
-		Id:         messageID,
-		Text:       text,
-		RoomId:     roomID,
-		SenderId:   senderID,
-		CreateTime: time.Now().Unix(),
+	msg := &models.ChatMessage{
+		Id:        messageID,
+		Text:      text,
+		ChatId:    roomID,
+		UserId:    senderID,
+		CreatedAt: time.Now().UnixMilli(),
 	}
 
 	err := ValidateMessage(msg)
@@ -30,56 +32,32 @@ func (c chatRepository) SendMessage(
 		return nil, err
 	}
 
-	// Store message in cache
-	err = c.cache.SetMessage(msg)
+	// Store chat message into redis
+	err = c.cache.CreateMessage(msg)
 	if err != nil {
 		return nil, err
 	}
 
-	//bytes, err := protojson.Marshal(msg)
+	websocketMsg := &models.WebSocketMessage{
+		Type:        models.MESSAGE,
+		UserId:      senderID,
+		ChatMessage: *msg,
+	}
+
+	bytes, err := json.Marshal(websocketMsg)
+
+	err = c.cache.SetLastRead(msg.ChatId, senderID, msg.CreatedAt)
+
 	// Redis Pub/Sub
-	//c.cache.Publish(ctx, msg.RoomId, bytes)
-
-	// Google Cloud Pub/Sub
-	//user, err := c.GetUserNode(msg.SenderId)
-	//if err != nil {
-	//	return nil, err
-	//}
-
-	//membersIds, err := c.cache.GetRoomMembers(msg.RoomId)
-	//if err != nil {
-	//	return nil, err
-	//}
-
-	//members, err := c.cache.ListUser(membersIds)
-	//if err != nil {
-	//	return nil, err
-	//}
-	//
-	//room, err := c.cache.GetRoomWithId(senderID, roomID)
-	//if err != nil {
-	//	return nil, err
-	//}
-
-	//err = pubsub.PublishProtoWithBinaryEncoding(os.Getenv("EVENT_BUS_TOPIC"), &chat.ChatEvent{
-	//	Event: &chat.ChatEvent_Create{
-	//		Create: &chat.CreateMessage{
-	//			Message: msg,
-	//			Sender:  nil,
-	//			Members: members,
-	//			Room:    room.ToRoomPb(user),
-	//		},
-	//	},
-	//})
-
+	err = c.cache.Publish(ctx, msg.ChatId, string(bytes)).Err()
 	if err != nil {
 		log.Println(err)
 	}
 
-	return msg, err
+	return msg, nil
 }
 
-func ValidateMessage(msg *chat.Message) error {
+func ValidateMessage(msg *models.ChatMessage) error {
 	if msg == nil {
 		return errors.New("nil message")
 	}

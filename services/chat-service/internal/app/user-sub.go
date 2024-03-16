@@ -14,7 +14,7 @@ func UserSub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	repo := repository.NewChatRepository()
+	repo := repository.NewChatRepository(nil)
 
 	switch event := event.Event.(type) {
 	case *user.UserEvent_Delete:

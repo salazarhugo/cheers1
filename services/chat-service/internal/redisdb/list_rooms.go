@@ -1,29 +1,24 @@
 package redisdb
 
 import (
-	"context"
-	pb "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
+	"github.com/salazarhugo/cheers1/services/chat-service/internal/models"
 )
 
-func (cache *redisCache) ListRooms(userId string) ([]*pb.Room, error) {
-	client := cache.client
-	values, err := client.SMembers(
-		context.Background(),
-		getKeyUserRooms(userId),
-	).Result()
+func (cache *redisCache) ListRooms(userId string) ([]*models.Chat, error) {
+	chatIDs, err := cache.ListChatIds(userId)
 	if err != nil {
 		return nil, err
 	}
 
-	var rooms []*pb.Room
-	for _, roomId := range values {
-		room, err := cache.GetRoomWithId(userId, roomId)
+	var chats []*models.Chat
+	for _, chatID := range chatIDs {
+		room, err := cache.GetRoomWithId(userId, chatID)
 		if err != nil {
 			return nil, err
 		}
 
-		rooms = append(rooms, room.ToRoomPb(nil))
+		chats = append(chats, room)
 	}
 
-	return rooms, nil
+	return chats, nil
 }

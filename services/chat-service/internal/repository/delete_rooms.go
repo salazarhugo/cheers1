@@ -3,13 +3,13 @@ package repository
 func (c chatRepository) DeleteRooms(
 	userID string,
 ) error {
-	rooms, err := c.cache.ListRooms(userID)
+	chatIDs, err := c.cache.ListChatIds(userID)
 	if err != nil {
 		return err
 	}
 
-	for _, room := range rooms {
-		err := c.DeleteRoom(userID, room.Id)
+	for _, chatID := range chatIDs {
+		err := c.DeleteRoom(userID, chatID)
 		if err != nil {
 			return err
 		}

@@ -36,12 +36,15 @@ func (cache *redisCache) GetRoomWithId(
 
 	otherUserId, err := cache.GetOtherUserId(roomId, userId)
 	lastMessage, err := getLatestMessage(client, roomId)
+	unreadCount, err := cache.GetUnreadCount(roomId, userId)
 
 	if lastMessage != nil {
 		room.LastMessageText = lastMessage.Text
 		room.LastMessageTime = lastMessage.CreateTime
 		room.LastMessageType = lastMessage.Type.String()
 	}
+
+	room.UnreadCount = unreadCount
 
 	status, err := cache.GetRoomStatus(roomId, userId, otherUserId)
 	room.Status = status.String()

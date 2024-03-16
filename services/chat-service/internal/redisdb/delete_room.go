@@ -14,6 +14,8 @@ func (cache *redisCache) DeleteRoom(roomId string) error {
 	for _, uid := range members {
 		// Delete user rooms
 		client.SRem(ctx, getKeyUserRooms(uid), roomId)
+		// Delete user last read timestamps
+		client.Del(ctx, getKeyLastRead(roomId, uid))
 	}
 
 	// Delete room
