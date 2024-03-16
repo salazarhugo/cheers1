@@ -8,7 +8,7 @@ require (
 	github.com/go-redis/redis/v9 v9.0.0-rc.1
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/websocket v1.5.0
-	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240303191306-e3c50d4d3dd0
+	github.com/salazarhugo/cheers1/gen/go v0.0.0-20240316160553-3027b7cad5ef
 	github.com/salazarhugo/cheers1/libs/auth v0.0.0-20221116205822-91c0d9c12e5a
 	github.com/salazarhugo/cheers1/libs/profiler v0.0.0-20221022084305-122f971a4fa0
 	github.com/salazarhugo/cheers1/libs/utils v0.0.0-20240303193140-16fe5ab97d20
@@ -16,7 +16,6 @@ require (
 	golang.org/x/net v0.21.0
 	google.golang.org/api v0.167.0
 	google.golang.org/grpc v1.62.0
-	google.golang.org/protobuf v1.32.0
 	gorm.io/gorm v1.25.7
 )
 
@@ -83,6 +82,7 @@ require (
 	google.golang.org/genproto v0.0.0-20240221002015-b0ce06bbee7c // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20240221002015-b0ce06bbee7c // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240221002015-b0ce06bbee7c // indirect
+	google.golang.org/protobuf v1.32.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 

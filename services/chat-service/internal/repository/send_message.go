@@ -47,6 +47,7 @@ func (c chatRepository) SendMessage(
 	bytes, err := json.Marshal(websocketMsg)
 
 	err = c.cache.SetLastRead(msg.ChatId, senderID, msg.CreatedAt)
+	err = c.cache.SetUnreadCount(msg.ChatId, senderID, 0)
 
 	// Redis Pub/Sub
 	err = c.cache.Publish(ctx, msg.ChatId, string(bytes)).Err()

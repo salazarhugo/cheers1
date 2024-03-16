@@ -30,6 +30,7 @@ type ChatServiceClient interface {
 	GetRoomId(ctx context.Context, in *GetRoomIdReq, opts ...grpc.CallOption) (*RoomId, error)
 	ListMembers(ctx context.Context, in *ListMembersRequest, opts ...grpc.CallOption) (*ListMembersResponse, error)
 	LeaveRoom(ctx context.Context, in *RoomId, opts ...grpc.CallOption) (*Empty, error)
+	SendReadReceipt(ctx context.Context, in *SendReadReceiptRequest, opts ...grpc.CallOption) (*Empty, error)
 	SendMessage(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*SendMessageResponse, error)
 	PinRoom(ctx context.Context, in *PinRoomRequest, opts ...grpc.CallOption) (*PinRoomResponse, error)
 	UnPinRoom(ctx context.Context, in *UnPinRoomRequest, opts ...grpc.CallOption) (*UnPinRoomResponse, error)
@@ -139,6 +140,15 @@ func (c *chatServiceClient) ListMembers(ctx context.Context, in *ListMembersRequ
 func (c *chatServiceClient) LeaveRoom(ctx context.Context, in *RoomId, opts ...grpc.CallOption) (*Empty, error) {
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, "/cheers.chat.v1.ChatService/LeaveRoom", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chatServiceClient) SendReadReceipt(ctx context.Context, in *SendReadReceiptRequest, opts ...grpc.CallOption) (*Empty, error) {
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, "/cheers.chat.v1.ChatService/SendReadReceipt", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -269,6 +279,7 @@ type ChatServiceServer interface {
 	GetRoomId(context.Context, *GetRoomIdReq) (*RoomId, error)
 	ListMembers(context.Context, *ListMembersRequest) (*ListMembersResponse, error)
 	LeaveRoom(context.Context, *RoomId) (*Empty, error)
+	SendReadReceipt(context.Context, *SendReadReceiptRequest) (*Empty, error)
 	SendMessage(context.Context, *SendMessageRequest) (*SendMessageResponse, error)
 	PinRoom(context.Context, *PinRoomRequest) (*PinRoomResponse, error)
 	UnPinRoom(context.Context, *UnPinRoomRequest) (*UnPinRoomResponse, error)
@@ -309,6 +320,9 @@ func (UnimplementedChatServiceServer) ListMembers(context.Context, *ListMembersR
 }
 func (UnimplementedChatServiceServer) LeaveRoom(context.Context, *RoomId) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LeaveRoom not implemented")
+}
+func (UnimplementedChatServiceServer) SendReadReceipt(context.Context, *SendReadReceiptRequest) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendReadReceipt not implemented")
 }
 func (UnimplementedChatServiceServer) SendMessage(context.Context, *SendMessageRequest) (*SendMessageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendMessage not implemented")
@@ -496,6 +510,24 @@ func _ChatService_LeaveRoom_Handler(srv interface{}, ctx context.Context, dec fu
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ChatServiceServer).LeaveRoom(ctx, req.(*RoomId))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChatService_SendReadReceipt_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendReadReceiptRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).SendReadReceipt(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cheers.chat.v1.ChatService/SendReadReceipt",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).SendReadReceipt(ctx, req.(*SendReadReceiptRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -722,6 +754,10 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "LeaveRoom",
 			Handler:    _ChatService_LeaveRoom_Handler,
+		},
+		{
+			MethodName: "SendReadReceipt",
+			Handler:    _ChatService_SendReadReceipt_Handler,
 		},
 		{
 			MethodName: "SendMessage",
