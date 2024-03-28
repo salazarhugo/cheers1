@@ -13,15 +13,15 @@ func (cache *redisCache) GetOrCreateDirectRoom(
 	client := cache.client
 
 	ctx := context.Background()
-	roomId := getDirectRoomId(userId, otherUserId)
+	chatID := getDirectRoomId(userId, otherUserId)
 
-	exists, err := client.Exists(context.Background(), getKeyRoom(roomId)).Result()
+	exists, err := client.Exists(context.Background(), getKeyRoom(chatID)).Result()
 	if err != nil {
 		return nil, err
 	}
 
 	if exists == 1 {
-		room, err := cache.GetRoomWithId(userId, roomId)
+		room, err := cache.GetChat(userId, chatID)
 		if err != nil {
 			return nil, err
 		}
@@ -30,23 +30,26 @@ func (cache *redisCache) GetOrCreateDirectRoom(
 
 	if exists == 0 {
 		room := &models.Chat{
-			Id:              roomId,
+			Id:              chatID,
 			LastMessageTime: 0,
 			Status:          pb.RoomStatus_EMPTY.String(),
 			Type:            models.ChatType_DIRECT,
 			Admins:          []string{userId, otherUserId},
 		}
 
-		err := cache.CreateRoom(roomId, room)
+		err := cache.CreateRoom(chatID, room)
 		if err != nil {
 			return nil, err
 		}
 
-		client.SAdd(ctx, getKeyUserRooms(userId), roomId)
-		client.SAdd(ctx, getKeyUserRooms(otherUserId), roomId)
+		client.SAdd(ctx, getKeyUserRooms(userId), chatID)
+		client.SAdd(ctx, getKeyUserRooms(otherUserId), chatID)
 		client.SAdd(ctx, getKeyRoomMembers(room.Id), userId, otherUserId)
 
-		room_, err := cache.GetRoomWithId(userId, roomId)
+		err = cache.Publish(ctx, userId, room.Id).Err()
+		err = cache.Publish(ctx, otherUserId, room.Id).Err()
+
+		room_, err := cache.GetChat(userId, chatID)
 		if err != nil {
 			return nil, err
 		}

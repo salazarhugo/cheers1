@@ -31,6 +31,7 @@ func (cache *redisCache) CreateGroup(
 	for _, uid := range UUIDs {
 		client.SAdd(ctx, getKeyUserRooms(uid), room.Id)
 		client.SAdd(ctx, getKeyRoomMembers(room.Id), uid)
+		err = cache.Publish(ctx, uid, room.Id).Err()
 	}
 
 	return room, nil

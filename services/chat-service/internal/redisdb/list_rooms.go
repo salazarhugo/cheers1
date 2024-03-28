@@ -12,7 +12,7 @@ func (cache *redisCache) ListRooms(userId string) ([]*models.Chat, error) {
 
 	var chats []*models.Chat
 	for _, chatID := range chatIDs {
-		room, err := cache.GetRoomWithId(userId, chatID)
+		room, err := cache.GetChat(userId, chatID)
 		if err != nil {
 			return nil, err
 		}

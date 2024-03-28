@@ -8,7 +8,7 @@ import (
 )
 
 func (cache *redisCache) CreateRoom(
-	roomId string,
+	chatID string,
 	room *models.Chat,
 ) error {
 	client := cache.client
@@ -20,7 +20,7 @@ func (cache *redisCache) CreateRoom(
 
 	client.Set(
 		context.Background(),
-		getKeyRoom(roomId),
+		getKeyRoom(chatID),
 		json,
 		cache.expires*time.Second,
 	)

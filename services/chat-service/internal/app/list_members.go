@@ -22,5 +22,7 @@ func (s *Server) ListMembers(
 		return nil, err
 	}
 
-	return &pb.ListMembersResponse{Users: members}, nil
+	return &pb.ListMembersResponse{
+		Users: members,
+	}, nil
 }

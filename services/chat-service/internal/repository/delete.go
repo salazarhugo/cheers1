@@ -10,7 +10,7 @@ func (c chatRepository) DeleteRoom(
 	userID string,
 	roomID string,
 ) error {
-	room, err := c.cache.GetRoomWithId(userID, roomID)
+	room, err := c.cache.GetChat(userID, roomID)
 	if err != nil {
 		return err
 	}

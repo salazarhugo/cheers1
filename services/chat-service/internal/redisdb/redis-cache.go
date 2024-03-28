@@ -24,8 +24,8 @@ type User struct {
 	Username string `json:"username"`
 }
 
-func (cache *redisCache) SetSeen(roomId string, userId string) {
-	lastMessage, err := getLatestMessage(cache.client, roomId)
+func (cache *redisCache) SetSeen(chatID string, userId string) {
+	lastMessage, err := getLatestMessage(cache.client, chatID)
 	if err != nil {
 		return
 	}
@@ -36,7 +36,7 @@ func (cache *redisCache) SetSeen(roomId string, userId string) {
 
 	cache.client.HSet(
 		context.Background(),
-		getKeyRoomSeen(roomId),
+		getKeyRoomSeen(chatID),
 		m,
 	)
 }
@@ -72,12 +72,12 @@ func (cache *redisCache) AddToken(userId string, token string) {
 }
 
 func (cache *redisCache) GetOtherUserId(
-	roomId string,
+	chatID string,
 	userId string,
 ) (string, error) {
 	members, err := cache.client.SMembers(
 		context.Background(),
-		getKeyRoomMembers(roomId),
+		getKeyRoomMembers(chatID),
 	).Result()
 	if err != nil {
 		return "", err

@@ -47,10 +47,20 @@ func (c chatRepository) SendMessage(
 	bytes, err := json.Marshal(websocketMsg)
 
 	err = c.cache.SetLastRead(msg.ChatId, senderID, msg.CreatedAt)
-	err = c.cache.SetUnreadCount(msg.ChatId, senderID, 0)
+
+	//
+	members, err := c.cache.GetRoomMembers(roomID)
+	for _, member := range members {
+		if member == senderID {
+			continue
+		}
+		err = c.cache.IncrementUnreadCount(roomID, member)
+	}
+
+	err = c.cache.ResetUnreadCount(roomID, senderID)
 
 	// Redis Pub/Sub
-	err = c.cache.Publish(ctx, msg.ChatId, string(bytes)).Err()
+	err = c.cache.Publish(ctx, roomID, string(bytes)).Err()
 	if err != nil {
 		log.Println(err)
 	}

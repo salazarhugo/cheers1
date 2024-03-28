@@ -7,7 +7,7 @@ import (
 )
 
 func (cache *redisCache) ListChatMessage(
-	roomId string,
+	chatID string,
 	offset int,
 	limit int,
 ) ([]*models.ChatMessage, error) {
@@ -15,7 +15,7 @@ func (cache *redisCache) ListChatMessage(
 
 	values, err := client.ZRevRange(
 		context.Background(),
-		getKeyRoomMessages(roomId),
+		getKeyRoomMessages(chatID),
 		int64(offset),
 		int64(offset+limit),
 	).Result()

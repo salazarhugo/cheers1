@@ -15,53 +15,57 @@ type RoomCache interface {
 	) error
 
 	ListChatMessage(
-		roomId string,
+		chatID string,
 		offset int,
 		limit int,
 	) ([]*models.ChatMessage, error)
 
 	GetLastRead(
-		roomID string,
+		chatID string,
 		userID string,
 	) (int64, error)
 
 	SetLastRead(
-		roomID string,
+		chatID string,
 		userID string,
 		timestamp int64,
 	) error
 
 	GetUnreadCount(
-		roomID string,
+		chatID string,
 		userID string,
 	) (int64, error)
 
-	SetUnreadCount(
+	ResetUnreadCount(
 		roomID string,
 		userID string,
-		count int64,
 	) error
 
-	LikeMessage(roomId string, messageId string)
-	UnlikeMessage(roomId string, messageId string)
+	IncrementUnreadCount(
+		roomID string,
+		userID string,
+	) error
+
+	LikeMessage(chatID string, messageId string)
+	UnlikeMessage(chatID string, messageId string)
 	CreateGroup(name string, UUIDs []string) (*models.Chat, error)
 	GetOrCreateDirectRoom(userId string, otherUserId string) (*models.Chat, error)
-	LeaveRoom(userId string, roomId string)
-	IsMember(userId string, roomId string) (bool, error)
-	IsAdmin(userId string, roomId string) (bool, error)
-	DeleteRoom(roomId string) error
-	GetRoomWithId(userId string, roomId string) (*models.Chat, error)
+	LeaveChat(userId string, chatID string)
+	IsMember(userId string, chatID string) (bool, error)
+	IsAdmin(userId string, chatID string) (bool, error)
+	DeleteRoom(chatID string) error
+	GetChat(userID string, chatID string) (*models.Chat, error)
 	ListRooms(userID string) ([]*models.Chat, error)
 	ListChatIds(userID string) ([]string, error)
-	GetRoomMembers(roomId string) ([]string, error)
-	GetUserItem(userId string) (*user.UserItem, error)
-	ListUser(userIds []string) ([]*user.UserItem, error)
-	DeleteTokens(userId string) int64
-	AddToken(userId string, token string)
-	GetTokens(userId string) []string
-	GetOtherUserId(roomId string, userId string) (string, error)
-	SetSeen(roomId string, userId string)
-	GetRoomStatus(roomId string, userId string, otherUserId string) (pb.RoomStatus, error)
+	GetRoomMembers(chatID string) ([]string, error)
+	GetUserItem(userID string) (*user.UserItem, error)
+	ListUser(userIDs []string) ([]*user.UserItem, error)
+	DeleteTokens(userID string) int64
+	AddToken(userID string, token string)
+	GetTokens(userID string) []string
+	GetOtherUserId(chatID string, userID string) (string, error)
+	SetSeen(chatID string, userId string)
+	GetRoomStatus(chatID string, userId string, otherUserId string) (pb.RoomStatus, error)
 	Subscribe(ctx context.Context, channel string) *redis.PubSub
 	Publish(ctx context.Context, channel string, message interface{}) *redis.IntCmd
 }
@@ -86,12 +90,12 @@ func (cache *redisCache) Subscribe(ctx context.Context, channel string) *redis.P
 	return cache.client.Subscribe(ctx, channel)
 }
 
-func (cache *redisCache) LikeMessage(roomId string, messageId string) {
+func (cache *redisCache) LikeMessage(chatID string, messageId string) {
 	//TODO implement me
 	panic("implement me")
 }
 
-func (cache *redisCache) UnlikeMessage(roomId string, messageId string) {
+func (cache *redisCache) UnlikeMessage(chatID string, messageId string) {
 	//TODO implement me
 	panic("implement me")
 }

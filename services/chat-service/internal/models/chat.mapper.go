@@ -13,17 +13,34 @@ func (c *Chat) ToRoomPb(user *models.User) *pb.Room {
 		Typing:             false,
 		Owner:              "",
 		Type:               c.Type.ToRoomTypePb(),
-		Status:             0,
+		Status:             ToChatStatus(c.Status),
 		Admins:             c.Admins,
 		Members:            nil,
 		LastMessageText:    c.LastMessageText,
 		Picture:            user.Picture,
 		LastMessageType:    pb.MessageType_TEXT,
 		CreateTime:         0,
-		LastMessageTime:    0,
+		LastMessageTime:    c.LastMessageTime,
 		LastMessageSeen:    false,
 		Archived:           false,
 		UnreadMessageCount: c.UnreadCount,
+	}
+}
+
+func ToChatStatus(status string) pb.RoomStatus {
+	switch status {
+	case "EMPTY":
+		return pb.RoomStatus_EMPTY
+	case "NEW":
+		return pb.RoomStatus_NEW
+	case "SENT":
+		return pb.RoomStatus_SENT
+	case "OPENED":
+		return pb.RoomStatus_OPENED
+	case "RECEIVED":
+		return pb.RoomStatus_RECEIVED
+	default:
+		return pb.RoomStatus_EMPTY
 	}
 }
 

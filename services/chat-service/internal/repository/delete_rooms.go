@@ -9,10 +9,7 @@ func (c chatRepository) DeleteRooms(
 	}
 
 	for _, chatID := range chatIDs {
-		err := c.DeleteRoom(userID, chatID)
-		if err != nil {
-			return err
-		}
+		c.DeleteRoom(userID, chatID)
 	}
 
 	return nil

@@ -4,7 +4,7 @@ func (cache *redisCache) IsAdmin(
 	userID string,
 	roomID string,
 ) (bool, error) {
-	room, err := cache.GetRoomWithId(userID, roomID)
+	room, err := cache.GetChat(userID, roomID)
 	if err != nil {
 		return false, err
 	}

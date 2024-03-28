@@ -105,7 +105,7 @@ func serveWs(w http.ResponseWriter, r *http.Request) {
 
 	log.Println("WS: " + userID)
 
-	go ListenMessages(
+	go ws.SubscribePubSub(
 		connection,
 		redisClient,
 		userID,

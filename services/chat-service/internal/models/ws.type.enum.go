@@ -9,6 +9,7 @@ type WsType int32
 
 const (
 	MESSAGE  WsType = iota
+	CHAT     WsType = iota
 	PRESENCE WsType = iota
 	TYPING   WsType = iota
 	UNKNOWN  WsType = iota
@@ -17,6 +18,8 @@ const (
 // String - Creating common behavior - give the type a String function
 func (w WsType) String() string {
 	switch w {
+	case CHAT:
+		return "CHAT"
 	case MESSAGE:
 		return "MESSAGE"
 	case PRESENCE:
@@ -56,6 +59,8 @@ func (w *WsType) UnmarshalJSON(data []byte) (err error) {
 func ParseType(s string) (WsType, error) {
 	s = strings.TrimSpace(strings.ToLower(s))
 	switch s {
+	case "chat":
+		return CHAT, nil
 	case "message":
 		return MESSAGE, nil
 	case "presence":

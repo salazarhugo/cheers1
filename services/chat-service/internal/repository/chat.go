@@ -30,6 +30,15 @@ type ChatRepository interface {
 		userID string,
 	) ([]*pb.RoomWithMessages, error)
 
+	GetChat(
+		userID string,
+		chatID string,
+	) (*chatmodels.Chat, error)
+
+	ListChatsIds(
+		userID string,
+	) ([]string, error)
+
 	DeleteRoom(
 		userID string,
 		roomID string,
@@ -62,16 +71,38 @@ type ChatRepository interface {
 	SendMessage(
 		messageID string,
 		senderID string,
-		roomId string,
+		chatID string,
 		text string,
 		replyToMessageId string,
 	) (*chatmodels.ChatMessage, error)
+
+	SendReadReceipt(
+		userID string,
+		chatID string,
+	) error
 }
 
 type chatRepository struct {
 	cache   redisdb.RoomCache
 	pubsub  *pubsub.Client
 	spanner *gorm.DB
+}
+
+func (c chatRepository) GetChat(userID string, chatID string) (*chatmodels.Chat, error) {
+	return c.cache.GetChat(userID, chatID)
+}
+
+func (c chatRepository) ListChatsIds(userID string) ([]string, error) {
+	return c.cache.ListChatIds(userID)
+}
+
+func (c chatRepository) SendReadReceipt(userID string, chatID string) error {
+	err := c.cache.SetLastRead(chatID, userID, time.Now().UnixMilli())
+	if err != nil {
+		return err
+	}
+
+	return c.cache.ResetUnreadCount(chatID, userID)
 }
 
 func NewChatRepository(

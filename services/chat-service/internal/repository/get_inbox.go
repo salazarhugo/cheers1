@@ -27,13 +27,16 @@ func (c chatRepository) GetInbox(
 		userID, err := c.cache.GetOtherUserId(room.Id, viewerID)
 		user, err := c.GetUserNode(userID)
 		if err != nil {
-			return nil, err
+			continue
 		}
 
-		inbox = append(inbox, &pb.RoomWithMessages{
-			Room:     room.ToRoomPb(user),
-			Messages: messages,
-		})
+		inbox = append(
+			inbox,
+			&pb.RoomWithMessages{
+				Room:     room.ToRoomPb(user),
+				Messages: messages,
+			},
+		)
 	}
 
 	return inbox, nil

@@ -4,17 +4,16 @@ import (
 	"context"
 	json2 "encoding/json"
 	"github.com/go-redis/redis/v9"
-	pb "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
-	"strings"
+	"github.com/salazarhugo/cheers1/services/chat-service/internal/models"
 )
 
 func getLatestMessage(
 	client *redis.Client,
-	roomId string,
-) (*pb.Message, error) {
+	chatID string,
+) (*models.ChatMessage, error) {
 	lastMessage, err := client.ZRevRangeByScore(
 		context.Background(),
-		getKeyRoomMessages(roomId),
+		getKeyRoomMessages(chatID),
 		&redis.ZRangeBy{
 			Min:    "-inf",
 			Max:    "+inf",
@@ -26,12 +25,12 @@ func getLatestMessage(
 		return nil, nil
 	}
 
-	message := &pb.Message{}
-	dec := json2.NewDecoder(strings.NewReader(lastMessage[0]))
-	err = dec.Decode(message)
+	message := &models.ChatMessage{}
+
+	err = json2.Unmarshal([]byte(lastMessage[0]), message)
 	if err != nil {
 		return nil, err
 	}
 
-	return message, err
+	return message, nil
 }

@@ -4,11 +4,11 @@ import "context"
 
 func (cache *redisCache) IsMember(
 	userId string,
-	roomId string,
+	chatID string,
 ) (bool, error) {
 	isMember, err := cache.client.SIsMember(
 		context.Background(),
-		getKeyRoomMembers(roomId),
+		getKeyRoomMembers(chatID),
 		userId,
 	).Result()
 

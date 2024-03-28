@@ -1,33 +1,25 @@
 package redisdb
 
 import (
-	"context"
 	pb "github.com/salazarhugo/cheers1/gen/go/cheers/chat/v1"
 )
 
 func (cache *redisCache) GetRoomStatus(
-	roomId string,
+	chatID string,
 	userId string,
 	otherUserId string,
 ) (pb.RoomStatus, error) {
-	lastSeenMsg, err := cache.client.HMGet(
-		context.Background(),
-		getKeyRoomSeen(roomId),
-		userId,
-		otherUserId,
-	).Result()
-	if err != nil {
-		return 0, err
-	}
+	lastReadOfViewer, err := cache.GetLastRead(chatID, userId)
+	lastReadOfOtherUser, err := cache.GetLastRead(chatID, otherUserId)
 
-	lastMsg, err := getLatestMessage(cache.client, roomId)
+	lastMsg, err := getLatestMessage(cache.client, chatID)
 	if lastMsg == nil {
 		return pb.RoomStatus_EMPTY, err
 	}
 
-	isLastMessageMe := lastMsg.SenderId == userId
-	seenByMe := lastMsg.Id == lastSeenMsg[0]
-	seenByOther := lastMsg.Id == lastSeenMsg[1]
+	isLastMessageMe := lastMsg.UserId == userId
+	seenByMe := lastReadOfViewer > lastMsg.CreatedAt
+	seenByOther := lastReadOfOtherUser > lastMsg.CreatedAt
 
 	status := pb.RoomStatus_EMPTY
 

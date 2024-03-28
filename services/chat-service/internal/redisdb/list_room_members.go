@@ -3,11 +3,11 @@ package redisdb
 import "context"
 
 func (cache *redisCache) GetRoomMembers(
-	roomId string,
+	chatID string,
 ) ([]string, error) {
 	members, err := cache.client.SMembers(
 		context.Background(),
-		getKeyRoomMembers(roomId),
+		getKeyRoomMembers(chatID),
 	).Result()
 	if err != nil {
 		return nil, err

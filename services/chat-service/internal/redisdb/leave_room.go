@@ -2,16 +2,16 @@ package redisdb
 
 import "context"
 
-func (cache *redisCache) LeaveRoom(userId string, roomId string) {
+func (cache *redisCache) LeaveChat(userId string, chatID string) {
 	var ctx = context.Background()
 	client := cache.client
 
-	client.SRem(ctx, getKeyUserRooms(userId), roomId)
-	client.SRem(ctx, getKeyRoomMembers(roomId), userId)
+	client.SRem(ctx, getKeyUserRooms(userId), chatID)
+	client.SRem(ctx, getKeyRoomMembers(chatID), userId)
 
-	memberCount, _ := client.SCard(ctx, getKeyRoomMembers(roomId)).Result()
+	memberCount, _ := client.SCard(ctx, getKeyRoomMembers(chatID)).Result()
 
 	if memberCount == 1 {
-		cache.DeleteRoom(roomId)
+		cache.DeleteRoom(chatID)
 	}
 }

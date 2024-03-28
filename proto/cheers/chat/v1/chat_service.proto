@@ -237,6 +237,7 @@ message Room {
   bool archived = 16;
   bool last_message_seen = 17;
   int64 unread_message_count = 18;
+  bool admin = 19;
 }
 
 enum MessageType {

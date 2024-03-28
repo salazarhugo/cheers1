@@ -12,20 +12,20 @@ func (s *Server) CreateRoom(
 	ctx context.Context,
 	request *pb.CreateRoomRequest,
 ) (*pb.CreateRoomResponse, error) {
-	userID, err := utils.GetUserId(ctx)
+	viewerID, err := utils.GetUserId(ctx)
 	if err != nil {
-		return nil, status.Error(codes.Internal, "failed to retrieve userID")
+		return nil, status.Error(codes.Internal, "failed to retrieve viewerID")
 	}
 
 	if len(request.RecipientUsers) < 1 {
 		return nil, status.Error(codes.InvalidArgument, "empty parameter recipient_users")
 	}
 
-	if request.RecipientUsers[0] == userID {
-		return nil, status.Error(codes.InvalidArgument, "cannot create room with yourself")
+	if request.RecipientUsers[0] == viewerID {
+		return nil, status.Error(codes.InvalidArgument, "cannot create chat with yourself")
 	}
 
-	members := append([]string{userID}, request.RecipientUsers...)
+	members := append([]string{viewerID}, request.RecipientUsers...)
 
 	room, err := s.chatRepository.CreateRoom(request.GroupName, members)
 	if err != nil {

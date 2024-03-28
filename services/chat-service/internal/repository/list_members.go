@@ -12,9 +12,14 @@ func (c chatRepository) ListMembers(
 ) ([]*user.UserItem, error) {
 	membersIDs, err := c.cache.GetRoomMembers(request.RoomId)
 
-	items, err := c.cache.ListUser(membersIDs)
+	users, err := c.GetUsersNode(membersIDs)
 	if err != nil {
 		return nil, err
+	}
+
+	items := make([]*user.UserItem, 0)
+	for _, u := range users {
+		items = append(items, u.ToUserItemPb())
 	}
 
 	return items, nil

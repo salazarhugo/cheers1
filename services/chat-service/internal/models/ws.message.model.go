@@ -5,6 +5,7 @@ type WebSocketMessage struct {
 	UserId      string      `json:"userId"`
 	IsViewer    bool        `json:"isViewer"`
 	ChatMessage ChatMessage `json:"chatMessage"`
+	Chat        Chat        `json:"chat"`
 	Typing      Typing      `json:"typing"`
 	Presence    Presence    `json:"presence"`
 }
